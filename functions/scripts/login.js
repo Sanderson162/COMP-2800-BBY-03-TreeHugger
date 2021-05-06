@@ -28,6 +28,8 @@ window.addEventListener("DOMContentLoaded", () => {
                         },
                         body: JSON.stringify({ idToken }),
                     });
+                }).then(() => {
+                    firebase.auth().signOut();
                 }).catch(error => {
                     alert(error);
                 })
@@ -64,10 +66,6 @@ window.addEventListener("DOMContentLoaded", () => {
     };
     // The start method will wait until the DOM is loaded.
     // Inject the login interface into the HTML
-
-    function signInUser(user) {
-
-    }
 
     function createNewAccount(user) {
         $.ajax({

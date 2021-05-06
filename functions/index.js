@@ -89,6 +89,7 @@ function checkCookieMiddleware(req, res, next) {
 // https://firebase.google.com/docs/auth/admin/manage-cookies
 app.post("/sessionLogin", (req, res) => {
     const idToken = req.body.idToken.toString();
+    console.log("id token signing in" + idToken);
   
     const expiresIn = 60 * 60 * 24 * 5 * 1000;
   
