@@ -1,12 +1,19 @@
 #main .card {
     border: darkgreen solid 1pt;
-    cursor: pointer;
-    margin: 5%;
-}
-#searchResults div {
-    border: darkgreen solid 1pt;
     color: darkgreen;
     cursor: pointer;
     margin: 5%;
     border-radius: 5px;
 }
+
+#main .card:hover {
+    background-color: darkgreen;
+    color: white;
+}
+/* #searchResults div {
+    border: darkgreen solid 1pt;
+    color: darkgreen;
+    cursor: pointer;
+    margin: 5%;
+    border-radius: 5px;
+} */
