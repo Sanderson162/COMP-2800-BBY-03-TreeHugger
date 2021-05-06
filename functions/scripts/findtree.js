@@ -51,7 +51,7 @@ function search(q){
 
 }
 function displayTree(entry){
-    let elem = $("<div></div>");
+    let elem = $("<div></div>").addClass("card");
     elem.append($("<p></p>").html(entry.fields.genus_name+" "+entry.fields.species_name));
     elem.append($("<p></p>").html(entry.fields.common_name));
     elem.append($("<p></p>").html(entry.fields.on_street_block+" "+entry.fields.on_street+" "+entry.fields.neighbourhood_name));
