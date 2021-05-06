@@ -20,6 +20,7 @@ const app = express();
 
 app.engine("html", require("ejs").renderFile);
 app.use(express.static("scripts"));
+app.use(express.static("styles"));
 
 //more testing with cookies
 //app.use(cookieParser());
