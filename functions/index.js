@@ -61,6 +61,8 @@ app.get("/findtree", function (req, res) {
 
 app.get("/search", function (req, res) {
     res.render("search.html");
+});
+
 app.get("/searchDate", function (req, res) {
     res.render("searchDate.html");
 });
@@ -106,9 +108,9 @@ function checkCookieMiddleware(req, res, next) {
 app.post("/sessionLogin", (req, res) => {
     const idToken = req.body.idToken.toString();
     console.log("id token signing in" + idToken);
-  
+
     const expiresIn = 60 * 60 * 24 * 5 * 1000;
-  
+
     admin
       .auth()
       .createSessionCookie(idToken, { expiresIn })
@@ -123,7 +125,7 @@ app.post("/sessionLogin", (req, res) => {
         }
       );
 });
-  
+
 // https://firebase.google.com/docs/auth/admin/manage-cookies
 app.get('/sessionLogout', (req, res) => {
     const sessionCookie = req.cookies.session || '';
