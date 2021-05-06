@@ -7,10 +7,12 @@ const csrf = require("csurf");
 const csrfMiddleware = csrf({ cookie: true });
 //end testing with cookies
 
+const urlencodedParser = express.urlencoded({ extended: false })  
+
 // FIREBASE
 var admin = require("firebase-admin");
 var serviceAccount = require("./serviceAccountKey.json");
-const { user } = require('firebase-functions/lib/providers/auth');
+//const { user } = require('firebase-functions/lib/providers/auth');
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
@@ -50,8 +52,11 @@ app.get("/signup", function (req, res) {
 
 app.get('/profile', checkCookieMiddleware, (req, res) => {
     let uid =  req.decodedClaims.uid;
-    console.log("UID accessing profile: " + uid);
-    res.render('profile.html', {uid: uid});
+    db.collection("Users").doc(uid).get().then(function (doc) { //if successful
+        console.log("accessing user: " + doc.data().name);
+        console.log("UID accessing profile: " + uid);
+        res.render('profile.html', {username: doc.data().name, email: doc.data().email});
+    });
 });
 
 
@@ -63,21 +68,21 @@ app.get("/search", function (req, res) {
     res.render("search.html");
 });
 
-app.post('/ajax-add-user', function (req, res) {
-    // res.setHeader('Content-Type', 'application/json');
+app.post('/ajax-add-user', urlencodedParser, checkCookieMiddleware, (req, res) => {
     let user = req.body;
-    let uid =  req.decodedClaims.uid;
-    console.log("making database spot for: " + req.body.uid);
-    console.log("making database spot for: " + uid);
-    console.log("making database spot for: " + req.decodedClaims.displayName);
-    console.log("making database spot for: " + req.decodedClaims.email);
-    db.collection("Users").doc(uid).set({
-        //name: user.name,
-        email: req.decodedClaims.email
-    }).then(function () { //if successful
-        console.log("New user added to firestore");
-        res.send({ status: "success"});
-    })
+    let uidFromAuth =  req.decodedClaims.uid;
+    if (user.uid == uidFromAuth) {
+        db.collection("Users").doc(uidFromAuth).set({
+            name: user.name,
+            email: user.email
+        }).then(function () { //if successful
+            console.log("New user added to firestore");
+            res.send({ status: "success"});
+        })
+    } else {
+        console.log("userId from client and Auth dont match");
+        res.send({ status: "error"});
+    }
 });
 
 
@@ -140,6 +145,19 @@ app.get('/sessionLogout', (req, res) => {
     });
 });
 
+
+app.post('/update-username', urlencodedParser, checkCookieMiddleware, (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    let uidFromAuth =  req.decodedClaims.uid;
+  
+    db.collection("Users").doc(uidFromAuth).update({
+        name: req.body.name
+    }).then(function () { //if successful
+        console.log("New user added to firestore");
+        res.send({ status: "success"});
+    })
+  
+  });
 
 
 app.get('/timestamp', function (req, res) {

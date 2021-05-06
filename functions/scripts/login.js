@@ -72,7 +72,9 @@ window.addEventListener("DOMContentLoaded", () => {
     // Inject the login interface into the HTML
 
     function createNewAccount(user) {
+        console.log(JSON.stringify(user));
         console.log("requesting server makes database slot for user " + user.uid);
+        confirm("fuck off");
         $.ajax({
             url: "/ajax-add-user",
             dataType: "json",
