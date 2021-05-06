@@ -74,7 +74,7 @@ window.addEventListener("DOMContentLoaded", () => {
     function createNewAccount(user) {
         console.log(JSON.stringify(user));
         console.log("requesting server makes database slot for user " + user.uid);
-        confirm("fuck off");
+        confirm("Creating new user DEBUG");
         $.ajax({
             url: "/ajax-add-user",
             dataType: "json",
