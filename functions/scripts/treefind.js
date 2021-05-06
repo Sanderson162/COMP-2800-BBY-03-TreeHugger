@@ -5,7 +5,7 @@ const iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
 $(document).ready(function () {
   getContent();
   getLocation();
-  
+
 });
 
 function getLocation() {
@@ -65,10 +65,25 @@ function updateContent(entry) {
 }
 
 function zoom(entry) {
+  treeLocation2 = new google.maps.LatLng(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0]);
   treeLocation = { lat: entry.fields.geom.coordinates[1], lng: entry.fields.geom.coordinates[0] }
   map.setCenter(
     treeLocation
   );
+  
+  if (panorama.getPosition()) {
+    panorama.setPosition(treeLocation);
+    //https://stackoverflow.com/questions/32064302/google-street-view-js-calculate-heading-to-face-marker
+    var heading = google.maps.geometry.spherical.computeHeading(panorama.getPosition(), treeLocation2);
+    console.log(heading);
+    panorama.setPov({
+      heading: heading,
+      pitch: 0
+    });
+  
+  }
+
+
   map.setZoom(40);
   centerMap();
   showTreeOverlay(entry);
@@ -109,6 +124,7 @@ function initMap() {
     east: -122.980440,
 
   };
+
   map = new google.maps.Map(document.getElementById("map"), {
     center: currentLocation,
     zoom: 20,
@@ -143,7 +159,26 @@ function initMap() {
 
     getContent();
   });
-  // centerMap();
+
+  panorama = map.getStreetView();
+  // panorama.addListener("visible_changed", function() {
+  //   if (panorama.getVisible()) {
+  //     showCloseButton();
+  //   } else {
+  //     hideCloseButton();
+  //   }
+  // });
+
+  var panoOptions = {
+    addressControlOptions: {
+      position: google.maps.ControlPosition.BOTTOM_CENTER
+    },
+    linksControl: false,
+    fullscreenControl: false,
+    enableCloseButton: true,
+  };
+  panorama.setOptions(panoOptions);
+  
 }
 
 function centerMap() {
@@ -196,6 +231,12 @@ function distance(lat1, lon1, lat2, lon2, unit) {
     if (unit == "M") { dist = dist * 1.61 * 1000 }
     return dist;
   }
+}
+
+//TODO
+//https://stackoverflow.com/questions/36640449/google-maps-api-a-lat-is-not-a-function-error
+function calcDistance(p1, p2) {
+  return (google.maps.geometry.spherical.computeDistanceBetween(p1, p2) / 1000).toFixed(2);
 }
 
 //https://developers.google.com/maps/documentation/javascript/examples/marker-remove
