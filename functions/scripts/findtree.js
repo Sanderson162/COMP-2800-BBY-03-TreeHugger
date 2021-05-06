@@ -37,7 +37,7 @@ function search(q){
         results.html("");
         console.log(q);
         q = q.toUpperCase();
-        let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet="+searchType+"_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine."+searchType+"_name="+q 
+        let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine."+searchType+"_name="+q 
         $.getJSON(query, (data) => {
             if (data.records.length == 0){
                 results.html("<i>No results found...</i>");
