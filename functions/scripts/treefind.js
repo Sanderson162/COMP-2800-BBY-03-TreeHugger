@@ -26,7 +26,6 @@ function getLocation() {
         // handleLocationError(true, infoWindow, map.getCenter());
       }
     );
-
   } else {
     // Browser doesn't support Geolocation
     // handleLocationError(false, infoWindow, map.getCenter());
@@ -61,7 +60,6 @@ function updateContent(entry) {
   post.on("click", (function () {
     zoom(entry);
   }));
-
 }
 
 function zoom(entry) {
@@ -70,23 +68,22 @@ function zoom(entry) {
   map.setCenter(
     treeLocation
   );
-  
+
+  //if panorama is loaded
   if (panorama.getPosition()) {
     panorama.setPosition(treeLocation);
     //https://stackoverflow.com/questions/32064302/google-street-view-js-calculate-heading-to-face-marker
 
     //Setting panorama position animates, so wait for the animation to complete.
-    setTimeout(function(){ 
+    setTimeout(function () {
       var heading = google.maps.geometry.spherical.computeHeading(panorama.getLocation().latLng, treeLocation2);
       panorama.setPov({
         heading: heading,
-        pitch: 20
+        pitch: 20,
+        zoom: 0
       });
     }, 1000);
-
-  
   }
-
 
   map.setZoom(40);
   centerMap();
@@ -94,7 +91,6 @@ function zoom(entry) {
 }
 
 function showTreeOverlay(entry) {
-  console.log(entry);
   $(".tree-overlay-container").show();
   $("#tree-name").text(entry.fields.common_name);
   $("#species-name").text(entry.fields.genus_name + " " + entry.fields.species_name);
@@ -127,7 +123,6 @@ function initMap() {
     south: 49.198387,
     west: -123.224944,
     east: -122.980440,
-
   };
 
   map = new google.maps.Map(document.getElementById("map"), {
@@ -185,7 +180,6 @@ function initMap() {
     clickToGo: false
   };
   panorama.setOptions(panoOptions);
-  
 }
 
 function centerMap() {
@@ -195,18 +189,14 @@ function centerMap() {
 
 function addTreeMarker(longitude, latitude, entry) {
   treeLocation = { lat: latitude, lng: longitude }
-  console.log(treeLocation);
-
   const marker = new google.maps.Marker({
     position: treeLocation,
     map: map,
     icon: iconBase + "parks.png",
   });
   markers.push(marker);
-
   var id = entry.recordid;
 
-  console.log(id);
   marker.addListener("click", () => {
     $('#' + id).get(0).scrollIntoView();
     // $('#' + id).css("background-color", "gainsboro");
@@ -214,7 +204,6 @@ function addTreeMarker(longitude, latitude, entry) {
     //   $('#' + id).css("background-color", "white");
     // }, 250);
     zoom(entry);
-
   });
 }
 
