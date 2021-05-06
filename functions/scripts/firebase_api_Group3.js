@@ -12,8 +12,7 @@ const firebaseConfig = {
   appId: "1:500955301233:web:8257924d67831302a462d0"
 };
 
-  // Initialize Firebase
+window.addEventListener("DOMContentLoaded", () => {
   firebase.initializeApp(firebaseConfig);
-  // Create the Firestore database object
-  // Henceforce, any reference to the database can be made with "db"
   const db = firebase.firestore();
+});

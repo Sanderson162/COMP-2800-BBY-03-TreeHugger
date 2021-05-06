@@ -48,6 +48,10 @@ app.get("/signup", function (req, res) {
     res.render("signup.html");
 });
 
+app.get("/searchDate", function (req, res) {
+    res.render("searchDate.html");
+});
+
 app.post('/ajax-add-user', function (req, res) {
     // res.setHeader('Content-Type', 'application/json');
     user = req.body;
