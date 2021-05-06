@@ -29,13 +29,15 @@ window.addEventListener("DOMContentLoaded", () => {
                         body: JSON.stringify({ idToken }),
                     });
                 }).then(() => {
-                    firebase.auth().signOut();
                     if (authResult.additionalUserInfo.isNewUser) {
                         createNewAccount(user);
                     } else {
                         return true;
                     }
                     return false;
+                    
+                }).then(() => {
+                    firebase.auth().signOut();
                     window.location.assign("profile");
                 }).catch(error => {
                     alert(error);

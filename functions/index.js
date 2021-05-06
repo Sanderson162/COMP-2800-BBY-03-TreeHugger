@@ -49,7 +49,7 @@ app.get("/signup", function (req, res) {
 
 app.get('/profile', checkCookieMiddleware, (req, res) => {
     let uid =  req.decodedClaims.uid;
-    console.log("UID: " + uid);
+    console.log("UID accessing profile: " + uid);
     res.render('profile.html', {uid: uid});
 });
 
