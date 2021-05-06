@@ -74,12 +74,16 @@ function zoom(entry) {
   if (panorama.getPosition()) {
     panorama.setPosition(treeLocation);
     //https://stackoverflow.com/questions/32064302/google-street-view-js-calculate-heading-to-face-marker
-    var heading = google.maps.geometry.spherical.computeHeading(panorama.getPosition(), treeLocation2);
-    console.log(heading);
-    panorama.setPov({
-      heading: heading,
-      pitch: 0
-    });
+
+    //Setting panorama position animates, so wait for the animation to complete.
+    setTimeout(function(){ 
+      var heading = google.maps.geometry.spherical.computeHeading(panorama.getLocation().latLng, treeLocation2);
+      panorama.setPov({
+        heading: heading,
+        pitch: 20
+      });
+    }, 1000);
+
   
   }
 
@@ -103,6 +107,7 @@ function hideTreeOverlay() {
   $(".tree-overlay-container").hide();
   map.setZoom(20);
   centerMap();
+  // panorama.setVisible(false);
 }
 
 function addLocationMarker(location, lbl) {
@@ -176,6 +181,8 @@ function initMap() {
     linksControl: false,
     fullscreenControl: false,
     enableCloseButton: true,
+    zoomControl: false,
+    clickToGo: false
   };
   panorama.setOptions(panoOptions);
   
@@ -231,12 +238,6 @@ function distance(lat1, lon1, lat2, lon2, unit) {
     if (unit == "M") { dist = dist * 1.61 * 1000 }
     return dist;
   }
-}
-
-//TODO
-//https://stackoverflow.com/questions/36640449/google-maps-api-a-lat-is-not-a-function-error
-function calcDistance(p1, p2) {
-  return (google.maps.geometry.spherical.computeDistanceBetween(p1, p2) / 1000).toFixed(2);
 }
 
 //https://developers.google.com/maps/documentation/javascript/examples/marker-remove
