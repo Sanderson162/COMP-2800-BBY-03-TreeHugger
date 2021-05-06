@@ -53,13 +53,17 @@ app.get('/profile', checkCookieMiddleware, (req, res) => {
     res.render('profile.html', {uid: uid});
 });
 
-app.post('/ajax-add-user', function (req, res) {
+app.post('/ajax-add-user', checkCookieMiddleware, (req, res) => {
     // res.setHeader('Content-Type', 'application/json');
     let user = req.body;
+    let uid =  req.decodedClaims.uid;
     console.log("making database spot for: " + req.body.uid);
-    db.collection("Users").doc(user.uid).set({
-        name: user.name,
-        email: user.email
+    console.log("making database spot for: " + uid);
+    console.log("making database spot for: " + req.decodedClaims.displayName);
+    console.log("making database spot for: " + req.decodedClaims.email);
+    db.collection("Users").doc(uid).set({
+        //name: user.name,
+        email: req.decodedClaims.email
     }).then(function () { //if successful
         console.log("New user added to firestore");
         res.send({ status: "success"});

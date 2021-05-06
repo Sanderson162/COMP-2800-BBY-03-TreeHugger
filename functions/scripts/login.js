@@ -19,7 +19,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 //------------------------------------------------------------------------------------------
                 var user = authResult.user;
                 user.getIdToken().then(function(idToken) {
-                    fetch("/sessionLogin", {
+                    return fetch("/sessionLogin", {
                         method: "POST",
                         headers: {
                         Accept: "application/json",
@@ -30,15 +30,17 @@ window.addEventListener("DOMContentLoaded", () => {
                     });
                 }).then(() => {
                     firebase.auth().signOut();
+                    if (authResult.additionalUserInfo.isNewUser) {
+                        createNewAccount(user);
+                    } else {
+                        return true;
+                    }
+                    return false;
+                    window.location.assign("profile");
                 }).catch(error => {
                     alert(error);
                 })
-                if (authResult.additionalUserInfo.isNewUser) {
-                    createNewAccount(user);
-                } else {
-                    return true;
-                }
-                return false;
+                
             },
             uiShown: function () {
                 // The widget is rendered.
@@ -48,7 +50,7 @@ window.addEventListener("DOMContentLoaded", () => {
         },
         // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
         signInFlow: 'popup',
-        signInSuccessUrl: '/',
+        signInSuccessUrl: '/profile',
         signInOptions: [
             // Leave the lines as is for the providers you want to offer your users.
             //firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -68,6 +70,7 @@ window.addEventListener("DOMContentLoaded", () => {
     // Inject the login interface into the HTML
 
     function createNewAccount(user) {
+        console.log("requesting server makes database slot for user " + user.uid);
         $.ajax({
             url: "/ajax-add-user",
             dataType: "json",
