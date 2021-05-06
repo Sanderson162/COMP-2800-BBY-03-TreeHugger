@@ -21,6 +21,7 @@ const app = express();
 
 app.engine("html", require("ejs").renderFile);
 app.use(express.static("scripts"));
+app.use(express.static("styles"));
 
 //more testing with cookies
 app.use(express.json());
@@ -53,7 +54,16 @@ app.get('/profile', checkCookieMiddleware, (req, res) => {
     res.render('profile.html', {uid: uid});
 });
 
-app.post('/ajax-add-user', checkCookieMiddleware, (req, res) => {
+
+app.get("/findtree", function (req, res) {
+    res.render("findtree.html");
+});
+
+app.get("/search", function (req, res) {
+    res.render("search.html");
+});
+
+app.post('/ajax-add-user', function (req, res) {
     // res.setHeader('Content-Type', 'application/json');
     let user = req.body;
     let uid =  req.decodedClaims.uid;
