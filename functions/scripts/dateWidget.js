@@ -17,7 +17,7 @@ $(document).ready(function () {
 });
 
 function searchResults(entry) {
-    let newEntry = "<div class='searchCard'>";
+    let newEntry = "<div class='card'>";
     newEntry += "<p>" + entry.fields.genus_name + " " + entry.fields.species_name + "</p>";
     newEntry += "<p>" + entry.fields.common_name + "</p>";
     newEntry += "<p>" + entry.fields.on_street + " in " + entry.fields.neighbourhood_name + "</p>";
