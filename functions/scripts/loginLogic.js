@@ -13,7 +13,6 @@ window.addEventListener("DOMContentLoaded", () => {
           .auth()
           .signInWithEmailAndPassword(login, password)
           .then(({ user }) => {
-            console.log(user.uid);
             return user.getIdToken().then((idToken) => {
               return fetch("/sessionLogin", {
                 method: "POST",
