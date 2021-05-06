@@ -28,12 +28,15 @@ function searchResults(entry) {
 
 function changeDate(date) {
     $.getJSON('https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=date_planted+%3D+' + $.datepicker.formatDate("yy-mm-dd", date).toString() + '&lang=en&start=1', function (data) {
+        console.log(data.records.length);
         if (data.records.length == 0) {
-            results.html("<i>No results found...</i>");
+            $("#main").html("<i>No results found...</i>");
+        } else {
+            $("#main").html("");
+            $.each(data.records, function (i, entry) {
+                searchResults(entry);
+            });
         }
-        $.each(data.records, function (i, entry) {
-            searchResults(entry);
-        });
     });
     updateDateBlock(date);
 }
