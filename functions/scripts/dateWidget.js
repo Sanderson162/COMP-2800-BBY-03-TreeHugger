@@ -1,4 +1,5 @@
 'use strict'
+
 function updateDateBlock(date) {
     $("#date-day").html(date.toLocaleString('en-us', {
         weekday: 'long'
@@ -27,7 +28,9 @@ function searchResults(entry) {
 
 function changeDate(date) {
     $.getJSON('https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=date_planted+%3D+' + $.datepicker.formatDate("yy-mm-dd", date).toString() + '&lang=en&start=1', function (data) {
-        $("#main").html('');
+        if (data.records.length == 0) {
+            results.html("<i>No results found...</i>");
+        }
         $.each(data.records, function (i, entry) {
             searchResults(entry);
         });
