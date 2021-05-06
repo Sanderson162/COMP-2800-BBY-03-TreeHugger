@@ -52,6 +52,10 @@ app.get("/findtree", function (req, res) {
     res.render("findtree.html");
 });
 
+app.get("/search", function (req, res) {
+    res.render("search.html");
+});
+
 app.post('/ajax-add-user', function (req, res) {
     // res.setHeader('Content-Type', 'application/json');
     user = req.body;
