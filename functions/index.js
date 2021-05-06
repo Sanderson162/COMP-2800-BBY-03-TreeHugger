@@ -61,6 +61,8 @@ app.get("/findtree", function (req, res) {
 
 app.get("/search", function (req, res) {
     res.render("search.html");
+app.get("/searchDate", function (req, res) {
+    res.render("searchDate.html");
 });
 
 app.post('/ajax-add-user', function (req, res) {
