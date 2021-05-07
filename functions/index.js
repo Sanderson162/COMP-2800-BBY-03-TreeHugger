@@ -64,6 +64,10 @@ app.get("/findtree", function (req, res) {
     res.render("findtree.html");
 });
 
+app.get("/viewIndividualTree", function (req, res) {
+    res.render("viewIndividualTree.html");
+});
+
 app.get("/search", function (req, res) {
     res.render("search.html");
 });
@@ -175,5 +179,6 @@ app.listen(PORT, () => {
     console.log(`Listening on http://localhost:${PORT}`);
  });
 
+ console.log("app loaded");
  exports.app = functions.https.onRequest(app);
 
