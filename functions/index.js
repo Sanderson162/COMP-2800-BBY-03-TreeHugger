@@ -163,8 +163,26 @@ app.post('/update-username', urlencodedParser, checkCookieMiddleware, (req, res)
         res.send({ status: "success"});
     })
   
-  });
+});
 
+app.get('/whoami', function (req, res) {
+    const sessionCookie = req.cookies.session || '';
+    //res.clearCookie('session');
+    admin
+    .auth()
+    .verifySessionCookie(sessionCookie)
+    .then((decodedClaims) => {
+        res.render('whoami.html', {responseFromServer: decodedClaims.uid});
+    })
+    .catch((error) => {
+        console.log("whoami Error: " + error);
+        res.render('whoami.html', {responseFromServer: "not signed in or other error: " + error });
+    });
+});
+
+app.get('/navbar', function (req, res) {
+    res.render('renderNavbarTest.html');
+});
 
 app.get('/timestamp', function (req, res) {
     res.send("hello from firebase" + Date.now());

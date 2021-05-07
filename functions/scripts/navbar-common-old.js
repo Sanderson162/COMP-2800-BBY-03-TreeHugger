@@ -1,6 +1,5 @@
-$(document).ready(() => {
-	let fileName = String(window.location.pathname.split("/").slice(-1));
-	console.log("filename" + fileName);
+function addNavbarCommon(currentPage) {
+	let fileName = String(currentPage.split("/").slice(-1));
 
 	let pagenames = new Map([
 		['index.html', "Home"],
@@ -80,8 +79,8 @@ $(document).ready(() => {
 			}
 		}
 	)
-});
 
+}
 
 function logout(){ //needed for logout functionality on logout button
     firebase.auth().signOut().then(function () { //if successful
