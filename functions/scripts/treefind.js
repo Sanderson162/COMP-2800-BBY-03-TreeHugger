@@ -97,7 +97,8 @@ function zoom(entry) {
 }
 
 function showTreeOverlay(entry) {
-  $(".tree-overlay-container").fadeIn(300);
+  $(".content-container").fadeOut(300);
+  $(".tree-overlay-container").fadeIn(500);
   
   $("#tree-name").text(entry.fields.common_name);
   $("#species-name").text(entry.fields.genus_name + " " + entry.fields.species_name);
@@ -122,6 +123,7 @@ function addStreeMapBtnListener(entry) {
 
 function hideTreeOverlay() {
   $(".tree-overlay-container").fadeOut(300);
+  $(".content-container").fadeIn(500);
   map.setZoom(20);
   centerMap();
   map.setOptions({ gestureHandling: "auto" });
