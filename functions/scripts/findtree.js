@@ -44,7 +44,7 @@ function search(){
         let results = $("#searchResults");
         console.log(q);
         q = q.toUpperCase();
-        let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine."+searchType+"_name="+q 
+        let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine."+searchType+"_name="+q+"&start="+page*10 
         $.getJSON(query, (data) => {
             if (data.records.length == 0){
                 results.html("<i>No results found...</i>");
@@ -63,6 +63,7 @@ function search(){
 function loadMoreButton(){
     let b = $("<button type='button' id='loadmore'>Load more</button>") ;
     b.click(()=>{
+        page+=1;
         search()
     });
     return b;
