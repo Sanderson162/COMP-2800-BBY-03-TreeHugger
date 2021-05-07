@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+#map {
+    height: 100%;
+    transition: 0s;
+}
+
+body {
+    background-color:#F8F8F8;
+
+}
+
+#error {
+    color: red;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom:1em;
+}
+
+.post {
+    background-color:white;
+    padding: 1em;
+    border-bottom: 1px solid rgb(236, 236, 236);
+}
+
+.post:hover {
+    background-color: rgb(236, 236, 236);
+}
+
+#content {
+    border-radius: 4px;
+    background-color:white;
+    /* border: 1px solid lightgray; */
+    margin: 1em;
+    height: 36vh;
+    min-height: 36vh;
+    overflow-y:auto;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+#tree-content {
+    background-color:white;
+    padding: 1em;
+    border-radius: 4px;
+    background-color:white;
+    /* border: 1px solid lightgray; */
+    margin: 1em;
+    height: 42vh;
+    min-height: 42vh;
+    overflow-y:auto;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    font-weight: 900;
+    /* font-size: 120%; */
+    margin-bottom: 1em;
+}
+
+.date {
+    text-align: right;
+    font-style: italic;
+    font-weight: 100;
+    margin-top:1em;
+    color:lightgray;
+
+}
+
+.distance {
+    font-style: italic;
+
+}
+
+*::-webkit-scrollbar {
+    display: none;
+}
+
+.map-container { 
+    z-index: -1;
+    position: absolute; 
+    top: 0; 
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+}
+
+.content-container { 
+    user-select: none;
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    top: 0px;
+    width: 100%;
+    height: 50%;
+    overflow: visible;
+    background-image: linear-gradient(to top, rgba(255, 255, 255, 0), rgb(243, 243, 243));
+    /* border-bottom: 1px solid lightgray; */
+    /* backdrop-filter: blur(20px); */
+}
+
+.tree-overlay-container {
+    display: none;
+    user-select: none;
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0px;
+    width: 100%;
+    height: 50%;
+    overflow: visible;
+    /* background-color: rgba(0, 0, 0, 0.0); */
+    background-image: linear-gradient(to top, rgba(255, 255, 255, 0), rgb(243, 243, 243));
+   
+}
+
+button {
+    background: white;
+    border: none;
+    padding: 1em;
+    font-size: 120%;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    border-right: none; 
+    margin-left: -4px;
+}
+
+#main {
+    overflow-y: scroll;
+    padding-right:1em;
+    padding-left: 1em;
+    max-height:100%;
+}
+
+button:hover {
+    background:rgb(236, 236, 236);
+}
+
+#button-container {
+    position: absolute;
+    bottom:0px;
+    right: 0px;
+    margin-right: 50px;
+    margin-bottom: 6vh;
+}
+
+#distance {
+    font-style: italic;
+}
+
+#updated {
+    font-style: italic;
+    font-weight: 100;
+    margin-top:1em;
+    color:lightgray;
+}
+
+#body {
+    font-size: 125%;
+}
+
+#tree-name{
+    margin-bottom:0.5em;
+}
+  

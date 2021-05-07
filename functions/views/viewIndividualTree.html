@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Individual Tree</title>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js" defer></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-analytics.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-firestore.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-functions.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js" defer ></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
+        crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="./viewIndividualTree.css">
+</head>
+    <body>
+        <nav>
+            <h1>Tree Individual View</h1>
+            <h1>Home</h1>
+            <h1>Search</h1>
+            <h1>Profile</h1>
+            <h1>Login</h1>
+        </nav>
+        <div id="inputTreeId">find Individual tree by record ID: <input type='text' value='27a15acb15939785952da009fd200ce7082bd931'></div>
+        <div id="debuginputTreeId"><b>searching tree: </b><span class="info"></span></div>
+        <div id="resultsinputTreeIdRaw"><b>Raw tree info: </b></br><span class="info"></span></div>
+        <div id="resultsinputTreeIdFormatted"><b>formatted Tree Info: </b></br><span class="info"></span></div>
+        <div id="resultsWikiQueryRaw"><b>Raw from wiki: </b></br><span class="info"></span></div>
+        <div id="resultsWikiQuery"><b>Extract: </b></br><span class="info"></span></div>
+        <div id="resultsWikiQueryLink"><b>Link: </b></br><span class="info"></span></div>
+        <!-- Your own Firebase API key information -->
+        <script src="./firebase_api_Group3.js"> </script>
+        
+        <script src="./viewIndividualTree.js"></script>
+    </body>
+</html>
