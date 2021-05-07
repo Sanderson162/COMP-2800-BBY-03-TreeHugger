@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search By Date</title>
+    <link rel="stylesheet" href="./search.css">
+
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-analytics.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-firestore.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-functions.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js" defer></script>
+</head>
+
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <div id="dp">
+        <div id="cal2" class="container">
+            <div id="calendar">
+                <div class="date-block ui-datepicker-trigger">
+                    <div id="date-day"></div>
+                    <div id="date-date"></div>
+                    <span id="date-month"></span>,
+                    <span id="date-year"></span>
+                </div>
+                <div id="datepicker"></div>
+            </div>
+        </div>
+        <div class="container" id="task-container">
+            <input id="date" type="text" style="visibility: hidden;" />
+        </div>
+    </div>
+
+    <div id="main"></div>
+
+    <script src="./firebase_api_Group3.js"></script>
+    <script src="./dateWidget.js"></script>
+</body>
+
+</html>
