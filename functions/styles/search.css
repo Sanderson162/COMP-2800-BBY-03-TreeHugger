@@ -19,6 +19,12 @@
     /*margin-bottom: 10%;*/
 }
 
+.event {
+    background-color: #42B373 !important;
+    background-image :none !important;
+    color: #ffffff !important;
+}
+
 #dp {
     width: 100%;
 
