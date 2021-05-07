@@ -88,6 +88,7 @@ function zoom(entry) {
   map.setZoom(40);
   centerMap();
   showTreeOverlay(entry);
+  addStreeMapBtnListener(entry);
 }
 
 function showTreeOverlay(entry) {
@@ -96,9 +97,23 @@ function showTreeOverlay(entry) {
   $("#species-name").text(entry.fields.genus_name + " " + entry.fields.species_name);
   $("#distance").text(Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M")) + " meters away from your location.");
   $("#body").text(entry.fields.on_street);
-  $("#date").text("Planted on " + entry.fields.date_planted + ". ~" + entry.fields.diameter + " inches in diameter. ~" + entry.fields.height_range_id * 10 + " feet in height. ");
+  dateString;
+  if (entry.fields.date_planted) {
+    dateString = "Planted on " + entry.fields.date_planted;
+  } else {
+    dateString = "Date planted unavailable"
+  }
+  $("#date").text("~" + entry.fields.diameter + " inches in diameter. ~" + entry.fields.height_range_id * 10 + " feet in height. Tree ID: " + entry.fields.tree_id);
+  $("#updated").text(dateString);
 }
 
+function addStreeMapBtnListener(entry) {
+  $("#street-btn").off();
+  $("#street-btn").on("click", (function () {
+    console.log(entry);
+    toggleTreeView(entry);
+  }));
+}
 function hideTreeOverlay() {
   $(".tree-overlay-container").hide();
   map.setZoom(20);
@@ -161,13 +176,14 @@ function initMap() {
   });
 
   panorama = map.getStreetView();
-  // panorama.addListener("visible_changed", function() {
-  //   if (panorama.getVisible()) {
-  //     showCloseButton();
-  //   } else {
-  //     hideCloseButton();
-  //   }
-  // });
+  panorama.setPosition(currentLocation);
+  panorama.addListener("visible_changed", function() {
+    if (panorama.getVisible()) {
+      $("#street-btn").text("Show Map");
+    } else {
+      $("#street-btn").text("Show StreetView");
+    }
+  });
 
   var panoOptions = {
     addressControlOptions: {
@@ -182,6 +198,15 @@ function initMap() {
   panorama.setOptions(panoOptions);
 }
 
+function toggleTreeView(entry) {
+  if ($("#street-btn").html() == "Show Map") {
+    panorama.setVisible(false);
+  } else {
+    panorama.setVisible(true);
+    zoom(entry);
+    
+  }
+}
 function centerMap() {
   let height = window.innerHeight;
   map.panBy(0, -height * 0.25);
