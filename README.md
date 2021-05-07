@@ -2,7 +2,7 @@
 
 Find your tree, Vancouver!
 
-## ShoppingBuddy
+## TreeHugger
 
 * [General info](#general-info)
 * [Technologies](#technologies)
