@@ -50,6 +50,10 @@ app.get("/signup", function (req, res) {
     res.render("signup.html");
 });
 
+app.get("/match", function (req, res) {
+    res.render("match.html");
+});
+
 app.get('/profile', checkCookieMiddleware, (req, res) => {
     let uid =  req.decodedClaims.uid;
     db.collection("Users").doc(uid).get().then(function (doc) { //if successful

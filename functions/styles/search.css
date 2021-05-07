@@ -1,4 +1,4 @@
-#main .card {
+.card {
     border: darkgreen solid 1pt;
     color: darkgreen;
     cursor: pointer;
@@ -6,7 +6,12 @@
     border-radius: 5px;
 }
 
-#main .card:hover {
+.card:hover {
+    background-color: darkgreen;
+    color: white;
+}
+
+.card.selected {
     background-color: darkgreen;
     color: white;
 }
