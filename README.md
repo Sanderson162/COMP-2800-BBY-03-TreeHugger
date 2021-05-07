@@ -2,8 +2,6 @@
 
 Find your tree, Vancouver!
 
-## TreeHugger
-
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Contents](#content)
