@@ -22,7 +22,7 @@ Content of the project folder:
 
 ```
  Top level of project folder:
-├── TODO                       # Landing page for customers
+├── TODO                       # Landing page
 └── README.md                  # Read Me
 
 It has the following subfolders and files:
