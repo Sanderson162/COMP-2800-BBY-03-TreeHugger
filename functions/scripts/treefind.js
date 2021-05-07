@@ -97,7 +97,8 @@ function zoom(entry) {
 }
 
 function showTreeOverlay(entry) {
-  $(".tree-overlay-container").show();
+  $(".tree-overlay-container").fadeIn(300);
+  
   $("#tree-name").text(entry.fields.common_name);
   $("#species-name").text(entry.fields.genus_name + " " + entry.fields.species_name);
   $("#distance").text(Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M")) + " meters away from your location.");
@@ -120,7 +121,7 @@ function addStreeMapBtnListener(entry) {
 }
 
 function hideTreeOverlay() {
-  $(".tree-overlay-container").hide();
+  $(".tree-overlay-container").fadeOut(300);
   map.setZoom(20);
   centerMap();
   map.setOptions({ gestureHandling: "auto" });
