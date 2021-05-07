@@ -89,6 +89,7 @@ h1 {
     height: 100%;
 
 }
+
 .content-container { 
     user-select: none;
     position: absolute;
@@ -97,7 +98,7 @@ h1 {
     top: 0px;
     width: 100%;
     height: 50%;
-    overflow: auto;
+    overflow: visible;
     background-image: linear-gradient(to top, rgba(255, 255, 255, 0), rgb(243, 243, 243));
     /* border-bottom: 1px solid lightgray; */
     /* backdrop-filter: blur(20px); */
@@ -112,7 +113,7 @@ h1 {
     top: 0px;
     width: 100%;
     height: 50%;
-    overflow-y: scroll;
+    overflow: visible;
     /* background-color: rgba(0, 0, 0, 0.0); */
     background-image: linear-gradient(to top, rgba(255, 255, 255, 0), rgb(243, 243, 243));
    
@@ -125,7 +126,6 @@ button {
     font-size: 120%;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.1);
     border-right: none; 
-    /* margin-right:-4px; */
     margin-left: -4px;
 }
 
@@ -133,8 +133,9 @@ button {
     overflow-y: scroll;
     padding-right:1em;
     padding-left: 1em;
-    bottom: 30px;
+    max-height:100%;
 }
+
 button:hover {
     background:rgb(236, 236, 236);
 }
@@ -146,6 +147,7 @@ button:hover {
     margin-right: 50px;
     margin-bottom: 6vh;
 }
+
 #distance {
     font-style: italic;
 }
