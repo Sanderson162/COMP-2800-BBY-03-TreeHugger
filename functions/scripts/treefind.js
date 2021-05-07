@@ -63,6 +63,7 @@ function updateContent(entry) {
 }
 
 function zoom(entry) {
+  map.setOptions({ gestureHandling: "none" });
   treeLocation2 = new google.maps.LatLng(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0]);
   treeLocation = { lat: entry.fields.geom.coordinates[1], lng: entry.fields.geom.coordinates[0] }
   map.setCenter(
@@ -73,18 +74,22 @@ function zoom(entry) {
   if (panorama.getPosition()) {
     panorama.setPosition(treeLocation);
     //https://stackoverflow.com/questions/32064302/google-street-view-js-calculate-heading-to-face-marker
-
     //Setting panorama position animates, so wait for the animation to complete.
     setTimeout(function () {
-      var heading = google.maps.geometry.spherical.computeHeading(panorama.getLocation().latLng, treeLocation2);
+      var heading = 0;
+      //TODO Supresses an error on fresh launch.
+      try {
+        heading = google.maps.geometry.spherical.computeHeading(panorama.getLocation().latLng, treeLocation2);
+      }
+      catch(err) {
+      }
       panorama.setPov({
         heading: heading,
         pitch: 20,
         zoom: 0
       });
-    }, 1000);
+    }, 200);
   }
-
   map.setZoom(40);
   centerMap();
   showTreeOverlay(entry);
@@ -110,15 +115,16 @@ function showTreeOverlay(entry) {
 function addStreeMapBtnListener(entry) {
   $("#street-btn").off();
   $("#street-btn").on("click", (function () {
-    console.log(entry);
     toggleTreeView(entry);
   }));
 }
+
 function hideTreeOverlay() {
   $(".tree-overlay-container").hide();
   map.setZoom(20);
   centerMap();
-  // panorama.setVisible(false);
+  map.setOptions({ gestureHandling: "auto" });
+  panorama.setVisible(false);
 }
 
 function addLocationMarker(location, lbl) {
@@ -153,31 +159,28 @@ function initMap() {
       style: google.maps.MapTypeControlStyle.DEFAULT,
       position: google.maps.ControlPosition.LEFT_BOTTOM,
     },
-    zoomControl: true,
+    zoomControl: false,
     zoomControlOptions: {
       position: google.maps.ControlPosition.RIGHT_BOTTOM,
     },
     scaleControl: false,
-    streetViewControl: true,
+    streetViewControl: false,
     streetViewControlOptions: {
       position: google.maps.ControlPosition.RIGHT_BOTTOM,
     },
     fullscreenControl: false,
+    minZoom: 15,
   });
-  // addLocationMarker(currentLocation, "");
-
   map.addListener("click", (mapsMouseEvent) => {
     clearMarkers();
     currentLocation = mapsMouseEvent.latLng.toJSON();
-
     addLocationMarker(mapsMouseEvent.latLng, "");
-
     getContent();
   });
 
   panorama = map.getStreetView();
   panorama.setPosition(currentLocation);
-  panorama.addListener("visible_changed", function() {
+  panorama.addListener("visible_changed", function () {
     if (panorama.getVisible()) {
       $("#street-btn").text("Show Map");
     } else {
@@ -204,7 +207,6 @@ function toggleTreeView(entry) {
   } else {
     panorama.setVisible(true);
     zoom(entry);
-    
   }
 }
 function centerMap() {
@@ -221,13 +223,8 @@ function addTreeMarker(longitude, latitude, entry) {
   });
   markers.push(marker);
   var id = entry.recordid;
-
   marker.addListener("click", () => {
     $('#' + id).get(0).scrollIntoView();
-    // $('#' + id).css("background-color", "gainsboro");
-    // setTimeout(function () {
-    //   $('#' + id).css("background-color", "white");
-    // }, 250);
     zoom(entry);
   });
 }
