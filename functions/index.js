@@ -7,7 +7,7 @@ const csrf = require("csurf");
 const csrfMiddleware = csrf({ cookie: true });
 //end testing with cookies
 
-const urlencodedParser = express.urlencoded({ extended: false })  
+const urlencodedParser = express.urlencoded({ extended: true })  
 
 // FIREBASE
 var admin = require("firebase-admin");
@@ -21,14 +21,16 @@ const db = admin.firestore();
 const PORT = process.env.PORT || 5000;
 const app = express();
 
+//more testing with cookies
+app.use(cookieParser());
+app.use(csrfMiddleware);
+app.use(express.json());
+
 app.engine("html", require("ejs").renderFile);
 app.use(express.static("scripts"));
 app.use(express.static("styles"));
 
-//more testing with cookies
-app.use(express.json());
-app.use(cookieParser());
-app.use(csrfMiddleware);
+
 
 
 // request cookie
@@ -50,7 +52,8 @@ app.get("/signup", function (req, res) {
     res.render("signup.html");
 });
 
-app.get('/profile', checkCookieMiddleware, (req, res) => {
+app.get('/profile', urlencodedParser, checkCookieMiddleware, (req, res) => {
+    console.log("cookies?: " + JSON.stringify(req.cookies));
     let uid =  req.decodedClaims.uid;
     db.collection("Users").doc(uid).get().then(function (doc) { //if successful
         console.log("accessing user: " + doc.data().name);
@@ -95,9 +98,11 @@ app.post('/ajax-add-user', urlencodedParser, checkCookieMiddleware, (req, res) =
 //deal with cookies
 // https://medium.com/novasemita/auth-using-firebaseui-firebase-functions-session-cookies-f2447bf42201
 function checkCookieMiddleware(req, res, next) {
-
-	const sessionCookie = req.cookies.session || '';
-
+	const sessionCookie = req.cookies.__session || '';
+    console.log("cookies?: " + JSON.stringify(req.cookies));
+    
+    console.log("cookies?asd: " + req.headers.cookie);
+    console.log("attempt access with cookie: " + req.cookies.__session);
 	admin.auth().verifySessionCookie(
 		sessionCookie, true).then((decodedClaims) => {
 			req.decodedClaims = decodedClaims;
@@ -105,6 +110,7 @@ function checkCookieMiddleware(req, res, next) {
 		})
 		.catch(error => {
 			// Session cookie is unavailable or invalid. Force user to login.
+            console.log("invalid cookie: " + error);
 			res.redirect('/login');
 		});
 }
@@ -112,31 +118,37 @@ function checkCookieMiddleware(req, res, next) {
 
 
 // https://firebase.google.com/docs/auth/admin/manage-cookies
-app.post("/sessionLogin", (req, res) => {
-    const idToken = req.body.idToken.toString();
-    console.log("id token signing in" + idToken);
-
-    const expiresIn = 60 * 60 * 24 * 5 * 1000;
-
-    admin
-      .auth()
-      .createSessionCookie(idToken, { expiresIn })
-      .then(
-        (sessionCookie) => {
-          const options = { maxAge: expiresIn, httpOnly: true };
-          res.cookie("session", sessionCookie, options);
-          res.end(JSON.stringify({ status: "success" }));
-        },
-        (error) => {
-          res.status(401).send("UNAUTHORIZED REQUEST!");
-        }
-      );
+app.post("/sessionLogin", urlencodedParser, (req, res) => {
+    console.log("sign in attempt");
+    if (req.body && req.body.idToken) {
+        const idToken = req.body.idToken.toString();
+        console.log("id token signing in" + idToken);
+    
+        const expiresIn = 60 * 60 * 24 * 5 * 1000;
+    
+        admin
+          .auth()
+          .createSessionCookie(idToken, { expiresIn })
+          .then(
+            (sessionCookie) => {
+                console.log("created session cookie");
+              const options = { maxAge: expiresIn, httpOnly: true, secure: true };
+              res.cookie("__session", sessionCookie, options);
+              res.end(JSON.stringify({ status: "success" }));
+            },
+            (error) => {
+              res.status(401).send(error/*"UNAUTHORIZED REQUEST!"*/);
+            }
+          );
+    } else {
+        res.status(401).send("UNAUTHORIZED REQUEST!");
+    }
 });
 
 // https://firebase.google.com/docs/auth/admin/manage-cookies
 app.get('/sessionLogout', (req, res) => {
-    const sessionCookie = req.cookies.session || '';
-    res.clearCookie('session');
+    const sessionCookie = req.cookies.__session || '';
+    res.clearCookie('__session');
     admin
     .auth()
     .verifySessionCookie(sessionCookie)
@@ -166,7 +178,7 @@ app.post('/update-username', urlencodedParser, checkCookieMiddleware, (req, res)
 });
 
 app.get('/whoami', function (req, res) {
-    const sessionCookie = req.cookies.session || '';
+    const sessionCookie = req.cookies.__session || '';
     //res.clearCookie('session');
     admin
     .auth()
@@ -188,10 +200,10 @@ app.get('/timestamp', function (req, res) {
     res.send("hello from firebase" + Date.now());
 });
 
-
+/*
 app.listen(PORT, () => {
     console.log(`Listening on http://localhost:${PORT}`);
- });
-
+});
+*/
  exports.app = functions.https.onRequest(app);
 

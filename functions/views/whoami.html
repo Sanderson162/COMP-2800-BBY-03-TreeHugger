@@ -27,6 +27,19 @@
     <script src="./firebase_api_Group3.js"></script>
     <script>
       $(document).ready(() => {
+        firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+          $.ajax({
+            url: "/getUserId",
+            dataType: "json",
+            type: "POST",
+            headers: {'CSRF-Token': Cookies.get("XSRF-TOKEN")},
+            data: {idToken: idToken},
+            success: ()=>{console.log("connected");},
+            error: ()=>{console.log("ERROR FAILED TO CONNECT")}
+        });
+      }).catch(function(error) {
+      // Handle error
+      });
         $('#navbar').load('/navbar');
       });
     </script>

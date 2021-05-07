@@ -14,5 +14,4 @@ const firebaseConfig = {
 
 window.addEventListener("DOMContentLoaded", () => {
   firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
 });
