@@ -55,6 +55,7 @@ $(function () {
         dayNamesMin: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
         altField: "#date",
         beforeShowDay: highlightDays,
+        // onChangeMonthYear: highlightDays,
         onSelect: function (dateText, inst) {
             changeDate($(this).datepicker("getDate"));
             $( "#datepicker" ).datepicker("refresh");
