@@ -14,7 +14,7 @@
  * ========================================START=============================================
  * This code snippet was used with permission from a colleague on my BCIT COMP 2800 BBY-3 Team.
  * @author Aidan McReynolds
- * @see IDONTKNOWWHEREYET
+ * @see https://github.com/AidanMcReynolds/1800project
  */
 function updateDateBlock(date) {
     $("#date-day").html(date.toLocaleString('en-us', {
@@ -135,7 +135,7 @@ $(function () {
      * This code snippet was used with permission from a colleague on my BCIT COMP 2800 BBY-3 Team.
      * It was then adapted to work with this datepicker.
      * @author Aidan McReynolds
-     * @see IDONTKNOWWHEREYET
+     * @see https://github.com/AidanMcReynolds/1800project
      */
     $('#datepicker').datepicker({
         inline: true,
