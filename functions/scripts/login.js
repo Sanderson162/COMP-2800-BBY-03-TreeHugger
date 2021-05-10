@@ -36,9 +36,6 @@ window.addEventListener("DOMContentLoaded", () => {
                     }
                     return false;
                     
-                }).then(() => {
-                    firebase.auth().signOut();
-                    window.location.assign("profile");
                 }).catch(error => {
                     alert(error);
                 })

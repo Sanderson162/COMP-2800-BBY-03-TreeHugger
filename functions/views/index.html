@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test</title>
-
+    <!-- Firebase CSS for Authentication UI -->
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css" />
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js" defer></script>
 
@@ -15,6 +16,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-firestore.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-functions.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js" defer ></script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js" defer></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
         crossorigin="anonymous">
@@ -22,14 +24,14 @@
 </head>
     <body>
         Test document served
-        <a href="/profile">profile</a>
+        <div id="profileButton">profileNew</div>
+        <div id="loginButton">Login/Signup</div>
+        <div id="whoami">whoami</div>
+        <!-- This is where the Login Widget will go -->
+        <h1 id="firebaseui-auth-container">&nbsp;</h1>
 
         <!-- Your own Firebase API key information -->
         <script src="./firebase_api_Group3.js"> </script>
-        
-        <!-- Header Navigation Bar -->
-        <script src="./navbar-common.js"></script>
-        <script>addNavbarCommon(window.location.pathname)</script>
 
         <script src="./client.js"></script>
     </body>

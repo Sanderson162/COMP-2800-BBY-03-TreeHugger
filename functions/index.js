@@ -1,12 +1,6 @@
 const functions = require('firebase-functions');
 const express = require('express');
 
-//testing with cookies
-const cookieParser = require("cookie-parser");
-const csrf = require("csurf");
-const csrfMiddleware = csrf({ cookie: true });
-//end testing with cookies
-
 const urlencodedParser = express.urlencoded({ extended: false })  
 
 // FIREBASE
@@ -27,16 +21,6 @@ app.use(express.static("styles"));
 
 //more testing with cookies
 app.use(express.json());
-app.use(cookieParser());
-app.use(csrfMiddleware);
-
-
-// request cookie
-app.all("*", (req, res, next) => {
-    res.cookie("XSRF-TOKEN", req.csrfToken());
-    next();
-});
-
 
 app.get("/", function (req, res) {
     res.render("index.html");
@@ -54,13 +38,22 @@ app.get("/treefind", function (req, res) {
     res.render("treefind.html");
 });
 
-app.get('/profile', checkCookieMiddleware, (req, res) => {
-    let uid =  req.decodedClaims.uid;
-    db.collection("Users").doc(uid).get().then(function (doc) { //if successful
+app.get('/profile', (req, res) => {
+    const idToken = req.body.idToken.toString();
+    admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      const uid = decodedToken.uid;
+      db.collection("Users").doc(uid).get().then(function (doc) { //if successful
         console.log("accessing user: " + doc.data().name);
         console.log("UID accessing profile: " + uid);
         res.render('profile.html', {username: doc.data().name, email: doc.data().email});
     });
+    }).catch((error) => {
+        console.log(error);
+        res.status(401).send("UNAUTHORIZED REQUEST!");
+    });    
 });
 
 
@@ -81,64 +74,44 @@ app.get("/searchDate", function (req, res) {
     res.render("searchDate.html");
 });
 
-app.post('/ajax-add-user', urlencodedParser, checkCookieMiddleware, (req, res) => {
+app.post('/ajax-add-user', urlencodedParser, (req, res) => {
     // res.setHeader('Content-Type', 'application/json');
     let user = req.body;
-    let uidFromAuth =  req.decodedClaims.uid;
-    if (user.uid == uidFromAuth) {
-        db.collection("Users").doc(uidFromAuth).set({
-            name: user.name,
-            email: user.email
+    const idToken = req.body.idToken.toString();
+    admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      const uid = decodedToken.uid;
+      console.log("User: " + uid + " is a new user")
+      db.collection("Users").doc(uid).set({
+        name: user.name,
+        email: user.email
         }).then(function () { //if successful
             console.log("New user added to firestore");
             res.send({ status: "success"});
         })
-    } else {
-        console.log("userId from client and Auth dont match");
-        res.send({ status: "error"});
-    }
+    }).catch((error) => {
+        console.log(error);
+        res.status(401).send("UNAUTHORIZED REQUEST!");
+    });
 });
 
-
-//deal with cookies
-// https://medium.com/novasemita/auth-using-firebaseui-firebase-functions-session-cookies-f2447bf42201
-function checkCookieMiddleware(req, res, next) {
-
-	const sessionCookie = req.cookies.session || '';
-
-	admin.auth().verifySessionCookie(
-		sessionCookie, true).then((decodedClaims) => {
-			req.decodedClaims = decodedClaims;
-			next();
-		})
-		.catch(error => {
-			// Session cookie is unavailable or invalid. Force user to login.
-			res.redirect('/login');
-		});
-}
-
-
-
-// https://firebase.google.com/docs/auth/admin/manage-cookies
 app.post("/sessionLogin", (req, res) => {
     const idToken = req.body.idToken.toString();
     console.log("id token signing in" + idToken);
 
-    const expiresIn = 60 * 60 * 24 * 5 * 1000;
-
     admin
-      .auth()
-      .createSessionCookie(idToken, { expiresIn })
-      .then(
-        (sessionCookie) => {
-          const options = { maxAge: expiresIn, httpOnly: true };
-          res.cookie("session", sessionCookie, options);
-          res.end(JSON.stringify({ status: "success" }));
-        },
-        (error) => {
-          res.status(401).send("UNAUTHORIZED REQUEST!");
-        }
-      );
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      const uid = decodedToken.uid;
+      console.log("User: " + uid + " signed in")
+      res.end(JSON.stringify({ status: "success" }));
+    }).catch((error) => {
+        console.log(error);
+        res.status(401).send("UNAUTHORIZED REQUEST!");
+    });
 });
 
 // https://firebase.google.com/docs/auth/admin/manage-cookies
@@ -160,16 +133,26 @@ app.get('/sessionLogout', (req, res) => {
 });
 
 
-app.post('/update-username', urlencodedParser, checkCookieMiddleware, (req, res) => {
+app.post('/update-username', urlencodedParser,  (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    let uidFromAuth =  req.decodedClaims.uid;
-  
-    db.collection("Users").doc(uidFromAuth).update({
+    const idToken = req.body.idToken.toString();
+
+    admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      const uid = decodedToken.uid;
+      db.collection("Users").doc(uid).update({
         name: req.body.name
-    }).then(function () { //if successful
-        console.log("New user added to firestore");
-        res.send({ status: "success"});
-    })
+        }).then(function () { //if successful
+            console.log("Username updated");
+            res.send({ status: "success"});
+        })
+    }).catch((error) => {
+        console.log(error);
+        res.status(401).send("UNAUTHORIZED REQUEST!");
+    });
+    
   
   });
 
