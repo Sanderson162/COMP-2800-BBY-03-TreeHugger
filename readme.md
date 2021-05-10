@@ -13,7 +13,8 @@ Technologies used for this project:
 * HTML
 * CSS
 * JavaScript
-* Firebase
+* Firebase Hosting
+* Firebase Functions
 
 ## Content
 Content of the project folder:
