@@ -1,5 +1,21 @@
 'use strict'
 
+/**
+ * This script creates and performs various functions for a datepicker interface from JQuery UI.
+ * searchDate.html contains div layouts
+ * search.css contains style requirements
+ * @see https://api.jqueryui.com/datepicker/
+ *
+ * This script also makes calls to the Vancouver Open Data Portal Street Trees Database
+ * @see https://opendata.vancouver.ca/explore/dataset/street-trees/information/?disjunctive.species_name&disjunctive.common_name&disjunctive.height_range_id
+ */
+
+/**
+ * ========================================START=============================================
+ * This code snippet was used with permission from a colleague on my BCIT COMP 2800 BBY-3 Team.
+ * @author Aidan McReynolds
+ * @see IDONTKNOWWHEREYET
+ */
 function updateDateBlock(date) {
     $("#date-day").html(date.toLocaleString('en-us', {
         weekday: 'long'
@@ -13,6 +29,8 @@ function updateDateBlock(date) {
     }));
 }
 
+// =========================================END============================================
+
 function searchResults(entry) {
     let newEntry = "<div class='card'>";
     newEntry += "<p>" + entry.fields.genus_name + " " + entry.fields.species_name + "</p>";
@@ -22,43 +40,103 @@ function searchResults(entry) {
     $("#main").append(newEntry);
 }
 
+function formatDate(date) {
+    return date.getFullYear().toString() + "-" +
+        ("0" + (date.getMonth() + 1).toString()).slice(-2) +
+        "-" + ("0" + date.getDate().toString()).slice(-2);
+}
+
 function changeDate(date) {
-    $.getJSON('https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=date_planted+%3D+' + $.datepicker.formatDate("yy-mm-dd", date).toString() + '&lang=en&start=1', function (data) {
-        if (data.records.length == 0) {
+    let newDate = formatDate(date);
+    let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=date_planted+%3D+" +
+        newDate + "&rows=500&start=0&facet=date_planted";
+
+    $.getJSON(query, (data) => {
+        let totalHits = data.nhits;
+        let resultsPerPage = 10;
+        let pageNumber = 1;
+
+        $("#main").html("");
+
+        if (data.nhits == 0) {
             $("#main").html("<i>No results found...</i>");
-        } else {
-            $("#main").html("");
-            $.each(data.records, function (i, entry) {
-                searchResults(entry);
-            });
+        }
+
+        let recordsArrayPosition = 0;
+
+        while (recordsArrayPosition < totalHits) {
+            if (totalHits - recordsArrayPosition < resultsPerPage) {
+                resultsPerPage = totalHits - recordsArrayPosition;
+            }
+
+            for (let i = 0; i < resultsPerPage; i++) {
+                searchResults(data.records[recordsArrayPosition]);
+                recordsArrayPosition++;
+            }
+
+            $("#main").append("Page " + pageNumber);
+            pageNumber++;
         }
     });
     updateDateBlock(date);
 }
 
-function formatDate(date) {
-    return date.getFullYear().toString() + "-" + "0" + (date.getMonth() + 1).toString().slice(-2) + "-" + "0" + (date.getDay() + 1).toString().slice();
-}
-
-//https://stackoverflow.com/questions/2385332/highlight-dates-in-specific-range-with-jquerys-datepicker
-//https://api.jqueryui.com/datepicker/
-//Cite Aidan's previous code
-//
-
-
 $(function () {
     let newDate = new Date();
     updateDateBlock(newDate);
-
     let dates = [];
 
-    function getDatesInCurrentMonth (year, month, inst) {
-        let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=date_planted+%3D+" + year.toString() + "-" + month.toString() + "&rows=500&start=1&facet=date_planted";
+    function getDatesInCurrentMonth(year, month, inst) {
+        let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=date_planted+%3D+" +
+            year.toString() + "-" + month.toString() + "&rows=500&start=0&facet=date_planted";
+
         $.getJSON(query, (data) => {
             dates = data.records;
         });
+
+        /**
+         * ======================================START===============================================
+         * I found this code snippet on https://stackoverflow.com/ and adapted it to this datepicker.
+         * @author Irvin Dominin https://stackoverflow.com/users/975520/irvin-dominin
+         * @see https://stackoverflow.com/questions/18979579/fire-the-datepicker-onselect-event-manually
+         */
+
+        $('#datepicker').datepicker("setDate", new Date(year.toString() + "/" + month.toString() + "/" + "01"));
+        $('.ui-datepicker-current-day').click();
+
+        // =========================================END============================================
     }
 
+    /**
+     * ===========================================START==========================================
+     * This code was based on a snippet retrieved from https://stackoverflow.com/, and was then adapted to
+     * work with this datepicker.
+     * @author Spaceghost https://stackoverflow.com/users/188456/spaceghost
+     * @see https://stackoverflow.com/questions/2385332/highlight-dates-in-specific-range-with-jquerys-datepicker
+     */
+
+    function highlightDays(date) {
+        let dateEntryString = "";
+        if (dates.length != 0) {
+            for (let i = 0; i < dates.length; i++) {
+                dateEntryString = dates[i].fields.date_planted
+                if (dateEntryString.localeCompare(formatDate(date)) == 0) {
+                    return [true, 'highlight'];
+                }
+            }
+        }
+        return [true, ''];
+    }
+
+    // ==========================================END===========================================
+
+    /**
+     * ==============================================START=======================================
+     * This code snippet was used with permission from a colleague on my BCIT COMP 2800 BBY-3 Team.
+     * It was then adapted to work with this datepicker.
+     * @author Aidan McReynolds
+     * @see IDONTKNOWWHEREYET
+     */
     $('#datepicker').datepicker({
         inline: true,
         showOtherMonths: true,
@@ -73,17 +151,6 @@ $(function () {
         }
     });
 
-    function highlightDays (date) {
-        let dateEntryString = "";
-        if (dates.length != 0) {
-            for (let i = 0; i < dates.length; i++) {
-                dateEntryString = dates[i].fields.date_planted
-                if (dateEntryString.localeCompare(formatDate(date)) == 0) {
-                    console.log("BAD DATE: " + dateEntryString + " WITH: " + formatDate(date));
-                    return [true, 'highlight'];
-                }
-            }
-        }
-        return [true, ''];
-    }
+    // =======================================END==============================================
+
 });

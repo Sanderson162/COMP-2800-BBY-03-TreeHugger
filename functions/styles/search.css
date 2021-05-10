@@ -23,13 +23,20 @@ td.highlight {
     border: none !important;
     padding: 1px 0 1px 1px !important;
     background: none !important;
-    overflow:hidden;
+    overflow: hidden;
 }
 
 td.highlight a {
-    background: #99dd73 url(bg.png) 50% 50% repeat-x !important;
+    background: #99dd73 50% 50% repeat-x !important;
     border: 1px #88a276 solid !important;
 }
+
+/*
+ * =========================================START============================================
+ * This code snippet was used with permission from a colleague on my BCIT COMP 2800 BBY-3 Team.
+ * @author Aidan McReynolds
+ * @see IDONTKNOWWHEREYET
+ */
 
 #dp {
     width: 100%;
@@ -53,7 +60,6 @@ td.highlight a {
 .date-block {
     text-align: center;
     background: #0d6efd;
-    /*rgb(89, 223, 71);*/
     font-family: "Helvetica";
     color: #EEE;
     font-size: 18pt;
@@ -96,18 +102,17 @@ td.highlight a {
     content: "\f053";
     display: block;
     color: rgba(0, 0, 0, .3) !important;
-
 }
 
 .ui-datepicker-next:before {
     content: "\f054";
     display: block;
     color: rgba(0, 0, 0, .3) !important;
-
 }
 
 .ui-datepicker-year {
     font-weight: normal;
+    background:green;
 }
 
 .ui-icon {
@@ -164,7 +169,6 @@ td.highlight a {
 .ui-datepicker .ui-state-active {
     background: #0d6efd !important;
     color: white;
-    /*rgb(218, 25, 192);*/
 }
 
 .ui-datepicker .ui-state-highlight {
@@ -211,3 +215,5 @@ td.highlight a {
         margin-bottom: 0 !important;
     }
 }
+
+/* ======================================END=============================================== */
