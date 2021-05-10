@@ -19,15 +19,20 @@
     /*margin-bottom: 10%;*/
 }
 
-.event {
-    background-color: #42B373 !important;
-    background-image :none !important;
-    color: #ffffff !important;
+td.highlight {
+    border: none !important;
+    padding: 1px 0 1px 1px !important;
+    background: none !important;
+    overflow:hidden;
+}
+
+td.highlight a {
+    background: #99dd73 url(bg.png) 50% 50% repeat-x !important;
+    border: 1px #88a276 solid !important;
 }
 
 #dp {
     width: 100%;
-
 }
 
 .ui-datepicker-header {

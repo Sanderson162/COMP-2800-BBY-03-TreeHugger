@@ -36,38 +36,50 @@ function changeDate(date) {
     updateDateBlock(date);
 }
 
+function formatDate(date) {
+    return date.getFullYear().toString() + "-" + "0" + (date.getMonth() + 1).toString().slice(-2) + "-" + "0" + (date.getDay() + 1).toString().slice();
+}
+
 //https://stackoverflow.com/questions/2385332/highlight-dates-in-specific-range-with-jquerys-datepicker
 
 $(function () {
-    updateDateBlock(new Date());
+    let newDate = new Date();
+    updateDateBlock(newDate);
 
     let dates = [];
-    let query = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/facets?facet=date_planted&refine=date_planted%3A2019%2F03&timezone=UTC";
-    $.getJSON(query, (data) => {
-        dates = data.facets[0].facets[0].facets[0].facets;
-    });
 
-    dates = ["2021/05/20", "2021/05/21"];
+    function getDatesInCurrentMonth (year, month, inst) {
+        let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=date_planted+%3D+" + year.toString() + "-" + month.toString() + "&rows=500&start=1&facet=date_planted";
+        $.getJSON(query, (data) => {
+            dates = data.records;
+        });
+    }
 
     $('#datepicker').datepicker({
         inline: true,
         showOtherMonths: true,
         dayNamesMin: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
         altField: "#date",
+        changeYear: true,
+        yearRange: "1988:2022",
+        onChangeMonthYear: getDatesInCurrentMonth,
         beforeShowDay: highlightDays,
-        // onChangeMonthYear: highlightDays,
         onSelect: function (dateText, inst) {
             changeDate($(this).datepicker("getDate"));
-            $( "#datepicker" ).datepicker("refresh");
         }
     });
 
-    function highlightDays(date) {
-        for (var i = 0; i < dates.length; i++) {
-            if (new Date(dates[i]).toString() == date.toString()) {
-                return [true, 'event', "Trees planted on this date!"];
+    function highlightDays (date) {
+        let dateEntryString = "";
+        if (dates.length != 0) {
+            for (let i = 0; i < dates.length; i++) {
+                dateEntryString = dates[i].fields.date_planted
+                if (dateEntryString.localeCompare(formatDate(date)) == 0) {
+                    console.log("BAD DATE: " + dateEntryString + " WITH: " + formatDate(date));
+                    return [true, 'highlight'];
+                }
             }
         }
         return [true, ''];
-     }
+    }
 });
