@@ -41,6 +41,10 @@ function formatDate(date) {
 }
 
 //https://stackoverflow.com/questions/2385332/highlight-dates-in-specific-range-with-jquerys-datepicker
+//https://api.jqueryui.com/datepicker/
+//Cite Aidan's previous code
+//
+
 
 $(function () {
     let newDate = new Date();
