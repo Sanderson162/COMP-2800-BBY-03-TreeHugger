@@ -12,7 +12,7 @@
 
 /**
  * ========================================START=============================================
- * This code snippet was used with permission from a colleague on my BCIT COMP 2800 BBY-3 Team.
+ * This code snippet was used with permission from a colleague on the same BCIT COMP 2800 BBY-3 Team.
  * @author Aidan McReynolds
  * @see https://github.com/AidanMcReynolds/1800project
  */
@@ -96,7 +96,7 @@ $(function () {
 
         /**
          * ======================================START===============================================
-         * I found this code snippet on https://stackoverflow.com/ and adapted it to this datepicker.
+         * Code snippet found on https://stackoverflow.com/ and adapted it to this datepicker.
          * @author Irvin Dominin https://stackoverflow.com/users/975520/irvin-dominin
          * @see https://stackoverflow.com/questions/18979579/fire-the-datepicker-onselect-event-manually
          */
@@ -109,7 +109,7 @@ $(function () {
 
     /**
      * ===========================================START==========================================
-     * This code was based on a snippet retrieved from https://stackoverflow.com/, and was then adapted to
+     * Code was based on a snippet retrieved from https://stackoverflow.com/, and was then adapted to
      * work with this datepicker.
      * @author Spaceghost https://stackoverflow.com/users/188456/spaceghost
      * @see https://stackoverflow.com/questions/2385332/highlight-dates-in-specific-range-with-jquerys-datepicker
@@ -132,7 +132,7 @@ $(function () {
 
     /**
      * ==============================================START=======================================
-     * This code snippet was used with permission from a colleague on my BCIT COMP 2800 BBY-3 Team.
+     * This code snippet was used with permission from a colleague on the same BCIT COMP 2800 BBY-3 Team.
      * It was then adapted to work with this datepicker.
      * @author Aidan McReynolds
      * @see https://github.com/AidanMcReynolds/1800project
