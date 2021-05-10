@@ -10,6 +10,9 @@
  * @see https://opendata.vancouver.ca/explore/dataset/street-trees/information/?disjunctive.species_name&disjunctive.common_name&disjunctive.height_range_id
  */
 
+var recordsArrayPosition = 0;
+var totalHits;
+
 /**
  * ========================================START=============================================
  * This code snippet was used with permission from a colleague on the same BCIT COMP 2800 BBY-3 Team.
@@ -46,38 +49,52 @@ function formatDate(date) {
         "-" + ("0" + date.getDate().toString()).slice(-2);
 }
 
+function loadMoreButton(queryResultsArray) {
+    let button = $("<button type='button' id='loadButton'>Load more</button>");
+    button.click(() => {
+        searchAction(queryResultsArray);
+        $("#loadButton").remove();
+    });
+    return button;
+}
+
+function searchAction(queryResultsArray) {
+    let resultsPerPage = 10;
+
+    if (totalHits - recordsArrayPosition < resultsPerPage) {
+        resultsPerPage = totalHits - recordsArrayPosition;
+    }
+
+    if (totalHits - recordsArrayPosition > resultsPerPage) {
+        $("#pageButton").append(loadMoreButton(queryResultsArray));
+    }
+
+    for (let i = 0; i < resultsPerPage; i++) {
+        searchResults(queryResultsArray.records[recordsArrayPosition]);
+        recordsArrayPosition++;
+    }
+}
+
 function changeDate(date) {
+    let queryResultsArray = [];
     let newDate = formatDate(date);
     let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=date_planted+%3D+" +
         newDate + "&rows=500&start=0&facet=date_planted";
 
     $.getJSON(query, (data) => {
-        let totalHits = data.nhits;
-        let resultsPerPage = 10;
-        let pageNumber = 1;
-
+        queryResultsArray = data;
+        recordsArrayPosition = 0;
+        totalHits = data.nhits;
         $("#main").html("");
+        $("#loadButton").remove();
 
         if (data.nhits == 0) {
             $("#main").html("<i>No results found...</i>");
-        }
-
-        let recordsArrayPosition = 0;
-
-        while (recordsArrayPosition < totalHits) {
-            if (totalHits - recordsArrayPosition < resultsPerPage) {
-                resultsPerPage = totalHits - recordsArrayPosition;
-            }
-
-            for (let i = 0; i < resultsPerPage; i++) {
-                searchResults(data.records[recordsArrayPosition]);
-                recordsArrayPosition++;
-            }
-
-            $("#main").append("Page " + pageNumber);
-            pageNumber++;
+        } else {
+            searchAction(queryResultsArray);
         }
     });
+
     updateDateBlock(date);
 }
 
@@ -101,8 +118,9 @@ $(function () {
          * @see https://stackoverflow.com/questions/18979579/fire-the-datepicker-onselect-event-manually
          */
 
-        $('#datepicker').datepicker("setDate", new Date(year.toString() + "/" + month.toString() + "/" + "01"));
-        $('.ui-datepicker-current-day').click();
+        let startOfNewMonth = new Date(year.toString() + "/" + month.toString() + "/" + "01");
+        $("#datepicker").datepicker("setDate", startOfNewMonth);
+        $(".ui-datepicker-current-day").click();
 
         // =========================================END============================================
     }
@@ -121,7 +139,7 @@ $(function () {
             for (let i = 0; i < dates.length; i++) {
                 dateEntryString = dates[i].fields.date_planted
                 if (dateEntryString.localeCompare(formatDate(date)) == 0) {
-                    return [true, 'highlight'];
+                    return [true, "highlight", "Trees were planted on this day!"];
                 }
             }
         }
