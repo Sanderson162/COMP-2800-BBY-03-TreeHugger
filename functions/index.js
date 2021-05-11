@@ -12,6 +12,7 @@ const urlencodedParser = express.urlencoded({ extended: false })
 // FIREBASE
 var admin = require("firebase-admin");
 var serviceAccount = require("./serviceAccountKey.json");
+const { firestore } = require('firebase-admin');
 //const { user } = require('firebase-functions/lib/providers/auth');
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -136,6 +137,21 @@ app.post("/sessionLogin", (req, res) => {
         }
       );
 });
+
+app.post("/ajax-add-comment", urlencodedParser, (req, res) => {
+    let comment = req.body;
+    db.collection("Comments").add({
+        Comment: comment.text,
+        Timestamp: firestore.Timestamp.now(),
+        User: "TestUser",
+        Tree: comment.tree,
+        Icon: comment.icon
+    }).then((ref) => {
+        res.end(JSON.stringify({ status: "success" }));
+    }).catch((error) => {
+        res.status(401);
+    });
+})
 
 // https://firebase.google.com/docs/auth/admin/manage-cookies
 app.get('/sessionLogout', (req, res) => {
