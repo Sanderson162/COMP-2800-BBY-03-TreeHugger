@@ -169,8 +169,8 @@ $(function () {
         }
     });
 
-    // $("#datepicker").on("change", function(){
-    //     $(".dateTime").val($(this).val());
+    $("#datepicker").datepicker("setDate", newDate);
+    $(".ui-datepicker-current-day").click();
 
     // =======================================END==============================================
 
