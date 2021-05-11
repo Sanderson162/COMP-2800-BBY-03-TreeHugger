@@ -38,7 +38,11 @@ app.get("/treefind", function (req, res) {
     res.render("treefind.html");
 });
 
-app.get('/profile', (req, res) => {
+app.get("/whoami", function (req, res) {
+    res.send("test");
+});
+
+app.post('/profile', urlencodedParser, (req, res) => {
     const idToken = req.body.idToken.toString();
     admin
     .auth()
@@ -48,7 +52,7 @@ app.get('/profile', (req, res) => {
       db.collection("Users").doc(uid).get().then(function (doc) { //if successful
         console.log("accessing user: " + doc.data().name);
         console.log("UID accessing profile: " + uid);
-        res.render('profile.html', {username: doc.data().name, email: doc.data().email});
+        res.send({ status: "success"});
     });
     }).catch((error) => {
         console.log(error);
@@ -161,11 +165,11 @@ app.get('/timestamp', function (req, res) {
     res.send("hello from firebase" + Date.now());
 });
 
-
+/*
 app.listen(PORT, () => {
     console.log(`Listening on http://localhost:${PORT}`);
  });
-
+*/
  console.log("app loaded");
  exports.app = functions.https.onRequest(app);
 

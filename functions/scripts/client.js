@@ -65,31 +65,54 @@ $(document).ready(() => {
     });
 
     $('#whoami').click(function(e) {
-      firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
-        confirm(idToken);
-      }).catch(function(error) {
-        confirm(error);
-      });
+      var user = firebase.auth().currentUser;
+      if (user) {
+        user.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+          confirm(idToken);
+        }).catch(function(error) {
+          confirm(error);
+        });
+      } else {
+        console.log("not signed in");
+      }
     });
 
     $('#profileButton').click(function(e) {
-      firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
-        $.ajax({
-          url: "/profile",
-          dataType: "json",
-          type: "GET",
-          data: {idToken: idToken},
-          success: ()=>{console.log("profile page")},
-          error: ()=>{console.log("ERROR FAILED TO CONNECT")}
-      });
-      }).catch(function(error) {
-        confirm(error);
-      });
+      var user = firebase.auth().currentUser;
+      if (user) {
+        user.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+          console.log("id token " + idToken);
+          $.ajax({
+            url: "/profile",
+            dataType: "json",
+            type: "POST",
+            data: {idToken: idToken},
+            success: ()=>{console.log("profile page")},
+            error: ()=>{console.log("ERROR FAILED TO CONNECT")}
+          });
+        }).catch(function(error) {
+          confirm(error);
+        });
+      } else {
+        console.log("not signed in");
+      }
     });
-      
+
+    $('#logoutButton').click(function(e) {
+      var user = firebase.auth().currentUser;
+      if (user) {
+        firebase.auth().signOut().then(() => {
+          console.log("Signed out");
+        }).catch((error) => {
+          console.log("error signing out: " + error);
+        });
+      } else {
+        console.log("Nobody is signed in");
+      }
+    });
 });
 
-function createNewAccount(user, idtoken) {
+function createNewAccount(user) {
   console.log(JSON.stringify(user));
   console.log("requesting server makes database slot for user " + user.uid);
   confirm("Creating new user DEBUG");
