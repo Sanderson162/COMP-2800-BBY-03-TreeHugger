@@ -35,25 +35,32 @@ h1 {
 #content {
     border-radius: 4px;
     background-color:white;
-    /* border: 1px solid lightgray; */
-    margin: 1em;
-    height: 36vh;
-    min-height: 36vh;
+    margin: auto;
+    height: 81%;
+    max-width: 500px;
+    max-height:500px;
     overflow-y:auto;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    pointer-events: all;
+    opacity:98%;
 }
 
 #tree-content {
     background-color:white;
-    padding: 1em;
     border-radius: 4px;
     background-color:white;
-    /* border: 1px solid lightgray; */
-    margin: 1em;
-    height: 42vh;
-    min-height: 42vh;
+    height: 100%;
+    max-width: 500px;
+    max-height:350px;
     overflow-y:auto;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    pointer-events: all;
+    position:absolute;
+    bottom:0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    opacity:98%;
 }
 
 .title {
@@ -100,6 +107,7 @@ h1 {
     height: 50%;
     overflow: visible;
     background-image: linear-gradient(to top, rgba(255, 255, 255, 0), rgb(243, 243, 243));
+    pointer-events: none;
     /* border-bottom: 1px solid lightgray; */
     /* backdrop-filter: blur(20px); */
 }
@@ -114,16 +122,18 @@ h1 {
     width: 100%;
     height: 50%;
     overflow: visible;
-    /* background-color: rgba(0, 0, 0, 0.0); */
-    background-image: linear-gradient(to top, rgba(255, 255, 255, 0), rgb(243, 243, 243));
-   
+    /* background-image: linear-gradient(to top, rgba(255, 255, 255, 0), rgb(243, 243, 243)); */
+    pointer-events: none;
 }
 
 button {
     background: white;
     border: none;
-    padding: 1em;
-    font-size: 120%;
+    padding-right: 1em;
+    padding-left: 1em;
+    padding-top: 0.75em;
+    padding-bottom:0.75em;
+    font-size: 110%;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.1);
     border-right: none; 
     margin-left: -4px;
@@ -141,11 +151,12 @@ button:hover {
 }
 
 #button-container {
-    position: absolute;
-    bottom:0px;
-    right: 0px;
-    margin-right: 50px;
-    margin-bottom: 6vh;
+    position: sticky;
+    bottom:0;
+    padding: 1.7em;
+    background: white;
+    display:block;
+    color: rgb(25,25,25);
 }
 
 #distance {
@@ -164,6 +175,28 @@ button:hover {
 }
 
 #tree-name{
+    background: white;
     margin-bottom:0.5em;
+    position:sticky;
+    top:0;
 }
-  
+
+.dialogue {
+    font-size: 150%;
+    height:100%;
+}
+
+.error {
+    color: rgb(219, 68, 55)
+}
+
+.svg-btn {
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    left: 0;
+    right: 1px;
+    top:3px;
+    bottom:0px;
+    margin: auto
+}

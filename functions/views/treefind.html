@@ -3,21 +3,22 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/treefind.css">
-    <title>Test</title>
+    <link rel="stylesheet" href="/navbar-common.css">
+    <title>Trees Near Me</title>
 </head>
 
 <body>
     <div class="content-container">
         <h1>Trees Near Me</h1>
         <div id="content">
-            <div class="post">
+            <!-- <div class="post">
                 <div class="title"></div>
                 <div class="distance"></div>
                 <div class="body"></div>
                 <div class="date"></div>
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="tree-overlay-container">
@@ -31,12 +32,11 @@
                 <div id="updated"></div>
             </div>
             <div id="button-container">
-                <button id="street-btn">Show StreetView</button>
-                <button id="details-btn">View Details</button>
+                <button id="street-btn">StreetView</button>
+                <button id="details-btn">Details</button>
                 <button id="close-btn" onclick="hideTreeOverlay()">Close</button>
             </div>
         </div>
-
     </div>
     <div class="map-container">
         <div id="map">
@@ -45,6 +45,7 @@
     </div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="/treefind.js"></script>
+    <script src="/navbar-common.js"></script>
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIu6Paiio4Zq0ySb6-LuMJOpFSt25RPz0&map_ids=b3163309c37356ea&callback=initMap"> </script>
 </body>

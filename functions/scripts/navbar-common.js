@@ -1,95 +1,34 @@
-function addNavbarCommon(currentPage) {
+
+addNavbarCommon();
+/**
+ * @see Stirling Anderson
+ */
+function addNavbarCommon() {
+	currentPage = window.location.pathname;
 	let fileName = String(currentPage.split("/").slice(-1));
 
 	let pagenames = new Map([
-		['index.html', "Home"],
+		['treefind.html', "Find Tree"],
 		['profile.html', "Profile"],
+		['about.html', "About"],
 		['search.html', "Search"],
-		['sessions.html', "Sessions"],
-		['tutor-form.html', "Tutor Form"],
-		['reviews.html', "Reviews"],
-		['sessions-tutor.html', "Accept Session"],
-		['login.html', "Login"]
+		['index.html', "Home"],
 	])
-
 	if (!pagenames.has(fileName)) {
 		fileName = 'index.html'
 	}
+	//https://stackoverflow.com/questions/1577814/wrapping-a-div-around-the-document-body-contents
+	var mainContainer = document.createElement("div");
+	mainContainer.className = "main-container";
+	
+	// Move the body's children into this wrapper
+	while (document.body.firstChild)
+	{
+		mainContainer.appendChild(document.body.firstChild);
+	}
+	document.body.appendChild(mainContainer);
 
-	$("body").prepend(
-		'<nav id="navBarCommonBar" class="navbar navbar-expand-xl navbar-dark bg-dark">'
-		+	'	<a class="navbar-brand" href="">' + pagenames.get(fileName) + '</a>'
-		+	'	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">'
-		+	'		<span class="navbar-toggler-icon"></span>'
-		+	'	</button>'
-		+	'	<div class="collapse navbar-collapse  " id="navbarNavAltMarkup">'
-		+	'		<div class="d-flex justify-content-between">'
-		+	'		<div class="navbar-nav d-inline-flex justifiy-content-start">'
-		+	'			<a id="navButton_Home" class="nav-item nav-link" href="">Home</a>'
-		+	'			<a id="navButton_Search" class="nav-item nav-link" href="search.html">Search</a>'
-		+	'			<a id="navButton_Sessions" class="nav-item nav-link" href="sessions.html">Sessions</a>'
-		+	'			<a id="navButton_Profile" class="nav-item nav-link" href="profile.html">Profile</a>'
-		+	'		</div>'
-		+	'		<div class="navbar-nav d-inline-flex">'
-		+	'			<a id="navButton_Tutor" class="ml-auto nav-item nav-link" href="tutor-form.html">Tutor Form</a>'
-		+	'			<a id="navButton_SessionsTutor" class="ml-auto nav-item nav-link" href="sessions-tutor.html">Tutor Sessions</a>'
-		+	'			<a id="navButton_Reviews" class="ml-auto nav-item nav-link" href="reviews.html">Reviews</a>'
-		+	'			<a id="navButton_Login"class="ml-auto nav-item nav-link" href="login">Log In</a>'
-		+	'		</div>'
-		+	'		</div>'
-		+	'	</div>'
-		+	'</nav>'
-		);
-
-		$('a[href="'+fileName+'"').addClass("active")
-
-		$('#navButton_Profile').hide()
-		$('#navButton_Sessions').hide()
-		$('#navButton_Sessions').hide()
-		$('#navButton_SessionsTutor').hide()
-		$('#navButton_Reviews').hide()
-		$('#navButton_Tutor').hide()
-
-		firebase.auth().onAuthStateChanged(function (user) {
-			if (user) {
-				$('#navButton_Profile').show()
-				$('#navButton_Sessions').show()
-				$('#navButton_Tutor').show()
-				$("#navButton_Login").text("Log Out")
-				$("body").append(
-					'<footer class="navbar fa-2x fixed-bottom bg-dark  justify-content-around" style="height: 65px;">'
-					+'	<a style="color: #0062cc;" onclick="history.back()"><i class="fas fa-reply"></i></a>'
-					+'	<a href="index.html"><i class="fas fa-home "></i></a>'
-					+'	<a href="search.html"><i class="fas fa-search "></i></a>'
-					+'	<a href="profile.html"><i class="fas fa-user-circle "></i></a>'
-					+'	<a href="sessions.html"><i class="fas fa-calendar-week "></i></a>'
-					+'</footer>'
-					)
-				$("#navButton_Login").click(function() {
-					logout();
-				});
-				db.collection("Tutors").doc(user.uid).get()
-			    .then(function(docSnapshot) {
-					if(docSnapshot.exists) {
-						console.log("exists");
-						$('#navButton_SessionsTutor').show()
-						$('#navButton_Reviews').show()
-					}
-				});
-			}
-		}
-	)
-
-}
-
-function logout(){ //needed for logout functionality on logout button
-    firebase.auth().signOut().then(function () { //if successful
-		console.log("user logged out");
-		window.location.assign("index.html");
-	})
-	.catch(function (error) {
-		console.log("Error logging out: " + error);
-	});
-
+	$("body").append('  <div class="nav-bar">        <div class="mb1">            <a href="index.html">                <svg class="list-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">                    <path d="M9 11L12 14L22 4" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>                    <path d="M21 12V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>                    </svg>                                    </svg>            </a>        </div>        <div class="mb2">            <svg class="order-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"                xmlns="http://www.w3.org/2000/svg">                <path                    d="M6 2L3 6V20C3 20.5304 3.21071 21.0391 3.58579 21.4142C3.96086 21.7893 4.46957 22 5 22H19C19.5304 22 20.0391 21.7893 20.4142 21.4142C20.7893 21.0391 21 20.5304 21 20V6L18 2H6Z"                    stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />                <path d="M3 6H21" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />                <path                    d="M16 10C16 11.0609 15.5786 12.0783 14.8284 12.8284C14.0783 13.5786 13.0609 14 12 14C10.9391 14 9.92172 13.5786 9.17157 12.8284C8.42143 12.0783 8 11.0609 8 10"                    stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />            </svg>        </div>        <div class="mb3">            <a href="profile.html">                <svg class="profile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"                    xmlns="http://www.w3.org/2000/svg">                    <path                        d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"                        stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />                    <path                        d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z"                        stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />                </svg>            </a>        </div>    </div>');
+	// $('a[href="' + fileName + '"').addClass("active")
 }
 

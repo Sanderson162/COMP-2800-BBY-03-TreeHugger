@@ -1,0 +1,51 @@
+.main-container { 
+    position: fixed;
+    z-index: -1;
+    left: 0;
+    bottom: 64px;
+    top: 0;
+    right: 0;
+    height:auto;
+    width:auto;
+}
+
+.nav-bar {
+    position: absolute;
+    bottom: 0;
+    left:0;
+    height: 64px;
+    width: 100%;
+    background-color: whitesmoke;
+    align-items: center;
+    box-shadow: 0 2px 5px 5px rgba(0, 0, 0, 0.1), 0 2px 5px 5px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+        "mb1 mb2 mb3";
+}
+
+.mb1 {
+    grid-area: mb1;
+}
+
+.mb2 {
+    grid-area: mb2;
+}
+
+.mb3 {
+    grid-area: mb3;
+}
+
+.mb1,
+.mb2,
+.mb3 {
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+svg:hover {
+    filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+}
