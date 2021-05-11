@@ -169,9 +169,18 @@ $(function () {
         }
     });
 
+    // =======================================END==============================================
+
+    /**
+     * ======================================START===============================================
+     * Code snippet found on https://stackoverflow.com/ and adapted it to this datepicker.
+     * @author Irvin Dominin https://stackoverflow.com/users/975520/irvin-dominin
+     * @see https://stackoverflow.com/questions/18979579/fire-the-datepicker-onselect-event-manually
+     */
+
     $("#datepicker").datepicker("setDate", newDate);
     $(".ui-datepicker-current-day").click();
 
-    // =======================================END==============================================
+    // =========================================END============================================
 
 });
