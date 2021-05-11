@@ -296,13 +296,16 @@ function showMapButtons(enabled) {
   if (enabled) {
     if(locationInterval == null) {
       $("#toggle-locate-btn").fadeIn(300);
+      $("#toggle-type-btn").fadeIn(300);
     } else {
       $("#toggle-locate-btn").fadeIn(300);
       $("#center-locate-btn").fadeIn(300);
+      $("#toggle-type-btn").fadeIn(300);
     }
   } else {
     $("#center-locate-btn").fadeOut(300);
     $("#toggle-locate-btn").fadeOut(300);
+    $("#toggle-type-btn").fadeOut(300);
   }
 }
 /**
@@ -347,7 +350,8 @@ function initMap() {
       latLngBounds: VANCOUVER_BOUNDS,
       strictBounds: false,
     },
-    mapTypeControl: true,
+    mapTypeControl: false,
+    rotateControl:false,
     mapTypeControlOptions: {
       style: google.maps.MapTypeControlStyle.DEFAULT,
       position: google.maps.ControlPosition.LEFT_BOTTOM,
@@ -364,10 +368,12 @@ function initMap() {
     fullscreenControl: false,
     minZoom: 18,
   });
-  var toggleLocationBtn = createToggleLocationBtn();
-  var centerLocationBtn = createCenterLocationBtn();
+  let toggleLocationBtn = createToggleLocationBtn();
+  let centerLocationBtn = createCenterLocationBtn();
+  let toggleTypeBtn = createToggleTypeBtn();
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(toggleLocationBtn);
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerLocationBtn);
+  map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(toggleTypeBtn);
   panorama = map.getStreetView();
   panorama.setPosition(currentLocation);
   panorama.addListener("visible_changed", function () {
@@ -377,7 +383,7 @@ function initMap() {
       $("#street-btn").text("StreetView");
     }
   });
-  var panoOptions = {
+  let panoOptions = {
     addressControlOptions: {
       position: google.maps.ControlPosition.BOTTOM_CENTER
     },
@@ -392,10 +398,10 @@ function initMap() {
 /**
  * Creates a button that toggles the location service. */
 function createToggleLocationBtn() {
-  var toggleLocationBtn = document.createElement("button");
+  let toggleLocationBtn = document.createElement("button");
   toggleLocationBtn.id = 'toggle-locate-btn';
-  var stroke = "#007ACC";
-  toggleLocationBtn.style.borderRadius = "100%";
+  let stroke = "#007ACC";
+  toggleLocationBtn.style.borderRadius = "4px";
   toggleLocationBtn.style.height = "50px";
   toggleLocationBtn.style.width = "50px";
   toggleLocationBtn.style.margin= "10px";
@@ -422,14 +428,13 @@ function createToggleLocationBtn() {
 /**
  * Creates a button that centers the map. */
 function createCenterLocationBtn() {
-  var centerLocationBtn = document.createElement("button");
+  let centerLocationBtn = document.createElement("button");
   centerLocationBtn.id = 'center-locate-btn';
-  var stroke = "#007ACC";
-  centerLocationBtn.style.borderRadius = "100%";
+  centerLocationBtn.style.borderRadius = "4px";
   centerLocationBtn.style.height = "50px";
   centerLocationBtn.style.width = "50px";
   centerLocationBtn.style.margin= "10px";
-  centerLocationBtn.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z' stroke='#111111' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/><path d='M24 36C30.6274 36 36 30.6274 36 24C36 17.3726 30.6274 12 24 12C17.3726 12 12 17.3726 12 24C12 30.6274 17.3726 36 24 36Z' stroke='#111111' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/><path d='M24 28C26.2091 28 28 26.2091 28 24C28 21.7909 26.2091 20 24 20C21.7909 20 20 21.7909 20 24C20 26.2091 21.7909 28 24 28Z' stroke='#111111' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/></svg>";
+  centerLocationBtn.innerHTML = '<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 30C27.3137 30 30 27.3137 30 24C30 20.6863 27.3137 18 24 18C20.6863 18 18 20.6863 18 24C18 27.3137 20.6863 30 24 30Z" stroke="#007ACC" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   centerLocationBtn.addEventListener("click", function () {
     if(locationInterval == null) {
     } else {
@@ -438,6 +443,36 @@ function createCenterLocationBtn() {
     }
   });
   return centerLocationBtn;
+}
+/**
+ * Creates a button that toggles the type of map. */
+ function createToggleTypeBtn() {
+  let toggleTypeBtn = document.createElement("button");
+  toggleTypeBtn.id = 'toggle-type-btn';
+  let stroke = "#000000";
+  toggleTypeBtn.style.borderRadius = "4px";
+  toggleTypeBtn.style.height = "50px";
+  toggleTypeBtn.style.width = "50px";
+  toggleTypeBtn.style.margin= "10px";
+  toggleTypeBtn.style.backgroundColor = "gainsboro";
+  toggleTypeBtn.innerHTML = '<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12V44L16 36L32 44L46 36V4L32 12L16 4L2 12Z" stroke="'+ stroke +'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 4V36" stroke="'+ stroke +'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 12V44" stroke="'+ stroke +'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  toggleTypeBtn.addEventListener("click", function () {
+    let type = map.getMapTypeId();
+    if(type == 'satellite') {
+      map.setMapTypeId('roadmap');
+      let stroke = "#000000";
+      this.style.backgroundColor = "gainsboro";
+      $("#center-locate-btn").css("background-color", "white");
+      $("#center-locate-btn").fadeIn(300);
+      this.innerHTML = '<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12V44L16 36L32 44L46 36V4L32 12L16 4L2 12Z" stroke="'+ stroke +'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 4V36" stroke="'+ stroke +'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 12V44" stroke="'+ stroke +'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    } else {
+      map.setMapTypeId('satellite');
+      let stroke = "#007ACC";
+      this.style.backgroundColor = "white";
+      this.innerHTML = '<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12V44L16 36L32 44L46 36V4L32 12L16 4L2 12Z" stroke="'+ stroke +'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 4V36" stroke="'+ stroke +'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 12V44" stroke="'+ stroke +'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    }
+  });
+  return  toggleTypeBtn;
 }
 /**
  * Updates distance between GPS/database pulls. 
