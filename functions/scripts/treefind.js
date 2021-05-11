@@ -384,6 +384,7 @@ function initMap() {
     }
   });
   let panoOptions = {
+    imageDateControl: true,
     addressControlOptions: {
       position: google.maps.ControlPosition.BOTTOM_CENTER
     },
