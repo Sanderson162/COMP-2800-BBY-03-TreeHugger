@@ -103,11 +103,11 @@ $(function () {
     updateDateBlock(newDate);
     let dates = [];
 
-    function getDatesInCurrentMonth(year, month, inst) {
+    async function getDatesInCurrentMonth(year, month, inst) {
         let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=date_planted+%3D+" +
             year.toString() + "-" + month.toString() + "&rows=500&start=0&facet=date_planted";
 
-        $.getJSON(query, (data) => {
+        await $.getJSON(query, (data) => {
             dates = data.records;
         });
 
@@ -168,6 +168,9 @@ $(function () {
             changeDate($(this).datepicker("getDate"));
         }
     });
+
+    // $("#datepicker").on("change", function(){
+    //     $(".dateTime").val($(this).val());
 
     // =======================================END==============================================
 
