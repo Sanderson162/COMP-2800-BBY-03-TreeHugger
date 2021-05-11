@@ -1,5 +1,14 @@
 'use strict'
 
+//Add a disable for the arrow until JSON returns from switching months.
+//CSS pointer events: none
+//Add a disable tag for class with pointer events none --> color grey
+//Change selector color.
+//What do we want on each card?
+//Move date block below calendar.
+//Title?
+//Fix calendar position so it does not scroll.
+
 /**
  * This script creates and performs various functions for a datepicker interface from JQuery UI.
  * searchDate.html contains div layouts
@@ -113,7 +122,7 @@ $(function () {
 
         /**
          * ======================================START===============================================
-         * Code snippet found on https://stackoverflow.com/ and adapted it to this datepicker.
+         * Code snippet found on https://stackoverflow.com/ and adapted to this datepicker.
          * @author Irvin Dominin https://stackoverflow.com/users/975520/irvin-dominin
          * @see https://stackoverflow.com/questions/18979579/fire-the-datepicker-onselect-event-manually
          */
