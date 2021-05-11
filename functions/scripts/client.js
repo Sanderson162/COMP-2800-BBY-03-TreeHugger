@@ -1,9 +1,8 @@
 $(document).ready(() => {
     $('#loginButton').click(function(e) {
         e.preventDefault();
-        
-        confirm("worked");
-        var ui = new firebaseui.auth.AuthUI(firebase.auth());
+
+        var ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
         var uiConfig = {
         callbacks: {
             signInSuccessWithAuthResult: function (authResult, redirectUrl) {
@@ -47,13 +46,7 @@ $(document).ready(() => {
         signInFlow: 'popup',
         signInSuccessUrl: '/profile',
         signInOptions: [
-            // Leave the lines as is for the providers you want to offer your users.
-            //firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-            //firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-            //firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-            //firebase.auth.GithubAuthProvider.PROVIDER_ID,
             firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            //firebase.auth.PhoneAuthProvider.PROVIDER_ID
         ],
         // Terms of service url.
         tosUrl: '',
@@ -87,7 +80,12 @@ $(document).ready(() => {
             dataType: "json",
             type: "POST",
             data: {idToken: idToken},
-            success: ()=>{console.log("profile page")},
+            success: (data)=>{
+              console.log("profile page");
+              $("#uidPlaceholder").html(data.uid);
+              $("#namePlaceholder").html(data.name);
+              profileOverlayOn();
+            },
             error: ()=>{console.log("ERROR FAILED TO CONNECT")}
           });
         }).catch(function(error) {
@@ -110,6 +108,10 @@ $(document).ready(() => {
         console.log("Nobody is signed in");
       }
     });
+
+    
+
+    //end Document.ready
 });
 
 function createNewAccount(user) {
@@ -127,4 +129,12 @@ function createNewAccount(user) {
   });
   })
   
+}
+
+function profileOverlayOn() {
+  document.getElementById("profileOverlay").style.display = "block";
+}
+
+function profileOverlayOff() {
+  document.getElementById("profileOverlay").style.display = "none";
 }

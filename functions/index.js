@@ -52,7 +52,7 @@ app.post('/profile', urlencodedParser, (req, res) => {
       db.collection("Users").doc(uid).get().then(function (doc) { //if successful
         console.log("accessing user: " + doc.data().name);
         console.log("UID accessing profile: " + uid);
-        res.send({ status: "success"});
+        res.send({ status: "success", uid: uid, name: doc.data().name});
     });
     }).catch((error) => {
         console.log(error);
@@ -117,25 +117,6 @@ app.post("/sessionLogin", (req, res) => {
         res.status(401).send("UNAUTHORIZED REQUEST!");
     });
 });
-
-// https://firebase.google.com/docs/auth/admin/manage-cookies
-app.get('/sessionLogout', (req, res) => {
-    const sessionCookie = req.cookies.session || '';
-    res.clearCookie('session');
-    admin
-    .auth()
-    .verifySessionCookie(sessionCookie)
-    .then((decodedClaims) => {
-       return admin.auth().revokeRefreshTokens(decodedClaims.sub);
-    })
-    .then(() => {
-       res.redirect('/');
-    })
-    .catch((error) => {
-       res.redirect('/');
-    });
-});
-
 
 app.post('/update-username', urlencodedParser,  (req, res) => {
     res.setHeader('Content-Type', 'application/json');
