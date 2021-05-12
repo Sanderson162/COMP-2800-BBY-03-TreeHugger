@@ -67,7 +67,7 @@ td.highlight a {
     background: #074431;
     font-family: "Helvetica";
     color: #EEE;
-    font-size: 18pt;
+    font-size: 24pt;
     padding: 10px;
 }
 
@@ -76,7 +76,7 @@ td.highlight a {
 }
 
 #date-date {
-    font-size: 48pt;
+    font-size: 24pt;
 }
 
 .ui-datepicker-prev,
@@ -206,5 +206,28 @@ td.highlight a {
 }
 
 @media (min-width:1000px) {
+    #main .card {
+        max-width: 1000px;
+    }
 
+    #cal2 {
+        max-width: 1000px;
+    }
+
+    #calendar {
+        display: grid;
+        grid-template-columns: 50% 50%;
+    }
+
+    .date-block {
+        padding-top: 4rem;
+    }
+
+    .date-block span:nth-of-type(2) {
+        display: block;
+    }
+
+    #date-date {
+        font-size: 48pt;
+    }
 }
