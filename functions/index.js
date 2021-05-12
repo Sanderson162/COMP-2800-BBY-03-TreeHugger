@@ -7,7 +7,7 @@ const csrf = require("csurf");
 const csrfMiddleware = csrf({ cookie: true });
 //end testing with cookies
 
-const urlencodedParser = express.urlencoded({ extended: false })  
+const urlencodedParser = express.urlencoded({ extended: false })
 
 // FIREBASE
 var admin = require("firebase-admin");
@@ -24,6 +24,7 @@ const app = express();
 app.engine("html", require("ejs").renderFile);
 app.use(express.static("scripts"));
 app.use(express.static("styles"));
+app.use(express.static("img"));
 
 //more testing with cookies
 app.use(express.json());

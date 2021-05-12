@@ -1,7 +1,6 @@
 'use strict'
 
 //What do we want on each card?
-//change selector color
 //Title?
 //Fix calendar position so it does not scroll.
 
