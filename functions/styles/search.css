@@ -3,6 +3,10 @@
  * They were then used as a foundation to build this application.
  * @author Aidan McReynolds
  * @see https://github.com/AidanMcReynolds/1800project
+ *
+ * A code snippet was used as a foundation to create a scrolling division with a fixed element above it.
+ * @author CrazyVideoGamez https://stackoverflow.com/users/12097913/crazyvideogamez
+ * @see https://stackoverflow.com/questions/17954181/scrolling-only-content-div-others-should-be-fixed
  */
 
 #main .card {
@@ -32,7 +36,7 @@ td.highlight a {
     border: 1px #88a276 solid !important;
 }
 
-#treehuggerlogo {
+#titleText {
     font-size: 24pt;
     text-align: center;
     padding: 0.25rem;
@@ -212,11 +216,6 @@ td.highlight a {
     margin-top: 410px;
     text-align: center;
     overflow: auto;
-}
-
-#pageButton {
-    margin: auto;
-    text-align: center;
 }
 
 @media (min-width:1000px) {
