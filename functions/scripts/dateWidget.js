@@ -20,6 +20,8 @@ var totalHits;
  * This code snippet was used with permission from a colleague on the same BCIT COMP 2800 BBY-3 Team.
  * @author Aidan McReynolds
  * @see https://github.com/AidanMcReynolds/1800project
+ * This function updates a date block displayed next to the datepicker to show the currently passed date.
+ * @param date as a Date
  */
 function updateDateBlock(date) {
     $("#date-day").html(date.toLocaleString('en-us', {
@@ -36,6 +38,11 @@ function updateDateBlock(date) {
 
 // =========================================END============================================
 
+/**
+ * This function formats and appends search query results from a query results array to the #main
+ * section in searchDate.html
+ * @param entry as a query results array
+ */
 function searchResults(entry) {
     let newEntry = "<div class='card'>";
     newEntry += "<p>" + entry.fields.genus_name + " " + entry.fields.species_name + "</p>";
@@ -45,11 +52,25 @@ function searchResults(entry) {
     $("#main").append(newEntry);
 }
 
+/**
+ * This function formats a Date object into compatible formats so they can be used
+ * with query results and the datepicker interface.
+ * @param date as a Date
+ * @returns Date object with the format YYYY-MM-DD
+ */
 function formatDate(date) {
     return date.getFullYear().toString() + "-" +
         ("0" + (date.getMonth() + 1).toString()).slice(-2) +
         "-" + ("0" + date.getDate().toString()).slice(-2);
 }
+
+/**
+ * This function appends a "load more" button to the #loadButton division
+ * of searchDate.html. This button will add up to 10 more results from the
+ * search query to the bottom of the #main division.
+ * @param queryResultsArray as an array
+ * @returns 
+ */
 
 function loadMoreButton(queryResultsArray) {
     let button = $("<button type='button' id='loadButton'>Load more</button>");
