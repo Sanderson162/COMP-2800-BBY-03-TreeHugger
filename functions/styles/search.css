@@ -1,4 +1,4 @@
-#main .card {
+.card {
     border: darkgreen solid 1pt;
     color: darkgreen;
     cursor: pointer;
@@ -6,7 +6,32 @@
     border-radius: 5px;
 }
 
-#main .card:hover {
+#form{
+    margin: 5%;
+    text-align: center;
+    border: darkgreen solid 1pt;
+    color: darkgreen;
+    border-radius: 5px;
+}
+
+#form *{
+    margin-top: 2%;
+}
+
+#form #logo {
+    font-size: 80pt;
+}
+
+#result {
+    text-align: center;
+}
+
+.card:hover {
+    background-color: darkgreen;
+    color: white;
+}
+
+.card.selected {
     background-color: darkgreen;
     color: white;
 }

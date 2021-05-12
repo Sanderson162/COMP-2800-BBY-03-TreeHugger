@@ -29,7 +29,6 @@ function loadOptions(){
     let query = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/facets?facet="+searchType+"_name&timezone=UTC"
     $.getJSON(query, (data) => {
         $.each(data.facets[0].facets, function (i, entry) {
-            
             $("#data").append($("<option></option>").val(entry.name));
         });
         
@@ -77,7 +76,7 @@ function displayTree(entry){
     return elem;
 }
 
-// Source: https://html-online.com/articles/get-url-parameters-javascript/
+// Url parsing function. Source: https://html-online.com/articles/get-url-parameters-javascript/
 function getUrlVars() {
     var vars = {};
     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
