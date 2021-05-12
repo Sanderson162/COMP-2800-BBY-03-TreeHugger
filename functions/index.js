@@ -81,6 +81,9 @@ app.get("/search", function (req, res) {
     res.render("search.html");
 });
 
+app.get("/history", function (req, res) {
+    res.render("history.html");
+});
 
 app.get("/searchDate", function (req, res) {
     res.render("searchDate.html");
@@ -159,7 +162,25 @@ app.post("/ajax-add-comment", urlencodedParser, (req, res) => {
     }).catch((error) => {
         res.status(401);
     });
-})
+});
+
+app.get("/ajax-get-comment-user", (req, res) => {
+    let user = "TestUser";
+    res.setHeader('Content-Type', 'application/json');
+    db.collection("Comments")
+        .where("User","==",user)
+        .get()
+        .then((data) => {
+            let response = [];
+            data.forEach((entry)=>{
+                response.push(entry.data());
+            });
+            res.send(JSON.stringify(response));
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+});
 
 // https://firebase.google.com/docs/auth/admin/manage-cookies
 app.get('/sessionLogout', (req, res) => {
@@ -188,7 +209,7 @@ app.post('/update-username', urlencodedParser, checkCookieMiddleware, (req, res)
         name: req.body.name
     }).then(function () { //if successful
         console.log("New user added to firestore");
-        res.send({ status: "success"});
+        res.send(JSON.stringify({ status: "success"}));
     })
   
   });

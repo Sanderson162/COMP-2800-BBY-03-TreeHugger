@@ -22,6 +22,11 @@
     font-size: 80pt;
 }
 
+#menu {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
 #result {
     text-align: center;
 }
