@@ -36,42 +36,36 @@ function loadBirthForm() {
 function loadAnniversaryForm() {
     $("#result").html("");
     let f = $("#form").html("");
-    f.append($("<input id='name1'>"));
+    f.append($("<span id='logo'>💕</span>"))
+    f.append($("<br><input id='name1' placeholder='name'>"));
     f.append(" and ");
-    f.append($("<input id='name2'>"));
+    f.append($("<input id='name2' placeholder='name'>"));
     f.append("'s anniversary ");
-    f.append($("<input type='date' id='date'>"));
-    f.append($("<button type='button' id='loadmore'>Search</button>").click(() => {
+    f.append($("<br><span>on <span><input type='date' id='date'>"));
+    f.append($("<br><button type='button' id='loadmore'>Search</button>").click(() => {
         submit({
-            match: () => {
-                return "Found a tree for " + $("#name1").val() + " and " + $("#name2").val();
-            },
-            close: () => {
-                return "Here's the closest match for " + $("#name1").val() + " and " + $("#name2").val();
-            },
-            fail: () => {
-                return "Sorry, we couldn't find a tree for " + $("#name1").val() + " and " + $("#name2").val();
-            }
+            match: "Found a tree for " + $("#name1").val() + " and " + $("#name2").val(),
+            close: "Here's the closest match for " + $("#name1").val() + " and " + $("#name2").val(),
+            fail: "Sorry, we couldn't find a tree for " + $("#name1").val() + " and " + $("#name2").val(),
+            emoji: "💕",
+            message: $("#name1").val() + " and " + $("#name2").val() + "'s anniversary tree"
         });
     }));
 }
 function loadEventForm() {
     $("#result").html("");
     let f = $("#form").html("");
-    f.append("Event:");
-    f.append($("<input id='name'>"));
-    f.append($("<input type='date' id='date'>"));
-    f.append($("<button type='button' id='loadmore'>Search</button>").click(() => {
+    f.append($("<span id='logo'>🎉</span>"))
+    f.append("<br>");
+    f.append($("<input id='name' placeholder='name of event'>"));
+    f.append($("<br><span>on <span><input type='date' id='date'>"));
+    f.append($("<br><button type='button' id='loadmore'>Search</button>").click(() => {
         submit({
-            match: () => {
-                return "Found a tree for " + $("#name").val();
-            },
-            close: () => {
-                return "Here's the closest match for " + $("#name").val();
-            },
-            fail: () => {
-                return "Sorry, we couldn't find a tree for " + $("#name").val();
-            }
+            match: "Found a tree for " + $("#name").val(),
+            close: "Here's the closest match for " + $("#name").val(),
+            fail: "Sorry, we couldn't find a tree for " + $("#name").val(),
+            emoji: "🎉",
+            message: $("#name").val()
         });
     }));
 }
@@ -86,7 +80,7 @@ function submit(type) {
             $("#result").html("")
             $("#result").append(type.match);
             $("#result").append(displayTree(x));
-            $("#result").append(saveButton(x,type.message,type.emoji))
+            $("#result").append(saveButton(x, type.message, type.emoji))
         } else {
             if (!findClosest(q, type)) {
                 $("#result").html("");
@@ -106,8 +100,10 @@ function findClosest(date, type) {
             let x = closestTree(data, month, day);
             $("#result").html("");
             $("#result").append(type.close);
+            console.log(data);
+            console.log(x);
             $("#result").append(displayTree(x));
-            $("#result").append(saveButton(x,type.message,type.emoji))
+            $("#result").append(saveButton(x, type.message, type.emoji))
             return true;
         }
         return false;
@@ -118,8 +114,12 @@ function closestTree(data, month, day) {
     let d = parseInt(day);
     let x = [];
     for (let i = 1; i <= 31; i++) {
+        console.log("" + (d-i)+(d+i));
         data.records.forEach((entry) => {
+            console.log(entry.fields.date_planted.toString());
             if ((entry.fields.date_planted.toString() == month + "-" + (d - i)) || (entry.fields.date_planted.toString() == month + "-" + (d + i))) {
+                x.push(entry);
+            } else if ((entry.fields.date_planted.toString() == month + "-0" + (d - i)) || (entry.fields.date_planted.toString() == month + "-0" + (d + i))) {
                 x.push(entry);
             }
         });
@@ -141,14 +141,14 @@ function displayTree(entry) {
     return elem;
 }
 
-function saveButton(tree,message,emoji) {
+function saveButton(tree, message, emoji) {
     let btn = $("<button id='save'>save</button>");
-    btn.on("click",()=>{
+    btn.on("click", () => {
         let elem = $("#save");
         elem.attr("disabled", true);
         elem.html("saved");
         console.log(tree);
-        addComment(tree.recordid,message,emoji);
+        addComment(tree.recordid, message, emoji);
     });
     return btn;
 }
