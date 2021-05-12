@@ -25,6 +25,24 @@ window.addEventListener("DOMContentLoaded", () => {
     let recordID = $("#inputTreeId").children().val();
     getFavCountByTree(recordID);
   });
+
+  $("#resultsContainer").on('click','.likeButton',function(){
+    let heartIcon = "<i class='fas fa-heart fa-2x'></i>";
+    let heartIconEmpty = "<i class='far fa-heart fa-2x'></i>";
+    let recordID = $(this).parent().attr('id').split("_")[0];
+    //confirm("clickedLikeButton: " + recordID);
+    if ($(this).hasClass("liked")) {
+      $(this).empty();
+      $(this).append(heartIconEmpty);
+      $(this).removeClass("liked");
+      removeFavFromTree(recordID);
+    } else {
+      $(this).empty();
+      $(this).append(heartIcon);
+      $(this).addClass("liked");
+      addFavToTree(recordID);
+    }
+  })
 });
 
 
@@ -134,10 +152,35 @@ function getFavByUser(){
   }
 }
 
+async function getInfoOnTreeByID(recordID){
+  console.log("getting tree by record id: " + recordID);
+  $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/records/" + recordID + "?select=*&pretty=false&timezone=UTC", 
+      success: function(result, status, xhr){ 
+        return result;
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+          console.log("ERROR:", jqXHR, textStatus, errorThrown);
+      }
+  });
+}
+
 
 function displayResults(data){
+  let heartIcon = "<i class='fas fa-heart fa-2x'></i>";
+  let resultContainer = $("#resultsContainer");
+  resultContainer.empty();
   data.forEach(element => {
     console.log("RecordID: " + element.recordID);
     console.log("Timestamp: " + element.timestamp);
+    let card = $("<div></div>").attr("id", element.recordID + "_card");
+    let recordID = $("<div></div>").addClass("title").text("title: " + element.recordID);
+    let timestamp = $("<div></div>").addClass("time").text("time: " + element.timestamp);
+    let likeButton = $("<div></div>").addClass("likeButton").addClass("liked");
+    likeButton.append(heartIcon);
+    card.append(recordID, timestamp, likeButton);
+    resultContainer.append(card);
   });
 }
