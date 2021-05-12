@@ -11,7 +11,11 @@
 
 <body>
     <div class="content-container">
-        <h1>Trees Near Me</h1>
+        <div id="outer-content">
+            <span  onclick="toggleContentOverlay()" id="trees-near-header"><svg  id="hide-content-btn" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 9L12 15L18 9" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>TREES NEAR ME</span> 
+
         <div id="content">
             <!-- <div class="post">
                 <div class="title"></div>
@@ -21,9 +25,11 @@
             </div> -->
         </div>
     </div>
+    </div>
     <div class="tree-overlay-container">
+        <div id="outer-tree-content">
+            <span id="tree-name">PREVIEW</span>
         <div id="tree-content">
-            <h1 id="tree-name"></h1>
             <div id="main">
                 <h2 id="species-name"></h2>
                 <div id="body"></div>
@@ -38,16 +44,17 @@
             </div>
         </div>
     </div>
+    </div>
     <div class="map-container">
         <div id="map">
         </div>
         <div id="pano"></div>
     </div>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="/treefind.js"></script>
-    <script src="/navbar-common.js"></script>
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIu6Paiio4Zq0ySb6-LuMJOpFSt25RPz0&map_ids=b3163309c37356ea&callback=initMap"> </script>
+        <script src="./navbar-common.js"></script>
 </body>
 
 </html>

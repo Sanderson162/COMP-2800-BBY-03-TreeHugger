@@ -17,6 +17,7 @@
     width: 100%;
     background-color: rgb(230, 245, 224);
     align-items: center;
+    box-shadow: 0 -4px 10px 0 rgba(0, 0, 0, 0.1);
     border-top:1px solid rgb(205, 219, 200);
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
