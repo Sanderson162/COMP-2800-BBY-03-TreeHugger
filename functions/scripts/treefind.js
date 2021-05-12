@@ -19,26 +19,30 @@ let selectedTreeIcon = "https://i.imgur.com/GE8YWSy.png";
 let locationIcon = "https://i.imgur.com/WRzZWTj.png";
 let locationInterval;
 /**
- * QUERY SETTINGS */
-/** Number of queries returned */
+ * QUERY SETTINGS 
+ */
+/* Number of queries returned */
 let rows = 20;
-/** Meters, how far the user travels before a refresh. */
+/* Meters, how far the user travels before a refresh. */
 let distanceRefresh = 50;
 currentLocation = { lat: 49.239593, lng: -123.024645 };
 /** 
- * TESTING SETTINGS */
+ * TESTING SETTINGS 
+ */
 let testing = true;
-/** pace: 20 is crazy driver pace, 10 is safe driver pace, 1 is walking pace. */
-let pace = 20;
+/* pace: 20 is crazy driver pace, 10 is safe driver pace, 1 is walking pace. */
+let pace = 1;
 let testLocationInterval;
 /**
- * Moves the location point to the west for testing purposes. */
+ * Moves the location point to the west for testing purposes. 
+ */
 function testGPS() {
   currentLocation = { lat: 49.239593, lng: currentLocation.lng - (pace / 10000000) };
   updateLocationMarker(currentLocation);
 }
 /**
- * After document load, start the location intervals. */
+ * After document load, start the location intervals. 
+ */
 $(document).ready(function () {
   getLocation(true);
   if (testing) {
@@ -47,8 +51,9 @@ $(document).ready(function () {
   locationInterval = setInterval("getLocation(false)", 3000);
 });
 /**
+ * Gets location, pulls content, and shows error dialogues if any occur. 
  * @see https://developers.google.com/maps/documentation/javascript/geolocation
- * Gets location, pulls content, and shows error dialogues if any occur. */
+ */
 function getLocation(center) {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
@@ -78,7 +83,8 @@ function getLocation(center) {
   }
 }
 /**
- * Only gets new content after x (distanceRefresh) meters distance from last get. Updates distance only between gets. */
+ * Only gets new content after x (distanceRefresh) meters distance from last get. Updates distance only between gets. 
+ */
 function contentPullLocation() {
   if (!lastPullLocation) {
     getContent();
@@ -102,8 +108,9 @@ function contentPullLocation() {
   }
 }
 /**
+ * Gets entries from opendatabase API. 
  * @see https://www.w3schools.com/jquery/ajax_getjson.asp
- * Gets entries from opendatabase API. */
+ */
 function getContent() {
   $.getJSON('https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&geofilter.distance=' + currentLocation.lat + '%2C' + currentLocation.lng + '%2C1000&rows=' + rows, function (data) {
     $("#content").text("");
@@ -115,14 +122,17 @@ function getContent() {
   });
 }
 /**
- * Checks if content is empty. */
+ * Checks if content is empty. 
+ */
 function isContent() {
   if ($("#content").text() == "") {
     showDialogue("nullContent");
   }
 }
 /**
- * Uses the content div to show a dialogue. */
+ * Uses the content div to show a dialogue. 
+ * @param {string} m Message to show.
+ */
 function showDialogue(m) {
   if (m == "locationError") {
     if ($("#content").text() != "Location service errorLocation services must be enabled to see nearby trees.") {
@@ -166,7 +176,9 @@ function showDialogue(m) {
   }
 }
 /**
- * Updates and appends content with entry. */
+ * Updates and appends content with entry. 
+ * @param {obj} entry
+ */
 function updateContent(entry) {
   var dist = Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M"));
   var dateString = "";
@@ -187,7 +199,9 @@ function updateContent(entry) {
   }));
 }
 /**
- * Zooms on entry, shows overlay and updates various variables. */
+ * Zooms on entry, shows overlay and updates various variables. 
+ * @param {obj} entry
+ */
 function zoom(entry) {
   selectedTreeId = entry.recordid;
   colorMarker(entry.recordid);
@@ -203,15 +217,17 @@ function zoom(entry) {
   addStreetViewBtnListener(entry);
 }
 /**
+ * Sets the position and direction of StreetView to face the treeLocation, if it is visible. 
+ * @param {obj} entry
  * @see https://stackoverflow.com/questions/32064302/google-street-view-js-calculate-heading-to-face-marker
- * Sets the position and direction of StreetView to face the treeLocation, if it is visible. */
+ */
 function setStreetView(entry) {
   /* Preload the StreetView unless it is not initialized */
   if (panorama.getPosition()) {
     var treeLocationLatLng = new google.maps.LatLng(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0]);
     var treeLocation = { lat: entry.fields.geom.coordinates[1], lng: entry.fields.geom.coordinates[0] }
     panorama.setPosition(treeLocation);
-    /* Setting StreetView position animates, so timeout until the animation to completes. */ 
+    /* Setting StreetView position animates, so timeout until the animation to completes. */
     setTimeout(function () {
       var heading = 0;
       /* Supresses an error on fresh launch. */
@@ -229,7 +245,9 @@ function setStreetView(entry) {
   }
 }
 /**
- * Sets a TreeMarker color to 'selected', by id. */
+ * Sets a TreeMarker color to 'selected', by id. 
+ * @param {int} id Tree ID.
+ */
 function colorMarker(id) {
   for (let i = 0; i < markers.length; i++) {
     if (markers[i].get('id') == id) {
@@ -238,14 +256,17 @@ function colorMarker(id) {
   }
 }
 /**
- * Resets all TreeMarker colors to default. */
+ * Resets all TreeMarker colors to default. 
+ */
 function resetMarkerColor() {
   for (let i = 0; i < markers.length; i++) {
     markers[i].setIcon(iconBase + "parks.png");
   }
 }
 /**
- * Shows the TreeOverlay. */
+ * Shows the TreeOverlay. 
+ * @param {obj} entry
+ */
 function showTreeOverlay(entry) {
   $(".content-container").hide();
   $(".tree-overlay-container").show();
@@ -253,7 +274,9 @@ function showTreeOverlay(entry) {
   showMapButtons(false);
 }
 /**
- * Updates the TreeOverlay view with data from entry. */
+ * Updates the TreeOverlay view with data from entry. 
+ * @param {obj} entry
+ */
 function updateTreeOverlayContent(entry) {
   $("#tree-name").text(entry.fields.common_name);
   $("#species-name").text(entry.fields.genus_name + " " + entry.fields.species_name);
@@ -269,7 +292,9 @@ function updateTreeOverlayContent(entry) {
   $("#updated").text(dateString);
 }
 /** 
- * Adds a click listener to the StreeView button in TreeOverlay. */
+ * Adds a click listener to the StreeView button in TreeOverlay. 
+ * @param {obj} entry
+ */
 function addStreetViewBtnListener(entry) {
   $("#street-btn").off();
   $("#street-btn").on("click", (function () {
@@ -277,7 +302,8 @@ function addStreetViewBtnListener(entry) {
   }));
 }
 /**
- * Hides the TreeOverlay and resets variables. */
+ * Hides the TreeOverlay and resets variables. 
+ */
 function hideTreeOverlay() {
   $(".tree-overlay-container").hide();
   $(".content-container").show();
@@ -290,6 +316,9 @@ function hideTreeOverlay() {
   showMapButtons(true);
   centerMap();
 }
+/** 
+ * Toggles the content overlay visible or hidden
+ */
 function toggleContentOverlay() {
   if ($("#outer-content").css('height') == '40px') {
     showContentOverlay();
@@ -297,28 +326,39 @@ function toggleContentOverlay() {
     hideContentOverlay();
   }
 }
+/** 
+ * Hides the content overlay
+ */
 function hideContentOverlay() {
-  $("#trees-near-header").css('pointer-events', 'none')
   let height = window.innerHeight;
-  
-  $("#outer-content").animate({height: "40px"}, 300, function(){ 
-    $("#trees-near-header").css('pointer-events', 'all')
-});
-map.panBy(0, height * 0.25);
-}
-function showContentOverlay() {
-  $("#trees-near-header").css('pointer-events', 'none')
-  let height = window.innerHeight;
-  $("#outer-content").animate({height: "100%"}, function(){ 
-    $("#trees-near-header").css('pointer-events', 'all')
-});
-map.panBy(0, -height * 0.25);
+  $("#outer-content").css('height', '40px');
+  rotateChevron(-90);
+  map.panBy(0, height * 0.25);
 }
 /**
- * Shows or hides the center-locate and enable-location buttons. */
+ * Show the content overlay
+ */
+function showContentOverlay() {
+  let height = window.innerHeight;
+  $("#outer-content").css('height', '100%');
+  rotateChevron(0);
+  map.panBy(0, -height * 0.25);
+}
+/**
+ * Rotates the chevron.
+ * @param {int} amount Amount of rotation.
+ */
+function rotateChevron(amount) {
+  $("#hide-content-btn").css({ transition: "transform 0.5s", transform: "rotate(" + amount + "deg)" });
+  setTimeout(function () { $("#hide-content-btn").css({ transition: "none" }) }, 500);
+}
+/**
+ * Shows or hides the center-locate and enable-location buttons. 
+ * @param {bool} enabled If location is enabled.
+ */
 function showMapButtons(enabled) {
   if (enabled) {
-    if(locationInterval == null) {
+    if (locationInterval == null) {
       $("#toggle-locate-btn").fadeIn(300);
       $("#toggle-type-btn").fadeIn(300);
     } else {
@@ -333,7 +373,10 @@ function showMapButtons(enabled) {
   }
 }
 /**
- * Updates the location marker, or creates it if it is null. */
+ * Updates the location marker, or creates it if it is null. 
+ * @param {latlng} location 
+ * @param {string} lbl 
+ */
 function updateLocationMarker(location, lbl) {
   if (locationMarker != null) {
     locationMarker.setPosition(location);
@@ -350,15 +393,17 @@ function updateLocationMarker(location, lbl) {
   updateTreeOverlayDistance();
 }
 /**
- * Updates the treeContent view distance value, if there is a tree currently selected. */
+ * Updates the treeContent view distance value, if there is a tree currently selected. 
+ */
 function updateTreeOverlayDistance() {
   if (selectedTreeLocation) {
     $("#distance").text(Math.round(distance(selectedTreeLocation.lat, selectedTreeLocation.lng, currentLocation.lat, currentLocation.lng, "M")) + " meters away from your location.");
   }
 }
 /**
- * @see https://developers.google.com/maps/documentation/
- * Initializes Google Maps and sets custom Map and StreetView. */
+ * Initializes Google Maps and sets custom Map and StreetView.
+ * @see https://developers.google.com/maps/documentation/ 
+ */
 function initMap() {
   const VANCOUVER_BOUNDS = {
     north: 49.317422,
@@ -375,7 +420,7 @@ function initMap() {
       strictBounds: false,
     },
     mapTypeControl: false,
-    rotateControl:false,
+    rotateControl: false,
     mapTypeControlOptions: {
       style: google.maps.MapTypeControlStyle.DEFAULT,
       position: google.maps.ControlPosition.LEFT_BOTTOM,
@@ -421,7 +466,8 @@ function initMap() {
   panorama.setOptions(panoOptions);
 }
 /**
- * Creates a button that toggles the location service. */
+ * Creates a button that toggles the location service. 
+ */
 function createToggleLocationBtn() {
   let toggleLocationBtn = document.createElement("button");
   toggleLocationBtn.id = 'toggle-locate-btn';
@@ -429,39 +475,40 @@ function createToggleLocationBtn() {
   toggleLocationBtn.style.borderRadius = "4px";
   toggleLocationBtn.style.height = "50px";
   toggleLocationBtn.style.width = "50px";
-  toggleLocationBtn.style.margin= "10px";
-  toggleLocationBtn.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke +  "'stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
+  toggleLocationBtn.style.margin = "10px";
+  toggleLocationBtn.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke + "'stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
   toggleLocationBtn.addEventListener("click", function () {
-    if(locationInterval == null) {
+    if (locationInterval == null) {
       toggleLocation(true);
       stroke = "#007ACC";
       this.style.backgroundColor = "white";
       $("#center-locate-btn").css("background-color", "white");
       $("#center-locate-btn").fadeIn(300);
-      this.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke +  "'stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
+      this.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke + "'stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
     } else {
       toggleLocation(false);
       stroke = "#000000";
       this.style.backgroundColor = "gainsboro";
       $("#center-locate-btn").css("background-color", "gainsboro");
       $("#center-locate-btn").fadeOut(300);
-      this.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke +  "'stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
+      this.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke + "'stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
     }
   });
   return toggleLocationBtn;
 }
 /**
- * Creates a button that centers the map. */
+ * Creates a button that centers the map. 
+ */
 function createCenterLocationBtn() {
   let centerLocationBtn = document.createElement("button");
   centerLocationBtn.id = 'center-locate-btn';
   centerLocationBtn.style.borderRadius = "4px";
   centerLocationBtn.style.height = "50px";
   centerLocationBtn.style.width = "50px";
-  centerLocationBtn.style.margin= "10px";
+  centerLocationBtn.style.margin = "10px";
   centerLocationBtn.innerHTML = '<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 30C27.3137 30 30 27.3137 30 24C30 20.6863 27.3137 18 24 18C20.6863 18 18 20.6863 18 24C18 27.3137 20.6863 30 24 30Z" stroke="#007ACC" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   centerLocationBtn.addEventListener("click", function () {
-    if(locationInterval == null) {
+    if (locationInterval == null) {
     } else {
       map.setCenter(currentLocation);
       centerMap();
@@ -470,36 +517,38 @@ function createCenterLocationBtn() {
   return centerLocationBtn;
 }
 /**
- * Creates a button that toggles the type of map. */
- function createToggleTypeBtn() {
+ * Creates a button that toggles the type of map. 
+ */
+function createToggleTypeBtn() {
   let toggleTypeBtn = document.createElement("button");
   toggleTypeBtn.id = 'toggle-type-btn';
   let stroke = "#000000";
   toggleTypeBtn.style.borderRadius = "4px";
   toggleTypeBtn.style.height = "50px";
   toggleTypeBtn.style.width = "50px";
-  toggleTypeBtn.style.margin= "10px";
+  toggleTypeBtn.style.margin = "10px";
   toggleTypeBtn.style.backgroundColor = "gainsboro";
-  toggleTypeBtn.innerHTML = '<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12V44L16 36L32 44L46 36V4L32 12L16 4L2 12Z" stroke="'+ stroke +'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 4V36" stroke="'+ stroke +'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 12V44" stroke="'+ stroke +'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  toggleTypeBtn.innerHTML = '<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12V44L16 36L32 44L46 36V4L32 12L16 4L2 12Z" stroke="' + stroke + '" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 4V36" stroke="' + stroke + '" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 12V44" stroke="' + stroke + '" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   toggleTypeBtn.addEventListener("click", function () {
     let type = map.getMapTypeId();
-    if(type == 'satellite') {
+    if (type == 'satellite') {
       map.setMapTypeId('roadmap');
       let stroke = "#000000";
       this.style.backgroundColor = "gainsboro";
-      this.innerHTML = '<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12V44L16 36L32 44L46 36V4L32 12L16 4L2 12Z" stroke="'+ stroke +'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 4V36" stroke="'+ stroke +'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 12V44" stroke="'+ stroke +'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      this.innerHTML = '<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12V44L16 36L32 44L46 36V4L32 12L16 4L2 12Z" stroke="' + stroke + '" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 4V36" stroke="' + stroke + '" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 12V44" stroke="' + stroke + '" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     } else {
       map.setMapTypeId('satellite');
       let stroke = "#007ACC";
       this.style.backgroundColor = "white";
-      this.innerHTML = '<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12V44L16 36L32 44L46 36V4L32 12L16 4L2 12Z" stroke="'+ stroke +'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 4V36" stroke="'+ stroke +'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 12V44" stroke="'+ stroke +'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      this.innerHTML = '<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12V44L16 36L32 44L46 36V4L32 12L16 4L2 12Z" stroke="' + stroke + '" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 4V36" stroke="' + stroke + '" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 12V44" stroke="' + stroke + '" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     }
   });
-  return  toggleTypeBtn;
+  return toggleTypeBtn;
 }
 /**
  * Updates distance between GPS/database pulls. 
- * It brings back the data from the markers and puts them into the divs. */
+ * Pulls data from the markers and puts them into the divs. 
+ */
 function updateDistances() {
   var locationObject;
   var locationObjects = [];
@@ -519,8 +568,9 @@ function updateDistances() {
   sortContent();
 }
 /**
+ * Helper function for updateDistances, sorts the final list after getting new distances. 
  * @see https://stackoverflow.com/questions/13490391/jquery-sort-elements-using-data-id/13490529 
- * Helper function for updateDistances, sorts the final list after getting new distances. */
+ */
 function sortContent() {
   $('#content').children(".post").sort(function (a, b) {
     var x = $(b).data('dist');
@@ -535,7 +585,8 @@ function sortContent() {
   }).appendTo('#content');
 }
 /**
- * Toggles StreetView for a tree. */
+ * Toggles StreetView for a tree. 
+ */
 function toggleStreetView(entry) {
   if ($("#street-btn").html() == "Map") {
     panorama.setVisible(false);
@@ -545,7 +596,8 @@ function toggleStreetView(entry) {
   }
 }
 /**
- * Centers the map with respect to 50% div overlay. */
+ * Centers the map with respect to 50% div overlay. 
+ */
 function centerMap() {
   let contentHidden = false;
   let treeHidden = false;
@@ -560,13 +612,13 @@ function centerMap() {
   } else {
     map.panBy(0, -height * 0.25);
   }
-
-
-  
- 
 }
 /**
- * Adds a tree marker to map given a lnglat. */
+ * Adds a tree marker to map given a lnglat.
+ * @param {float} longitude 
+ * @param {float} latitude 
+ * @param {obj} entry 
+ */
 function addTreeMarker(longitude, latitude, entry) {
   var ids = entry.recordid;
   var treeIcon = greenTreeIcon;
@@ -595,8 +647,8 @@ function addTreeMarker(longitude, latitude, entry) {
   });
 }
 /**
- * @author https://www.geodatasource.com/developers/javascript 
  * Returns the distance given two lnglat values.
+ * @author https://www.geodatasource.com/developers/javascript 
 */
 function distance(lat1, lon1, lat2, lon2, unit) {
   if ((lat1 == lat2) && (lon1 == lon2)) {
@@ -632,7 +684,9 @@ function clearMarkers() {
   }
 }
 /**
- * Toggles location service with boolean. */
+ * Toggles location service with boolean. 
+ * @param {bool} enabled If location is enabled.
+ */
 function toggleLocation(enabled) {
   if (enabled) {
     locationInterval = setInterval("getLocation(false)", 3000);
@@ -652,7 +706,8 @@ function toggleLocation(enabled) {
   }
 }
 /**
- * Clears the location marker and resets lastPull. */
+ * Clears the location marker and resets lastPull. 
+ */
 function clearLocationMarker() {
   if (locationMarker != null) {
     locationMarker.setMap(null);
