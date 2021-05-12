@@ -222,7 +222,7 @@ function setStreetView(entry) {
       }
       panorama.setPov({
         heading: heading,
-        pitch: 0,
+        pitch: 10,
         zoom: 0
       });
     }, 200);
@@ -247,8 +247,8 @@ function resetMarkerColor() {
 /**
  * Shows the TreeOverlay. */
 function showTreeOverlay(entry) {
-  $(".content-container").fadeOut(300);
-  $(".tree-overlay-container").fadeIn(500);
+  $(".content-container").hide();
+  $(".tree-overlay-container").show();
   updateTreeOverlayContent(entry);
   showMapButtons(false);
 }
@@ -279,16 +279,33 @@ function addStreetViewBtnListener(entry) {
 /**
  * Hides the TreeOverlay and resets variables. */
 function hideTreeOverlay() {
-  $(".tree-overlay-container").fadeOut(300);
-  $(".content-container").fadeIn(500);
+  $(".tree-overlay-container").hide();
+  $(".content-container").show();
   map.setZoom(20);
-  centerMap();
   map.setOptions({ gestureHandling: "auto" });
   panorama.setVisible(false);
   resetMarkerColor();
   selectedTreeLocation = null;
   selectedTreeId = null;
   showMapButtons(true);
+  centerMap();
+}
+function toggleContentOverlay() {
+  if ($("#outer-content").css('height') == '40px') {
+    showContentOverlay();
+  } else {
+    hideContentOverlay();
+  }
+}
+function hideContentOverlay() {
+  let height = window.innerHeight;
+  $("#outer-content").animate({height: "40px"}, 300);
+  map.panBy(0, height * 0.25);
+}
+function showContentOverlay() {
+  let height = window.innerHeight;
+  $("#outer-content").animate({height: "100%"}, 300);
+  map.panBy(0, -height * 0.25);
 }
 /**
  * Shows or hides the center-locate and enable-location buttons. */
@@ -523,8 +540,23 @@ function toggleStreetView(entry) {
 /**
  * Centers the map with respect to 50% div overlay. */
 function centerMap() {
+  let contentHidden = false;
+  let treeHidden = false;
   let height = window.innerHeight;
-  map.panBy(0, -height * 0.25);
+  if ($("#outer-content").css('height') == '40px') {
+    contentHidden = true;
+  }
+  if (!selectedTreeId) {
+    treeHidden = true;
+  }
+  if (contentHidden && treeHidden) {
+  } else {
+    map.panBy(0, -height * 0.25);
+  }
+
+
+  
+ 
 }
 /**
  * Adds a tree marker to map given a lnglat. */
@@ -547,7 +579,7 @@ function addTreeMarker(longitude, latitude, entry) {
   markers.push(marker);
   marker.addListener("click", () => {
     resetMarkerColor();
-    /* $('#' + ids).get(0).scrollIntoView(); */
+    // $('#' + ids).get(0).scrollIntoView();
     marker.setIcon(selectedTreeIcon);
     marker.metadata = { id: ids };
     zoom(entry);

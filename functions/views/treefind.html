@@ -4,13 +4,14 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/treefind.css">
+    <link rel="stylesheet" href="./treefind.css">
     <title>Trees Near Me</title>
 </head>
 
 <body>
     <div class="content-container">
-        <h1>Trees Near Me</h1>
+        <div id="outer-content">
+            <span  onclick="toggleContentOverlay()" id="trees-near-header">TREES NEAR ME</span>
         <div id="content">
             <!-- <div class="post">
                 <div class="title"></div>
@@ -20,9 +21,11 @@
             </div> -->
         </div>
     </div>
+    </div>
     <div class="tree-overlay-container">
+        <div id="outer-tree-content">
+            <span id="tree-name">PREVIEW</span>
         <div id="tree-content">
-            <h1 id="tree-name"></h1>
             <div id="main">
                 <h2 id="species-name"></h2>
                 <div id="body"></div>
@@ -36,6 +39,7 @@
                 <button id="close-btn" onclick="hideTreeOverlay()">Close</button>
             </div>
         </div>
+    </div>
     </div>
     <div class="map-container">
         <div id="map">
