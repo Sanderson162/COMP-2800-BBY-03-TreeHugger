@@ -298,14 +298,21 @@ function toggleContentOverlay() {
   }
 }
 function hideContentOverlay() {
+  $("#trees-near-header").css('pointer-events', 'none')
   let height = window.innerHeight;
-  $("#outer-content").animate({height: "40px"}, 300);
-  map.panBy(0, height * 0.25);
+  
+  $("#outer-content").animate({height: "40px"}, 300, function(){ 
+    $("#trees-near-header").css('pointer-events', 'all')
+});
+map.panBy(0, height * 0.25);
 }
 function showContentOverlay() {
+  $("#trees-near-header").css('pointer-events', 'none')
   let height = window.innerHeight;
-  $("#outer-content").animate({height: "100%"}, 300);
-  map.panBy(0, -height * 0.25);
+  $("#outer-content").animate({height: "100%"}, function(){ 
+    $("#trees-near-header").css('pointer-events', 'all')
+});
+map.panBy(0, -height * 0.25);
 }
 /**
  * Shows or hides the center-locate and enable-location buttons. */
