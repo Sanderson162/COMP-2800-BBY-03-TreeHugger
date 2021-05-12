@@ -12,6 +12,10 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
+//increment decrement
+const increment = admin.firestore.FieldValue.increment(1);
+const decrement = admin.firestore.FieldValue.increment(-1);
+
 const PORT = process.env.PORT || 5000;
 const app = express();
 
@@ -90,7 +94,8 @@ app.post('/ajax-add-user', urlencodedParser, (req, res) => {
       console.log("User: " + uid + " is a new user")
       db.collection("Users").doc(uid).set({
         name: user.name,
-        email: user.email
+        email: user.email,
+        created: Date.now(),
         }).then(function () { //if successful
             console.log("New user added to firestore");
             res.send({ status: "success"});
@@ -101,6 +106,144 @@ app.post('/ajax-add-user', urlencodedParser, (req, res) => {
     });
 });
 
+app.get("/testingPanel", function (req, res) {
+  res.render("testingPanel.html");
+});
+
+app.post('/addTreeFav', urlencodedParser, (req, res) => {
+    // res.setHeader('Content-Type', 'application/json');
+    const idToken = req.body.idToken.toString();
+    const recordID = req.body.recordID;
+    admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      const uid = decodedToken.uid;
+
+      const batchFav = db.batch();
+      const docRef = db.collection("Favourites").doc(uid + "_" + recordID);
+      const statsRef = db.collection('Favourites').doc('--stats-' + recordID);
+
+      batchFav.create(docRef, { 
+        userID: uid,
+        recordID: recordID,
+        timestamp: Date.now(), 
+      });
+      batchFav.set(statsRef, { favCount: increment }, { merge: true });
+      batchFav.commit()
+      .then(function () { //if successful
+        console.log("new favourite added");
+        res.send({ status: "success"});
+      }).catch((error) => {
+        console.log(error);
+        res.send({ status: "error"});
+    });
+
+    }).catch((error) => {
+        console.log(error);
+        res.status(401).send("UNAUTHORIZED REQUEST!");
+    });
+});
+
+app.post('/removeTreeFav', urlencodedParser, (req, res) => {
+    // res.setHeader('Content-Type', 'application/json');
+    const idToken = req.body.idToken.toString();
+    const recordID = req.body.recordID;
+
+    admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      const uid = decodedToken.uid;
+      
+      
+      const docRef = db.collection("Favourites").doc(uid + "_" + recordID);
+      const statsRef = db.collection('Favourites').doc('--stats-' + recordID);
+      docRef.get().then(function (doc) {
+        if (doc.exists) {
+          const batchFav = db.batch();
+          batchFav.delete(docRef);
+          batchFav.set(statsRef, { favCount: decrement }, { merge: true });
+          batchFav.commit()
+          .then(function () { //if successful
+            console.log("fav removed");
+            res.send({ status: "success"});
+          }).catch((error) => {
+            console.log(error);
+            res.send({ status: "error"});
+          });
+        } else {
+          console.log('No such document!');
+          res.send({ status: "error"});
+        }
+      });
+    
+      //End idtoken verified
+    });
+});
+
+app.post('/getFavByUser', urlencodedParser, (req, res) => {
+    // res.setHeader('Content-Type', 'application/json');
+    const idToken = req.body.idToken.toString();
+    const recordID = req.body.recordID;
+    admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      const uid = decodedToken.uid;
+
+      db.collection("Favourites")
+      .where("userID", "==", uid)
+      .get()
+      .then(querySnapshot => {
+        let resultArray = [];
+        querySnapshot.forEach((doc) => {
+          resultArray.push({recordID: doc.data().recordID, timestamp: doc.data().timestamp});
+        });
+        res.send({ status: "success", data: resultArray});
+      })
+      .catch(function(error) {
+        console.log("Error getting documents: ", error);
+        res.send({ status: "error"});
+      });
+
+      //End idtoken verified
+    });
+});
+
+app.post('/getFavByTree', urlencodedParser, (req, res) => {
+  // res.setHeader('Content-Type', 'application/json');
+  const recordID = req.body.recordID;
+  db.collection("Favourites")
+  .where("recordID", "==", recordID)
+  .get()
+  .then(querySnapshot => {
+    let resultArray = [];
+    querySnapshot.forEach((doc) => {
+      resultArray.push({recordID: doc.data().recordID, timestamp: doc.data().timestamp});
+    });
+    res.send({ status: "success", data: resultArray});
+  })
+  .catch(function(error) {
+    console.log("Error getting documents: ", error);
+    res.send({ status: "error"});
+  });
+});
+
+app.post('/getFavCountByTree', urlencodedParser, (req, res) => {
+  // res.setHeader('Content-Type', 'application/json');
+  const recordID = req.body.recordID;
+  db.collection('Favourites').doc('--stats-' + recordID)
+  .get()
+  .then(function (doc) {
+    console.log("FavCount: " + doc.data().favCount);
+    res.send({ status: "success", data: doc.data().favCount});
+  }).catch(function(error) {
+    console.log("Error getting documents: ", error);
+    res.send({ status: "error"});
+  });
+});
+  
 app.post("/sessionLogin", (req, res) => {
     const idToken = req.body.idToken.toString();
     console.log("id token signing in" + idToken);
