@@ -22,6 +22,10 @@
     font-size: 80pt;
 }
 
+#result {
+    text-align: center;
+}
+
 .card:hover {
     background-color: darkgreen;
     color: white;

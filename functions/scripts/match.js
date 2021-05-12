@@ -83,12 +83,39 @@ function submit(type) {
             $("#result").append(saveButton(x, type.message, type.emoji))
         } else {
             if (!findClosest(q, type)) {
-                $("#result").html("");
-                $("#result").append(type.fail);
+                if (!differentYear(q, type)){
+                    $("#result").html("");
+                    $("#result").append(type.fail);
+                }
             }
 
         }
     });
+}
+async function differentYear(date, type){
+    let monthDay = date.toString().substring(4);
+    let x = [];
+    for (year = 1989; year <= 2022; year++){
+        let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine.date_planted="
+        await $.getJSON(query+year+monthDay, (data) => {
+            if (data.records.length > 0){
+                data.records.forEach((entry)=>{
+                    x.push(entry)
+                });
+            }
+        });
+        if (x.length>0){
+            let tree = x[Math.floor(Math.random() * x.length)]
+            $("#result").html("");
+            $("#result").append(type.close);
+            $("#result").append(displayTree(tree));
+            $("#result").append(saveButton(tree, type.message, type.emoji))
+            return true;
+        } 
+    }
+    return false;
+    
+
 }
 function findClosest(date, type) {
     let month = date.toString().substring(0, 7);
