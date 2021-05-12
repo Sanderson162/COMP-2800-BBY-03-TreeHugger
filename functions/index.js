@@ -7,7 +7,7 @@ const csrf = require("csurf");
 const csrfMiddleware = csrf({ cookie: true });
 //end testing with cookies
 
-const urlencodedParser = express.urlencoded({ extended: false })  
+const urlencodedParser = express.urlencoded({ extended: false })
 
 // FIREBASE
 var admin = require("firebase-admin");
@@ -87,6 +87,10 @@ app.get("/history", function (req, res) {
 
 app.get("/searchDate", function (req, res) {
     res.render("searchDate.html");
+});
+
+app.get("/aboutUs", function (req, res) {
+    res.render("aboutus.html");
 });
 
 app.post('/ajax-add-user', urlencodedParser, checkCookieMiddleware, (req, res) => {

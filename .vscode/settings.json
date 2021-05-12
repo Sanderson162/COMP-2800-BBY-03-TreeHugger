@@ -7,6 +7,7 @@
         "days",
         "get",
         "highlighted",
+        "minmax",
         "name",
         "neighbourhood",
         "numberof"
