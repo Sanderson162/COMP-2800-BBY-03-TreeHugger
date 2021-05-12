@@ -1,7 +1,6 @@
 /*
- * Various CSS items in this document were used with permission from a colleague on the same BCIT COMP 2800 BBY-3 Team.
- * They were then altered to work with this application. For some, no changes were needed, so will appear
- * identical to the source link below.
+ * CSS items in this document were used with permission from a colleague on the same BCIT COMP 2800 BBY-3 Team.
+ * They were then used as a foundation to build this application.
  * @author Aidan McReynolds
  * @see https://github.com/AidanMcReynolds/1800project
  */
@@ -116,6 +115,11 @@ td.highlight a {
     color: rgba(0, 0, 0, .3) !important;
 }
 
+.datepicker-disable {
+    pointer-events: none;
+    color: grey;
+}
+
 .ui-datepicker-year {
     font-weight: normal;
     background: rgb(255, 255, 255);
@@ -203,5 +207,5 @@ td.highlight a {
 }
 
 @media (min-width:1000px) {
-    
+
 }

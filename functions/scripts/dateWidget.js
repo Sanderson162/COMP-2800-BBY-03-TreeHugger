@@ -113,11 +113,13 @@ $(function () {
     let dates = [];
 
     async function getDatesInCurrentMonth(year, month, inst) {
+        $("#datepicker").toggleClass("datepicker-disable");
         let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=date_planted+%3D+" +
             year.toString() + "-" + month.toString() + "&rows=500&start=0&facet=date_planted";
 
         await $.getJSON(query, (data) => {
             dates = data.records;
+            $("#datepicker").toggleClass("datepicker-disable");
         });
 
         /**
