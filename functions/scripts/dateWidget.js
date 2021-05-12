@@ -1,8 +1,5 @@
 'use strict'
 
-//Add a disable for the arrow until JSON returns from switching months.
-//CSS pointer events: none
-//Add a disable tag for class with pointer events none --> color grey
 //Change selector color.
 //What do we want on each card?
 //Move date block below calendar.
