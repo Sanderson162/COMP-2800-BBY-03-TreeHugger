@@ -1,8 +1,6 @@
 'use strict'
 
 //What do we want on each card?
-//Title?
-//Fix calendar position so it does not scroll.
 
 /**
  * This script creates and performs various functions for a datepicker interface from JQuery UI.
