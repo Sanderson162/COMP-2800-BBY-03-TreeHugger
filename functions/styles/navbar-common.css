@@ -15,9 +15,9 @@
     left:0;
     height: 64px;
     width: 100%;
-    background-color: whitesmoke;
+    background-color: rgb(230, 245, 224);
     align-items: center;
-    box-shadow: 0 2px 5px 5px rgba(0, 0, 0, 0.1), 0 2px 5px 5px rgba(0, 0, 0, 0.1);
+    border-top:1px solid rgb(205, 219, 200);
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr;
@@ -51,11 +51,10 @@
     
 }
 
-svg:hover {
-    filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+.mb1:hover,.mb2:hover,.mb3:hover,.mb4:hover {
+    filter: invert(88%) sepia(14%) saturate(298%) hue-rotate(63deg) brightness(90%) contrast(92%);
 }
 
 .highlight {
-    filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg)
-    brightness(104%) contrast(97%);
+    filter: invert(88%) sepia(14%) saturate(298%) hue-rotate(63deg) brightness(90%) contrast(92%);
 }
