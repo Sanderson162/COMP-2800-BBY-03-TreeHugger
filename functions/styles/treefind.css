@@ -47,7 +47,7 @@ h1 {
 
 #outer-content {
     border-radius: 4px;
-    background-color:rgb(247, 247, 247);
+    background-color: rgb(230, 245, 224);
     margin: auto;
     margin-top:1em;
     height: 100%;
@@ -61,7 +61,7 @@ h1 {
 
 #outer-tree-content {
     border-radius: 4px;
-    background-color:rgb(247, 247, 247);
+    background-color: rgb(230, 245, 224);
     margin: auto;
     margin-top:1em;
     height: 81%;
