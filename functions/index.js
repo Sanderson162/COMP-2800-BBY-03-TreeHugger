@@ -169,6 +169,7 @@ app.get("/ajax-get-comment-user", (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     db.collection("Comments")
         .where("User","==",user)
+        .orderBy("Timestamp","desc")
         .get()
         .then((data) => {
             let response = [];
