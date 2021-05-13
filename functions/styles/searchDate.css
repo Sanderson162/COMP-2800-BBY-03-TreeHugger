@@ -217,8 +217,8 @@ td.highlight a {
 }
 
 #main {
-    height: 50vh;
-    margin-top: 410px;
+    height: 47vh;
+    margin-top: 52vh;
     text-align: center;
     overflow: auto;
 }
@@ -250,6 +250,6 @@ td.highlight a {
     }
 
     #main {
-        margin-top: 390px;
+        margin-top: 46vh;
     }
 }
