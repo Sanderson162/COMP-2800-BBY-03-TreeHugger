@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+* {
+    font-family: 'Roboto', sans-serif;
+}
 #profileOverlay {
     position: fixed; /* Sit on top of the page content */
     display: none; /* Hidden by default */
