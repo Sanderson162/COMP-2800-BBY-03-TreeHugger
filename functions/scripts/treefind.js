@@ -349,8 +349,8 @@ function showContentOverlay() {
  * @param {int} amount Amount of rotation.
  */
 function rotateChevron(amount) {
-  $("#hide-content-btn").css({ transition: "transform 0.5s", transform: "rotate(" + amount + "deg)" });
-  setTimeout(function () { $("#hide-content-btn").css({ transition: "none" }) }, 500);
+  $("#hide-content-btn").css({ transition: "transform 0.3s", transform: "rotate(" + amount + "deg)" });
+  setTimeout(function () { $("#hide-content-btn").css({ transition: "none" }) }, 300);
 }
 /**
  * Shows or hides the center-locate and enable-location buttons. 
