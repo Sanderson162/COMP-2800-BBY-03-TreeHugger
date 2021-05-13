@@ -17,3 +17,9 @@
 .fa-heart {
   color: red;
 }
+
+#firebaseui-auth-container {
+  position: fixed; /* Sit on top of the page content */
+  display: none; /* Hidden by default */
+  margin: auto;
+}

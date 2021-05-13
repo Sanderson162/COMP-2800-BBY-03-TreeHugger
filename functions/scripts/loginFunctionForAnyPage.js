@@ -1,5 +1,7 @@
 $(document).ready(() => {
-  
+  // hide ui 
+  $("#firebaseui-auth-container").css("display", "none");
+
   const uiConfig = {
     callbacks: {
       signInSuccessWithAuthResult: function(authResult, redirectUrl) {
@@ -11,7 +13,6 @@ $(document).ready(() => {
       uiShown: function() {
         // The widget is rendered.
         // Hide the loader.
-        document.getElementById('loader').style.display = 'none';
       }
     },
     // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
@@ -57,6 +58,7 @@ $(document).ready(() => {
       });
     } else {
       console.log("Nobody is signed in");
+      $("#firebaseui-auth-container").css("display", "block");
       var ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
       ui.start('#firebaseui-auth-container', uiConfig);
     }
@@ -77,7 +79,7 @@ function createNewAccount(user) {
   console.log(JSON.stringify(user));
   console.log("requesting server makes database slot for user " + user.uid);
   confirm("Creating new user DEBUG");
-  firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+  firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
     $.ajax({
       url: "/ajax-add-user",
       dataType: "json",
