@@ -28,10 +28,6 @@ h1 {
     border-bottom: 1px solid rgb(236, 236, 236);
 }
 
-.post:hover {
-    background-color: rgb(236, 236, 236);
-}
-
 #content {
     border-radius: 4px;
     background-color:white;
@@ -255,4 +251,40 @@ button:hover {
 
 #street-btn {
     width:100px;
+}
+
+#content>.post:nth-child(3) {
+    background-color: rgb(253, 253, 253);
+}
+
+#content>.post:nth-child(4) {
+    background-color: rgb(251, 251, 251);
+}
+
+#content>.post:nth-child(5) {
+    background-color: rgb(249, 249, 249);
+}
+
+#content>.post:nth-child(6) {
+    background-color: rgb(247, 247, 247);
+}
+
+#content>.post:nth-child(7) {
+    background-color: rgb(245, 245, 245);
+}
+
+#content>.post:nth-child(8) {
+    background-color: rgb(243, 243, 243);
+}
+
+#content>.post:nth-child(9) {
+    background-color: rgb(241, 241, 241);
+}
+
+#content>.post:nth-child(10) {
+    background-color: rgb(239, 239, 239);
+}
+
+#content>.post:nth-child(n+11) {
+    background-color: rgb(237, 237, 237);
 }
