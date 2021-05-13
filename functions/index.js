@@ -31,7 +31,6 @@ app.use(express.static("styles"));
 app.use(express.static("img"));
 app.use(express.json());
 
-
 // basic GET requests
 app.get("/", function (req, res) {
     res.render("index.html");
@@ -83,6 +82,10 @@ app.get("/testingPanel", function (req, res) {
 
 app.get("/home", function (req, res) {
   res.render("home.html");
+});
+
+app.get("/aboutUs", function (req, res) {
+  res.render("aboutus.html");
 });
 
 app.post('/profile', urlencodedParser, (req, res) => {
@@ -174,8 +177,7 @@ app.post('/removeTreeFav', urlencodedParser, (req, res) => {
     .verifyIdToken(idToken)
     .then((decodedToken) => {
       const uid = decodedToken.uid;
-      
-      
+
       const docRef = db.collection("Favourites").doc(uid + "_" + recordID);
       const statsRef = db.collection('Favourites').doc('--stats-' + recordID);
       docRef.get().then(function (doc) {
@@ -196,7 +198,7 @@ app.post('/removeTreeFav', urlencodedParser, (req, res) => {
           res.send({ status: "error"});
         }
       });
-    
+
       //End idtoken verified
     });
 });
@@ -210,7 +212,7 @@ app.post("/ajax-add-comment", urlencodedParser, (req, res) => {
     .verifyIdToken(idToken)
     .then((decodedToken) => {
       const uid = decodedToken.uid;
-        
+
 
         db.collection("Comments").add({
           Comment: comment.text,
@@ -309,7 +311,7 @@ app.post('/getFavCountByTree', urlencodedParser, (req, res) => {
     res.send({ status: "error"});
   });
 });
-  
+
 
 app.post('/update-username', urlencodedParser,  (req, res) => {
     res.setHeader('Content-Type', 'application/json');
