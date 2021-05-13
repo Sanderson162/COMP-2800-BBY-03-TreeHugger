@@ -4,24 +4,9 @@ $(document).ready(() => {
     callbacks: {
       signInSuccessWithAuthResult: function(authResult, redirectUrl) {
         var user = authResult.user;
-        user.getIdToken().then(function(idToken) {
-          return fetch("/sessionLogin", {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              idToken
-            }),
-          });
-        }).then(() => {
-          if (authResult.additionalUserInfo.isNewUser) {
-            createNewAccount(user);
-          }
-        }).catch(error => {
-          alert(error);
-        })
+        if (authResult.additionalUserInfo.isNewUser) {
+          createNewAccount(user);
+        }
       },
       uiShown: function() {
         // The widget is rendered.
