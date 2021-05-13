@@ -47,7 +47,7 @@ h1 {
 
 #outer-content {
     border-radius: 4px;
-    background-color: rgb(230, 245, 224);
+    background-color:rgb(247, 247, 247);
     margin: auto;
     /* margin-top:1em; */
     height: 100%;
@@ -61,7 +61,7 @@ h1 {
 
 #outer-tree-content {
     border-radius: 4px;
-    background-color: rgb(230, 245, 224);
+    background-color:rgb(247, 247, 247);
     margin: auto;
     /* margin-top:1em; */
     height: 81%;
@@ -185,7 +185,7 @@ button:hover {
     position: sticky;
     bottom:0;
     padding:1em;
-    background-color: rgb(230, 245, 224);
+    background-color:rgb(247, 247, 247);
     display:block;
     color: rgb(25,25,25);
     height:50px;
