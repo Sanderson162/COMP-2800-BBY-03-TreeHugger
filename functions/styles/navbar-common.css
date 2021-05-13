@@ -2,7 +2,7 @@
     position: fixed;
     z-index: -1;
     left: 0;
-    bottom: 64px;
+    bottom: 54px;
     top: 0;
     right: 0;
     height:auto;
@@ -13,12 +13,12 @@
     position: absolute;
     bottom: 0;
     left:0;
-    height: 64px;
+    height: 54px;
     width: 100%;
-    background-color: rgb(230, 245, 224);
+    background-color: whitesmoke;
     align-items: center;
     box-shadow: 0 -4px 10px 0 rgba(0, 0, 0, 0.1);
-    border-top:1px solid rgb(205, 219, 200);
+    border-top:1px solid gainsboro;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr;
@@ -47,15 +47,10 @@
 .mb2,
 .mb3,
 .mb4 {
-    margin-left: auto;
-    margin-right: auto;
-    
-}
-
-.mb1:hover,.mb2:hover,.mb3:hover,.mb4:hover {
-    filter: invert(88%) sepia(14%) saturate(298%) hue-rotate(63deg) brightness(90%) contrast(92%);
+    margin: auto;
+    margin-top: 15px;
 }
 
 .highlight {
-    filter: invert(88%) sepia(14%) saturate(298%) hue-rotate(63deg) brightness(90%) contrast(92%);
+    filter: invert(50%) sepia(30%) saturate(2595%) hue-rotate(349deg) brightness(100%) contrast(91%);
 }
