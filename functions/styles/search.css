@@ -1,9 +1,22 @@
-.card {
+/*
+ * CSS items in this document were used with permission from a colleague on the same BCIT COMP 2800 BBY-3 Team.
+ * They were then used as a foundation to build this application.
+ * @author Aidan McReynolds
+ * @see https://github.com/AidanMcReynolds/1800project
+ *
+ * A code snippet was used as a foundation to create a scrolling division with a fixed element above it.
+ * @author CrazyVideoGamez https://stackoverflow.com/users/12097913/crazyvideogamez
+ * @see https://stackoverflow.com/questions/17954181/scrolling-only-content-div-others-should-be-fixed
+ */
+
+#main .card {
+    width: 100%;
+    max-width: 450px;
     border: darkgreen solid 1pt;
     color: darkgreen;
     cursor: pointer;
-    margin: 5%;
     border-radius: 5px;
+    margin: auto;
 }
 
 #form{
@@ -41,23 +54,45 @@
     color: white;
 }
 
-#cal2 {
-    min-width: 150px;
-    max-width: 300px;
-    padding: 0;
-    border: 0;
-    /*margin-bottom: 10%;*/
+td.highlight {
+    border: none !important;
+    padding: 1px 0 1px 1px !important;
+    background: none !important;
+    padding: 2px !important;
 }
 
-.event {
-    background-color: #42B373 !important;
-    background-image :none !important;
-    color: #ffffff !important;
+td.highlight a {
+    background: #99dd73 50% 50% repeat-x !important;
+    border: 1px #88a276 solid !important;
+}
+
+#titleText {
+    font-size: 24pt;
+    text-align: center;
+    padding: 0.25rem;
+    margin: 0;
 }
 
 #dp {
+    position: fixed;
     width: 100%;
+    top: 0;
+    left: 0;
+    transform: translateX(-8px);
+    overflow: visible;
+}
 
+#cal2 {
+    min-width: 150px;
+    max-width: 450px;
+    margin: auto;
+    padding: 0;
+    border-style: solid;
+    border-color: #88a276;
+}
+
+.ui-datepicker-today {
+    background-color: rgb(0, 0, 0) !important;
 }
 
 .ui-datepicker-header {
@@ -77,11 +112,10 @@
 
 .date-block {
     text-align: center;
-    background: #0d6efd;
-    /*rgb(89, 223, 71);*/
+    background: #074431;
     font-family: "Helvetica";
     color: #EEE;
-    font-size: 18pt;
+    font-size: 24pt;
     padding: 10px;
 }
 
@@ -90,7 +124,7 @@
 }
 
 #date-date {
-    font-size: 48pt;
+    font-size: 24pt;
 }
 
 .ui-datepicker-prev,
@@ -121,18 +155,21 @@
     content: "\f053";
     display: block;
     color: rgba(0, 0, 0, .3) !important;
-
 }
 
 .ui-datepicker-next:before {
     content: "\f054";
     display: block;
     color: rgba(0, 0, 0, .3) !important;
+}
 
+.datepicker-disable {
+    pointer-events: none;
 }
 
 .ui-datepicker-year {
     font-weight: normal;
+    background: rgb(255, 255, 255);
 }
 
 .ui-icon {
@@ -187,14 +224,12 @@
 }
 
 .ui-datepicker .ui-state-active {
-    background: #0d6efd !important;
+    background: #074431 !important;
     color: white;
-    /*rgb(218, 25, 192);*/
 }
 
 .ui-datepicker .ui-state-highlight {
     background: #EEE;
-
 }
 
 .ui-datepicker td.past {
@@ -202,37 +237,44 @@
 }
 
 .ui-datepicker a:hover {
-    background: #06367D;
+    background: #2f9b7a !important;
     color: rgb(255, 255, 255);
 }
 
-@media (min-width: 1000px) {
-    #dp {
-        display: grid;
-        grid-template-columns: 33.3% 66.7%;
-    }
+#main {
+    height: 300px;
+    margin-top: 410px;
+    text-align: center;
+    overflow: auto;
 }
 
-@media (max-width: 999px) {
+@media (min-width:1000px) {
+    #main .card {
+        max-width: 1000px;
+    }
+
+    #cal2 {
+        max-width: 1000px;
+    }
+
     #calendar {
         display: grid;
         grid-template-columns: 50% 50%;
     }
 
-    #cal2 {
-        max-width: 600px;
-        border-top: solid 1pt #e9ecef;
-        border-bottom: solid 1pt #e9ecef;
+    .date-block {
+        padding-top: 4rem;
     }
 
-    #task-container {
-        width: 100%;
-        max-width: 600px;
+    .date-block span:nth-of-type(2) {
+        display: block;
     }
-}
 
-@media (max-width:600px) {
-    .nav {
-        margin-bottom: 0 !important;
+    #date-date {
+        font-size: 48pt;
+    }
+
+    #main {
+        margin-top: 390px;
     }
 }

@@ -1,0 +1,19 @@
+#resultsContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#resultsContainer>div {
+  word-wrap: break-word;
+  background-color: lightgray;
+  border: 2px solid gray;
+  border-radius: 10px;
+  margin: 5px;
+  padding: 5px;
+  width: 150px;
+  height: 150px;
+}
+
+.fa-heart {
+  color: red;
+}

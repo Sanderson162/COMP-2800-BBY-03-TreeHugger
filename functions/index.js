@@ -1,13 +1,7 @@
 const functions = require('firebase-functions');
 const express = require('express');
 
-//testing with cookies
-const cookieParser = require("cookie-parser");
-const csrf = require("csurf");
-const csrfMiddleware = csrf({ cookie: true });
-//end testing with cookies
-
-const urlencodedParser = express.urlencoded({ extended: false })  
+const urlencodedParser = express.urlencoded({ extended: false })
 
 // FIREBASE
 var admin = require("firebase-admin");
@@ -19,26 +13,25 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
+//increment decrement
+const increment = admin.firestore.FieldValue.increment(1);
+const decrement = admin.firestore.FieldValue.increment(-1);
+
+// PORT for testing in node
 const PORT = process.env.PORT || 5000;
+
+// express app
 const app = express();
 
+
+// app setup and other files
 app.engine("html", require("ejs").renderFile);
 app.use(express.static("scripts"));
 app.use(express.static("styles"));
-
-//more testing with cookies
 app.use(express.json());
-app.use(cookieParser());
-app.use(csrfMiddleware);
 
 
-// request cookie
-app.all("*", (req, res, next) => {
-    res.cookie("XSRF-TOKEN", req.csrfToken());
-    next();
-});
-
-
+// basic GET requests
 app.get("/", function (req, res) {
     res.render("index.html");
 });
@@ -59,15 +52,9 @@ app.get("/match", function (req, res) {
     res.render("match.html");
 });
 
-app.get('/profile', checkCookieMiddleware, (req, res) => {
-    let uid =  req.decodedClaims.uid;
-    db.collection("Users").doc(uid).get().then(function (doc) { //if successful
-        console.log("accessing user: " + doc.data().name);
-        console.log("UID accessing profile: " + uid);
-        res.render('profile.html', {username: doc.data().name, email: doc.data().email});
-    });
+app.get("/whoami", function (req, res) {
+    res.send("test");
 });
-
 
 app.get("/findtree", function (req, res) {
     res.render("findtree.html");
@@ -89,64 +76,124 @@ app.get("/searchDate", function (req, res) {
     res.render("searchDate.html");
 });
 
-app.post('/ajax-add-user', urlencodedParser, checkCookieMiddleware, (req, res) => {
+app.get("/testingPanel", function (req, res) {
+  res.render("testingPanel.html");
+});
+
+app.post('/profile', urlencodedParser, (req, res) => {
+  const idToken = req.body.idToken.toString();
+  admin
+  .auth()
+  .verifyIdToken(idToken)
+  .then((decodedToken) => {
+    const uid = decodedToken.uid;
+    db.collection("Users").doc(uid).get().then(function (doc) { //if successful
+      console.log("accessing user: " + doc.data().name);
+      console.log("UID accessing profile: " + uid);
+      res.send({ status: "success", uid: uid, name: doc.data().name});
+  });
+  }).catch((error) => {
+      console.log(error);
+      res.status(401).send("UNAUTHORIZED REQUEST!");
+  });    
+});
+
+app.post('/ajax-add-user', urlencodedParser, (req, res) => {
     // res.setHeader('Content-Type', 'application/json');
     let user = req.body;
-    let uidFromAuth =  req.decodedClaims.uid;
-    if (user.uid == uidFromAuth) {
-        db.collection("Users").doc(uidFromAuth).set({
-            name: user.name,
-            email: user.email
+    const idToken = req.body.idToken.toString();
+    admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      const uid = decodedToken.uid;
+      console.log("User: " + uid + " is a new user")
+      db.collection("Users").doc(uid).set({
+        name: user.name,
+        email: user.email,
+        created: Date.now(),
         }).then(function () { //if successful
             console.log("New user added to firestore");
             res.send({ status: "success"});
         })
-    } else {
-        console.log("userId from client and Auth dont match");
-        res.send({ status: "error"});
-    }
+    }).catch((error) => {
+        console.log(error);
+        res.status(401).send("UNAUTHORIZED REQUEST!");
+    });
 });
 
 
-//deal with cookies
-// https://medium.com/novasemita/auth-using-firebaseui-firebase-functions-session-cookies-f2447bf42201
-function checkCookieMiddleware(req, res, next) {
 
-	const sessionCookie = req.cookies.session || '';
-
-	admin.auth().verifySessionCookie(
-		sessionCookie, true).then((decodedClaims) => {
-			req.decodedClaims = decodedClaims;
-			next();
-		})
-		.catch(error => {
-			// Session cookie is unavailable or invalid. Force user to login.
-			res.redirect('/login');
-		});
-}
-
-
-
-// https://firebase.google.com/docs/auth/admin/manage-cookies
-app.post("/sessionLogin", (req, res) => {
+app.post('/addTreeFav', urlencodedParser, (req, res) => {
+    // res.setHeader('Content-Type', 'application/json');
     const idToken = req.body.idToken.toString();
-    console.log("id token signing in" + idToken);
+    const recordID = req.body.recordID;
+    admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      const uid = decodedToken.uid;
 
-    const expiresIn = 60 * 60 * 24 * 5 * 1000;
+      const batchFav = db.batch();
+      const docRef = db.collection("Favourites").doc(uid + "_" + recordID);
+      const statsRef = db.collection('Favourites').doc('--stats-' + recordID);
+
+      batchFav.create(docRef, { 
+        userID: uid,
+        recordID: recordID,
+        timestamp: Date.now(), 
+      });
+      batchFav.set(statsRef, { favCount: increment }, { merge: true });
+      batchFav.commit()
+      .then(function () { //if successful
+        console.log("new favourite added");
+        res.send({ status: "success"});
+      }).catch((error) => {
+        console.log(error);
+        res.send({ status: "error"});
+      });
+
+    }).catch((error) => {
+        console.log(error);
+        res.status(401).send("UNAUTHORIZED REQUEST!");
+    });
+});
+
+app.post('/removeTreeFav', urlencodedParser, (req, res) => {
+    // res.setHeader('Content-Type', 'application/json');
+    const idToken = req.body.idToken.toString();
+    const recordID = req.body.recordID;
 
     admin
-      .auth()
-      .createSessionCookie(idToken, { expiresIn })
-      .then(
-        (sessionCookie) => {
-          const options = { maxAge: expiresIn, httpOnly: true };
-          res.cookie("session", sessionCookie, options);
-          res.end(JSON.stringify({ status: "success" }));
-        },
-        (error) => {
-          res.status(401).send("UNAUTHORIZED REQUEST!");
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      const uid = decodedToken.uid;
+      
+      
+      const docRef = db.collection("Favourites").doc(uid + "_" + recordID);
+      const statsRef = db.collection('Favourites').doc('--stats-' + recordID);
+      docRef.get().then(function (doc) {
+        if (doc.exists) {
+          const batchFav = db.batch();
+          batchFav.delete(docRef);
+          batchFav.set(statsRef, { favCount: decrement }, { merge: true });
+          batchFav.commit()
+          .then(function () { //if successful
+            console.log("fav removed");
+            res.send({ status: "success"});
+          }).catch((error) => {
+            console.log(error);
+            res.send({ status: "error"});
+          });
+        } else {
+          console.log('No such document!');
+          res.send({ status: "error"});
         }
-      );
+      });
+    
+      //End idtoken verified
+    });
 });
 
 app.post("/ajax-add-comment", urlencodedParser, (req, res) => {
@@ -182,35 +229,88 @@ app.get("/ajax-get-comment-user", (req, res) => {
         });
 });
 
-// https://firebase.google.com/docs/auth/admin/manage-cookies
-app.get('/sessionLogout', (req, res) => {
-    const sessionCookie = req.cookies.session || '';
-    res.clearCookie('session');
+app.post('/getFavByUser', urlencodedParser, (req, res) => {
+    // res.setHeader('Content-Type', 'application/json');
+    const idToken = req.body.idToken.toString();
     admin
     .auth()
-    .verifySessionCookie(sessionCookie)
-    .then((decodedClaims) => {
-       return admin.auth().revokeRefreshTokens(decodedClaims.sub);
-    })
-    .then(() => {
-       res.redirect('/');
-    })
-    .catch((error) => {
-       res.redirect('/');
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      const uid = decodedToken.uid;
+
+      db.collection("Favourites")
+      .where("userID", "==", uid)
+      .get()
+      .then(querySnapshot => {
+        let resultArray = [];
+        querySnapshot.forEach((doc) => {
+          resultArray.push({recordID: doc.data().recordID, timestamp: doc.data().timestamp});
+        });
+        res.send({ status: "success", data: resultArray});
+      })
+      .catch(function(error) {
+        console.log("Error getting documents: ", error);
+        res.send({ status: "error"});
+      });
+
+      //End idtoken verified
     });
 });
 
+app.post('/getFavByTree', urlencodedParser, (req, res) => {
+  // res.setHeader('Content-Type', 'application/json');
+  const recordID = req.body.recordID;
+  db.collection("Favourites")
+  .where("recordID", "==", recordID)
+  .get()
+  .then(querySnapshot => {
+    let resultArray = [];
+    querySnapshot.forEach((doc) => {
+      resultArray.push({recordID: doc.data().recordID, timestamp: doc.data().timestamp});
+    });
+    res.send({ status: "success", data: resultArray});
+  })
+  .catch(function(error) {
+    console.log("Error getting documents: ", error);
+    res.send({ status: "error"});
+  });
+});
 
-app.post('/update-username', urlencodedParser, checkCookieMiddleware, (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
-    let uidFromAuth =  req.decodedClaims.uid;
+app.post('/getFavCountByTree', urlencodedParser, (req, res) => {
+  // res.setHeader('Content-Type', 'application/json');
+  const recordID = req.body.recordID;
+  db.collection('Favourites').doc('--stats-' + recordID)
+  .get()
+  .then(function (doc) {
+    console.log("FavCount: " + doc.data().favCount);
+    res.send({ status: "success", data: doc.data().favCount});
+  }).catch(function(error) {
+    console.log("Error getting documents: ", error);
+    res.send({ status: "error"});
+  });
+});
   
-    db.collection("Users").doc(uidFromAuth).update({
+
+app.post('/update-username', urlencodedParser,  (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    const idToken = req.body.idToken.toString();
+
+    admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      const uid = decodedToken.uid;
+      db.collection("Users").doc(uid).update({
         name: req.body.name
-    }).then(function () { //if successful
-        console.log("New user added to firestore");
-        res.send(JSON.stringify({ status: "success"}));
-    })
+        }).then(function () { //if successful
+            console.log("Username updated");
+            res.send({ status: "success"});
+        })
+    }).catch((error) => {
+        console.log(error);
+        res.status(401).send("UNAUTHORIZED REQUEST!");
+    });
+    
   
   });
 
@@ -219,11 +319,11 @@ app.get('/timestamp', function (req, res) {
     res.send("hello from firebase" + Date.now());
 });
 
-
+/*
 app.listen(PORT, () => {
     console.log(`Listening on http://localhost:${PORT}`);
  });
-
+*/
  console.log("app loaded");
  exports.app = functions.https.onRequest(app);
 
