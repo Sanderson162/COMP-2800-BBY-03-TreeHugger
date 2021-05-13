@@ -33,7 +33,7 @@ app.use(express.json());
 
 // basic GET requests
 app.get("/", function (req, res) {
-    res.render("index.html");
+    res.render("home.html");
 });
 
 app.get("/login", function (req, res) {

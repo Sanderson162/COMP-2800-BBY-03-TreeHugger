@@ -20,7 +20,7 @@ function addNavbarCommon() {
 	let searchLink = "search";
 	let treeFindLink = "treefind";
 	if (!pagenames.has(directory)) {
-		directory = '/home'
+		directory = 'home'
 	}
 	if (directory == "login") {
 		directory = 'profile';
