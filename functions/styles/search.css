@@ -212,7 +212,7 @@ td.highlight a {
 }
 
 #main {
-    height: 300px;
+    height: 50vh;
     margin-top: 410px;
     text-align: center;
     overflow: auto;
