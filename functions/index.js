@@ -141,7 +141,7 @@ app.post('/addTreeFav', urlencodedParser, (req, res) => {
       batchFav.create(docRef, { 
         userID: uid,
         recordID: recordID,
-        timestamp: Date.now(), 
+        timestamp: firestore.Timestamp.now(), 
       });
       batchFav.set(statsRef, { favCount: increment }, { merge: true });
       batchFav.commit()
@@ -197,17 +197,32 @@ app.post('/removeTreeFav', urlencodedParser, (req, res) => {
 });
 
 app.post("/ajax-add-comment", urlencodedParser, (req, res) => {
+    const idToken = req.body.idToken.toString();
     let comment = req.body;
-    db.collection("Comments").add({
-        Comment: comment.text,
-        Timestamp: firestore.Timestamp.now(),
-        User: "TestUser",
-        Tree: comment.tree,
-        Icon: comment.icon
-    }).then((ref) => {
-        res.end(JSON.stringify({ status: "success" }));
+
+    admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      const uid = decodedToken.uid;
+        
+
+        db.collection("Comments").add({
+          Comment: comment.text,
+          Timestamp: firestore.Timestamp.now(),
+          User: uid,
+          Tree: comment.tree,
+          Icon: comment.icon
+        }).then((ref) => {
+            res.end(JSON.stringify({ status: "success" }));
+        }).catch((error) => {
+            res.status(401);
+        });
+
+
     }).catch((error) => {
-        res.status(401);
+        console.log(error);
+        res.status(401).send("UNAUTHORIZED REQUEST!");
     });
 });
 

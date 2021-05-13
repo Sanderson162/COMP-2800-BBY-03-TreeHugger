@@ -8,18 +8,20 @@
     <title>Search</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+    <!-- Firebase CSS for Authentication UI -->
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css" />
+
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js"></script>
 
     <!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-analytics.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-firestore.js" ></script>
-    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-functions.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js" defer></script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js" defer></script>
     <link rel="stylesheet" href="./search.css">
 </head>
 <body>
+    <button id="loginLogoutButton">Login/Signup</button>
+    <h1 id="firebaseui-auth-container">&nbsp;</h1>
     <div id="main">
         <div class="card" id="birth">Find your birth tree</div>
         <div class="card" id="anniversary">Find your anniversary tree</div>
@@ -27,6 +29,10 @@
     </div>
     <div id="form"></div>
     <div id="result"></div>
+
+    <!-- This is where the Login Widget will go -->
+    <script src="./loginFunctionForAnyPage.js"></script>
+
     <script src="./firebase_api_Group3.js"></script>
     <script src="./comment.js"></script>
     <script src="./match.js"></script>
