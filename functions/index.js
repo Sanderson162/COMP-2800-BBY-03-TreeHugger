@@ -28,6 +28,7 @@ const app = express();
 app.engine("html", require("ejs").renderFile);
 app.use(express.static("scripts"));
 app.use(express.static("styles"));
+app.use(express.static("img"));
 app.use(express.json());
 
 
@@ -80,6 +81,10 @@ app.get("/testingPanel", function (req, res) {
   res.render("testingPanel.html");
 });
 
+app.get("/home", function (req, res) {
+  res.render("home.html");
+});
+
 app.post('/profile', urlencodedParser, (req, res) => {
   const idToken = req.body.idToken.toString();
   admin
@@ -95,7 +100,7 @@ app.post('/profile', urlencodedParser, (req, res) => {
   }).catch((error) => {
       console.log(error);
       res.status(401).send("UNAUTHORIZED REQUEST!");
-  });    
+  });
 });
 
 app.post('/ajax-add-user', urlencodedParser, (req, res) => {
@@ -325,8 +330,6 @@ app.post('/update-username', urlencodedParser,  (req, res) => {
         console.log(error);
         res.status(401).send("UNAUTHORIZED REQUEST!");
     });
-    
-  
   });
 
 
@@ -334,11 +337,11 @@ app.get('/timestamp', function (req, res) {
     res.send("hello from firebase" + Date.now());
 });
 
-/*
+
 app.listen(PORT, () => {
     console.log(`Listening on http://localhost:${PORT}`);
  });
-*/
+
  console.log("app loaded");
  exports.app = functions.https.onRequest(app);
 

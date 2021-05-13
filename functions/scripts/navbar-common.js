@@ -12,9 +12,10 @@ function addNavbarCommon() {
 		['profile', "Profile"],
 		['login', "Profile"],
 		['search', "Search"],
-		['/', "Home"],
+		['home', "Home"],
+		['aboutus', "Home"]
 	])
-	let indexLink = "/";
+	let indexLink = "home";
 	let profileLink = "profile";
 	let searchLink = "search";
 	let treeFindLink = "treefind";
