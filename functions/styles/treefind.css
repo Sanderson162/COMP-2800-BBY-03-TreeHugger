@@ -275,16 +275,20 @@ button:hover {
 
 #content>.post:nth-child(7) {
     background-color: rgb(243, 243, 243);
+    border-bottom-color: rgb(234, 234, 234);
 }
 
 #content>.post:nth-child(8) {
     background-color: rgb(241, 241, 241);
+    border-bottom-color: rgb(232, 232, 232);
 }
 
 #content>.post:nth-child(9) {
     background-color: rgb(239, 239, 239);
+    border-bottom-color: rgb(230, 230, 230);
 }
 
 #content>.post:nth-child(n+10) {
     background-color: rgb(237, 237, 237);
+    border-bottom-color: rgb(228, 228, 228);
 }
