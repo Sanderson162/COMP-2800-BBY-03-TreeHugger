@@ -1,4 +1,9 @@
 /*
+ * This stylesheet makes references to the datepicker interface from JQuery UI.
+ * dateWidget.js contains JavaScript functions
+ * searchDate.html contains div layouts
+ * @see https://api.jqueryui.com/datepicker/
+
  * CSS items in this document were used with permission from a colleague on the same BCIT COMP 2800 BBY-3 Team.
  * They were then used as a foundation to build this application.
  * @author Aidan McReynolds
@@ -242,8 +247,8 @@ td.highlight a {
 }
 
 #main {
-    height: 300px;
-    margin-top: 410px;
+    height: 47vh;
+    margin-top: 52vh;
     text-align: center;
     overflow: auto;
 }
@@ -275,6 +280,6 @@ td.highlight a {
     }
 
     #main {
-        margin-top: 390px;
+        margin-top: 46vh;
     }
 }
