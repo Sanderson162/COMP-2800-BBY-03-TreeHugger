@@ -25,6 +25,7 @@ const app = express();
 app.engine("html", require("ejs").renderFile);
 app.use(express.static("scripts"));
 app.use(express.static("styles"));
+app.use(express.static("img"));
 
 //more testing with cookies
 app.use(express.json());
