@@ -1,5 +1,6 @@
 .main-container { 
     position: fixed;
+    overflow-y: auto;
     z-index: -1;
     left: 0;
     bottom: 54px;

@@ -8,28 +8,32 @@
     <link rel="stylesheet" href="./navbar-common.css">
     <link rel="stylesheet" href="./index.css">
 
-    <!-- Firebase CSS for Authentication UI -->
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css" />
+
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js" defer></script>
 
     <!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-analytics.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-firestore.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-functions.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js" defer ></script>
-    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js" defer></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
         crossorigin="anonymous">
     </script>
+
+    <!-- Firebase CSS for Authentication UI -->
+    <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css" />
+
 </head>
     <body>
+        <!-- This is where the Login Widget will go -->
+        <h1 id="firebaseui-auth-container">&nbsp;</h1>
+        <script src="./loginFunctionForAnyPage.js"></script>
+
         <button id="profileButton">profileNew</button>
-        <button id="loginButton">Login/Signup</button>
+        <button id="loginLogoutButton">Login/Signup</button>
+        <button id="loginLogoutButtonV2">Login/SignupV2</button>
         <button id="whoami">whoami</button>
-        <button id="logoutButton">Logout</button>
         <button id="viewIndividualTreeButton">viewIndividualTreeButton</button>
         
         <div id="profileOverlay" onclick="profileOverlayOff()">
@@ -47,24 +51,21 @@
             <div id="resultsWikiQuery"><b>Extract: </b></br><span class="info"></span></div>
             <div id="resultsWikiQueryLink"><b>Link: </b></br><span class="info"></span></div>
         </div>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum blanditiis eum asperiores ipsa reprehenderit a nisi voluptatibus aperiam fugit, voluptates eaque voluptatum, nemo eos optio fugiat corrupti nulla officiis! Distinctio.</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum blanditiis eum asperiores ipsa reprehenderit a nisi voluptatibus aperiam fugit, voluptates eaque voluptatum, nemo eos optio fugiat corrupti nulla officiis! Distinctio.</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum blanditiis eum asperiores ipsa reprehenderit a nisi voluptatibus aperiam fugit, voluptates eaque voluptatum, nemo eos optio fugiat corrupti nulla officiis! Distinctio.</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum blanditiis eum asperiores ipsa reprehenderit a nisi voluptatibus aperiam fugit, voluptates eaque voluptatum, nemo eos optio fugiat corrupti nulla officiis! Distinctio.</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum blanditiis eum asperiores ipsa reprehenderit a nisi voluptatibus aperiam fugit, voluptates eaque voluptatum, nemo eos optio fugiat corrupti nulla officiis! Distinctio.</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum blanditiis eum asperiores ipsa reprehenderit a nisi voluptatibus aperiam fugit, voluptates eaque voluptatum, nemo eos optio fugiat corrupti nulla officiis! Distinctio.</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum blanditiis eum asperiores ipsa reprehenderit a nisi voluptatibus aperiam fugit, voluptates eaque voluptatum, nemo eos optio fugiat corrupti nulla officiis! Distinctio.</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum blanditiis eum asperiores ipsa reprehenderit a nisi voluptatibus aperiam fugit, voluptates eaque voluptatum, nemo eos optio fugiat corrupti nulla officiis! Distinctio.</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum blanditiis eum asperiores ipsa reprehenderit a nisi voluptatibus aperiam fugit, voluptates eaque voluptatum, nemo eos optio fugiat corrupti nulla officiis! Distinctio.</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum blanditiis eum asperiores ipsa reprehenderit a nisi voluptatibus aperiam fugit, voluptates eaque voluptatum, nemo eos optio fugiat corrupti nulla officiis! Distinctio.</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum blanditiis eum asperiores ipsa reprehenderit a nisi voluptatibus aperiam fugit, voluptates eaque voluptatum, nemo eos optio fugiat corrupti nulla officiis! Distinctio.</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum blanditiis eum asperiores ipsa reprehenderit a nisi voluptatibus aperiam fugit, voluptates eaque voluptatum, nemo eos optio fugiat corrupti nulla officiis! Distinctio.</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum blanditiis eum asperiores ipsa reprehenderit a nisi voluptatibus aperiam fugit, voluptates eaque voluptatum, nemo eos optio fugiat corrupti nulla officiis! Distinctio.</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum blanditiis eum asperiores ipsa reprehenderit a nisi voluptatibus aperiam fugit, voluptates eaque voluptatum, nemo eos optio fugiat corrupti nulla officiis! Distinctio.</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum blanditiis eum asperiores ipsa reprehenderit a nisi voluptatibus aperiam fugit, voluptates eaque voluptatum, nemo eos optio fugiat corrupti nulla officiis! Distinctio.</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum blanditiis eum asperiores ipsa reprehenderit a nisi voluptatibus aperiam fugit, voluptates eaque voluptatum, nemo eos optio fugiat corrupti nulla officiis! Distinctio.</p>
-        <!-- This is where the Login Widget will go -->
-        <h1 id="firebaseui-auth-container">&nbsp;</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non qui unde, itaque repudiandae necessitatibus quo laborum similique facere voluptatum quibusdam excepturi inventore nulla? Iste facere molestias in! Odio, laboriosam in!</p><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non qui unde, itaque repudiandae necessitatibus quo laborum similique facere voluptatum quibusdam excepturi inventore nulla? Iste facere molestias in! Odio, laboriosam in!</p><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non qui unde, itaque repudiandae necessitatibus quo laborum similique facere voluptatum quibusdam excepturi inventore nulla? Iste facere molestias in! Odio, laboriosam in!</p><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non qui unde, itaque repudiandae necessitatibus quo laborum similique facere voluptatum quibusdam excepturi inventore nulla? Iste facere molestias in! Odio, laboriosam in!</p><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non qui unde, itaque repudiandae necessitatibus quo laborum similique facere voluptatum quibusdam excepturi inventore nulla? Iste facere molestias in! Odio, laboriosam in!</p><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non qui unde, itaque repudiandae necessitatibus quo laborum similique facere voluptatum quibusdam excepturi inventore nulla? Iste facere molestias in! Odio, laboriosam in!</p><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non qui unde, itaque repudiandae necessitatibus quo laborum similique facere voluptatum quibusdam excepturi inventore nulla? Iste facere molestias in! Odio, laboriosam in!</p><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non qui unde, itaque repudiandae necessitatibus quo laborum similique facere voluptatum quibusdam excepturi inventore nulla? Iste facere molestias in! Odio, laboriosam in!</p><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non qui unde, itaque repudiandae necessitatibus quo laborum similique facere voluptatum quibusdam excepturi inventore nulla? Iste facere molestias in! Odio, laboriosam in!</p><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non qui unde, itaque repudiandae necessitatibus quo laborum similique facere voluptatum quibusdam excepturi inventore nulla? Iste facere molestias in! Odio, laboriosam in!</p>
+        <div id="loginContainer">
+            <h3>Login</h3>
+            <label for="uname"><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="uname">
+
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw">
+            <p style="display: none;">errorMessage</p>
+            <button id="cancelLoginButton">Cancel</button>
+            <button id="submitLoginButton">Login</button>
+            <button id="submitSignupButton">Signup</button>
+
+        </div>
+
 
         <!-- Your own Firebase API key information -->
         <script src="./firebase_api_Group3.js"> </script>

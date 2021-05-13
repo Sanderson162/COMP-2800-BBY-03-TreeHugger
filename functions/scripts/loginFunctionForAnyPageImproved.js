@@ -2,7 +2,7 @@ $(document).ready(() => {
   //hide auth container
   $("#firebaseui-auth-container").css("position", "fixed");
   $("#firebaseui-auth-container").css("display", "none");
-  $("#firebaseui-auth-container").css("margin", "auto");
+
   const uiConfig = {
     callbacks: {
       signInSuccessWithAuthResult: function(authResult, redirectUrl) {
@@ -54,32 +54,6 @@ $(document).ready(() => {
      }
   });
 
-  $('#loginLogoutButtonV2').click(function(e) {
-    var user = firebase.auth().currentUser;
-    if (user) {
-      firebase.auth().signOut().then(() => {
-        console.log("Signed out");
-      }).catch((error) => {
-        console.log("error signing out: " + error);
-      });
-    } else {
-      console.log("Nobody is signed in");
-      $("#loginContainer").css("display", "block");
-    }
-  });
-
-  $("#loginContainer").on('click', '#cancelLoginButton', function(){
-    $("#loginContainer").css("display", "none");
-  });
-
-  $("#loginContainer").on('click', '#submitLoginButton', function(){
-    firebaseLogin()
-    $("#loginContainer").css("display", "none");
-  });
-
-  $("#loginContainer").on('click', '#submitLoginButton', function(){
-    $("#loginContainer").css("display", "none");
-  });
   //end Document.ready
 });
 
@@ -97,31 +71,4 @@ function createNewAccount(user) {
       error: ()=>{console.log("ERROR FAILED TO CONNECT")}
     });
   })
-}
-
-
-function firebaseLogin(email, password){
-  firebase.auth().signInWithEmailAndPassword(email, password)
-  .then((userCredential) => {
-    // Signed in
-    var user = userCredential.user;
-    // ...
-  })
-  .catch((error) => {
-    var errorCode = error.code;
-    var errorMessage = error.message;
-  });
-}
-
-function firebaseSignup(email, password){
-  firebase.auth().signInWithEmailAndPassword(email, password)
-  .then((userCredential) => {
-    // Signed in
-    var user = userCredential.user;
-    // ...
-  })
-  .catch((error) => {
-    var errorCode = error.code;
-    var errorMessage = error.message;
-  });
 }

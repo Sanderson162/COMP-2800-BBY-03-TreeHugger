@@ -33,3 +33,19 @@
     z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
     cursor: pointer; /* Add a pointer on hover */
 }
+
+#loginContainer {
+    position: fixed; /* Sit on top of the page content */
+    display: none; /* Hidden by default */
+    border: 1px solid rgb(151, 151, 151);
+    border-radius: 5px;
+    background-color: rgb(236, 234, 234);
+    padding: 5px;
+    margin: auto;
+    width: 200px;
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+    
+    top: 20px;
+    left: 0;
+    right: 0;
+}
