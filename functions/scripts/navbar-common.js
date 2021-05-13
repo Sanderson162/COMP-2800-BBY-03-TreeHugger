@@ -1,9 +1,9 @@
-
 "use strict";
 addNavbarCommon();
 /**
+ * Displays the nav bar with the correct selected menu item highlighted. 
  * @see Stirling Anderson
- * Displays the nav bar with the correct selected menu item highlighted. */
+ */
 function addNavbarCommon() {
 	let currentPage = window.location.pathname;
 	let directory = String(currentPage.split("/").slice(-1));
@@ -29,8 +29,9 @@ function addNavbarCommon() {
 	$('a[href="' + directory + '"').addClass("highlight")
 }
 /** 
+ * Wraps the body in a main-container div. 
  * @see https://stackoverflow.com/questions/1577814/wrapping-a-div-around-the-document-body-contents
- * Wraps the body in a main-container div. */
+ */
 function wrapBody() {
 	let mainContainer = document.createElement("div");
 	mainContainer.className = "main-container";
