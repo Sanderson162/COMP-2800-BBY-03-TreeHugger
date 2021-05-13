@@ -1,7 +1,7 @@
 const functions = require('firebase-functions');
 const express = require('express');
 
-const urlencodedParser = express.urlencoded({ extended: false })  
+const urlencodedParser = express.urlencoded({ extended: false })
 
 // FIREBASE
 var admin = require("firebase-admin");
