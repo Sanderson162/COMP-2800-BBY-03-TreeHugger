@@ -16,16 +16,21 @@ const db = admin.firestore();
 const increment = admin.firestore.FieldValue.increment(1);
 const decrement = admin.firestore.FieldValue.increment(-1);
 
+// PORT for testing in node
 const PORT = process.env.PORT || 5000;
+
+// express app
 const app = express();
 
+
+// app setup and other files
 app.engine("html", require("ejs").renderFile);
 app.use(express.static("scripts"));
 app.use(express.static("styles"));
-
-//more testing with cookies
 app.use(express.json());
 
+
+// basic GET requests
 app.get("/", function (req, res) {
     res.render("index.html");
 });
@@ -46,25 +51,6 @@ app.get("/whoami", function (req, res) {
     res.send("test");
 });
 
-app.post('/profile', urlencodedParser, (req, res) => {
-    const idToken = req.body.idToken.toString();
-    admin
-    .auth()
-    .verifyIdToken(idToken)
-    .then((decodedToken) => {
-      const uid = decodedToken.uid;
-      db.collection("Users").doc(uid).get().then(function (doc) { //if successful
-        console.log("accessing user: " + doc.data().name);
-        console.log("UID accessing profile: " + uid);
-        res.send({ status: "success", uid: uid, name: doc.data().name});
-    });
-    }).catch((error) => {
-        console.log(error);
-        res.status(401).send("UNAUTHORIZED REQUEST!");
-    });    
-});
-
-
 app.get("/findtree", function (req, res) {
     res.render("findtree.html");
 });
@@ -80,6 +66,24 @@ app.get("/search", function (req, res) {
 
 app.get("/searchDate", function (req, res) {
     res.render("searchDate.html");
+});
+
+app.post('/profile', urlencodedParser, (req, res) => {
+  const idToken = req.body.idToken.toString();
+  admin
+  .auth()
+  .verifyIdToken(idToken)
+  .then((decodedToken) => {
+    const uid = decodedToken.uid;
+    db.collection("Users").doc(uid).get().then(function (doc) { //if successful
+      console.log("accessing user: " + doc.data().name);
+      console.log("UID accessing profile: " + uid);
+      res.send({ status: "success", uid: uid, name: doc.data().name});
+  });
+  }).catch((error) => {
+      console.log(error);
+      res.status(401).send("UNAUTHORIZED REQUEST!");
+  });    
 });
 
 app.post('/ajax-add-user', urlencodedParser, (req, res) => {
