@@ -5,7 +5,7 @@
 /**
  * This script creates and performs various functions for a datepicker interface from JQuery UI.
  * searchDate.html contains div layouts
- * search.css contains style requirements
+ * searchDate.css contains style requirements
  * @see https://api.jqueryui.com/datepicker/
  *
  * This script also makes calls to the Vancouver Open Data Portal Street Trees Database
