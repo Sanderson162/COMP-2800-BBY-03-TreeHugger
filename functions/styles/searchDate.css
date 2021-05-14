@@ -18,7 +18,7 @@
      font-family: 'Roboto', sans-serif;
  }
  #main .card {
-    width: 100%;
+    width: 95%;
     max-width: 450px;
     border: darkgreen solid 1pt;
     color: darkgreen;
