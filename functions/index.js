@@ -261,7 +261,7 @@ app.post("/ajax-add-comment", urlencodedParser, (req, res) => {
     });
 });
 
-app.get("/ajax-get-comment-user", urlencodedParser, (req, res) => {
+app.post("/ajax-get-comment-user", urlencodedParser, (req, res) => {
   const idToken = req.body.idToken.toString();
 
 
