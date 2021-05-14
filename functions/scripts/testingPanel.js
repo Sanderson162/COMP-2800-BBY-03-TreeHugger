@@ -25,6 +25,9 @@ window.addEventListener("DOMContentLoaded", () => {
     let recordID = $("#inputTreeId").children().val();
     getFavCountByTree(recordID);
   });
+  $("#getFavCountLeaderboard").click(function(e) {
+    getFavCountLeaderboard();
+  });
 
   $("#resultsContainer").on('click','.likeButton',function(){
     let heartIcon = "<i class='fas fa-heart fa-2x'></i>";
@@ -32,14 +35,18 @@ window.addEventListener("DOMContentLoaded", () => {
     let recordID = $(this).parent().attr('id').split("_")[0];
     //confirm("clickedLikeButton: " + recordID);
     if ($(this).hasClass("liked")) {
+      let count = parseInt($(this).attr("data-count")) - 1;
       $(this).empty();
-      $(this).append(heartIconEmpty);
+      $(this).append(heartIconEmpty + "<span>" + count + "</span>");
       $(this).removeClass("liked");
+      $(this).attr("data-count", count);
       removeFavFromTree(recordID);
     } else {
+      let count = parseInt($(this).attr("data-count")) + 1;
       $(this).empty();
-      $(this).append(heartIcon);
+      $(this).append(heartIcon + "<span>" + count + "</span>");
       $(this).addClass("liked");
+      $(this).attr("data-count", count);
       addFavToTree(recordID);
     }
   })
@@ -127,6 +134,23 @@ function getFavCountByTree(recordID){
   });
 }
 
+function getFavCountLeaderboard(recordID){
+  $.ajax({
+    url: "/getFavCountLeaderboard",
+    dataType: "json",
+    type: "POST",
+    success: function(result, status, xhr){ 
+      console.log("recieved: " + status);
+      console.log(result);
+      console.log(result.data);
+      displayLeaderboard(result.data);
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        console.log("ERROR:", jqXHR, textStatus, errorThrown);
+    }
+  });
+}
+
 function getFavByUser(){
   var user = firebase.auth().currentUser;
   if (user) {
@@ -152,18 +176,12 @@ function getFavByUser(){
   }
 }
 
-async function getInfoOnTreeByID(recordID){
+function getInfoOnTreeByID(recordID){
   console.log("getting tree by record id: " + recordID);
-  $.ajax({
+  return $.ajax({
       type: "GET",
       dataType: "json",
       url: "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/records/" + recordID + "?select=*&pretty=false&timezone=UTC", 
-      success: function(result, status, xhr){ 
-        return result;
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-          console.log("ERROR:", jqXHR, textStatus, errorThrown);
-      }
   });
 }
 
@@ -172,15 +190,65 @@ function displayResults(data){
   let heartIcon = "<i class='fas fa-heart fa-2x'></i>";
   let resultContainer = $("#resultsContainer");
   resultContainer.empty();
-  data.forEach(element => {
-    console.log("RecordID: " + element.recordID);
-    console.log("Timestamp: " + element.timestamp);
-    let card = $("<div></div>").attr("id", element.recordID + "_card");
-    let recordID = $("<div></div>").addClass("title").text("title: " + element.recordID);
-    let timestamp = $("<div></div>").addClass("time").text("time: " + element.timestamp);
+  data.forEach(record => {
+    console.log("RecordID: " + record.recordID);
+    console.log("Timestamp: " + record.timestamp);
+    
+    let card = $("<div></div>").attr("id", record.recordID + "_card");
+    card.append($("<div></div>").addClass("title").text("title: " + record.recordID));
+    card.append($("<div></div>").addClass("time").text("time: " + record.timestamp));
+    getInfoOnTreeByID(record.recordID)
+    .then(function(result) {
+      if (result.record.fields) {
+        let openData = result.record.fields;
+        card.append($("<p>Name: </p>").append($("<span></span>").html(openData.common_name)));
+        card.append($("<p>Location: </p>").append($("<span></span>").html(openData.on_street_block+" "+openData.on_street+" "+openData.neighbourhood_name)));
+        card.append($("<p>Genus, Species: </p>").append($("<span></span>").html(openData.genus_name+", "+openData.species_name)));
+        card.append($("<p>Coords: </p>").append($("<span></span>").html(openData.geom ? openData.geom.geometry.coordinates[0] + " " + openData.geom.geometry.coordinates[1] : "N/A" )));
+      }
+    })
+
     let likeButton = $("<div></div>").addClass("likeButton").addClass("liked");
     likeButton.append(heartIcon);
-    card.append(recordID, timestamp, likeButton);
+    card.append(likeButton);
     resultContainer.append(card);
   });
+}
+
+function displayLeaderboard(data){
+  let heartIcon = "<i class='fas fa-heart fa-2x'></i>";
+  let resultContainer = $("#resultsContainer");
+  resultContainer.empty();
+  data.forEach(record => {
+    console.log("RecordID: " + record.recordID);
+    console.log("RecordID: " + record.favCount);
+    let card = $("<div></div>").attr("id", record.recordID + "_card");
+    getInfoOnTreeByID(record.recordID)
+    .then(function(result) {
+      if (result.record.fields) {
+        let openData = result.record.fields;
+        card.append($("<p>Name: </p>").append($("<span></span>").html(openData.common_name)));
+        card.append($("<p>Location: </p>").append($("<span></span>").html(openData.on_street_block+" "+openData.on_street+" "+openData.neighbourhood_name)));
+        card.append($("<p>Genus, Species: </p>").append($("<span></span>").html(openData.genus_name+", "+openData.species_name)));
+        card.append($("<p>Coords: </p>").append($("<span></span>").html(openData.geom ? openData.geom.geometry.coordinates[0] + " " + openData.geom.geometry.coordinates[1] : "N/A" )));
+      }
+    })
+
+    let likeButton = $('<div></div>').addClass("likeButton").addClass("liked").attr("data-count", record.favCount);
+    let likeCount = $("<span></span>").text(record.favCount);
+    likeButton.append(heartIcon, likeCount);
+    card.append(likeButton);
+    resultContainer.append(card);
+  });
+}
+
+
+// https://stackoverflow.com/questions/3552461/how-to-format-a-javascript-date
+//
+function dateToYMD(date) {
+  var strArray=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var d = date.getDate();
+  var m = strArray[date.getMonth()];
+  var y = date.getFullYear();
+  return '' + (d <= 9 ? '0' + d : d) + '-' + m + '-' + y;
 }

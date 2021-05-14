@@ -13,7 +13,10 @@
  * @author CrazyVideoGamez https://stackoverflow.com/users/12097913/crazyvideogamez
  * @see https://stackoverflow.com/questions/17954181/scrolling-only-content-div-others-should-be-fixed
  */
-
+ @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+ * {
+     font-family: 'Roboto', sans-serif;
+ }
  #main .card {
     width: 100%;
     max-width: 450px;
@@ -42,7 +45,7 @@ td.highlightDates a {
 }
 
 #titleText {
-    font-size: 24pt;
+    font-size: 18pt;
     text-align: center;
     padding: 0.25rem;
     margin: 0;
@@ -53,7 +56,7 @@ td.highlightDates a {
     width: 100%;
     top: 0;
     left: 0;
-    transform: translateX(-8px);
+    margin: auto;
     overflow: visible;
 }
 
@@ -90,16 +93,16 @@ td.highlightDates a {
     background: #074431;
     font-family: "Helvetica";
     color: #EEE;
-    font-size: 24pt;
+    font-size: 18pt;
     padding: 10px;
 }
 
 #date-day {
-    font-size: 24pt;
+    font-size: 18pt;
 }
 
 #date-date {
-    font-size: 24pt;
+    font-size: 18pt;
 }
 
 .ui-datepicker-prev,
@@ -148,7 +151,7 @@ td.highlightDates a {
 }
 
 .ui-icon {
-    background-image: url("http://code.jquery.com/ui/1.12.1/themes/base/images/ui-icons_444444_256x240.png");
+    background-image: url("https://code.jquery.com/ui/1.12.1/themes/base/images/ui-icons_444444_256x240.png");
     text-indent: -99999px;
     overflow: hidden;
     background-repeat: no-repeat;

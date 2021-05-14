@@ -151,8 +151,8 @@ app.post('/addTreeFav', urlencodedParser, (req, res) => {
       const uid = decodedToken.uid;
 
       const batchFav = db.batch();
-      const docRef = db.collection("Favourites").doc(uid + "_" + recordID);
-      const statsRef = db.collection('Favourites').doc('--stats-' + recordID);
+      const docRef = db.collection("Favourite").doc(uid + "_" + recordID);
+      const statsRef = db.collection('FavouriteStats').doc(recordID);
 
       batchFav.create(docRef, {
         userID: uid,
@@ -194,8 +194,8 @@ app.post('/removeTreeFav', urlencodedParser, (req, res) => {
     .then((decodedToken) => {
       const uid = decodedToken.uid;
 
-      const docRef = db.collection("Favourites").doc(uid + "_" + recordID);
-      const statsRef = db.collection('Favourites').doc('--stats-' + recordID);
+      const docRef = db.collection("Favourite").doc(uid + "_" + recordID);
+      const statsRef = db.collection('FavouriteStats').doc(recordID);
       docRef.get().then(function (doc) {
         if (doc.exists) {
           const batchFav = db.batch();
@@ -297,8 +297,10 @@ app.post('/getFavByUser', urlencodedParser, (req, res) => {
     .then((decodedToken) => {
       const uid = decodedToken.uid;
 
-      db.collection("Favourites")
+      db.collection("Favourite")
         .where("userID", "==", uid)
+        .orderBy('timestamp')
+        .limit(15)
         .get()
         .then(querySnapshot => {
           let resultArray = [];
@@ -327,7 +329,7 @@ app.post('/getFavByUser', urlencodedParser, (req, res) => {
 app.post('/getFavByTree', urlencodedParser, (req, res) => {
   // res.setHeader('Content-Type', 'application/json');
   const recordID = req.body.recordID;
-  db.collection("Favourites")
+  db.collection("Favourite")
     .where("recordID", "==", recordID)
     .get()
     .then(querySnapshot => {
@@ -354,13 +356,39 @@ app.post('/getFavByTree', urlencodedParser, (req, res) => {
 app.post('/getFavCountByTree', urlencodedParser, (req, res) => {
   // res.setHeader('Content-Type', 'application/json');
   const recordID = req.body.recordID;
-  db.collection('Favourites').doc('--stats-' + recordID)
+  db.collection('FavouriteStats').doc(recordID)
     .get()
     .then(function (doc) {
       console.log("FavCount: " + doc.data().favCount);
       res.send({
         status: "success",
         data: doc.data().favCount
+      });
+    }).catch(function (error) {
+      console.log("Error getting documents: ", error);
+      res.send({
+        status: "error"
+      });
+    });
+});
+
+app.post('/getFavCountLeaderboard', urlencodedParser, (req, res) => {
+  // res.setHeader('Content-Type', 'application/json');
+  db.collection('FavouriteStats')
+  .orderBy('favCount')
+  .limit(15)
+  .get()
+  .then(querySnapshot => {
+      let resultArray = [];
+      querySnapshot.forEach((doc) => {
+        resultArray.push({
+          recordID: doc.id,
+          favCount: doc.data().favCount
+        });
+      });
+      res.send({
+        status: "success",
+        data: resultArray
       });
     }).catch(function (error) {
       console.log("Error getting documents: ", error);
@@ -400,9 +428,9 @@ app.get('/timestamp', function (req, res) {
 });
 
 
-app.listen(PORT, () => {
-     console.log(`Listening on http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//      console.log(`Listening on http://localhost:${PORT}`);
+// });
 
 
 function msg404(res) {
