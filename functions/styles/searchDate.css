@@ -59,14 +59,14 @@
     color: white;
 }
 
-td.highlight {
+td.highlightDates {
     border: none !important;
     padding: 1px 0 1px 1px !important;
     background: none !important;
     padding: 2px !important;
 }
 
-td.highlight a {
+td.highlightDates a {
     background: #99dd73 50% 50% repeat-x !important;
     border: 1px #88a276 solid !important;
 }
