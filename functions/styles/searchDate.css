@@ -13,7 +13,10 @@
  * @author CrazyVideoGamez https://stackoverflow.com/users/12097913/crazyvideogamez
  * @see https://stackoverflow.com/questions/17954181/scrolling-only-content-div-others-should-be-fixed
  */
-
+ @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+ * {
+     font-family: 'Roboto', sans-serif;
+ }
  #main .card {
     width: 100%;
     max-width: 450px;
