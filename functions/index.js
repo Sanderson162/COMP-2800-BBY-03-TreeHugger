@@ -349,9 +349,19 @@ app.get('/timestamp', function (req, res) {
 });
 
 
-app.listen(PORT, () => {
-    console.log(`Listening on http://localhost:${PORT}`);
- });
+// app.listen(PORT, () => {
+//     console.log(`Listening on http://localhost:${PORT}`);
+//  });
+
+
+function msg404 (res) {
+  //res.render('home.html');
+  res.status(404).send("<div style='text-align: center;' ><img src='https://puu.sh/HGpjx/f048c14998.png'><br>404 Page not found <a href='/'>Go home?</a></div>");
+}
+
+app.use((req, res, next) => {
+  msg404(res);
+});
 
  console.log("app loaded");
  exports.app = functions.https.onRequest(app);
