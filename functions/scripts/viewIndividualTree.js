@@ -9,6 +9,19 @@ window.addEventListener("DOMContentLoaded", () => {
             getInfoOnTreeByID(recordID);
         }
     });
+
+    $("#viewIndividualTreeButton").click(function(e) {
+        viewIndividualTreeOverlayOn();
+    });
+
+    if($("#recordIDFromOtherPage").text()){
+        getInfoOnTreeByID($("#recordIDFromOtherPage").text());
+    }
+    const params = new URLSearchParams(window.location.search)
+    for (const param of params) {
+        console.log(param)
+    }
+
 });
 
 function getInfoOnTreeByID(recordID){
@@ -20,10 +33,6 @@ function getInfoOnTreeByID(recordID){
         success: function(result, status, xhr){ 
             console.log("recieved: " + result);
             console.log(result);
-            console.log("xhr: " + xhr);
-            console.log(xhr);
-            console.log(xhr.getAllResponseHeaders());
-            console.log(xhr.getResponseHeader("x-ratelimit-remaining"));
             $("#resultsinputTreeIdRaw").children(".info").html(JSON.stringify(result.record.fields));
             displayTree(result.record.fields);
         },
@@ -41,7 +50,7 @@ function displayTree (record) {
     elem.append($("<p>wikititle: </p>").append($("<span></span>").html(record.genus_name.toLowerCase()+"_"+record.species_name.toLowerCase())));
     elem.append($("<p>Name: </p>").append($("<span></span>").html(record.common_name)));
     elem.append($("<p>Location: </p>").append($("<span></span>").html(record.on_street_block+" "+record.on_street+" "+record.neighbourhood_name)));
-    elem.append($("<p>Coords: </p>").append($("<span></span>").html(record.geom.geometry.coordinates[0]+" "+record.geom.geometry.coordinates[1])));
+    elem.append($("<p>Coords: </p>").append($("<span></span>").html(record.geom ? record.geom.geometry.coordinates[0] + " " + record.geom.geometry.coordinates[1] : "N/A" )));
     //https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=cornus_nuttallii&redirects=1&exintro=1&explaintext=1
     getInfoFromWikipediaBasedOnGenusSpecies(record.genus_name.toLowerCase()+"_"+record.species_name.toLowerCase())
 }
@@ -55,10 +64,6 @@ function getInfoFromWikipediaBasedOnGenusSpecies (genus_species) {
         success: function(result, status, xhr){ 
             console.log("recieved: " + result);
             console.log(result);
-            console.log("xhr: " + xhr);
-            console.log(xhr);
-            console.log(xhr.getAllResponseHeaders());
-            console.log(xhr.getResponseHeader("x-ratelimit-remaining"));
             $("#resultsWikiQueryRaw").children(".info").html(JSON.stringify(result));
             displayWikipediaInformation(result);
             let link = "https://en.wikipedia.org/wiki/" + genus_species;
@@ -74,3 +79,11 @@ function displayWikipediaInformation (result) {
     let pageid = Object.keys(result.query.pages)[0];
     $("#resultsWikiQuery").children(".info").html(JSON.stringify(result.query.pages[pageid].extract));
 }
+
+function viewIndividualTreeOverlayOn() {
+    document.getElementById("viewIndividualTreeOverlay").style.display = "block";
+  }
+  
+  function viewIndividualTreeOverlayOff() {
+    document.getElementById("viewIndividualTreeOverlay").style.display = "none";
+  }
