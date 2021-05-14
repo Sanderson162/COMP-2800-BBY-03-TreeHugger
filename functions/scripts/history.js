@@ -23,13 +23,14 @@ function showComments() {
 }
 
 function getComments() {
+    var user = firebase.auth().currentUser;
     if (user) {
         firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken) {
             $.ajax({
                 url: "/ajax-get-comment-user",
                 dataType: "json",
-                type: "GET",
-                headers: { 'CSRF-Token': Cookies.get("XSRF-TOKEN") },
+                type: "POST",
+                data: {idToken: idToken},
                 success: (data) => {
                     spliceComments(data);
                 },
