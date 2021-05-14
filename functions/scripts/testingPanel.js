@@ -242,6 +242,8 @@ function displayResults(data){
     
     let likeButton = $("<div></div>").addClass("likeButton").addClass("liked");
     likeButton.append(heartIcon);
+    let link = $("<a href='/viewIndividualTree?id=" + record.recordID + "'>View Tree</a>");
+    card.append(link);
     card.append(likeButton);
     resultContainer.append(card);
   });
@@ -284,13 +286,3 @@ function displayLeaderboard(data){
   });
 }
 
-
-// https://stackoverflow.com/questions/3552461/how-to-format-a-javascript-date
-//
-function dateToYMD(date) {
-  var strArray=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  var d = date.getDate();
-  var m = strArray[date.getMonth()];
-  var y = date.getFullYear();
-  return '' + (d <= 9 ? '0' + d : d) + '-' + m + '-' + y;
-}

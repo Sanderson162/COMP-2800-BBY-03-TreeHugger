@@ -13,6 +13,15 @@ window.addEventListener("DOMContentLoaded", () => {
     $("#viewIndividualTreeButton").click(function(e) {
         viewIndividualTreeOverlayOn();
     });
+
+    if($("#recordIDFromOtherPage").text()){
+        getInfoOnTreeByID($("#recordIDFromOtherPage").text());
+    }
+    const params = new URLSearchParams(window.location.search)
+    for (const param of params) {
+        console.log(param)
+    }
+
 });
 
 function getInfoOnTreeByID(recordID){
@@ -24,10 +33,6 @@ function getInfoOnTreeByID(recordID){
         success: function(result, status, xhr){ 
             console.log("recieved: " + result);
             console.log(result);
-            console.log("xhr: " + xhr);
-            console.log(xhr);
-            console.log(xhr.getAllResponseHeaders());
-            console.log(xhr.getResponseHeader("x-ratelimit-remaining"));
             $("#resultsinputTreeIdRaw").children(".info").html(JSON.stringify(result.record.fields));
             displayTree(result.record.fields);
         },
@@ -59,10 +64,6 @@ function getInfoFromWikipediaBasedOnGenusSpecies (genus_species) {
         success: function(result, status, xhr){ 
             console.log("recieved: " + result);
             console.log(result);
-            console.log("xhr: " + xhr);
-            console.log(xhr);
-            console.log(xhr.getAllResponseHeaders());
-            console.log(xhr.getResponseHeader("x-ratelimit-remaining"));
             $("#resultsWikiQueryRaw").children(".info").html(JSON.stringify(result));
             displayWikipediaInformation(result);
             let link = "https://en.wikipedia.org/wiki/" + genus_species;

@@ -62,8 +62,9 @@ app.get("/findtree", function (req, res) {
   res.render("findtree.html");
 });
 
-app.get("/viewIndividualTree", function (req, res) {
-  res.render("viewIndividualTree.html");
+app.get("/viewIndividualTree", urlencodedParser, (req, res) => {
+  var id = req.query.id;
+  res.render("viewIndividualTree.html", { 'recordid': id });
 });
 
 app.get("/search", function (req, res) {
