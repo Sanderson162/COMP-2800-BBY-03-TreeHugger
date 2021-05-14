@@ -22,20 +22,26 @@ function showComments() {
     getComments();
 }
 
-async function getComments(){
-    await $.ajax({
-        url: "/ajax-get-comment-user",
-        dataType: "json",
-        type: "GET",
-        headers: {'CSRF-Token': Cookies.get("XSRF-TOKEN")},
-        success: (data)=>{
-            spliceComments(data);
-        },
-        error: (jqXHR,textStatus,errorThrown )=>{
-            console.log("Error:"+textStatus);
-            return null;
-        }
-    });
+function getComments() {
+    if (user) {
+        firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken) {
+            $.ajax({
+                url: "/ajax-get-comment-user",
+                dataType: "json",
+                type: "GET",
+                headers: { 'CSRF-Token': Cookies.get("XSRF-TOKEN") },
+                success: (data) => {
+                    spliceComments(data);
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    console.log("Error:" + textStatus);
+                    return null;
+                }
+            });
+        });
+    } else {
+        console.log("Not signed in");
+    }
 }
 
 function spliceComments(data){

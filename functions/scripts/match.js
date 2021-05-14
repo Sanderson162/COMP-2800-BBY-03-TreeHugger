@@ -1,13 +1,17 @@
 $(document).ready(() => {
+    $("#form").hide();
     $("#birth").click(() => {
+        $("#form").show();
         selectCard("#birth");
         loadBirthForm();
     });
     $("#anniversary").click(() => {
+        $("#form").show();
         selectCard("#anniversary");
         loadAnniversaryForm()
     });
     $("#event").click(() => {
+        $("#form").show();
         selectCard("#event");
         loadEventForm()
     });

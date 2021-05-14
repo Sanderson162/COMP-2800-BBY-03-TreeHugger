@@ -1,0 +1,54 @@
+.card {
+    border: darkgreen solid 1pt;
+    color: darkgreen;
+    cursor: pointer;
+    margin: 5%;
+    border-radius: 5px;
+}
+
+#form{
+    margin: 5%;
+    text-align: center;
+    border: darkgreen solid 1pt;
+    color: darkgreen;
+    border-radius: 5px;
+}
+
+#form *{
+    margin-top: 2%;
+}
+
+#form #logo {
+    font-size: 80pt;
+}
+
+#menu {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+#result {
+    text-align: center;
+}
+
+#results .card {
+    display: grid;
+    grid-template-columns: 15% 42% 42%;
+    grid-template-rows: 100%;
+}
+
+#results .card div {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 0%;
+}
+
+.card:hover {
+    background-color: darkgreen;
+    color: white;
+}
+
+.card.selected {
+    background-color: darkgreen;
+    color: white;
+}

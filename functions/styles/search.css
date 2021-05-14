@@ -66,6 +66,11 @@
     padding-left: 5%;
 }
 
+.card .message {
+    text-align: center;
+    font-weight: bold;
+}
+
 .event {
     background-color: #42B373 !important;
     background-image :none !important;

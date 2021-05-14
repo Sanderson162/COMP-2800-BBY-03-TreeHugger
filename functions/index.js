@@ -164,22 +164,30 @@ app.post("/ajax-add-comment", urlencodedParser, (req, res) => {
     });
 });
 
-app.get("/ajax-get-comment-user", (req, res) => {
-    let user = "TestUser";
+app.get("/ajax-get-comment-user", urlencodedParser, (req, res) => {
+    const idToken = req.body.idToken.toString();
+
+
     res.setHeader('Content-Type', 'application/json');
-    db.collection("Comments")
-        .where("User","==",user)
-        .orderBy("Timestamp","desc")
-        .get()
-        .then((data) => {
-            let response = [];
-            data.forEach((entry)=>{
-                response.push(entry.data());
-            });
-            res.send(JSON.stringify(response));
-        })
-        .catch((error) => {
-            console.log(error);
+    admin
+        .auth()
+        .verifyIdToken(idToken)
+        .then((decodedToken) => {
+            const uid = decodedToken.uid;
+            db.collection("Comments")
+                .where("User", "==", uid)
+                .orderBy("Timestamp", "desc")
+                .get()
+                .then((data) => {
+                    let response = [];
+                    data.forEach((entry) => {
+                        response.push(entry.data());
+                    });
+                    res.send(JSON.stringify(response));
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         });
 });
 
