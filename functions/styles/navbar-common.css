@@ -1,0 +1,57 @@
+.main-container { 
+    position: fixed;
+    overflow-y: auto;
+    z-index: -1;
+    left: 0;
+    bottom: 54px;
+    top: 0;
+    right: 0;
+    height:auto;
+    width:auto;
+}
+
+.nav-bar {
+    position: absolute;
+    bottom: 0;
+    left:0;
+    height: 54px;
+    width: 100%;
+    background-color: whitesmoke;
+    align-items: center;
+    box-shadow: 0 -4px 10px 0 rgba(0, 0, 0, 0.1);
+    border-top:1px solid gainsboro;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+        "mb1 mb2 mb3 mb4";
+}
+
+.mb1 {
+    grid-area: mb1;
+}
+
+.mb2 {
+    grid-area: mb2;
+}
+
+.mb3 {
+    grid-area: mb3;
+}
+
+.mb4 {
+    grid-area: mb4;
+}
+
+.mb1,
+.mb2,
+.mb3,
+.mb4 {
+    margin: auto;
+    margin-top: 15px;
+}
+
+.highlight {
+    filter: invert(50%) sepia(30%) saturate(2595%) hue-rotate(349deg) brightness(100%) contrast(91%);
+}
