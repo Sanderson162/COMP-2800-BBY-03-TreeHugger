@@ -25,8 +25,22 @@ window.addEventListener("DOMContentLoaded", () => {
     let recordID = $("#inputTreeId").children().val();
     getFavCountByTree(recordID);
   });
+
+  /*
   $("#getFavCountLeaderboard").click(function(e) {
-    getFavCountLeaderboard();
+    var user = firebase.auth().currentUser;
+    if (user) {
+      firebase.auth().currentUser.getIdToken(true).then(function(idToken) {    
+        getFavCountLeaderboardSignedIn(idToken);
+      });
+    } else {
+      getFavCountLeaderboard();
+    }
+    
+  });
+*/
+  $("#getFavCountLeaderboard").click(function(e) {
+      getFavCountLeaderboard();
   });
 
   $("#resultsContainer").on('click','.likeButton',function(){
@@ -151,6 +165,24 @@ function getFavCountLeaderboard(recordID){
   });
 }
 
+function getFavCountLeaderboardSignedIn(idToken){
+  $.ajax({
+    url: "/getFavCountLeaderboardSignedIn",
+    dataType: "json",
+    type: "POST",
+    data: {idToken: idToken},
+    success: function(result, status, xhr){ 
+      console.log("recieved: " + status);
+      console.log(result);
+      console.log(result.data);
+      displayLeaderboard(result.data);
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        console.log("ERROR:", jqXHR, textStatus, errorThrown);
+    }
+  });
+}
+
 function getFavByUser(){
   var user = firebase.auth().currentUser;
   if (user) {
@@ -207,7 +239,7 @@ function displayResults(data){
         card.append($("<p>Coords: </p>").append($("<span></span>").html(openData.geom ? openData.geom.geometry.coordinates[0] + " " + openData.geom.geometry.coordinates[1] : "N/A" )));
       }
     })
-
+    
     let likeButton = $("<div></div>").addClass("likeButton").addClass("liked");
     likeButton.append(heartIcon);
     card.append(likeButton);
@@ -217,6 +249,7 @@ function displayResults(data){
 
 function displayLeaderboard(data){
   let heartIcon = "<i class='fas fa-heart fa-2x'></i>";
+  let heartIconEmpty = "<i class='far fa-heart fa-2x'></i>";
   let resultContainer = $("#resultsContainer");
   resultContainer.empty();
   data.forEach(record => {
@@ -234,9 +267,18 @@ function displayLeaderboard(data){
       }
     })
 
-    let likeButton = $('<div></div>').addClass("likeButton").addClass("liked").attr("data-count", record.favCount);
+    let likeButton = $('<div></div>').addClass("likeButton").attr("data-count", record.favCount);
+
+    if (record.liked) {
+      likeButton.addClass("liked");
+      likeButton.append(heartIcon);
+    } else {
+      likeButton.append(heartIconEmpty);
+    }
+
     let likeCount = $("<span></span>").text(record.favCount);
-    likeButton.append(heartIcon, likeCount);
+    likeButton.append(likeCount);
+    
     card.append(likeButton);
     resultContainer.append(card);
   });
