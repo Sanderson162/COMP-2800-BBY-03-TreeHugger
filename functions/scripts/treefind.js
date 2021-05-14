@@ -437,6 +437,11 @@ function initMap() {
     fullscreenControl: false,
     minZoom: 18,
   });
+  map.addListener("click", () => {
+    if (selectedTreeId) {
+      hideTreeOverlay();
+    }
+  });
   let toggleLocationBtn = createToggleLocationBtn();
   let centerLocationBtn = createCenterLocationBtn();
   let toggleTypeBtn = createToggleTypeBtn();
