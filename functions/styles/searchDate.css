@@ -45,7 +45,7 @@ td.highlightDates a {
 }
 
 #titleText {
-    font-size: 24pt;
+    font-size: 18pt;
     text-align: center;
     padding: 0.25rem;
     margin: 0;
@@ -56,7 +56,7 @@ td.highlightDates a {
     width: 100%;
     top: 0;
     left: 0;
-    transform: translateX(-8px);
+    margin: auto;
     overflow: visible;
 }
 
@@ -93,16 +93,16 @@ td.highlightDates a {
     background: #074431;
     font-family: "Helvetica";
     color: #EEE;
-    font-size: 24pt;
+    font-size: 18pt;
     padding: 10px;
 }
 
 #date-day {
-    font-size: 24pt;
+    font-size: 18pt;
 }
 
 #date-date {
-    font-size: 24pt;
+    font-size: 18pt;
 }
 
 .ui-datepicker-prev,
