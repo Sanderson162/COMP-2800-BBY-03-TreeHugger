@@ -374,8 +374,8 @@ app.post('/getFavCountByTree', urlencodedParser, (req, res) => {
 
 app.post('/getFavCountLeaderboard', urlencodedParser, (req, res) => {
   // res.setHeader('Content-Type', 'application/json');
-  db.collection('FavouriteStats')
-  .orderBy('favCount')
+  db.collection("FavouriteStats")
+  .orderBy("favCount", "desc")
   .limit(15)
   .get()
   .then(querySnapshot => {
@@ -396,6 +396,55 @@ app.post('/getFavCountLeaderboard', urlencodedParser, (req, res) => {
         status: "error"
       });
     });
+});
+
+app.post('/getFavCountLeaderboardSignedIn', urlencodedParser, (req, res) => {
+  // res.setHeader('Content-Type', 'application/json');
+  const idToken = req.body.idToken.toString();
+  admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      const uid = decodedToken.uid;
+      let resultArray = [];
+  db.collection("FavouriteStats")
+  .orderBy("favCount", "desc")
+  .limit(15)
+  .get()
+  .then(querySnapshot => {
+      
+      querySnapshot.forEach((doc) => {
+        db.collection('Favourite').doc(uid + "_" + doc.id)
+        .get().then(function (doc) {
+          if (doc.exists) {
+            resultArray.push({
+              recordID: doc.id,
+              favCount: doc.data().favCount,
+              liked: "liked"
+            });
+          } else {
+            resultArray.push({
+              recordID: doc.id,
+              favCount: doc.data().favCount,
+              liked: null
+            });
+          }
+        });
+      })
+    }).then(function () {
+      res.send({
+        status: "success",
+        data: resultArray
+      });
+    }).catch(function (error) {
+      console.log("Error getting documents: ", error);
+      res.send({
+        status: "error"
+      });
+    });
+
+    //End idtoken verified
+  });
 });
 
 
