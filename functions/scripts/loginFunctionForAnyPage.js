@@ -55,14 +55,16 @@ $(document).ready(() => {
 function createNewAccount(user) {
   console.log(JSON.stringify(user));
   console.log("requesting server makes database slot for user " + user.uid);
-  confirm("Creating new user DEBUG");
+  //confirm("Creating new user DEBUG");
   firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
     $.ajax({
       url: "/ajax-add-user",
       dataType: "json",
       type: "POST",
       data: {name: user.displayName, email: user.email, uid: user.uid, idToken: idToken},
-      success: ()=>{window.location.assign("timestamp");},
+      success: ()=>{
+        //window.location.assign("timestamp");
+      },
       error: ()=>{console.log("ERROR FAILED TO CONNECT")}
     });
   })
