@@ -196,7 +196,7 @@ $(function () {
      *
      * This function utilizes the datepicker beforeShowDay method to check every day of the current month
      * for dates that exist in the dates array (trees that were planted in that month). It will then append
-     * the "highlight" CSS class to any date entries found so they will appear with a green highlight on the
+     * the "highlightDates" CSS class to any date entries found so they will appear with a green highlight on the
      * datepicker interface.
      */
 
@@ -206,7 +206,7 @@ $(function () {
             for (let i = 0; i < dates.length; i++) {
                 dateEntryString = dates[i].fields.date_planted
                 if (dateEntryString.localeCompare(formatDate(date)) == 0) {
-                    return [true, "highlight", "Trees were planted on this day!"];
+                    return [true, "highlightDates", "Trees were planted on this day!"];
                 }
             }
         }
