@@ -14,7 +14,7 @@
  * @see https://stackoverflow.com/questions/17954181/scrolling-only-content-div-others-should-be-fixed
  */
 
-#main .card {
+ #main .card {
     width: 100%;
     max-width: 450px;
     border: darkgreen solid 1pt;
@@ -24,37 +24,7 @@
     margin: auto;
 }
 
-#form{
-    margin: 5%;
-    text-align: center;
-    border: darkgreen solid 1pt;
-    color: darkgreen;
-    border-radius: 5px;
-}
-
-#form *{
-    margin-top: 2%;
-}
-
-#form #logo {
-    font-size: 80pt;
-}
-
-#menu {
-    display: grid;
-    grid-template-columns: 50% 50%;
-}
-
-#result {
-    text-align: center;
-}
-
-.card:hover {
-    background-color: darkgreen;
-    color: white;
-}
-
-.card.selected {
+#main .card:hover {
     background-color: darkgreen;
     color: white;
 }
