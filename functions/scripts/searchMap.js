@@ -24,7 +24,7 @@ let zoomVal;
  * QUERY SETTINGS 
  */
 /* Number of queries returned */
-let rows = 20;
+let rows = 50;
 /* Meters, how far the user travels before a refresh. */
 let distanceRefresh = 50;
 currentLocation = { lat: 49.279430, lng: -123.117276 };
@@ -46,7 +46,7 @@ function testGPS() {
  * After document load, start the location intervals. 
  */
 $(document).ready(function () {
-  showSearchType('species-tag');
+  showSearchType('common-tag');
 });
 /**
  * Gets location, pulls content, and shows error dialogues if any occur. 
@@ -127,13 +127,23 @@ function showSearchType(type) {
 function search() {
   let q = $("#query").val()
   let searchType = $("#search-tags>div.tag-selected").attr('id').slice(0, -4);
-  $("#content-title").text(searchType.toUpperCase() + ": " + q);
+  let qString = q;
+  if (q.length> 12) {
+    qString = q.slice(0, 12) + "..."
+  }
+  // $("#content-title").text(searchType.toUpperCase() + ": " + qString);
+  $("#content-title").text(qString);
   $(".search-container").hide();
   $(".content-container").show();
   $("#loadmore").remove();
-  let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine." + searchType + "_name=" + q + "&start=" + page * 10
+  let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine." + searchType + "_name=" + q + "&rows=" + rows + "&start=" + page * rows
   $.getJSON(query, function (data) {
     $("#content").text("");
+    let rowCalc = rows;
+    if (data.nhits < rows) {
+      rowCalc = data.nhits;
+    }
+    $("#content-title").text($("#content-title").text() + " (" + (rowCalc + page * rows) + " / " + data.nhits + ")");
     clearMarkers();
     $.each(data.records, function (i, entry) {
       if (entry.fields.hasOwnProperty('geom')) {
@@ -142,10 +152,11 @@ function search() {
     });
     isContent("search");
    
-    if (data.records.length == 10) {
+    if (data.records.length == rows) {
       $("#content").append(loadMoreButton());
     }
   });
+  
 }
 
 function searchZoom() {
@@ -244,8 +255,8 @@ function showDialogue(m) {
   } else if (m == "nullContent") {
     let post = $("<div></div>").addClass("post");
     post.addClass("dialogue");
-    let title = $("<div></div>").addClass("title").text("No trees near you");
-    let body = $("<div></div>").addClass("body").text("There are no trees from the database in your area.");
+    let title = $("<div></div>").addClass("title").text("No trees near dropped pin");
+    let body = $("<div></div>").addClass("body").text("There are no trees from the database in the area of the dropped pin.");
     post.append(title, body);
     $("#content").append(post);
 
