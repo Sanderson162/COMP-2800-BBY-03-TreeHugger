@@ -128,9 +128,17 @@ function search() {
   let q = $("#query").val()
   let searchType = $("#search-tags>div.tag-selected").attr('id').slice(0, -4);
   let qString = q;
-  if (q.length> 12) {
-    qString = q.slice(0, 12) + "..."
-  }
+  // responsive ...
+  if ($(window).width() < 321 && $(window).width() < 375) {
+    if (q.length> 10) {
+      qString = q.slice(0, 7) + "..."
+    }
+  } else if ($(window).width() > 374 && $(window).width() < 600)   {
+    if (q.length> 15) {
+      qString = q.slice(0, 12) + "..."
+    }
+  }  
+
   // $("#content-title").text(searchType.toUpperCase() + ": " + qString);
   $("#content-title").text(qString);
   $(".search-container").hide();
