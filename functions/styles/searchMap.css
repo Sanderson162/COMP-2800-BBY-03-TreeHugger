@@ -231,6 +231,17 @@ button:hover {
     box-shadow:         inset 0 8px 6px -6px rgba(0, 0, 0, 0.1);
 }
 
+#search-button-container {
+    position: sticky;
+    bottom:0;
+    padding:1em;
+    background-color:rgb(247, 247, 247);
+    display:block;
+    color: rgb(25,25,25);
+    height:50px;
+    box-shadow:         inset 0 8px 6px -6px rgba(0, 0, 0, 0.1);
+}
+
 #distance {
     font-style: italic;
 }
@@ -304,7 +315,7 @@ button:hover {
     width:100px;
 }
 
-#content>.post:nth-child(2) {
+/* #content>.post:nth-child(2) {
     background-color: rgb(253, 253, 253);
 }
 
@@ -342,7 +353,7 @@ button:hover {
 #content>.post:nth-child(n+10) {
     background-color: rgb(237, 237, 237);
     border-bottom-color: rgb(228, 228, 228);
-}
+} */
 
 .tag {
     background:#ececec;
@@ -370,4 +381,28 @@ button:hover {
 
 #species-search {
     display:none;
+}
+
+input {
+    font-size:18px;
+    width:250px;
+    padding:10px;
+    border-radius:4px;
+    margin:auto;
+    border-color:gainsboro;
+    border-width:thin;
+    border-style: solid;
+        -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+}
+
+input:focus {
+    outline: none;
+    border: 1px solid #007ACC;
+  }
+  
+#search-bar {
+    width:100%;
+    box-sizing:border-box;
 }

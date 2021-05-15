@@ -19,6 +19,7 @@ let selectedTreeIcon = "https://i.imgur.com/GE8YWSy.png";
 let locationIcon = "https://i.imgur.com/WRzZWTj.png";
 let locationInterval;
 let page = 0;
+
 /**
  * QUERY SETTINGS 
  */
@@ -45,12 +46,7 @@ function testGPS() {
  * After document load, start the location intervals. 
  */
 $(document).ready(function () {
-  // getLocation(true);
-  // if (testing) {
-  //   testLocationInterval = setInterval(testGPS, 30);
-  // }
-  // // Enables location
-  // locationInterval = setInterval("getLocation(false)", 3000);
+  showSearchType('species-tag');
 });
 /**
  * Gets location, pulls content, and shows error dialogues if any occur. 
@@ -125,6 +121,7 @@ function showSearchType(type) {
     $("#search-bar").show();
     loadSearchBarOptions("genus");
   }
+  $("#search-bar>input").focus();
 }
 
 function search() {
@@ -143,7 +140,8 @@ function search() {
         updateContent(entry, false);
       }
     });
-    isContent();
+    isContent("search");
+   
     if (data.records.length == 10) {
       $("#content").append(loadMoreButton());
     }
@@ -155,14 +153,15 @@ function searchZoom() {
   for (let i = 0; i < markers.length; i++) {
     bounds.extend(markers[i]);
   }
-  map.fitBounds(bounds);
+  map.fitBounds(bounds, 0);
 }
 
 function loadMoreButton() {
   let b = $("<button type='button' id='loadmore'>Load more</button>");
   b.click(() => {
     page += 1;
-    search()
+    search();
+    $("#content").scrollTop(0);
   });
   return b;
 }
@@ -216,9 +215,14 @@ function getContent() {
 /**
  * Checks if content is empty. 
  */
-function isContent() {
+function isContent(p) {
   if ($("#content").text() == "") {
-    showDialogue("nullContent");
+    if (p == "search") {
+      showDialogue("nullSearch");
+    } else {
+      showDialogue("nullContent");
+    }
+  
   }
 }
 /**
@@ -244,6 +248,15 @@ function showDialogue(m) {
     let body = $("<div></div>").addClass("body").text("There are no trees from the database in your area.");
     post.append(title, body);
     $("#content").append(post);
+
+  } else if (m == "nullSearch") {
+    let post = $("<div></div>").addClass("post");
+    post.addClass("dialogue");
+    let title = $("<div></div>").addClass("title").text("No trees found");
+    let body = $("<div></div>").addClass("body").text("There are no trees from the database matching your query.");
+    post.append(title, body);
+    $("#content").append(post);
+    
   } else if (m == "locationErrorNS") {
     if ($("#content").text() != "Location is not supported on this browserLocation services must be enabled to see nearby trees.") {
       $("#content").text("");
@@ -309,7 +322,7 @@ function zoom(entry) {
   map.setCenter(
     treeLocation
   );
-  // map.setZoom(15);
+  map.setZoom(13);
   centerMap();
   showTreeOverlay(entry);
   addStreetViewBtnListener(entry);
@@ -405,14 +418,14 @@ function addStreetViewBtnListener(entry) {
 function hideTreeOverlay() {
   $(".tree-overlay-container").hide();
   $(".content-container").show();
-  // map.setZoom(20);
+  map.setZoom(12);
   // map.setOptions({ gestureHandling: "auto" });
   panorama.setVisible(false);
   resetMarkerColor();
   selectedTreeLocation = null;
   selectedTreeId = null;
   showMapButtons(true);
-  // centerMap();
+  centerMap();
 }
 /** 
  * Toggles the content overlay visible or hidden
@@ -468,6 +481,7 @@ function hideSearchOverlay() {
   $("#outer-search").css('height', '40px');
   rotateChevron($("#hide-search-btn"), -90);
   map.panBy(0, height * 0.25);
+  $("#search-button-container").hide();
 }
 /**
  * Show the content overlay
@@ -477,6 +491,7 @@ function showSearchOverlay() {
   $("#outer-search").css('height', '100%');
   rotateChevron($("#hide-search-btn"), 0);
   map.panBy(0, -height * 0.25);
+  $("#search-button-container").show();
 }
 /**
  * Shows or hides the center-locate and enable-location buttons. 
@@ -532,14 +547,14 @@ function updateTreeOverlayDistance() {
  */
 function initMap() {
   const VANCOUVER_BOUNDS = {
-    north: 49.317422,
-    south: 49.198387,
-    west: -123.224944,
-    east: -122.980440,
+    north: 50.229779,
+    south: 48.908852,
+    west: -123.667157,
+    east: -122.345232,
   };
   map = new google.maps.Map(document.getElementById("map"), {
     center: currentLocation,
-    zoom: 13,
+    zoom: 10,
     mapId: 'b3163309c37356ea',
     restriction: {
       latLngBounds: VANCOUVER_BOUNDS,
@@ -562,11 +577,11 @@ function initMap() {
     },
     fullscreenControl: false,
   });
-  map.addListener("click", () => {
-    if (selectedTreeId) {
-      hideTreeOverlay();
-    }
-  });
+  // map.addListener("click", () => {
+  //   if (selectedTreeId) {
+  //     hideTreeOverlay();
+  //   }
+  // });
   // let toggleLocationBtn = createToggleLocationBtn();
   // let centerLocationBtn = createCenterLocationBtn();
   // let toggleTypeBtn = createToggleTypeBtn();
@@ -594,6 +609,8 @@ function initMap() {
     clickToGo: false
   };
   panorama.setOptions(panoOptions);
+  map.setZoom(11);
+  centerMap();
 }
 /**
  * Creates a button that toggles the location service. 
