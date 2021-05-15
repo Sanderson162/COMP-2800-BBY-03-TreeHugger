@@ -18,7 +18,6 @@ let greenTreeIcon = iconBase + "parks.png";
 let selectedTreeIcon = "https://i.imgur.com/GE8YWSy.png";
 let locationIcon = "https://i.imgur.com/WRzZWTj.png";
 let locationInterval;
-let page = 0;
 /**
  * QUERY SETTINGS 
  */
@@ -45,12 +44,11 @@ function testGPS() {
  * After document load, start the location intervals. 
  */
 $(document).ready(function () {
-  // getLocation(true);
-  // if (testing) {
-  //   testLocationInterval = setInterval(testGPS, 30);
-  // }
-  // // Enables location
-  // locationInterval = setInterval("getLocation(false)", 3000);
+  getLocation(true);
+  if (testing) {
+    testLocationInterval = setInterval(testGPS, 30);
+  }
+  locationInterval = setInterval("getLocation(false)", 3000);
 });
 /**
  * Gets location, pulls content, and shows error dialogues if any occur. 
@@ -89,12 +87,12 @@ function getLocation(center) {
  */
 function contentPullLocation() {
   if (!lastPullLocation) {
-    getContent('https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&geofilter.distance=' + currentLocation.lat + '%2C' + currentLocation.lng + '%2C1000&rows=' + rows);
+    getContent();
     lastPullLocation = currentLocation;
   } else {
     if (lastPullLocation.lat != currentLocation.lat || lastPullLocation.lng != currentLocation.lng) {
       if (Math.round(distance(lastPullLocation.lat, lastPullLocation.lng, currentLocation.lat, currentLocation.lng, "M")) > distanceRefresh) {
-        getContent('https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&geofilter.distance=' + currentLocation.lat + '%2C' + currentLocation.lng + '%2C1000&rows=' + rows);
+        getContent();
         lastPullLocation = currentLocation;
       }
       if (!lastCalcLocation) {
@@ -109,101 +107,12 @@ function contentPullLocation() {
     }
   }
 }
-function showSearchType(type) {
-  resetTagSelection();
-  selectTag($("#" + type));
-  resetSearchBarOptions()
-  if (type == "near-tag") {
-    showNearLocation();
-  } else if (type == "species-tag") {
-    $("#search-bar").show();
-    loadSearchBarOptions("species");
-  } else if (type == "common-tag") {
-    $("#search-bar").show();
-    loadSearchBarOptions("common");
-  } else if (type == "genus-tag") {
-    $("#search-bar").show();
-    loadSearchBarOptions("genus");
-  }
-}
-
-function search() {
-  let q = $("#query").val()
-  let searchType = $("#search-tags>div.tag-selected").attr('id').slice(0, -4);
-  $("#content-title").text(searchType.toUpperCase() + ": " + q);
-  $(".search-container").hide();
-  $(".content-container").show();
-  $("#loadmore").remove();
-  let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine." + searchType + "_name=" + q + "&start=" + page * 10
-  $.getJSON(query, function (data) {
-    $("#content").text("");
-    clearMarkers();
-    $.each(data.records, function (i, entry) {
-      if (entry.fields.hasOwnProperty('geom')) {
-        updateContent(entry, false);
-      }
-    });
-    isContent();
-    if (data.records.length == 10) {
-      $("#content").append(loadMoreButton());
-    }
-  });
-}
-
-function searchZoom() {
-  var bounds = new google.maps.LatLngBounds();
-  for (let i = 0; i < markers.length; i++) {
-    bounds.extend(markers[i]);
-  }
-  map.fitBounds(bounds);
-}
-
-function loadMoreButton() {
-  let b = $("<button type='button' id='loadmore'>Load more</button>");
-  b.click(() => {
-    page += 1;
-    search()
-  });
-  return b;
-}
-
-function resetSearchBarOptions() {
-  $("#data").html("");
-}
-//aidan
-function loadSearchBarOptions(searchType) {
-  let query = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/facets?facet=" + searchType + "_name&timezone=UTC"
-  $.getJSON(query, (data) => {
-    $.each(data.facets[0].facets, function (i, entry) {
-      $("#data").append($("<option></option>").val(entry.name));
-    });
-
-  })
-
-}
-//temp
-function showNearLocation() {
-  $("#content-title").text("TREES NEAR ME");
-  getContent('https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&geofilter.distance=' + currentLocation.lat + '%2C' + currentLocation.lng + '%2C1000&rows=' + rows);
-  enableLocation();
-  $(".search-container").hide();
-  $(".content-container").show();
-}
-function selectTag(tag) {
-  tag.addClass("tag-selected");
-}
-function resetTagSelection() {
-  $("#search-tags>div.tag-selected").removeClass("tag-selected");
-}
-function showSpeciesSearch() {
-
-}
 /**
  * Gets entries from opendatabase API. 
  * @see https://www.w3schools.com/jquery/ajax_getjson.asp
  */
-function getContent(url) {
-  $.getJSON(url, function (data) {
+function getContent() {
+  $.getJSON('https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&geofilter.distance=' + currentLocation.lat + '%2C' + currentLocation.lng + '%2C1000&rows=' + rows, function (data) {
     $("#content").text("");
     clearMarkers();
     $.each(data.records, function (i, entry) {
@@ -270,19 +179,13 @@ function showDialogue(m) {
  * Updates and appends content with entry. 
  * @param {obj} entry
  */
-function updateContent(entry, distanceEnabled) {
+function updateContent(entry) {
   var dist = Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M"));
   var dateString = "";
   var post = $("<div></div>").addClass("post");
   post.attr('id', entry.recordid);
   var title = $("<div></div>").addClass("title").text(entry.fields.common_name);
-  var dis;
-  if (distanceEnabled) {
-    dis = $("<div></div>").addClass("distance").text(dist + " meters");
-  } else {
-    dis = $("<div></div>").addClass("distance").text(entry.fields.genus_name + " " + entry.fields.species_name);
-  }
-  
+  var dis = $("<div></div>").addClass("distance").text(dist + " meters");
   var body = $("<div></div>").addClass("body").text(entry.fields.on_street);
   if (entry.fields.date_planted) {
     dateString = "Planted on " + entry.fields.date_planted;
@@ -302,13 +205,13 @@ function updateContent(entry, distanceEnabled) {
 function zoom(entry) {
   selectedTreeId = entry.recordid;
   colorMarker(entry.recordid);
-  // map.setOptions({ gestureHandling: "none" });
+  map.setOptions({ gestureHandling: "none" });
   var treeLocation = { lat: entry.fields.geom.coordinates[1], lng: entry.fields.geom.coordinates[0] }
   selectedTreeLocation = treeLocation;
   map.setCenter(
     treeLocation
   );
-  // map.setZoom(15);
+  map.setZoom(40);
   centerMap();
   showTreeOverlay(entry);
   addStreetViewBtnListener(entry);
@@ -404,8 +307,8 @@ function addStreetViewBtnListener(entry) {
 function hideTreeOverlay() {
   $(".tree-overlay-container").hide();
   $(".content-container").show();
-  // map.setZoom(20);
-  // map.setOptions({ gestureHandling: "auto" });
+  map.setZoom(20);
+  map.setOptions({ gestureHandling: "auto" });
   panorama.setVisible(false);
   resetMarkerColor();
   selectedTreeLocation = null;
@@ -429,7 +332,7 @@ function toggleContentOverlay() {
 function hideContentOverlay() {
   let height = window.innerHeight;
   $("#outer-content").css('height', '40px');
-  rotateChevron($("#hide-content-btn"), -90);
+  rotateChevron(-90);
   map.panBy(0, height * 0.25);
 }
 /**
@@ -438,44 +341,16 @@ function hideContentOverlay() {
 function showContentOverlay() {
   let height = window.innerHeight;
   $("#outer-content").css('height', '100%');
-  rotateChevron($("#hide-content-btn"), 0);
+  rotateChevron(0);
   map.panBy(0, -height * 0.25);
 }
 /**
  * Rotates the chevron.
  * @param {int} amount Amount of rotation.
  */
-function rotateChevron(chevron, amount) {
-  chevron.css({ transition: "transform 0.3s", transform: "rotate(" + amount + "deg)" });
+function rotateChevron(amount) {
+  $("#hide-content-btn").css({ transition: "transform 0.3s", transform: "rotate(" + amount + "deg)" });
   setTimeout(function () { $("#hide-content-btn").css({ transition: "none" }) }, 300);
-}
-/** 
- * Toggles the content overlay visible or hidden
- */
-function toggleSearchOverlay() {
-  if ($("#outer-search").css('height') == '40px') {
-    showSearchOverlay();
-  } else {
-    hideSearchOverlay();
-  }
-}
-/** 
- * Hides the content overlay
- */
-function hideSearchOverlay() {
-  let height = window.innerHeight;
-  $("#outer-search").css('height', '40px');
-  rotateChevron($("#hide-search-btn"), -90);
-  map.panBy(0, height * 0.25);
-}
-/**
- * Show the content overlay
- */
-function showSearchOverlay() {
-  let height = window.innerHeight;
-  $("#outer-search").css('height', '100%');
-  rotateChevron($("#hide-search-btn"), 0);
-  map.panBy(0, -height * 0.25);
 }
 /**
  * Shows or hides the center-locate and enable-location buttons. 
@@ -538,7 +413,7 @@ function initMap() {
   };
   map = new google.maps.Map(document.getElementById("map"), {
     center: currentLocation,
-    zoom: 13,
+    zoom: 20,
     mapId: 'b3163309c37356ea',
     restriction: {
       latLngBounds: VANCOUVER_BOUNDS,
@@ -560,18 +435,19 @@ function initMap() {
       position: google.maps.ControlPosition.RIGHT_BOTTOM,
     },
     fullscreenControl: false,
+    minZoom: 18,
   });
   map.addListener("click", () => {
     if (selectedTreeId) {
       hideTreeOverlay();
     }
   });
-  // let toggleLocationBtn = createToggleLocationBtn();
-  // let centerLocationBtn = createCenterLocationBtn();
-  // let toggleTypeBtn = createToggleTypeBtn();
-  // map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(toggleLocationBtn);
-  // map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerLocationBtn);
-  // map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(toggleTypeBtn);
+  let toggleLocationBtn = createToggleLocationBtn();
+  let centerLocationBtn = createCenterLocationBtn();
+  let toggleTypeBtn = createToggleTypeBtn();
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(toggleLocationBtn);
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerLocationBtn);
+  map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(toggleTypeBtn);
   panorama = map.getStreetView();
   panorama.setPosition(currentLocation);
   panorama.addListener("visible_changed", function () {
@@ -818,27 +694,21 @@ function clearMarkers() {
  */
 function toggleLocation(enabled) {
   if (enabled) {
-    enableLocation();
+    locationInterval = setInterval("getLocation(false)", 3000);
+    if (testing) {
+      testLocationInterval = setInterval(testGPS, 30);
+    }
+    getLocation(true);
   } else {
-    disableLocation();
+    clearInterval(locationInterval);
+    locationInterval = null;
+    if (testing) {
+      clearInterval(testLocationInterval);
+      testLocationInterval = null;
+    }
+    clearLocationMarker();
+    showDialogue("locationDisabled");
   }
-}
-function disableLocation() {
-  clearInterval(locationInterval);
-  locationInterval = null;
-  if (testing) {
-    clearInterval(testLocationInterval);
-    testLocationInterval = null;
-  }
-  clearLocationMarker();
-  showDialogue("locationDisabled");
-}
-function enableLocation() {
-  locationInterval = setInterval("getLocation(false)", 3000);
-  if (testing) {
-    testLocationInterval = setInterval(testGPS, 30);
-  }
-  getLocation(true);
 }
 /**
  * Clears the location marker and resets lastPull. 

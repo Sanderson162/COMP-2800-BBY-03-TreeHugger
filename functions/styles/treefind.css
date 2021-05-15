@@ -41,34 +41,7 @@ h1 {
     opacity:98%;
 }
 
-#search {
-    border-radius: 4px;
-    background-color:white;
-    margin: auto;
-    height: 92%;
-    max-width: 475px;
-    max-height:500px;
-    overflow-y:auto;
-    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
-    pointer-events: all;
-    opacity:98%;
-}
-
 #outer-content {
-    border-radius: 4px;
-    background-color:rgb(247, 247, 247);
-    margin: auto;
-    /* margin-top:1em; */
-    height: 100%;
-    max-width: 475px;
-    max-height:500px;
-    overflow-y:hidden;
-    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
-    pointer-events: all;
-    opacity:98%;
-}
-
-#outer-search {
     border-radius: 4px;
     background-color:rgb(247, 247, 247);
     margin: auto;
@@ -150,7 +123,6 @@ h1 {
 }
 
 .content-container { 
-    display:none;
     user-select: none;
     position: absolute;
     z-index: 0;
@@ -167,21 +139,6 @@ h1 {
 
 .tree-overlay-container {
     display: none;
-    user-select: none;
-    position: absolute;
-    z-index: 1;
-    left: 0;
-    top: 0px;
-    width: 100%;
-    height: 50%;
-    overflow: visible;
-    background-image: linear-gradient(to top, rgba(255, 255, 255, 0), rgb(243, 243, 243));
-    pointer-events: none;
-    padding: 1em;
-    box-sizing:border-box;
-}
-
-.search-container {
     user-select: none;
     position: absolute;
     z-index: 1;
@@ -273,14 +230,6 @@ button:hover {
     right:2px;
 }
 
-#hide-search-btn {
-    height:17px;
-    position:relative;
-    top:2px;
-    right:2px;
-}
-
-
 #species-name {
     background: white;
     margin-bottom:0.5em;
@@ -342,32 +291,4 @@ button:hover {
 #content>.post:nth-child(n+10) {
     background-color: rgb(237, 237, 237);
     border-bottom-color: rgb(228, 228, 228);
-}
-
-.tag {
-    background:#ececec;
-    color:black;
-    padding: 0.5em;
-    border-radius: 2em;
-    font-size: 100%;
-    width:80px;
-    height:20px;
-    display:inline-block;
-    text-align:center;
-}
-
-#search-tags {
-    width:100%;
-    overflow-x:scroll;
-    height:50px;
-    white-space: nowrap;
-}
-
-.tag-selected {
-    background: gray;
-    color:white;
-}
-
-#species-search {
-    display:none;
 }

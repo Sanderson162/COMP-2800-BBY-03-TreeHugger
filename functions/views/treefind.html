@@ -4,44 +4,17 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="./searchMap.css">
+    <link rel="stylesheet" href="./treefind.css">
     <link rel="stylesheet" href="./navbar-common.css">
     <title>Trees Near Me</title>
 </head>
 
 <body>
-    <div class="search-container">
-        <div id="outer-search">
-            <span  onclick="toggleSearchOverlay()" id="trees-near-header"><svg  id="hide-search-btn" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 9L12 15L18 9" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>SEARCH</span> 
-        <div id="search">
-            <H2>SEARCH BY</H2>
-            <div id="search-tags">
-                <div class="tag" id="location-tag"  onclick="showSearchType('location-tag')">Location</div>
-                <div class="tag" id="date-tag" onclick="showSearchType('date-tag')">Date</div>
-                <div class="tag" id="species-tag" onclick="showSearchType('species-tag')">Species</div>
-                <div class="tag" id="genus-tag" onclick="showSearchType('genus-tag')">Genus</div>
-                <div class="tag" id="common-tag" onclick="showSearchType('common-tag')">Name</div>
-            </div>
-            <div id="search-bar">
-                <input list="data" id="query"/>
-                <datalist id="data">
-                </datalist>
-            </div>
-
-        </div>
-        <div id="button-container">
-            
-            <div id="other-view-container"><div id="street-view-container"><button onclick="search()" id="search-btn">Search</button></div> </div>
-        </div>
-    </div>
-    </div>
     <div class="content-container">
         <div id="outer-content">
             <span  onclick="toggleContentOverlay()" id="trees-near-header"><svg  id="hide-content-btn" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M6 9L12 15L18 9" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg><span id="content-title">TREES NEAR ME</span></span> 
+                </svg>TREES NEAR ME</span> 
 
         <div id="content">
             <!-- <div class="post">
@@ -98,7 +71,7 @@
         <div id="pano"></div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="/searchMap.js"></script>
+    <script src="/treefind.js"></script>
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIu6Paiio4Zq0ySb6-LuMJOpFSt25RPz0&map_ids=b3163309c37356ea&callback=initMap"> </script>
         <script src="./navbar-common.js"></script>
