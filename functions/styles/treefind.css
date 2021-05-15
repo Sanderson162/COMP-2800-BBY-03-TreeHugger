@@ -70,7 +70,7 @@ h1 {
     opacity:98%;
 }
 
-#trees-near-header, #trees-content-header, #tree-name {
+#trees-near-header, #trees-content-header, #species-name {
     color:gray;
     font-size:110%;
     margin:10px;
@@ -230,7 +230,7 @@ button:hover {
     right:2px;
 }
 
-#species-name {
+#tree-name {
     background: white;
     margin-bottom:0.5em;
     position:sticky;

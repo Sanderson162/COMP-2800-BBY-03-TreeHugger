@@ -280,7 +280,7 @@ function showTreeOverlay(entry) {
 function updateTreeOverlayContent(entry) {
   $("#tree-name").text(entry.fields.common_name);
   $("#species-name").text(entry.fields.genus_name + " " + entry.fields.species_name);
-  $("#distance").text(Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M")) + " meters away from your location.");
+  $("#distance").text(Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M")) + " meters away");
   $("#body").text(entry.fields.on_street);
   var dateString;
   if (entry.fields.date_planted) {
@@ -397,7 +397,7 @@ function updateLocationMarker(location, lbl) {
  */
 function updateTreeOverlayDistance() {
   if (selectedTreeLocation) {
-    $("#distance").text(Math.round(distance(selectedTreeLocation.lat, selectedTreeLocation.lng, currentLocation.lat, currentLocation.lng, "M")) + " meters away from your location.");
+    $("#distance").text(Math.round(distance(selectedTreeLocation.lat, selectedTreeLocation.lng, currentLocation.lat, currentLocation.lng, "M")) + " meters away");
   }
 }
 /**
