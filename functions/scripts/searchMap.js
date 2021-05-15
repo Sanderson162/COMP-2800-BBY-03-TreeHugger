@@ -412,7 +412,7 @@ function hideTreeOverlay() {
   selectedTreeLocation = null;
   selectedTreeId = null;
   showMapButtons(true);
-  centerMap();
+  // centerMap();
 }
 /** 
  * Toggles the content overlay visible or hidden
