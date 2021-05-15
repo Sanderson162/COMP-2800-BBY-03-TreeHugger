@@ -89,12 +89,12 @@ function getLocation(center) {
  */
 function contentPullLocation() {
   if (!lastPullLocation) {
-    getContent('https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&geofilter.distance=' + currentLocation.lat + '%2C' + currentLocation.lng + '%2C1000&rows=' + rows);
+    getContent();
     lastPullLocation = currentLocation;
   } else {
     if (lastPullLocation.lat != currentLocation.lat || lastPullLocation.lng != currentLocation.lng) {
       if (Math.round(distance(lastPullLocation.lat, lastPullLocation.lng, currentLocation.lat, currentLocation.lng, "M")) > distanceRefresh) {
-        getContent('https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&geofilter.distance=' + currentLocation.lat + '%2C' + currentLocation.lng + '%2C1000&rows=' + rows);
+        getContent();
         lastPullLocation = currentLocation;
       }
       if (!lastCalcLocation) {
@@ -184,7 +184,7 @@ function loadSearchBarOptions(searchType) {
 //temp
 function showNearLocation() {
   $("#content-title").text("TREES NEAR ME");
-  getContent('https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&geofilter.distance=' + currentLocation.lat + '%2C' + currentLocation.lng + '%2C1000&rows=' + rows);
+  getContent();
   enableLocation();
   $(".search-container").hide();
   $(".content-container").show();
@@ -202,12 +202,13 @@ function showSpeciesSearch() {
  * Gets entries from opendatabase API. 
  * @see https://www.w3schools.com/jquery/ajax_getjson.asp
  */
-function getContent(url) {
+function getContent() {
+  let url = 'https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&geofilter.distance=' + currentLocation.lat + '%2C' + currentLocation.lng + '%2C1000&rows=' + rows;
   $.getJSON(url, function (data) {
     $("#content").text("");
     clearMarkers();
     $.each(data.records, function (i, entry) {
-      updateContent(entry);
+      updateContent(entry, true);
     });
     isContent();
   });
