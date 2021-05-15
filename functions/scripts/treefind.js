@@ -44,11 +44,12 @@ function testGPS() {
  * After document load, start the location intervals. 
  */
 $(document).ready(function () {
-  getLocation(true);
+  // getLocation(true);
   if (testing) {
     testLocationInterval = setInterval(testGPS, 30);
   }
-  locationInterval = setInterval("getLocation(false)", 3000);
+  // Enables location
+  // locationInterval = setInterval("getLocation(false)", 3000);
 });
 /**
  * Gets location, pulls content, and shows error dialogues if any occur. 
@@ -694,21 +695,27 @@ function clearMarkers() {
  */
 function toggleLocation(enabled) {
   if (enabled) {
-    locationInterval = setInterval("getLocation(false)", 3000);
-    if (testing) {
-      testLocationInterval = setInterval(testGPS, 30);
-    }
-    getLocation(true);
+    enableLocation();
   } else {
-    clearInterval(locationInterval);
-    locationInterval = null;
-    if (testing) {
-      clearInterval(testLocationInterval);
-      testLocationInterval = null;
-    }
-    clearLocationMarker();
-    showDialogue("locationDisabled");
+    disableLocation();
   }
+}
+function disableLocation() {
+  clearInterval(locationInterval);
+  locationInterval = null;
+  if (testing) {
+    clearInterval(testLocationInterval);
+    testLocationInterval = null;
+  }
+  clearLocationMarker();
+  showDialogue("locationDisabled");
+}
+function enableLocation() {
+  locationInterval = setInterval("getLocation(false)", 3000);
+  if (testing) {
+    testLocationInterval = setInterval(testGPS, 30);
+  }
+  getLocation(true);
 }
 /**
  * Clears the location marker and resets lastPull. 
