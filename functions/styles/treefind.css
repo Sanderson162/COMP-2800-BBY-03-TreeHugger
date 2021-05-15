@@ -343,3 +343,27 @@ button:hover {
     background-color: rgb(237, 237, 237);
     border-bottom-color: rgb(228, 228, 228);
 }
+
+.tag {
+    background: gainsboro;
+    color:black;
+    padding: 0.5em;
+    border-radius: 2em;
+    font-size: 100%;
+    width:80px;
+    height:20px;
+    display:inline-block;
+    text-align:center;
+}
+
+#search-tags {
+    width:100%;
+    overflow-x:scroll;
+    height:50px;
+    white-space: nowrap;
+}
+
+.tag-selected {
+    background: gray;
+    color:white;
+}
