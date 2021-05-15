@@ -29,7 +29,7 @@ currentLocation = { lat: 49.239593, lng: -123.024645 };
 /** 
  * TESTING SETTINGS 
  */
-let testing = true;
+let testing = false;
 /* pace: 20 is crazy driver pace, 10 is safe driver pace, 1 is walking pace. */
 let pace = 1;
 let testLocationInterval;
@@ -58,6 +58,12 @@ function getLocation(center) {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        if (!testing) {
+          if (checkLocationBounds(position)) {
+            showDialogue("locationOutofBounds");
+            return;
+          }
+        }
         let location = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
@@ -80,6 +86,23 @@ function getLocation(center) {
   } else {
     showDialogue("locationErrorNS");
     clearLocationMarker();
+  }
+}
+/**
+ * Checks if user is in Vancouver.
+ * @param {obj} position Current location. 
+ * @returns true if location is out of bounds.
+ */
+function checkLocationBounds(position) {
+  let bounds = new google.maps.LatLngBounds(
+    new google.maps.LatLng(49.198387, -123.224944), 
+    new google.maps.LatLng(49.317422, -122.980440));
+  let posLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+  if (bounds.contains(posLatLng) == false) {
+    return true;
+  } else {
+    return false;
   }
 }
 /**
@@ -116,7 +139,9 @@ function getContent() {
     $("#content").text("");
     clearMarkers();
     $.each(data.records, function (i, entry) {
-      updateContent(entry);
+      if (entry.fields.hasOwnProperty('geom')) {
+        updateContent(entry);
+      }
     });
     isContent();
   });
@@ -173,6 +198,13 @@ function showDialogue(m) {
       post.append(title, body);
       $("#content").append(post);
     }
+  } else if (m == "locationOutofBounds") {
+    let post = $("<div></div>").addClass("post");
+    post.addClass("dialogue");
+    let title = $("<div></div>").addClass("title").text("You are not in Vancouver");
+    let body = $("<div></div>").addClass("body").text("TreeHugger only works in Vancouver, try our search to explore our trees!");
+    post.append(title, body);
+    $("#content").append(post);
   }
 }
 /**
