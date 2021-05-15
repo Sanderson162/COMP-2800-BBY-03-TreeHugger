@@ -9,7 +9,7 @@ function addNavbarCommon() {
 	let directory = String(currentPage.split("/").slice(-1));
 	let indexLink = "home";
 	let profileLink = "testingpanel";
-	let searchLink = "search";
+	let searchLink = "searchMap";
 	let treeFindLink = "treefind";
 
 	if (!directory) {

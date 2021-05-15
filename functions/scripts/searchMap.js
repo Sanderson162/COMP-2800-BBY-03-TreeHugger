@@ -127,6 +127,7 @@ function showSearchType(type) {
 function search() {
   let q = $("#query").val()
   let searchType = $("#search-tags>div.tag-selected").attr('id').slice(0, -4);
+  $("#content-title").text(searchType.toUpperCase() + ": " + q);
   $(".search-container").hide();
   $(".content-container").show();
   $("#loadmore").remove();
@@ -138,18 +139,17 @@ function search() {
       if (entry.fields.hasOwnProperty('geom')) {
         updateContent(entry);
       }
-
     });
     isContent();
     if (data.records.length == 10) {
       $("#content").append(loadMoreButton());
     }
-    searchZoom();
+    // searchZoom();
   });
 }
 
 function searchZoom() {
-  let bounds = new google.maps.LatLngBounds();
+  var bounds = new google.maps.LatLngBounds();
   for (let i = 0; i < markers.length; i++) {
     bounds.extend(markers[i]);
   }

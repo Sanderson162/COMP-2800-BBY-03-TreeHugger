@@ -50,6 +50,11 @@ app.get("/treefind", function (req, res) {
   res.render("treefind.html");
 });
 
+app.get("/searchMap", function (req, res) {
+  res.render("searchMap.html");
+});
+
+
 app.get("/match", function (req, res) {
   res.render("match.html");
 });
