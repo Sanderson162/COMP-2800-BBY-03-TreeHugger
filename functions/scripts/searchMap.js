@@ -19,7 +19,7 @@ let selectedTreeIcon = "https://i.imgur.com/GE8YWSy.png";
 let locationIcon = "https://i.imgur.com/WRzZWTj.png";
 let locationInterval;
 let page = 0;
-
+let zoomVal;
 /**
  * QUERY SETTINGS 
  */
@@ -314,6 +314,7 @@ function updateContent(entry, distanceEnabled) {
  * @param {obj} entry
  */
 function zoom(entry) {
+  zoomVal = map.getZoom();
   selectedTreeId = entry.recordid;
   colorMarker(entry.recordid);
   // map.setOptions({ gestureHandling: "none" });
@@ -322,7 +323,9 @@ function zoom(entry) {
   map.setCenter(
     treeLocation
   );
-  map.setZoom(13);
+  if (zoomVal < 13) {
+    map.setZoom(13);
+  }
   centerMap();
   showTreeOverlay(entry);
   addStreetViewBtnListener(entry);
@@ -418,14 +421,21 @@ function addStreetViewBtnListener(entry) {
 function hideTreeOverlay() {
   $(".tree-overlay-container").hide();
   $(".content-container").show();
-  map.setZoom(12);
   // map.setOptions({ gestureHandling: "auto" });
   panorama.setVisible(false);
   resetMarkerColor();
   selectedTreeLocation = null;
   selectedTreeId = null;
   showMapButtons(true);
-  centerMap();
+  let center = false;
+  if (zoomVal != map.getZoom()) {
+    center = true;
+  }
+  map.setZoom(zoomVal);
+  if (center) {
+    centerMap();
+  }
+  
 }
 /** 
  * Toggles the content overlay visible or hidden
@@ -577,6 +587,12 @@ function initMap() {
     },
     fullscreenControl: false,
   });
+  map.addListener("click", (mapsMouseEvent) => {
+    clearMarkers();
+    currentLocation = mapsMouseEvent.latLng.toJSON();
+    addLocationMarker(mapsMouseEvent.latLng, "");
+    getContent();
+  });
   // map.addListener("click", () => {
   //   if (selectedTreeId) {
   //     hideTreeOverlay();
@@ -612,6 +628,17 @@ function initMap() {
   map.setZoom(11);
   centerMap();
 }
+
+function addLocationMarker(location, lbl) {
+  const marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    label: lbl,
+    icon: iconBase + "cross-hairs.png",
+  });
+  markers.push(marker);
+}
+
 /**
  * Creates a button that toggles the location service. 
  */
