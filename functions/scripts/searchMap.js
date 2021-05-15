@@ -572,6 +572,7 @@ function initMap() {
     },
     mapTypeControl: false,
     rotateControl: false,
+    disableDoubleClickZoom: true,
     mapTypeControlOptions: {
       style: google.maps.MapTypeControlStyle.DEFAULT,
       position: google.maps.ControlPosition.LEFT_BOTTOM,
@@ -587,7 +588,7 @@ function initMap() {
     },
     fullscreenControl: false,
   });
-  map.addListener("click", (mapsMouseEvent) => {
+  map.addListener("dblclick", (mapsMouseEvent) => {
     clearLocationMarker();
     currentLocation = mapsMouseEvent.latLng.toJSON();
     addLocationMarker(mapsMouseEvent.latLng, "");
