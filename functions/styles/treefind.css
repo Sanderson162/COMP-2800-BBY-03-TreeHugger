@@ -367,3 +367,7 @@ button:hover {
     background: gray;
     color:white;
 }
+
+#species-search {
+    display:none;
+}

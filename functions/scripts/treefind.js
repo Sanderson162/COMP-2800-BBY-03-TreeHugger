@@ -18,6 +18,7 @@ let greenTreeIcon = iconBase + "parks.png";
 let selectedTreeIcon = "https://i.imgur.com/GE8YWSy.png";
 let locationIcon = "https://i.imgur.com/WRzZWTj.png";
 let locationInterval;
+let page = 0;
 /**
  * QUERY SETTINGS 
  */
@@ -108,18 +109,86 @@ function contentPullLocation() {
     }
   }
 }
-function search(type) {
+function showSearchType(type) {
   resetTagSelection();
-  $("#" + type).addClass("tag-selected");
+  selectTag($("#" + type));
+  resetSearchBarOptions()
   if (type == "near-tag") {
-    $("#content-title").text("TREES NEAR ME");
-    getContent('https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&geofilter.distance=' + currentLocation.lat + '%2C' + currentLocation.lng + '%2C1000&rows=' + rows);
-    enableLocation();
-    $(".search-container").hide();
-    $(".content-container").show();
+    showNearLocation();
   } else if (type == "species-tag") {
-    $("#content-title").text("SPECIES");
+    $("#search-bar").show();
+    loadSearchBarOptions("species");
+  } else if (type == "common-tag") {
+    $("#search-bar").show();
+    loadSearchBarOptions("common");
+  }
 }
+
+function search() {
+  let q = $("#query").val()
+  let searchType = $("#search-tags>div.tag-selected").attr('id').slice(0, -4);
+  $(".search-container").hide();
+  $(".content-container").show();
+  $("#loadmore").remove();
+  let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine." + searchType + "_name=" + q + "&start=" + page * 10
+  $.getJSON(query, function (data) {
+    $("#content").text("");
+    clearMarkers();
+    $.each(data.records, function (i, entry) {
+      if (entry.fields.hasOwnProperty('geom')) {
+        updateContent(entry);
+      }
+
+    });
+    isContent();
+    if (data.records.length == 10) {
+      $("#content").append(loadMoreButton());
+    }
+    searchZoom();
+  });
+}
+
+function searchZoom() {
+  let bounds = new google.maps.LatLngBounds();
+  for (let i = 0; i < markers.length; i++) {
+    bounds.extend(markers[i]);
+  }
+  map.fitBounds(bounds);
+}
+
+function loadMoreButton() {
+  let b = $("<button type='button' id='loadmore'>Load more</button>");
+  b.click(() => {
+    page += 1;
+    search()
+  });
+  return b;
+}
+
+function resetSearchBarOptions() {
+  $("#data").html("");
+}
+//aidan
+function loadSearchBarOptions(searchType) {
+  let query = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/facets?facet=" + searchType + "_name&timezone=UTC"
+  $.getJSON(query, (data) => {
+    $.each(data.facets[0].facets, function (i, entry) {
+      $("#data").append($("<option></option>").val(entry.name));
+    });
+
+  })
+
+}
+//temp
+function showNearLocation() {
+  $("#content-title").text("TREES NEAR ME");
+  getContent('https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&geofilter.distance=' + currentLocation.lat + '%2C' + currentLocation.lng + '%2C1000&rows=' + rows);
+  enableLocation();
+  $(".search-container").hide();
+  $(".content-container").show();
+}
+function selectTag(tag) {
+  tag.addClass("tag-selected");
 }
 function resetTagSelection() {
   $("#search-tags>div.tag-selected").removeClass("tag-selected");
@@ -352,7 +421,7 @@ function toggleContentOverlay() {
 function hideContentOverlay() {
   let height = window.innerHeight;
   $("#outer-content").css('height', '40px');
-  rotateChevron($("#hide-content-btn"),-90);
+  rotateChevron($("#hide-content-btn"), -90);
   map.panBy(0, height * 0.25);
 }
 /**
@@ -375,7 +444,7 @@ function rotateChevron(chevron, amount) {
 /** 
  * Toggles the content overlay visible or hidden
  */
- function toggleSearchOverlay() {
+function toggleSearchOverlay() {
   if ($("#outer-search").css('height') == '40px') {
     showSearchOverlay();
   } else {
@@ -388,7 +457,7 @@ function rotateChevron(chevron, amount) {
 function hideSearchOverlay() {
   let height = window.innerHeight;
   $("#outer-search").css('height', '40px');
-  rotateChevron($("#hide-search-btn"),-90);
+  rotateChevron($("#hide-search-btn"), -90);
   map.panBy(0, height * 0.25);
 }
 /**

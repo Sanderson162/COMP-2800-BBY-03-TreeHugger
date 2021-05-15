@@ -18,17 +18,22 @@
         <div id="search">
             <H2>SEARCH BY</H2>
             <div id="search-tags">
-                <div class="tag" id="near-tag" onclick="search('near-tag')">Near Me</div>
-                <div class="tag" id="location-tag"  onclick="search('location-tag')">Location</div>
-                <div class="tag" id="date-tag" onclick="search('date-tag')">Date</div>
-                <div class="tag" id="species-tag" onclick="search('species-tag')">Species</div>
-                <div class="tag" id="common-tag" onclick="search('common-tag')">Name</div>
+                <div class="tag" id="near-tag" onclick="showSearchType('near-tag')">Near Me</div>
+                <div class="tag" id="location-tag"  onclick="showSearchType('location-tag')">Location</div>
+                <div class="tag" id="date-tag" onclick="showSearchType('date-tag')">Date</div>
+                <div class="tag" id="species-tag" onclick="showSearchType('species-tag')">Species</div>
+                <div class="tag" id="common-tag" onclick="showSearchType('common-tag')">Name</div>
+            </div>
+            <div id="search-bar">
+                <input list="data" id="query"/>
+                <datalist id="data">
+                </datalist>
             </div>
 
         </div>
         <div id="button-container">
             
-            <div id="other-view-container"><div id="street-view-container"><button id="street-btn">Search</button></div> </div>
+            <div id="other-view-container"><div id="street-view-container"><button onclick="search()" id="street-btn">Search</button></div> </div>
         </div>
     </div>
     </div>
