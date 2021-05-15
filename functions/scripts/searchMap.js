@@ -27,7 +27,7 @@ let zoomVal;
 let rows = 20;
 /* Meters, how far the user travels before a refresh. */
 let distanceRefresh = 50;
-currentLocation = { lat: 49.239593, lng: -123.024645 };
+currentLocation = { lat: 49.279430, lng: -123.117276 };
 /** 
  * TESTING SETTINGS 
  */
@@ -508,20 +508,20 @@ function showSearchOverlay() {
  * @param {bool} enabled If location is enabled.
  */
 function showMapButtons(enabled) {
-  if (enabled) {
-    if (locationInterval == null) {
-      $("#toggle-locate-btn").fadeIn(300);
-      $("#toggle-type-btn").fadeIn(300);
-    } else {
-      $("#toggle-locate-btn").fadeIn(300);
-      $("#center-locate-btn").fadeIn(300);
-      $("#toggle-type-btn").fadeIn(300);
-    }
-  } else {
-    $("#center-locate-btn").fadeOut(300);
-    $("#toggle-locate-btn").fadeOut(300);
-    $("#toggle-type-btn").fadeOut(300);
-  }
+  // if (enabled) {
+  //   if (locationInterval == null) {
+  //     $("#toggle-locate-btn").fadeIn(300);
+  //     $("#toggle-type-btn").fadeIn(300);
+  //   } else {
+  //     $("#toggle-locate-btn").fadeIn(300);
+  //     $("#center-locate-btn").fadeIn(300);
+  //     $("#toggle-type-btn").fadeIn(300);
+  //   }
+  // } else {
+  //   $("#center-locate-btn").fadeOut(300);
+  //   $("#toggle-locate-btn").fadeOut(300);
+  //   $("#toggle-type-btn").fadeOut(300);
+  // }
 }
 /**
  * Updates the location marker, or creates it if it is null. 
@@ -588,7 +588,7 @@ function initMap() {
     fullscreenControl: false,
   });
   map.addListener("click", (mapsMouseEvent) => {
-    clearMarkers();
+    clearLocationMarker();
     currentLocation = mapsMouseEvent.latLng.toJSON();
     addLocationMarker(mapsMouseEvent.latLng, "");
     getContent();
@@ -600,10 +600,10 @@ function initMap() {
   // });
   // let toggleLocationBtn = createToggleLocationBtn();
   // let centerLocationBtn = createCenterLocationBtn();
-  // let toggleTypeBtn = createToggleTypeBtn();
+  let toggleTypeBtn = createToggleTypeBtn();
   // map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(toggleLocationBtn);
   // map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerLocationBtn);
-  // map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(toggleTypeBtn);
+  map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(toggleTypeBtn);
   panorama = map.getStreetView();
   panorama.setPosition(currentLocation);
   panorama.addListener("visible_changed", function () {
@@ -630,13 +630,22 @@ function initMap() {
 }
 
 function addLocationMarker(location, lbl) {
+  if (!selectedTreeId) {
+    $(".search-container").hide();
+    $(".content-container").show();
+  } else {
+    hideTreeOverlay();
+  }
+  map.setCenter(location);
+  map.setZoom(18);
+  centerMap();
+  $("#content-title").text("TREES NEAR DROPPED MARKER");
   const marker = new google.maps.Marker({
     position: location,
     map: map,
     label: lbl,
-    icon: iconBase + "cross-hairs.png",
   });
-  markers.push(marker);
+  locationMarker = marker;
 }
 
 /**

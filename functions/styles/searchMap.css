@@ -385,7 +385,7 @@ button:hover {
 
 input {
     font-size:18px;
-    width:250px;
+    width:93%;
     padding:10px;
     border-radius:4px;
     margin:auto;
@@ -405,4 +405,5 @@ input:focus {
 #search-bar {
     width:100%;
     box-sizing:border-box;
+    padding:10px;
 }
