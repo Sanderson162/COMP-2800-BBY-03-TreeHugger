@@ -44,12 +44,12 @@ function testGPS() {
  * After document load, start the location intervals. 
  */
 $(document).ready(function () {
-  // getLocation(true);
+  getLocation(true);
   if (testing) {
     testLocationInterval = setInterval(testGPS, 30);
   }
   // Enables location
-  // locationInterval = setInterval("getLocation(false)", 3000);
+  locationInterval = setInterval("getLocation(false)", 3000);
 });
 /**
  * Gets location, pulls content, and shows error dialogues if any occur. 
@@ -333,7 +333,7 @@ function toggleContentOverlay() {
 function hideContentOverlay() {
   let height = window.innerHeight;
   $("#outer-content").css('height', '40px');
-  rotateChevron(-90);
+  rotateChevron($("#hide-content-btn"),-90);
   map.panBy(0, height * 0.25);
 }
 /**
@@ -342,16 +342,44 @@ function hideContentOverlay() {
 function showContentOverlay() {
   let height = window.innerHeight;
   $("#outer-content").css('height', '100%');
-  rotateChevron(0);
+  rotateChevron($("#hide-content-btn"), 0);
   map.panBy(0, -height * 0.25);
 }
 /**
  * Rotates the chevron.
  * @param {int} amount Amount of rotation.
  */
-function rotateChevron(amount) {
-  $("#hide-content-btn").css({ transition: "transform 0.3s", transform: "rotate(" + amount + "deg)" });
+function rotateChevron(chevron, amount) {
+  chevron.css({ transition: "transform 0.3s", transform: "rotate(" + amount + "deg)" });
   setTimeout(function () { $("#hide-content-btn").css({ transition: "none" }) }, 300);
+}
+/** 
+ * Toggles the content overlay visible or hidden
+ */
+ function toggleSearchOverlay() {
+  if ($("#outer-search").css('height') == '40px') {
+    showSearchOverlay();
+  } else {
+    hideSearchOverlay();
+  }
+}
+/** 
+ * Hides the content overlay
+ */
+function hideSearchOverlay() {
+  let height = window.innerHeight;
+  $("#outer-search").css('height', '40px');
+  rotateChevron($("#hide-search-btn"),-90);
+  map.panBy(0, height * 0.25);
+}
+/**
+ * Show the content overlay
+ */
+function showSearchOverlay() {
+  let height = window.innerHeight;
+  $("#outer-search").css('height', '100%');
+  rotateChevron($("#hide-search-btn"), 0);
+  map.panBy(0, -height * 0.25);
 }
 /**
  * Shows or hides the center-locate and enable-location buttons. 
