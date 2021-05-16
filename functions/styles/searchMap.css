@@ -407,3 +407,9 @@ input:focus {
     box-sizing:border-box;
     padding:10px;
 }
+
+#loadmore{
+    width:100%;
+    color:lightgray;
+    border:none;
+}

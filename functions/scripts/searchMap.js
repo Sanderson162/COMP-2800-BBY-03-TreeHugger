@@ -1,7 +1,9 @@
 /**
- * TreeFind
+ * SearchMap
  * Uses the opendata 'Street Trees' database and Google Maps to find trees near a users location in Vancouver.
  * @author Amrit Manhas apsm100
+ * @see Aidan
+ * @see Steven
 */
 "use strict";
 let currentLocation;
@@ -24,7 +26,7 @@ let zoomVal;
  * QUERY SETTINGS 
  */
 /* Number of queries returned */
-let rows = 50;
+let rows = 5;
 /* Meters, how far the user travels before a refresh. */
 let distanceRefresh = 50;
 currentLocation = { lat: 49.279430, lng: -123.117276 };
@@ -110,7 +112,7 @@ function showSearchType(type) {
   selectTag($("#" + type));
   resetSearchBarOptions()
   if (type == "near-tag") {
-    showNearLocation();
+    // showNearLocation();
   } else if (type == "species-tag") {
     $("#search-bar").show();
     loadSearchBarOptions("species");
@@ -123,28 +125,20 @@ function showSearchType(type) {
   }
   $("#search-bar>input").focus();
 }
-
+/**
+ * Search function for app.
+ * @see Aidan
+ */
 function search() {
   let q = $("#query").val()
   let searchType = $("#search-tags>div.tag-selected").attr('id').slice(0, -4);
-  let qString = q;
-  // responsive ...
-  if ($(window).width() < 321 && $(window).width() < 375) {
-    if (q.length> 10) {
-      qString = q.slice(0, 7) + "..."
-    }
-  } else if ($(window).width() > 374 && $(window).width() < 600)   {
-    if (q.length> 15) {
-      qString = q.slice(0, 12) + "..."
-    }
-  }  
-
+  let qString = responsiveSearchTitle(q);
   // $("#content-title").text(searchType.toUpperCase() + ": " + qString);
   $("#content-title").text(qString);
   $(".search-container").hide();
   $(".content-container").show();
   $("#loadmore").remove();
-  let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine." + searchType + "_name=" + q + "&rows=" + rows + "&start=" + page * rows
+  let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine." + searchType + "_name=" + q + "&rows=" + (rows) + "&start=" + page * rows
   $.getJSON(query, function (data) {
     $("#content").text("");
     let rowCalc = rows;
@@ -159,14 +153,32 @@ function search() {
       }
     });
     isContent("search");
-   
     if (data.records.length == rows) {
       $("#content").append(loadMoreButton());
     }
   });
   
 }
-
+/**
+ * Adds a ... to the search query result title.
+ * @param {string} query Query of search.
+ * @returns qString to be used in content title.
+ */
+function responsiveSearchTitle(query) {
+  let q = query;
+  let qString = q;
+  if ($(window).width() < 321 && $(window).width() < 375) {
+    if (q.length> 10) {
+      qString = q.slice(0, 7) + "..."
+    }
+  } else if ($(window).width() > 374 && $(window).width() < 600)   {
+    if (q.length> 15) {
+      qString = q.slice(0, 12) + "..."
+    }
+  }  
+  return qString;
+}
+//TODO
 function searchZoom() {
   var bounds = new google.maps.LatLngBounds();
   for (let i = 0; i < markers.length; i++) {
@@ -174,9 +186,13 @@ function searchZoom() {
   }
   map.fitBounds(bounds, 0);
 }
-
+/**
+ * Creates load more button for search in content view.
+ * @returns loadMoreButton
+ * @see Aidan
+ */
 function loadMoreButton() {
-  let b = $("<button type='button' id='loadmore'>Load more</button>");
+  let b = $("<button type='button' id='loadmore'>LOAD MORE</button>");
   b.click(() => {
     page += 1;
     search();
@@ -184,37 +200,37 @@ function loadMoreButton() {
   });
   return b;
 }
-
+/**
+ * Resets searchbar autofill data.
+ */
 function resetSearchBarOptions() {
   $("#data").html("");
 }
-//aidan
+/**
+ * Loads search bar autofill data.
+ * @param {string} searchType The type of search to be done (genus, species, etc)
+ * @see Aidan
+ */
 function loadSearchBarOptions(searchType) {
   let query = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/facets?facet=" + searchType + "_name&timezone=UTC"
   $.getJSON(query, (data) => {
     $.each(data.facets[0].facets, function (i, entry) {
       $("#data").append($("<option></option>").val(entry.name));
     });
-
   })
-
 }
-//temp
-function showNearLocation() {
-  $("#content-title").text("TREES NEAR ME");
-  getContent();
-  enableLocation();
-  $(".search-container").hide();
-  $(".content-container").show();
-}
+/**
+ * Highlights type search tag.
+ * @param {obj} tag Tag DOM
+ */
 function selectTag(tag) {
   tag.addClass("tag-selected");
 }
+/**
+ * Resets all search tags that are highlighted.
+ */
 function resetTagSelection() {
   $("#search-tags>div.tag-selected").removeClass("tag-selected");
-}
-function showSpeciesSearch() {
-
 }
 /**
  * Gets entries from opendatabase API. 
@@ -447,13 +463,18 @@ function hideTreeOverlay() {
   selectedTreeId = null;
   showMapButtons(true);
   let center = false;
-  if (zoomVal != map.getZoom()) {
+  let currentZoom = map.getZoom();
+  if (zoomVal != currentZoom) {
     center = true;
   }
-  map.setZoom(zoomVal);
-  if (center) {
-    centerMap();
+  if (currentZoom > 12) {
+    map.setZoom(zoomVal);
+    if (center) {
+      centerMap();
+    }
   }
+
+ 
   
 }
 /** 
@@ -648,7 +669,11 @@ function initMap() {
   map.setZoom(11);
   centerMap();
 }
-
+/**
+ * Adds location marker to map.
+ * @param {latlng} location Current location.
+ * @param {string} lbl Optional label.
+ */
 function addLocationMarker(location, lbl) {
   if (!selectedTreeId) {
     $(".search-container").hide();
@@ -667,7 +692,6 @@ function addLocationMarker(location, lbl) {
   });
   locationMarker = marker;
 }
-
 /**
  * Creates a button that toggles the location service. 
  */
@@ -885,34 +909,6 @@ function clearMarkers() {
       i--;
     }
   }
-}
-/**
- * Toggles location service with boolean. 
- * @param {bool} enabled If location is enabled.
- */
-function toggleLocation(enabled) {
-  if (enabled) {
-    enableLocation();
-  } else {
-    disableLocation();
-  }
-}
-function disableLocation() {
-  clearInterval(locationInterval);
-  locationInterval = null;
-  if (testing) {
-    clearInterval(testLocationInterval);
-    testLocationInterval = null;
-  }
-  clearLocationMarker();
-  showDialogue("locationDisabled");
-}
-function enableLocation() {
-  locationInterval = setInterval("getLocation(false)", 3000);
-  if (testing) {
-    testLocationInterval = setInterval(testGPS, 30);
-  }
-  getLocation(true);
 }
 /**
  * Clears the location marker and resets lastPull. 
