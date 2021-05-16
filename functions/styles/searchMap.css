@@ -400,7 +400,7 @@ input {
 input:focus {
     outline: none;
     border: 1px solid #007ACC;
-  }
+}
   
 #search-bar {
     width:100%;
@@ -412,4 +412,5 @@ input:focus {
     width:100%;
     color:lightgray;
     border:none;
+    padding-top:2px;
 }

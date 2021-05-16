@@ -91,12 +91,12 @@ function responsiveSearchTitle(query) {
   let q = query;
   let qString = q;
   if ($(window).width() < 321 && $(window).width() < 375) {
-    if (q.length > 10) {
-      qString = q.slice(0, 7) + "..."
+    if (q.length > 13) {
+      qString = q.slice(0, 10) + "..."
     }
   } else if ($(window).width() > 374 && $(window).width() < 600) {
-    if (q.length > 15) {
-      qString = q.slice(0, 12) + "..."
+    if (q.length > 18) {
+      qString = q.slice(0, 15) + "..."
     }
   }
   return qString;
@@ -118,9 +118,9 @@ function loadMoreButton() {
   let b = $("<button type='button' id='loadmore'>LOAD MORE</button>");
   b.click(() => {
     page += 1;
+    let count = $(".post").length;
+    $(".post:nth-child(-n + "+ count + ")").css("background-color", "whitesmoke");
     search();
-    let scrollVal = rows + (page * rows) - 1;
-    $('#' + ids).get(scrollVal).scrollIntoView();
   });
   return b;
 }
@@ -642,6 +642,7 @@ function addTreeMarker(longitude, latitude, entry) {
     zoom(entry);
     /* Preload StreetView */
     setStreetView(entry);
+    panorama.getPosition() // Preload again to fix first launch.
   });
 }
 /**
