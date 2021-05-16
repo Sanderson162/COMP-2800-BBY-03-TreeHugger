@@ -1,6 +1,6 @@
 /**
  * SearchMap
- * Uses the opendata 'Street Trees' database and Google Maps to find trees near a users location in Vancouver.
+ * Uses the opendata 'Street Trees' database and Google Maps to find trees via various queries in Vancouver.
  * @author Amrit Manhas apsm100
  * @see Aidan
  * @see Steven
@@ -13,103 +13,28 @@ let map;
 let panorama;
 let selectedTreeLocation;
 let selectedTreeId;
-let lastPullLocation;
-let lastCalcLocation;
 let iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
 let greenTreeIcon = iconBase + "parks.png";
 let selectedTreeIcon = "https://i.imgur.com/GE8YWSy.png";
 let locationIcon = "https://i.imgur.com/WRzZWTj.png";
-let locationInterval;
 let page = 0;
 let zoomVal;
 /**
  * QUERY SETTINGS 
  */
 /* Number of queries returned */
-let rows = 5;
-/* Meters, how far the user travels before a refresh. */
-let distanceRefresh = 50;
+let rows = 10;
 currentLocation = { lat: 49.279430, lng: -123.117276 };
-/** 
- * TESTING SETTINGS 
- */
-let testing = true;
-/* pace: 20 is crazy driver pace, 10 is safe driver pace, 1 is walking pace. */
-let pace = 1;
-let testLocationInterval;
-/**
- * Moves the location point to the west for testing purposes. 
- */
-function testGPS() {
-  currentLocation = { lat: 49.239593, lng: currentLocation.lng - (pace / 10000000) };
-  updateLocationMarker(currentLocation);
-}
 /**
  * After document load, start the location intervals. 
  */
 $(document).ready(function () {
   showSearchType('common-tag');
 });
-/**
- * Gets location, pulls content, and shows error dialogues if any occur. 
- * @see https://developers.google.com/maps/documentation/javascript/geolocation
- */
-function getLocation(center) {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        let location = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
-        if (!testing) {
-          currentLocation = location;
-          updateLocationMarker(currentLocation);
-        }
-        contentPullLocation();
-        if (center) {
-          map.setCenter(currentLocation);
-          centerMap();
-        }
-      },
-      () => {
-        showDialogue("locationError");
-        clearLocationMarker();
-      }
-    );
-  } else {
-    showDialogue("locationErrorNS");
-    clearLocationMarker();
-  }
-}
-/**
- * Only gets new content after x (distanceRefresh) meters distance from last get. Updates distance only between gets. 
- */
-function contentPullLocation() {
-  if (!lastPullLocation) {
-    getContent();
-    lastPullLocation = currentLocation;
-  } else {
-    if (lastPullLocation.lat != currentLocation.lat || lastPullLocation.lng != currentLocation.lng) {
-      if (Math.round(distance(lastPullLocation.lat, lastPullLocation.lng, currentLocation.lat, currentLocation.lng, "M")) > distanceRefresh) {
-        getContent();
-        lastPullLocation = currentLocation;
-      }
-      if (!lastCalcLocation) {
-        updateDistances();
-        lastCalcLocation = currentLocation;
-      } else {
-        if (lastCalcLocation.lat != currentLocation.lat || lastCalcLocation.lng != currentLocation.lng) {
-          updateDistances();
-          lastCalcLocation = currentLocation;
-        }
-      }
-    }
-  }
-}
 function showSearchType(type) {
   resetTagSelection();
   selectTag($("#" + type));
+  $("#query").val("");
   resetSearchBarOptions()
   if (type == "near-tag") {
     // showNearLocation();
@@ -140,13 +65,13 @@ function search() {
   $("#loadmore").remove();
   let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine." + searchType + "_name=" + q + "&rows=" + (rows) + "&start=" + page * rows
   $.getJSON(query, function (data) {
-    $("#content").text("");
+    // $("#content").text("");
     let rowCalc = rows;
     if (data.nhits < rows) {
       rowCalc = data.nhits;
     }
     $("#content-title").text($("#content-title").text() + " (" + (rowCalc + page * rows) + " / " + data.nhits + ")");
-    clearMarkers();
+    // clearMarkers();
     $.each(data.records, function (i, entry) {
       if (entry.fields.hasOwnProperty('geom')) {
         updateContent(entry, false);
@@ -157,7 +82,7 @@ function search() {
       $("#content").append(loadMoreButton());
     }
   });
-  
+
 }
 /**
  * Adds a ... to the search query result title.
@@ -168,14 +93,14 @@ function responsiveSearchTitle(query) {
   let q = query;
   let qString = q;
   if ($(window).width() < 321 && $(window).width() < 375) {
-    if (q.length> 10) {
+    if (q.length > 10) {
       qString = q.slice(0, 7) + "..."
     }
-  } else if ($(window).width() > 374 && $(window).width() < 600)   {
-    if (q.length> 15) {
+  } else if ($(window).width() > 374 && $(window).width() < 600) {
+    if (q.length > 15) {
       qString = q.slice(0, 12) + "..."
     }
-  }  
+  }
   return qString;
 }
 //TODO
@@ -196,7 +121,8 @@ function loadMoreButton() {
   b.click(() => {
     page += 1;
     search();
-    $("#content").scrollTop(0);
+    let scrollVal = rows + (page * rows) - 1;
+    $('#' + ids).get(scrollVal).scrollIntoView();
   });
   return b;
 }
@@ -257,7 +183,7 @@ function isContent(p) {
     } else {
       showDialogue("nullContent");
     }
-  
+
   }
 }
 /**
@@ -283,7 +209,6 @@ function showDialogue(m) {
     let body = $("<div></div>").addClass("body").text("There are no trees from the database in the area of the dropped pin.");
     post.append(title, body);
     $("#content").append(post);
-
   } else if (m == "nullSearch") {
     let post = $("<div></div>").addClass("post");
     post.addClass("dialogue");
@@ -291,7 +216,6 @@ function showDialogue(m) {
     let body = $("<div></div>").addClass("body").text("There are no trees from the database matching your query.");
     post.append(title, body);
     $("#content").append(post);
-    
   } else if (m == "locationErrorNS") {
     if ($("#content").text() != "Location is not supported on this browserLocation services must be enabled to see nearby trees.") {
       $("#content").text("");
@@ -331,7 +255,7 @@ function updateContent(entry, distanceEnabled) {
   } else {
     dis = $("<div></div>").addClass("distance").text(entry.fields.genus_name + " " + entry.fields.species_name);
   }
-  
+
   var body = $("<div></div>").addClass("body").text(entry.fields.on_street);
   if (entry.fields.date_planted) {
     dateString = "Planted on " + entry.fields.date_planted;
@@ -420,7 +344,6 @@ function showTreeOverlay(entry) {
   $(".content-container").hide();
   $(".tree-overlay-container").show();
   updateTreeOverlayContent(entry);
-  showMapButtons(false);
 }
 /**
  * Updates the TreeOverlay view with data from entry. 
@@ -473,9 +396,6 @@ function hideTreeOverlay() {
       centerMap();
     }
   }
-
- 
-  
 }
 /** 
  * Toggles the content overlay visible or hidden
@@ -544,54 +464,6 @@ function showSearchOverlay() {
   $("#search-button-container").show();
 }
 /**
- * Shows or hides the center-locate and enable-location buttons. 
- * @param {bool} enabled If location is enabled.
- */
-function showMapButtons(enabled) {
-  // if (enabled) {
-  //   if (locationInterval == null) {
-  //     $("#toggle-locate-btn").fadeIn(300);
-  //     $("#toggle-type-btn").fadeIn(300);
-  //   } else {
-  //     $("#toggle-locate-btn").fadeIn(300);
-  //     $("#center-locate-btn").fadeIn(300);
-  //     $("#toggle-type-btn").fadeIn(300);
-  //   }
-  // } else {
-  //   $("#center-locate-btn").fadeOut(300);
-  //   $("#toggle-locate-btn").fadeOut(300);
-  //   $("#toggle-type-btn").fadeOut(300);
-  // }
-}
-/**
- * Updates the location marker, or creates it if it is null. 
- * @param {latlng} location 
- * @param {string} lbl 
- */
-function updateLocationMarker(location, lbl) {
-  if (locationMarker != null) {
-    locationMarker.setPosition(location);
-  } else {
-    const marker = new google.maps.Marker({
-      position: location,
-      map: map,
-      label: lbl,
-      icon: locationIcon,
-      id: "location",
-    });
-    locationMarker = marker;
-  }
-  updateTreeOverlayDistance();
-}
-/**
- * Updates the treeContent view distance value, if there is a tree currently selected. 
- */
-function updateTreeOverlayDistance() {
-  if (selectedTreeLocation) {
-    $("#distance").text(Math.round(distance(selectedTreeLocation.lat, selectedTreeLocation.lng, currentLocation.lat, currentLocation.lng, "M")) + " meters away from your location.");
-  }
-}
-/**
  * Initializes Google Maps and sets custom Map and StreetView.
  * @see https://developers.google.com/maps/documentation/ 
  */
@@ -634,16 +506,7 @@ function initMap() {
     addLocationMarker(mapsMouseEvent.latLng, "");
     getContent();
   });
-  // map.addListener("click", () => {
-  //   if (selectedTreeId) {
-  //     hideTreeOverlay();
-  //   }
-  // });
-  // let toggleLocationBtn = createToggleLocationBtn();
-  // let centerLocationBtn = createCenterLocationBtn();
   let toggleTypeBtn = createToggleTypeBtn();
-  // map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(toggleLocationBtn);
-  // map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerLocationBtn);
   map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(toggleTypeBtn);
   panorama = map.getStreetView();
   panorama.setPosition(currentLocation);
@@ -693,57 +556,6 @@ function addLocationMarker(location, lbl) {
   locationMarker = marker;
 }
 /**
- * Creates a button that toggles the location service. 
- */
-function createToggleLocationBtn() {
-  let toggleLocationBtn = document.createElement("button");
-  toggleLocationBtn.id = 'toggle-locate-btn';
-  let stroke = "#007ACC";
-  toggleLocationBtn.style.borderRadius = "4px";
-  toggleLocationBtn.style.height = "50px";
-  toggleLocationBtn.style.width = "50px";
-  toggleLocationBtn.style.margin = "10px";
-  toggleLocationBtn.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke + "'stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
-  toggleLocationBtn.addEventListener("click", function () {
-    if (locationInterval == null) {
-      toggleLocation(true);
-      stroke = "#007ACC";
-      this.style.backgroundColor = "white";
-      $("#center-locate-btn").css("background-color", "white");
-      $("#center-locate-btn").fadeIn(300);
-      this.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke + "'stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
-    } else {
-      toggleLocation(false);
-      stroke = "#000000";
-      this.style.backgroundColor = "gainsboro";
-      $("#center-locate-btn").css("background-color", "gainsboro");
-      $("#center-locate-btn").fadeOut(300);
-      this.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke + "'stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
-    }
-  });
-  return toggleLocationBtn;
-}
-/**
- * Creates a button that centers the map. 
- */
-function createCenterLocationBtn() {
-  let centerLocationBtn = document.createElement("button");
-  centerLocationBtn.id = 'center-locate-btn';
-  centerLocationBtn.style.borderRadius = "4px";
-  centerLocationBtn.style.height = "50px";
-  centerLocationBtn.style.width = "50px";
-  centerLocationBtn.style.margin = "10px";
-  centerLocationBtn.innerHTML = '<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 30C27.3137 30 30 27.3137 30 24C30 20.6863 27.3137 18 24 18C20.6863 18 18 20.6863 18 24C18 27.3137 20.6863 30 24 30Z" stroke="#007ACC" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  centerLocationBtn.addEventListener("click", function () {
-    if (locationInterval == null) {
-    } else {
-      map.setCenter(currentLocation);
-      centerMap();
-    }
-  });
-  return centerLocationBtn;
-}
-/**
  * Creates a button that toggles the type of map. 
  */
 function createToggleTypeBtn() {
@@ -771,45 +583,6 @@ function createToggleTypeBtn() {
     }
   });
   return toggleTypeBtn;
-}
-/**
- * Updates distance between GPS/database pulls. 
- * Pulls data from the markers and puts them into the divs. 
- */
-function updateDistances() {
-  var locationObject;
-  var locationObjects = [];
-  var dis;
-  for (let i = 0; i < markers.length; i++) {
-    locationObject = {
-      "id": markers[i].get('id'), "lat": markers[i].getPosition().lat(), "lng": markers[i].getPosition().lng(),
-    }
-    locationObjects.push(locationObject);
-  }
-  /* Add distances to content already in list view. */
-  for (let i = 0; i < locationObjects.length; i++) {
-    dis = Math.round(distance(locationObjects[i].lat, locationObjects[i].lng, currentLocation.lat, currentLocation.lng, "M"));
-    $("#" + locationObjects[i].id).children(".distance").text(dis + " meters");
-    $("#" + locationObjects[i].id).data("dist", dis);
-  }
-  sortContent();
-}
-/**
- * Helper function for updateDistances, sorts the final list after getting new distances. 
- * @see https://stackoverflow.com/questions/13490391/jquery-sort-elements-using-data-id/13490529 
- */
-function sortContent() {
-  $('#content').children(".post").sort(function (a, b) {
-    var x = $(b).data('dist');
-    var y = $(a).data('dist');
-    if (y > x) {
-      return 1;
-    } else if (y < x) {
-      return -1;
-    } else {
-      return 0;
-    }
-  }).appendTo('#content');
 }
 /**
  * Toggles StreetView for a tree. 
@@ -911,12 +684,11 @@ function clearMarkers() {
   }
 }
 /**
- * Clears the location marker and resets lastPull. 
+ * Clears the location marker. 
  */
 function clearLocationMarker() {
   if (locationMarker != null) {
     locationMarker.setMap(null);
     locationMarker = null;
-    lastPullLocation = null;
   }
 }
