@@ -14,8 +14,8 @@ let selectedTreeId;
 let lastPullLocation;
 let lastCalcLocation;
 let iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-let greenTreeIcon = iconBase + "parks.png";
-let selectedTreeIcon = "https://i.imgur.com/GE8YWSy.png";
+let greenTreeIcon = "https://i.imgur.com/tGML9lx.png";
+let selectedTreeIcon = "https://i.imgur.com/y27h9ul.png";
 let locationIcon = "https://i.imgur.com/WRzZWTj.png";
 let locationInterval;
 /**
@@ -260,7 +260,7 @@ function colorMarker(id) {
  */
 function resetMarkerColor() {
   for (let i = 0; i < markers.length; i++) {
-    markers[i].setIcon(iconBase + "parks.png");
+    markers[i].setIcon(greenTreeIcon);
   }
 }
 /**
@@ -414,7 +414,7 @@ function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: currentLocation,
     zoom: 20,
-    mapId: 'b3163309c37356ea',
+    mapId: 'c79c5bedf4efc001',
     restriction: {
       latLngBounds: VANCOUVER_BOUNDS,
       strictBounds: false,
