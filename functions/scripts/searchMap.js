@@ -203,8 +203,8 @@ function showDialogue(m) {
   } else if (m == "nullContent") {
     let post = $("<div></div>").addClass("post");
     post.addClass("dialogue");
-    let title = $("<div></div>").addClass("title").text("No trees near dropped pin");
-    let body = $("<div></div>").addClass("body").text("There are no trees from the database in the area of the dropped pin.");
+    let title = $("<div></div>").addClass("title").text("No trees near dropped marker");
+    let body = $("<div></div>").addClass("body").text("There are no trees from the database in the area of dropped marker.");
     post.append(title, body);
     $("#content").append(post);
   } else if (m == "nullSearch") {
@@ -348,9 +348,11 @@ function showTreeOverlay(entry) {
  * @param {obj} entry
  */
 function updateTreeOverlayContent(entry) {
-  $("#tree-name").text(entry.fields.common_name);
-  $("#species-name").text(entry.fields.genus_name + " " + entry.fields.species_name);
-  $("#distance").text(Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M")) + " meters away from your location.");
+  $("#species-name").text(entry.fields.common_name);
+  $("#tree-name").text(entry.fields.genus_name + " " + entry.fields.species_name);
+  if (locationMarker != null) {
+    $("#distance").text(Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M")) + " meters away from dropped marker");
+  }
   $("#body").text(entry.fields.on_street);
   var dateString;
   if (entry.fields.date_planted) {
@@ -503,6 +505,7 @@ function initMap() {
     currentLocation = mapsMouseEvent.latLng.toJSON();
     addLocationMarker(mapsMouseEvent.latLng, "");
     getContent();
+    $("#content").scrollTop(0);
   });
   let toggleTypeBtn = createToggleTypeBtn();
   map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(toggleTypeBtn);
