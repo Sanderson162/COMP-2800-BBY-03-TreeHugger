@@ -26,11 +26,15 @@ let zoomVal;
 let rows = 10;
 currentLocation = { lat: 49.279430, lng: -123.117276 };
 /**
- * After document load, start the location intervals. 
+ * After document load, init search.
  */
 $(document).ready(function () {
   showSearchType('common-tag');
 });
+/**
+ * Shows the correct div or loads the correct data for each search type.
+ * @param {string} type Search type.
+ */
 function showSearchType(type) {
   resetTagSelection();
   selectTag($("#" + type));
@@ -65,24 +69,18 @@ function search() {
   $("#loadmore").remove();
   let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine." + searchType + "_name=" + q + "&rows=" + (rows) + "&start=" + page * rows
   $.getJSON(query, function (data) {
-    // $("#content").text("");
-    let rowCalc = rows;
-    if (data.nhits < rows) {
-      rowCalc = data.nhits;
-    }
-    $("#content-title").text($("#content-title").text() + " (" + (rowCalc + page * rows) + " / " + data.nhits + ")");
-    // clearMarkers();
     $.each(data.records, function (i, entry) {
       if (entry.fields.hasOwnProperty('geom')) {
         updateContent(entry, false);
       }
     });
+    let count = $(".post").length;
+    $("#content-title").text($("#content-title").text() + " (" + (count) + " / " + data.nhits + ")");
     isContent("search");
     if (data.records.length == rows) {
       $("#content").append(loadMoreButton());
     }
   });
-
 }
 /**
  * Adds a ... to the search query result title.
