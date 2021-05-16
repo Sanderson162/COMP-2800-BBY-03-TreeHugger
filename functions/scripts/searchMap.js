@@ -318,11 +318,13 @@ function setStreetView(entry) {
 /**
  * Sets a TreeMarker color to 'selected', by id. 
  * @param {int} id Tree ID.
+ * @see https://salman-w.blogspot.com/2012/07/change-z-index-google-map-v3-markers.html
  */
 function colorMarker(id) {
   for (let i = 0; i < markers.length; i++) {
     if (markers[i].get('id') == id) {
       markers[i].setIcon(selectedTreeIcon);
+      markers[i].setZIndex(google.maps.Marker.MAX_ZINDEX + 1);
     }
   }
 }
@@ -384,7 +386,6 @@ function hideTreeOverlay() {
   resetMarkerColor();
   selectedTreeLocation = null;
   selectedTreeId = null;
-  showMapButtons(true);
   let center = false;
   let currentZoom = map.getZoom();
   if (zoomVal != currentZoom) {
