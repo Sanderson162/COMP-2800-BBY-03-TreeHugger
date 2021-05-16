@@ -19,6 +19,7 @@ let selectedTreeIcon = "https://i.imgur.com/GE8YWSy.png";
 let locationIcon = "https://i.imgur.com/WRzZWTj.png";
 let page = 0;
 let zoomVal;
+let markerIndexCount = 0;
 /**
  * QUERY SETTINGS 
  */
@@ -316,15 +317,15 @@ function setStreetView(entry) {
   }
 }
 /**
- * Sets a TreeMarker color to 'selected', by id. 
+ * Sets a TreeMarker color to 'selected', by id, also brings it to the front with zIndex.
  * @param {int} id Tree ID.
- * @see https://salman-w.blogspot.com/2012/07/change-z-index-google-map-v3-markers.html
  */
 function colorMarker(id) {
   for (let i = 0; i < markers.length; i++) {
     if (markers[i].get('id') == id) {
       markers[i].setIcon(selectedTreeIcon);
-      markers[i].setZIndex(google.maps.Marker.MAX_ZINDEX + 1);
+      markerIndexCount += 1;
+      markers[i].setZIndex(markerIndexCount);
     }
   }
 }
@@ -636,6 +637,7 @@ function addTreeMarker(longitude, latitude, entry) {
     map: map,
     icon: treeIcon,
     id: ids,
+    zIndex: 0,
   });
   markers.push(marker);
   marker.addListener("click", () => {
