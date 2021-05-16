@@ -555,6 +555,7 @@ function addLocationMarker(location, lbl) {
     position: location,
     map: map,
     label: lbl,
+    zIndex: 1000000,
   });
   locationMarker = marker;
 }
