@@ -413,4 +413,33 @@ input:focus {
     color:lightgray;
     border:none;
     padding-top:2px;
+    border-radius: 0px;
+}
+
+.search-history {
+    border-top:1px solid rgb(236, 236, 236);
+}
+.search-history-item {
+    width: 85%;
+    border-bottom: 1px solid rgb(236, 236, 236);
+    padding: 2em;
+    padding-top:1em;
+}
+
+.search-query {
+    float: left;
+    width:150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color:gray;
+}
+.search-type {
+    float:left;
+    color:gainsboro;
+    font-style: italic;
+    margin-left:2em;
+}
+.arrow-icon {
+    float:right;
 }
