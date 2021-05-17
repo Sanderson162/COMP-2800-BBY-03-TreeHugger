@@ -52,16 +52,22 @@ function showSearchType(type) {
   }
   $("#query").attr("placeholder", $("#search-tags>div.tag-selected").text());
 }
+/**
+ * Queries a new search when tree name is clicked on in treeoverlay.
+ */
 function treeNameClickSearch() {
   showSearchType('common_name-tag');
-    $("#query").val($("#species-name").text());
-    $("#content").text("");
-    clearMarkers();
-    clearLocationMarker();
-    map.setZoom(12);
-    centerMap();
-    search();
+  $("#query").val($("#species-name").text());
+  $("#content").text("");
+  clearMarkers();
+  clearLocationMarker();
+  map.setZoom(12);
+  centerMap();
+  search();
 }
+/**
+ * Search button click that queries a new search.
+ */
 function searchBtnClick() {
   if ($("#query").val() != "") {
     clearMarkers();
@@ -73,7 +79,6 @@ function searchBtnClick() {
     }
     search();
   }
-
 }
 /**
  * Search function for app.
@@ -106,6 +111,11 @@ function search() {
   });
   addSearchHistory(q, searchType);
 }
+/**
+ * Add a search history item to list.
+ * @param {string} query The query
+ * @param {string} type  The type of query (species, etc)
+ */
 function addSearchHistory(query, type) {
   updateSearchHistoryBtn();
   updateSearchMapBtn()
@@ -114,14 +124,21 @@ function addSearchHistory(query, type) {
   checkSearchHistory(query, type);
   allSearchHistory.push(searchItem);
 }
+/**
+ * Checks for duplicates in the search history and removes them.
+ * @param {string} query The query to be checked.
+ * @param {string} type The type to be checked.
+ */
 function checkSearchHistory(query, type) {
  for (let i = allSearchHistory.length - 1; i >= 0; i--) { 
     if (allSearchHistory[i].q == query && allSearchHistory[i].searchType == type) {
       allSearchHistory.splice(i, 1);
-      console.log("HELLO");
     }
   }
 }
+/**
+ * Updates search history button on the map to enabled or disabled.
+ */
 function updateSearchHistoryBtn() {
   if (searchHistory.length < 1) {
     $("#search-history-btn").css("backgroundColor","gainsboro");
@@ -131,6 +148,9 @@ function updateSearchHistoryBtn() {
     $("#search-history-btn").html('<svg class="svg-btn width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M38 40L18 24L38 8V40Z" stroke="#007ACC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 38V10" stroke="#007ACC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>');
   }
 }
+/**
+ * Updates the search overlay toggle button on the map to enabled or disabled.
+ */
 function updateSearchMapBtn() {
   if ($(".search-container").css('display') == 'none') {
     $("#search-map-btn").css("backgroundColor","gainsboro");
@@ -140,6 +160,12 @@ function updateSearchMapBtn() {
     $("#search-map-btn").html('<svg class="svg-btn" width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M37 13L1 13M25.125 30.125L22.4063 27.4062M37 5V33C37 35.2091 35.2091 37 33 37H5C2.79086 37 1 35.2091 1 33L1 5C1 2.79086 2.79086 1 5 1L33 1C35.2091 1 37 2.79086 37 5ZM23.875 23.875C23.875 26.6364 21.6364 28.875 18.875 28.875C16.1136 28.875 13.875 26.6364 13.875 23.875C13.875 21.1136 16.1136 18.875 18.875 18.875C21.6364 18.875 23.875 21.1136 23.875 23.875Z" stroke="#007ACC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
   }
 }
+/**
+ * Checks if the search type is a height range and convers the q to feet.
+ * @param {string} q The query. 
+ * @param {string} searchType The type.
+ * @returns query multipled by 10 if a height.
+ */
 function heightRangeToFeet(q, searchType) {
   if (searchType == "height_range_id") {
     return (parseInt(q) * 10) +  "ft";
@@ -209,6 +235,12 @@ function loadSearchBarOptions(searchType) {
     });
   })
 }
+/**
+ * Creates optional string for search bar options.
+ * @param {obj} entry Entry object from opendata.
+ * @param {string} searchType The type.
+ * @returns Optional string for search bar options.
+ */
 function createOptionalString(entry, searchType){
   let optionalString = "";
   if (searchType == "height_range_id") {
@@ -340,6 +372,9 @@ function updateContent(entry, distanceEnabled) {
     zoom(entry);
   }));
 }
+/**
+ * Gets the search history for search overlay.
+ */
 function getSearchHistoryView() {
   $("#search-history").text("");
   for (let i = allSearchHistory.length - 1; i >= 0; i--) {
@@ -347,6 +382,10 @@ function getSearchHistoryView() {
   }
   $("#search-history").scrollTop(0);
 }
+/**
+ * Updates the search history view in the search overlay.
+ * @param {obj} entry Search history object.
+ */
 function updateSearchHistoryView(entry) {
   let item = $("<div></div>").addClass("search-history-item");
   let query = $("<div></div>").addClass("search-query");
@@ -365,6 +404,11 @@ function updateSearchHistoryView(entry) {
   });
   $("#search-history").append(item);
 }
+/**
+ * Parses the search type for the search history view.
+ * @param {string} type The type.
+ * @returns Parsed string for search history view.
+ */
 function parseType(type) {
   if (type == "common_name") {
     return "Name";
@@ -380,6 +424,10 @@ function parseType(type) {
     return "Street";
   }
 }
+/**
+ * Queries the selected search item from search history.
+ * @param {obj} lastSearch Search history object.
+ */
 function loadSearchHistoryItem(lastSearch) {
   map.setZoom(lastSearch.zoom);
     map.setCenter(lastSearch.pos);
@@ -514,7 +562,6 @@ function addStreetViewBtnListener(entry) {
 function hideTreeOverlay() {
   $(".tree-overlay-container").hide();
   $(".content-container").show();
-  // map.setOptions({ gestureHandling: "auto" });
   panorama.setVisible(false);
   resetMarkerColor();
   selectedTreeLocation = null;
@@ -693,7 +740,8 @@ function addLocationMarker(location, lbl) {
   locationMarker = marker;
 }
 /**
- * Creates a button that toggles the type of map. 
+ * Creates a button that toggles the type of map for map. 
+ * @returns button.
  */
 function createToggleTypeBtn() {
   let toggleTypeBtn = document.createElement("button");
@@ -721,6 +769,10 @@ function createToggleTypeBtn() {
   });
   return toggleTypeBtn;
 }
+/**
+ * Creates undo button for search history for map.
+ * @returns button
+ */
 function createSearchHistoryBtn() {
   let toggleTypeBtn = document.createElement("button");
   toggleTypeBtn.id = 'search-history-btn';
@@ -735,6 +787,10 @@ function createSearchHistoryBtn() {
   });
   return toggleTypeBtn;
 }
+/**
+ * Creates search toggle button for map.
+ * @returns button
+ */
 function createSearchMapBtn() {
   let toggleTypeBtn = document.createElement("button");
   toggleTypeBtn.id = 'search-map-btn';
@@ -761,6 +817,9 @@ function createSearchMapBtn() {
   });
   return toggleTypeBtn;
 }
+/**
+ * Steps back in search history list and queries the search.
+ */
 function stepBackSearchHistory() {
   let index = searchHistory.length - 2;
   if (index  > -1) {
