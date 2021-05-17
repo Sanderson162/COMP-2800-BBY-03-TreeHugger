@@ -48,8 +48,8 @@ function showSearchType(type) {
   $("#search-bar").show();
   if ($(".search-container").css('display') != 'none') {
     loadSearchBarOptions(searchType);
+    $("#search-bar>input").focus();
   }
-  $("#search-bar>input").focus();
   $("#query").attr("placeholder", $("#search-tags>div.tag-selected").text());
 }
 function treeNameClickSearch() {
@@ -63,14 +63,17 @@ function treeNameClickSearch() {
     search();
 }
 function searchBtnClick() {
-  clearMarkers();
-  clearLocationMarker();
-  $("#content").text("");
-  if (map.getZoom() > 11) {
-    map.setZoom(11);
-    centerMap();
+  if ($("#query").val() != "") {
+    clearMarkers();
+    clearLocationMarker();
+    $("#content").text("");
+    if (map.getZoom() > 11) {
+      map.setZoom(11);
+      centerMap();
+    }
+    search();
   }
-  search();
+
 }
 /**
  * Search function for app.

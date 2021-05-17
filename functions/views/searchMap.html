@@ -22,15 +22,40 @@
                 <div class="tag" id="genus_name-tag" onclick="showSearchType('genus_name-tag')">Genus</div>
                 <div class="tag" id="height_range_id-tag" onclick="showSearchType('height_range_id-tag')">Height</div>
             </div>
+          
             <div id="search-bar">
+               
                 <input type="text" list="data" id="query"/>
                 <datalist id="data">
                 </datalist>
+                <button onclick="searchBtnClick()" id="search-btn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9.16667 15.8333C12.8486 15.8333 15.8333 12.8486 15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333Z" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M17.5 17.5L13.875 13.875" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    
+                    </button>
             </div>
+     <br>
             <div id="search-history">
                 <div class="search-history-item">
                     <div class="search-query"></div>
-                    <div class="search-type">Search History</div>
+                    <div class="search-type"></div>
+                    <div class="arrow-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 18L15 12L9 6" stroke="#D3D3D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        </div>
+                </div>
+                <div class="search-history-item">
+                    <div class="search-query"></div>
+                    <div class="search-type"></div>
+                    <div class="arrow-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 18L15 12L9 6" stroke="#D3D3D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        </div>
+                </div>
+                <div class="search-history-item">
+                    <div class="search-query"></div>
+                    <div class="search-type"></div>
                     <div class="arrow-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9 18L15 12L9 6" stroke="#D3D3D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -45,10 +70,6 @@
                         </div>
                 </div>
             </div>
-        </div>
-        <div id="search-button-container">
-            
-            <div id="other-view-container"><div id="street-view-container"><button onclick="searchBtnClick()" id="search-btn">Search</button></div> </div>
         </div>
     </div>
     </div>

@@ -385,7 +385,7 @@ button:hover {
 
 input {
     font-size:18px;
-    width:93%;
+    width:71%;
     padding:10px;
     border-radius:4px;
     margin:auto;
@@ -418,8 +418,14 @@ input:focus {
 
 #search-history {
     display:block;
-    max-height:27%;
+    max-height:55%;
+    height:55%;
     overflow-y:scroll;
+    float:left;
+    width:100%;
+    margin-top:14px;
+    box-shadow:         inset 0 8px 6px -6px rgba(0, 0, 0, 0.1);
+    background-color:rgb(247, 247, 247);
 }
 .search-history-item {
     width: 80%;
@@ -448,4 +454,25 @@ input:focus {
 #query::placeholder {
     color: gainsboro;
     font-style:italic;
+}
+
+#query {
+    float:left;
+    /* border-right:none; */
+    border-top-right-radius: 0;
+    border-bottom-right-radius:0;
+}
+#search-btn {
+    float:left;
+    box-shadow:none;
+    border-color:gainsboro;
+    border-width:thin;
+    border-style: solid;
+    border-left:none;
+    height:43.5px;
+    /* margin-left:-2px; */
+    border-top-left-radius: 0;
+    border-bottom-left-radius:0;
+    background:whitesmoke;
+    width:20%;
 }
