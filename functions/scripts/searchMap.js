@@ -111,7 +111,16 @@ function addSearchHistory(query, type) {
   updateSearchMapBtn()
   let searchItem = {q:query, searchType: type, zoom: map.getZoom(), pos: map.getCenter()};
   searchHistory.push(searchItem);
+  checkSearchHistory(query, type);
   allSearchHistory.push(searchItem);
+}
+function checkSearchHistory(query, type) {
+ for (let i = allSearchHistory.length - 1; i >= 0; i--) { 
+    if (allSearchHistory[i].q == query && allSearchHistory[i].searchType == type) {
+      allSearchHistory.splice(i, 1);
+      console.log("HELLO");
+    }
+  }
 }
 function updateSearchHistoryBtn() {
   if (searchHistory.length < 1) {
