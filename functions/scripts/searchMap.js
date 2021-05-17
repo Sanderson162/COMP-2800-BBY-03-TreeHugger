@@ -376,6 +376,8 @@ function parseType(type) {
     return "Height";
   } else if (type == "location") {
     return "Location";
+  } else if (type == "on_street") {
+    return "Street";
   }
 }
 function loadSearchHistoryItem(lastSearch) {
