@@ -26,7 +26,7 @@ let allSearchHistory = [];
  * QUERY SETTINGS 
  */
 /* Number of queries returned */
-let rows = 10;
+let rows = 50;
 currentLocation = { lat: 49.279430, lng: -123.117276 };
 /**
  * After document load, init search.
@@ -96,6 +96,7 @@ function search() {
   panorama.setVisible(false);
   $("#loadmore").remove();
   let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine." + searchType + "=" + q + "&rows=" + (rows) + "&start=" + page * rows;
+  console.log(query);
   $.getJSON(query, function (data) {
     $.each(data.records, function (i, entry) {
       if (entry.fields.hasOwnProperty('geom')) {
@@ -422,6 +423,8 @@ function parseType(type) {
     return "Location";
   } else if (type == "on_street") {
     return "Street";
+  }  else if (type == "date_planted") {
+    return "Date";
   }
 }
 /**
