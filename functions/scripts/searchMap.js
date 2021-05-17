@@ -132,12 +132,12 @@ function updateSearchHistoryBtn() {
   }
 }
 function updateSearchMapBtn() {
-  if ($(".search-container").css('display') != 'none') {
+  if ($(".search-container").css('display') == 'none') {
     $("#search-map-btn").css("backgroundColor","gainsboro");
-    $("#search-map-btn").html('<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 38C30.8366 38 38 30.8366 38 22C38 13.1634 30.8366 6 22 6C13.1634 6 6 13.1634 6 22C6 30.8366 13.1634 38 22 38Z" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M41.9998 42L33.2998 33.3" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+    $("#search-map-btn").html('<svg class="svg-btn" width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M37 13L1 13M25.125 30.125L22.4063 27.4062M37 5V33C37 35.2091 35.2091 37 33 37H5C2.79086 37 1 35.2091 1 33L1 5C1 2.79086 2.79086 1 5 1L33 1C35.2091 1 37 2.79086 37 5ZM23.875 23.875C23.875 26.6364 21.6364 28.875 18.875 28.875C16.1136 28.875 13.875 26.6364 13.875 23.875C13.875 21.1136 16.1136 18.875 18.875 18.875C21.6364 18.875 23.875 21.1136 23.875 23.875Z" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
   } else {
     $("#search-map-btn").css("backgroundColor","white");
-    $("#search-map-btn").html('<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 38C30.8366 38 38 30.8366 38 22C38 13.1634 30.8366 6 22 6C13.1634 6 6 13.1634 6 22C6 30.8366 13.1634 38 22 38Z" stroke="#007ACC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M41.9998 42L33.2998 33.3" stroke="#007ACC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+    $("#search-map-btn").html('<svg class="svg-btn" width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M37 13L1 13M25.125 30.125L22.4063 27.4062M37 5V33C37 35.2091 35.2091 37 33 37H5C2.79086 37 1 35.2091 1 33L1 5C1 2.79086 2.79086 1 5 1L33 1C35.2091 1 37 2.79086 37 5ZM23.875 23.875C23.875 26.6364 21.6364 28.875 18.875 28.875C16.1136 28.875 13.875 26.6364 13.875 23.875C13.875 21.1136 16.1136 18.875 18.875 18.875C21.6364 18.875 23.875 21.1136 23.875 23.875Z" stroke="#007ACC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
   }
 }
 function heightRangeToFeet(q, searchType) {
@@ -740,8 +740,8 @@ function createSearchMapBtn() {
   toggleTypeBtn.style.height = "50px";
   toggleTypeBtn.style.width = "50px";
   toggleTypeBtn.style.margin = "10px";
-  toggleTypeBtn.style.backgroundColor = "gainsboro";
-  toggleTypeBtn.innerHTML = '<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 38C30.8366 38 38 30.8366 38 22C38 13.1634 30.8366 6 22 6C13.1634 6 6 13.1634 6 22C6 30.8366 13.1634 38 22 38Z" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M41.9998 42L33.2998 33.3" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  toggleTypeBtn.style.backgroundColor = "white";
+  toggleTypeBtn.innerHTML = '<svg class="svg-btn" width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M37 13L1 13M25.125 30.125L22.4063 27.4062M37 5V33C37 35.2091 35.2091 37 33 37H5C2.79086 37 1 35.2091 1 33L1 5C1 2.79086 2.79086 1 5 1L33 1C35.2091 1 37 2.79086 37 5ZM23.875 23.875C23.875 26.6364 21.6364 28.875 18.875 28.875C16.1136 28.875 13.875 26.6364 13.875 23.875C13.875 21.1136 16.1136 18.875 18.875 18.875C21.6364 18.875 23.875 21.1136 23.875 23.875Z" stroke="#007ACC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   toggleTypeBtn.addEventListener("click", function () {
     if ($(".search-container").css('display') == 'none') {
       $(".search-container").show();
