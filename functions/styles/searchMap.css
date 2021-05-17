@@ -447,6 +447,7 @@ input:focus {
     color:gainsboro;
     font-style: italic;
     margin-left:2em;
+    font-weight:lighter;
 }
 .arrow-icon {
     float:right;
@@ -454,6 +455,7 @@ input:focus {
 #query::placeholder {
     color: gainsboro;
     font-style:italic;
+    font-weight:lighter;
 }
 
 #query {
