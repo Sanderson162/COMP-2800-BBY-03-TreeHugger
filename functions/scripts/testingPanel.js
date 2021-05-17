@@ -38,7 +38,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     
   });
-*/
+  */
   $("#getFavCountLeaderboard").click(function(e) {
       getFavCountLeaderboard();
   });

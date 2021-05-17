@@ -407,36 +407,24 @@ app.post('/getFavCountLeaderboardSignedIn', urlencodedParser, (req, res) => {
     .verifyIdToken(idToken)
     .then((decodedToken) => {
       const uid = decodedToken.uid;
-      let resultArray = [];
   db.collection("FavouriteStats")
   .orderBy("favCount", "desc")
   .limit(15)
   .get()
   .then(querySnapshot => {
-      
-      querySnapshot.forEach((doc) => {
-        db.collection('Favourite').doc(uid + "_" + doc.id)
-        .get().then(function (doc) {
-          if (doc.exists) {
-            resultArray.push({
-              recordID: doc.id,
-              favCount: doc.data().favCount,
-              liked: "liked"
-            });
-          } else {
-            resultArray.push({
-              recordID: doc.id,
-              favCount: doc.data().favCount,
-              liked: null
-            });
-          }
-        });
-      })
-    }).then(function () {
-      res.send({
-        status: "success",
-        data: resultArray
+    let resultArray = [];
+    querySnapshot.forEach((doc) => {
+      resultArray.push({
+        recordID: doc.id,
+        favCount: doc.data().favCount,
+        liked: null
       });
+    });
+    let filledResultArray = getIfUserLiked(resultArray, uid);
+    res.send({
+      status: "success",
+      data: resultArray
+    });
     }).catch(function (error) {
       console.log("Error getting documents: ", error);
       res.send({
@@ -448,6 +436,19 @@ app.post('/getFavCountLeaderboardSignedIn', urlencodedParser, (req, res) => {
   });
 });
 
+async function getIfUserLiked(resultArray, uid) {
+  resultArray.forEach(async (result) => {
+  await db.collection('Favourite').doc(uid + "_" + result.id)
+        .get().then(function (doc) {
+          if (doc.exists) {
+            result.liked = true;
+          } else {
+            result.liked = false;
+          }
+        });
+  });
+  return resultArray;
+}
 
 app.post('/update-username', urlencodedParser, (req, res) => {
   res.setHeader('Content-Type', 'application/json');
@@ -478,9 +479,9 @@ app.get('/timestamp', function (req, res) {
 });
 
 
-app.listen(PORT, () => {
-     console.log(`Listening on http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//      console.log(`Listening on http://localhost:${PORT}`);
+// });
 
 
 function msg404(res) {
