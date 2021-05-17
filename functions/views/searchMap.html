@@ -12,16 +12,15 @@
 <body>
     <div class="search-container">
         <div id="outer-search">
-            <span  onclick="toggleSearchOverlay()" id="trees-near-header"><svg  id="hide-search-btn" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 9L12 15L18 9" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>SEARCH BY</span> 
+            <span id="trees-near-header">SEARCH BY</span> 
         <div id="search">
             <br>
             <div id="search-tags">
-                <div class="tag" id="date-tag" onclick="showSearchType('date-tag')">Date</div>
-                <div class="tag" id="common-tag" onclick="showSearchType('common-tag')">Name</div>
-                <div class="tag" id="species-tag" onclick="showSearchType('species-tag')">Species</div>
-                <div class="tag" id="genus-tag" onclick="showSearchType('genus-tag')">Genus</div>
+                <div class="tag" id="date_name-tag" onclick="showSearchType('date_name-tag')">Date</div>
+                <div class="tag" id="common_name-tag" onclick="showSearchType('common_name-tag')">Name</div>
+                <div class="tag" id="species_name-tag" onclick="showSearchType('species_name-tag')">Species</div>
+                <div class="tag" id="genus_name-tag" onclick="showSearchType('genus_name-tag')">Genus</div>
+                <div class="tag" id="height_range_id-tag" onclick="showSearchType('height_range_id-tag')">Height</div>
             </div>
             <div id="search-bar">
                 <input type="text" list="data" id="query"/>
@@ -30,16 +29,16 @@
             </div>
             <div id="search-history">
                 <div class="search-history-item">
-                    <div class="search-query">KWANZAN FLOWERING CHERRY</div>
-                    <div class="search-type">Name</div>
+                    <div class="search-query"></div>
+                    <div class="search-type">Search History</div>
                     <div class="arrow-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9 18L15 12L9 6" stroke="#D3D3D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                         </div>
                 </div>
                 <div class="search-history-item">
-                    <div class="search-query">-49.065484, 123.351869</div>
-                    <div class="search-type">Location</div>
+                    <div class="search-query"></div>
+                    <div class="search-type"></div>
                     <div class="arrow-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9 18L15 12L9 6" stroke="#D3D3D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -49,7 +48,7 @@
         </div>
         <div id="search-button-container">
             
-            <div id="other-view-container"><div id="street-view-container"><button onclick="search()" id="search-btn">Search</button></div> </div>
+            <div id="other-view-container"><div id="street-view-container"><button onclick="searchBtnClick()" id="search-btn">Search</button></div> </div>
         </div>
     </div>
     </div>
@@ -74,7 +73,7 @@
             <span id="tree-name">PREVIEW</span>
         <div id="tree-content">
             <div id="main">
-                <h2 id="species-name"></h2>
+                <h2 id="species-name" onclick="treeNameClickSearch()"></h2>
                 <div id="body"></div>
                 <div id="distance"></div>
                 <div id="date"></div>

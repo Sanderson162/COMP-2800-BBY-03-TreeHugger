@@ -416,11 +416,13 @@ input:focus {
     border-radius: 0px;
 }
 
-.search-history {
-    border-top:1px solid rgb(236, 236, 236);
+#search-history {
+    display:block;
+    max-height:27%;
+    overflow-y:scroll;
 }
 .search-history-item {
-    width: 85%;
+    width: 80%;
     border-bottom: 1px solid rgb(236, 236, 236);
     padding: 2em;
     padding-top:1em;
@@ -442,4 +444,8 @@ input:focus {
 }
 .arrow-icon {
     float:right;
+}
+#query::placeholder {
+    color: gainsboro;
+    font-style:italic;
 }

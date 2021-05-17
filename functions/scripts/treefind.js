@@ -241,7 +241,7 @@ function setStreetView(entry) {
         pitch: 10,
         zoom: 0
       });
-    }, 200);
+    }, 300);
   }
 }
 /**

@@ -20,6 +20,8 @@ let locationIcon = "https://i.imgur.com/WRzZWTj.png";
 let page = 0;
 let zoomVal;
 let markerIndexCount = 0;
+let searchHistory = [];
+let allSearchHistory = [];
 /**
  * QUERY SETTINGS 
  */
@@ -30,30 +32,45 @@ currentLocation = { lat: 49.279430, lng: -123.117276 };
  * After document load, init search.
  */
 $(document).ready(function () {
-  showSearchType('common-tag');
+  $("#content").text("");
+  showSearchType('common_name-tag');
 });
 /**
  * Shows the correct div or loads the correct data for each search type.
  * @param {string} type Search type.
  */
 function showSearchType(type) {
+  let searchType = type.slice(0, -4);
   resetTagSelection();
   selectTag($("#" + type));
   $("#query").val("");
   resetSearchBarOptions()
-  if (type == "near-tag") {
-    // showNearLocation();
-  } else if (type == "species-tag") {
-    $("#search-bar").show();
-    loadSearchBarOptions("species");
-  } else if (type == "common-tag") {
-    $("#search-bar").show();
-    loadSearchBarOptions("common");
-  } else if (type == "genus-tag") {
-    $("#search-bar").show();
-    loadSearchBarOptions("genus");
+  $("#search-bar").show();
+  if ($(".search-container").css('display') != 'none') {
+    loadSearchBarOptions(searchType);
   }
   $("#search-bar>input").focus();
+  $("#query").attr("placeholder", $("#search-tags>div.tag-selected").text());
+}
+function treeNameClickSearch() {
+  showSearchType('common_name-tag');
+    $("#query").val($("#species-name").text());
+    $("#content").text("");
+    clearMarkers();
+    clearLocationMarker();
+    map.setZoom(12);
+    centerMap();
+    search();
+}
+function searchBtnClick() {
+  clearMarkers();
+  clearLocationMarker();
+  $("#content").text("");
+  if (map.getZoom() > 11) {
+    map.setZoom(11);
+    centerMap();
+  }
+  search();
 }
 /**
  * Search function for app.
@@ -62,13 +79,15 @@ function showSearchType(type) {
 function search() {
   let q = $("#query").val()
   let searchType = $("#search-tags>div.tag-selected").attr('id').slice(0, -4);
-  let qString = responsiveSearchTitle(q);
+  let qString = responsiveSearchTitle(heightRangeToFeet(q, searchType));
   // $("#content-title").text(searchType.toUpperCase() + ": " + qString);
   $("#content-title").text(qString);
   $(".search-container").hide();
+  $(".tree-overlay-container").hide();
   $(".content-container").show();
+  panorama.setVisible(false);
   $("#loadmore").remove();
-  let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine." + searchType + "_name=" + q + "&rows=" + (rows) + "&start=" + page * rows
+  let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine." + searchType + "=" + q + "&rows=" + (rows) + "&start=" + page * rows
   $.getJSON(query, function (data) {
     $.each(data.records, function (i, entry) {
       if (entry.fields.hasOwnProperty('geom')) {
@@ -82,6 +101,39 @@ function search() {
       $("#content").append(loadMoreButton());
     }
   });
+  addSearchHistory(q, searchType);
+}
+function addSearchHistory(query, type) {
+  updateSearchHistoryBtn();
+  updateSearchMapBtn()
+  let searchItem = {q:query, searchType: type, zoom: map.getZoom(), pos: map.getCenter()};
+  searchHistory.push(searchItem);
+  allSearchHistory.push(searchItem);
+}
+function updateSearchHistoryBtn() {
+  if (searchHistory.length < 1) {
+    $("#search-history-btn").css("backgroundColor","gainsboro");
+    $("#search-history-btn").html('<svg class="svg-btn width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M38 40L18 24L38 8V40Z" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 38V10" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+  } else {
+    $("#search-history-btn").css("backgroundColor","white");
+    $("#search-history-btn").html('<svg class="svg-btn width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M38 40L18 24L38 8V40Z" stroke="#007ACC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 38V10" stroke="#007ACC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+  }
+}
+function updateSearchMapBtn() {
+  if ($(".search-container").css('display') != 'none') {
+    $("#search-map-btn").css("backgroundColor","gainsboro");
+    $("#search-map-btn").html('<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 38C30.8366 38 38 30.8366 38 22C38 13.1634 30.8366 6 22 6C13.1634 6 6 13.1634 6 22C6 30.8366 13.1634 38 22 38Z" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M41.9998 42L33.2998 33.3" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+  } else {
+    $("#search-map-btn").css("backgroundColor","white");
+    $("#search-map-btn").html('<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 38C30.8366 38 38 30.8366 38 22C38 13.1634 30.8366 6 22 6C13.1634 6 6 13.1634 6 22C6 30.8366 13.1634 38 22 38Z" stroke="#007ACC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M41.9998 42L33.2998 33.3" stroke="#007ACC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+  }
+}
+function heightRangeToFeet(q, searchType) {
+  if (searchType == "height_range_id") {
+    return (parseInt(q) * 10) +  "ft";
+  } else {
+    return q;
+  }
 }
 /**
  * Adds a ... to the search query result title.
@@ -137,12 +189,22 @@ function resetSearchBarOptions() {
  * @see Aidan
  */
 function loadSearchBarOptions(searchType) {
-  let query = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/facets?facet=" + searchType + "_name&timezone=UTC"
+  let query = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/facets?facet=" + searchType + "&timezone=UTC"
   $.getJSON(query, (data) => {
     $.each(data.facets[0].facets, function (i, entry) {
-      $("#data").append($("<option></option>").val(entry.name));
+      let optionalString = createOptionalString(entry, searchType);
+      $("#data").append($("<option>" + optionalString + " </option>").val(entry.name));
     });
   })
+}
+function createOptionalString(entry, searchType){
+  let optionalString = "";
+  if (searchType == "height_range_id") {
+    optionalString = heightRangeToFeet(entry.name, searchType);
+    optionalString += " - ";
+  }
+  optionalString += entry.count + " Trees"
+  return optionalString;
 }
 /**
  * Highlights type search tag.
@@ -171,6 +233,7 @@ function getContent() {
     });
     isContent();
   });
+  addSearchHistory(currentLocation, "location");
 }
 /**
  * Checks if content is empty. 
@@ -182,7 +245,6 @@ function isContent(p) {
     } else {
       showDialogue("nullContent");
     }
-
   }
 }
 /**
@@ -254,7 +316,6 @@ function updateContent(entry, distanceEnabled) {
   } else {
     dis = $("<div></div>").addClass("distance").text(entry.fields.genus_name + " " + entry.fields.species_name);
   }
-
   var body = $("<div></div>").addClass("body").text(entry.fields.on_street);
   if (entry.fields.date_planted) {
     dateString = "Planted on " + entry.fields.date_planted;
@@ -266,6 +327,62 @@ function updateContent(entry, distanceEnabled) {
   post.on("click", (function () {
     zoom(entry);
   }));
+}
+function getSearchHistoryView() {
+  $("#search-history").text("");
+  for (let i = allSearchHistory.length - 1; i >= 0; i--) {
+    updateSearchHistoryView(allSearchHistory[i]);
+  }
+  $("#search-history").scrollTop(0);
+}
+function updateSearchHistoryView(entry) {
+  let item = $("<div></div>").addClass("search-history-item");
+  let query = $("<div></div>").addClass("search-query");
+  let type = $("<div></div>").addClass("search-type");
+  let arrow = $("<div></div>").addClass("arrow-icon");
+  arrow.html('<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18L15 12L9 6" stroke="#D3D3D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+  if (entry.searchType == "location") {
+    query.text(entry.q.lat + ", " + entry.q.ln);
+  } else {
+    query.text(entry.q);
+  }
+  type.text(parseType(entry.searchType));
+  item.append(query,type,arrow);
+  item.on( "click", function() {
+    loadSearchHistoryItem(entry);
+  });
+  $("#search-history").append(item);
+}
+function parseType(type) {
+  if (type == "common_name") {
+    return "Name";
+  } else if (type == "species_name") {
+    return "Species";
+  } else if (type == "genus_name") {
+    return "Genus";
+  } else if (type == "height_range_id") {
+    return "Height";
+  } else if (type == "location") {
+    return "Location";
+  }
+}
+function loadSearchHistoryItem(lastSearch) {
+  map.setZoom(lastSearch.zoom);
+    map.setCenter(lastSearch.pos);
+    clearMarkers();
+    clearLocationMarker();
+    if (lastSearch.searchType == "location") {
+      currentLocation = lastSearch.q;
+      let latlng = new google.maps.LatLng(lastSearch.q.lat, lastSearch.q.lng);
+      addLocationMarker(latlng, "");
+      getContent();
+      $("#content").scrollTop(0);
+    } else {
+      showSearchType(lastSearch.searchType + "-tag");
+      $("#query").val(lastSearch.q);
+      $("#content").text("");
+      search();
+    }
 }
 /**
  * Zooms on entry, shows overlay and updates various variables. 
@@ -313,7 +430,7 @@ function setStreetView(entry) {
         pitch: 10,
         zoom: 0
       });
-    }, 200);
+    }, 300);
   }
 }
 /**
@@ -343,6 +460,7 @@ function resetMarkerColor() {
  */
 function showTreeOverlay(entry) {
   $(".content-container").hide();
+  $(".search-container").hide();
   $(".tree-overlay-container").show();
   updateTreeOverlayContent(entry);
 }
@@ -510,7 +628,11 @@ function initMap() {
     $("#content").scrollTop(0);
   });
   let toggleTypeBtn = createToggleTypeBtn();
+  let searchHistoryBtn = createSearchHistoryBtn();
+  let searchBtn = createSearchMapBtn();
   map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(toggleTypeBtn);
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(searchBtn);
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(searchHistoryBtn);
   panorama = map.getStreetView();
   panorama.setPosition(currentLocation);
   panorama.addListener("visible_changed", function () {
@@ -541,12 +663,9 @@ function initMap() {
  * @param {string} lbl Optional label.
  */
 function addLocationMarker(location, lbl) {
-  if (!selectedTreeId) {
-    $(".search-container").hide();
-    $(".content-container").show();
-  } else {
-    hideTreeOverlay();
-  }
+  $(".search-container").hide();
+  $(".tree-overlay-container").hide();
+  $(".content-container").show();
   map.setCenter(location);
   map.setZoom(18);
   centerMap();
@@ -587,6 +706,72 @@ function createToggleTypeBtn() {
     }
   });
   return toggleTypeBtn;
+}
+function createSearchHistoryBtn() {
+  let toggleTypeBtn = document.createElement("button");
+  toggleTypeBtn.id = 'search-history-btn';
+  toggleTypeBtn.style.borderRadius = "4px";
+  toggleTypeBtn.style.height = "50px";
+  toggleTypeBtn.style.width = "50px";
+  toggleTypeBtn.style.margin = "10px";
+  toggleTypeBtn.style.backgroundColor = "gainsboro";
+  toggleTypeBtn.innerHTML = '<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M38 40L18 24L38 8V40Z" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 38V10" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  toggleTypeBtn.addEventListener("click", function () {
+    stepBackSearchHistory();
+  });
+  return toggleTypeBtn;
+}
+function createSearchMapBtn() {
+  let toggleTypeBtn = document.createElement("button");
+  toggleTypeBtn.id = 'search-map-btn';
+  toggleTypeBtn.style.borderRadius = "4px";
+  toggleTypeBtn.style.height = "50px";
+  toggleTypeBtn.style.width = "50px";
+  toggleTypeBtn.style.margin = "10px";
+  toggleTypeBtn.style.backgroundColor = "gainsboro";
+  toggleTypeBtn.innerHTML = '<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 38C30.8366 38 38 30.8366 38 22C38 13.1634 30.8366 6 22 6C13.1634 6 6 13.1634 6 22C6 30.8366 13.1634 38 22 38Z" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M41.9998 42L33.2998 33.3" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  toggleTypeBtn.addEventListener("click", function () {
+    if ($(".search-container").css('display') == 'none') {
+      $(".search-container").show();
+      $(".tree-overlay-container").hide();
+      $(".content-container").hide();
+      showSearchType($("#search-tags>div.tag-selected").attr('id'));
+    } else {
+      if ($("#content").text() != "") {
+        $(".search-container").hide();
+        $(".content-container").show();
+      }
+    }
+    getSearchHistoryView();
+    updateSearchMapBtn();
+  });
+  return toggleTypeBtn;
+}
+function stepBackSearchHistory() {
+  let index = searchHistory.length - 2;
+  if (index  > -1) {
+    let lastSearch = searchHistory[index];
+    map.setZoom(lastSearch.zoom);
+    map.setCenter(lastSearch.pos);
+    clearMarkers();
+    clearLocationMarker();
+    if (lastSearch.searchType == "location") {
+      currentLocation = lastSearch.q;
+      let latlng = new google.maps.LatLng(lastSearch.q.lat, lastSearch.q.lng);
+      addLocationMarker(latlng, "");
+      searchHistory.splice((index + 1), 1);
+      searchHistory.splice(index, 1);
+      getContent();
+      $("#content").scrollTop(0);
+    } else {
+      showSearchType(lastSearch.searchType + "-tag");
+      $("#query").val(lastSearch.q);
+      $("#content").text("");
+      searchHistory.splice(index + 1, 1);
+      searchHistory.splice(index, 1);
+      search();
+    }
+  }
 }
 /**
  * Toggles StreetView for a tree. 
