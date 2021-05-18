@@ -44,13 +44,24 @@ function showSearchType(type) {
   resetTagSelection();
   selectTag($("#" + type));
   $("#query").val("");
-  resetSearchBarOptions()
-  $("#search-bar").show();
-  if ($(".search-container").css('display') != 'none') {
-    loadSearchBarOptions(searchType);
-    $("#search-bar>input").focus();
+  resetSearchBarOptions();
+  if (searchType == "date_planted") {
+    $("#date-search-bar").show();
+    $("#search-bar").hide();
+    if ($(".search-container").css('display') != 'none') {
+      loadDateSearchBarOptions("y");
+      $("#date-search-bar>#query-year").focus();
+    }
+  } else {
+    $("#search-bar").show();
+    $("#date-search-bar").hide();
+    if ($(".search-container").css('display') != 'none') {
+      loadSearchBarOptions(searchType);
+      $("#search-bar>input").focus();
+    }
+    $("#query").attr("placeholder", $("#search-tags>div.tag-selected").text());
   }
-  $("#query").attr("placeholder", $("#search-tags>div.tag-selected").text());
+ 
 }
 /**
  * Queries a new search when tree name is clicked on in treeoverlay.
@@ -69,6 +80,18 @@ function treeNameClickSearch() {
  * Search button click that queries a new search.
  */
 function searchBtnClick() {
+  if ($("#query").val() != "") {
+    clearMarkers();
+    clearLocationMarker();
+    $("#content").text("");
+    if (map.getZoom() > 11) {
+      map.setZoom(11);
+      centerMap();
+    }
+    search();
+  }
+}
+function dateSearchBtnClick() {
   if ($("#query").val() != "") {
     clearMarkers();
     clearLocationMarker();
@@ -235,6 +258,47 @@ function loadSearchBarOptions(searchType) {
       $("#data").append($("<option>" + optionalString + " </option>").val(entry.name));
     });
   })
+}
+function loadDateSearchBarOptions(searchType) {
+  if(searchType == "y") {
+    let query = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/facets?facet=date_planted&timezone=UTC"
+    $.getJSON(query, (data) => {
+      $.each(data.facets[0].facets, function (i, entry) {
+        let optionalString = createOptionalString(entry, searchType);
+        $("#year").append($("<option>" + optionalString + " </option>").val(entry.name));
+      });
+    })
+  }
+  if(searchType == "ys") {
+    let y =  $("#query-year").val();
+    if (y.length == 4) {
+     $("#month").html("");
+     let query = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/facets?facet=date_planted&refine=date_planted%3A" + y + "&timezone=UTC"
+     $.getJSON(query, (data) => {
+       $.each(data.facets[0].facets[0].facets, function (i, entry) {
+         let optionalString = createOptionalString(entry, searchType);
+         $("#month").append($("<option>" + optionalString + " </option>").val(entry.name));
+         console.log(entry.name);
+       });
+     })
+    }
+  }
+  if (searchType == "ms") {
+   let y =  $("#query-year").val();
+   let m =  $("#query-month").val();
+   if (m.length == 2) {
+    $("#day").html("");
+    console.log("hello");
+    let query = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/facets?facet=date_planted&refine=date_planted%3A" + y + "/" + m + "&timezone=UTC"
+    $.getJSON(query, (data) => {
+      $.each(data.facets[0].facets[0].facets[0].facets, function (i, entry) {
+        let optionalString = createOptionalString(entry, searchType);
+        $("#day").append($("<option>" + optionalString + " </option>").val(entry.name));
+        console.log(entry.name);
+      });
+    })
+   }
+  }
 }
 /**
  * Creates optional string for search bar options.

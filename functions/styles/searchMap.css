@@ -408,6 +408,12 @@ input:focus {
     padding:10px;
 }
 
+#date-search-bar {
+    width:100%;
+    box-sizing:border-box;
+    padding:10px;
+}
+
 #loadmore{
     width:100%;
     color:lightgray;
@@ -452,7 +458,7 @@ input:focus {
 .arrow-icon {
     float:right;
 }
-#query::placeholder {
+input::placeholder {
     color: gainsboro;
     font-style:italic;
     font-weight:lighter;
@@ -463,6 +469,28 @@ input:focus {
     /* border-right:none; */
     border-top-right-radius: 0;
     border-bottom-right-radius:0;
+}
+
+#query-year {
+    float:left;
+    /* border-right:none; */
+    border-top-right-radius: 0;
+    border-bottom-right-radius:0;
+    width:70px;
+}
+
+#query-month {
+    float:left;
+    /* border-right:none; */
+    border-radius: 0;
+    width:50px;
+}
+
+#query-day {
+    float:left;
+    /* border-right:none; */
+    border-radius: 0;
+    width:50px;
 }
 #search-btn {
     float:left;
