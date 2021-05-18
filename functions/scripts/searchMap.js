@@ -32,6 +32,7 @@ currentLocation = { lat: 49.279430, lng: -123.117276 };
  * After document load, init search.
  */
 $(document).ready(function () {
+  $("#outer-search").css('height', '175px');
   $("#content").text("");
   showSearchType('common_name-tag');
   addInputListeners();
@@ -84,7 +85,9 @@ function showSearchType(type) {
     $("#search-bar").show();
     $("#date-search-bar").hide();
     if ($(".search-container").css('display') != 'none') {
-      loadSearchBarOptions(searchType);
+      if (searchType != "all") {
+        loadSearchBarOptions(searchType);
+      }
       $("#search-bar>input").focus();
     }
     $("#query").attr("placeholder", $("#search-tags>div.tag-selected").text());
@@ -167,6 +170,7 @@ function search(reset) {
   // $("#content-title").text(searchType.toUpperCase() + ": " + qString);
   $("#content-title").text(qString);
   $(".search-container").hide();
+  $("#outer-search").css('height', '100%');
   $(".tree-overlay-container").hide();
   $(".content-container").show();
   panorama.setVisible(false);
@@ -177,7 +181,6 @@ function search(reset) {
   } else {
     query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine." + searchType + "=" + q + "&rows=" + (rows) + "&start=" + page * rows;
   }
-  console.log(query);
   $.getJSON(query, function (data) {
     $.each(data.records, function (i, entry) {
       if (entry.fields.hasOwnProperty('geom')) {
