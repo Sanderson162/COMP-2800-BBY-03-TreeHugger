@@ -680,6 +680,7 @@ function showTreeOverlay(entry) {
   $(".content-container").hide();
   $(".search-container").hide();
   $(".tree-overlay-container").show();
+  updateSearchMapBtn();
   updateTreeOverlayContent(entry);
 }
 /**
