@@ -36,9 +36,10 @@
                     </button>
             </div>
             <div id="date-search-bar">
-                <input type="number" placeholder="YYYY" onkeyup="loadDateSearchBarOptions('ys')" list="year" id="query-year"/>
-                <input type="number" placeholder="MM" onkeyup="loadDateSearchBarOptions('ms')" list="month" id="query-month"/>
-                <input type="number" placeholder="DD" onkeyup="loadDateSearchBarOptions('d')" list="day" id="query-day"/>
+                <!-- https://stackoverflow.com/questions/18510845/maxlength-ignored-for-input-type-number-in-chrome -->
+                <input maxlength="4" onkeypress="if(this.value.length==this.maxLength) return false;"  type="number" inputmode="numeric" pattern="[0-9]"  placeholder="YYYY" oninput="loadDateSearchBarOptions('ys')" list="year" id="query-year"/>
+                <input maxlength="2" onkeypress="if(this.value.length==this.maxLength || this.value > 1) return false;" type="number" inputmode="numeric" pattern="[0-9]" placeholder="MM" oninput="loadDateSearchBarOptions('ms')" list="month" id="query-month"/>
+                <input maxlength="2" onkeypress="if(this.value.length==this.maxLength || this.value > 3) return false;" type="number" inputmode="numeric" pattern="[0-9]" placeholder="DD"  oninput="loadDateSearchBarOptions('d')" list="day" id="query-day"/>
                 <datalist id="year">
                 </datalist>
                 <datalist id="month">

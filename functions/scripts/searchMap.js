@@ -324,51 +324,72 @@ function loadSearchBarOptions(searchType) {
   })
 }
 function loadDateSearchBarOptions(searchType) {
-  if(searchType == "y") {
-    let query = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/facets?facet=date_planted&timezone=UTC"
-    $.getJSON(query, (data) => {
-      $.each(data.facets[0].facets, function (i, entry) {
-        let optionalString = createOptionalString(entry, searchType);
-        $("#year").append($("<option>" + optionalString + " </option>").val(entry.name));
-      });
-    })
-  }
-  if(searchType == "ys") {
+  let queryBase = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/facets?facet=date_planted";
+  if (searchType == "y") {
+    let query = queryBase + "&timezone=UTC"
+    loadDateDataList($("#year"), query, searchType);
+  } else if (searchType == "ys") {
     let y =  $("#query-year").val();
     if (y.length == 4) {
-     $("#month").html("");
-     $("#query-month").prop('disabled', false);
-     let query = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/facets?facet=date_planted&refine=date_planted%3A" + y + "&timezone=UTC"
-     $.getJSON(query, (data) => {
-       $.each(data.facets[0].facets[0].facets, function (i, entry) {
-         let optionalString = createOptionalString(entry, searchType);
-         let month = removeFirstZero(entry.name);
-         $("#month").append($("<option>" + optionalString + " </option>").val(month));
-       });
-     })
+      $("#month").html("");
+      $("#query-month").prop('disabled', false);
+      let query = queryBase + "&refine=date_planted%3A" + y + "&timezone=UTC"
+      loadDateDataList($("#month"), query, searchType);
+      $("#query-month").focus();
     } else {
       $("#month").html("");
       $("#day").html("");
     }
+  } else if (searchType == "ms") {
+    let y =  $("#query-year").val();
+    let m =  $("#query-month").val();
+    if (m.length > 0 && m.length <= 2) {
+      $("#day").html("");
+      $("#query-day").prop('disabled', false);
+      m = addFirstZero(m);
+      let query = queryBase + "&refine=date_planted%3A" + y + "/" + m + "&timezone=UTC"
+      loadDateDataList($("#day"), query, searchType);
+      if (m > 1){
+        $("#query-day").focus();
+      }
+    } else {
+      $("#day").html("");
+    }
   }
-  if (searchType == "ms") {
-   let y =  $("#query-year").val();
-   let m =  addFirstZero($("#query-month").val());
-   if (m.length > 0 && m.length <= 2) {
-    $("#day").html("");
-    $("#query-day").prop('disabled', false);
-    let query = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/facets?facet=date_planted&refine=date_planted%3A" + y + "/" + m + "&timezone=UTC"
-    $.getJSON(query, (data) => {
-      $.each(data.facets[0].facets[0].facets[0].facets, function (i, entry) {
-        let optionalString = createOptionalString(entry, searchType);
-        let day = removeFirstZero(entry.name);
-        $("#day").append($("<option>" + optionalString + " </option>").val(day));
-      });
-    })
-   } else {
-    $("#day").html("");
-   }
-  }
+}
+function loadDateDataList(dataList, query, searchType) {
+  $.getJSON(query, (data) => {
+    if (data) {
+      if (searchType == "y") {
+        $.each(data.facets[0].facets, function (i, entry) {
+          let optionalString = createOptionalString(entry, searchType);
+          let day = removeFirstZero(entry.name);
+          dataList.append($("<option>" + optionalString + " </option>").val(day));
+        });
+        showDataArrowiOS($("#query-year"));
+      } else if (searchType == "ys") {
+        $.each(data.facets[0].facets[0].facets, function (i, entry) {
+          let optionalString = createOptionalString(entry, searchType);
+          let day = removeFirstZero(entry.name);
+          dataList.append($("<option>" + optionalString + " </option>").val(day));
+        });
+        showDataArrowiOS($("#query-month"));
+      } else if (searchType == "ms") {
+        $.each(data.facets[0].facets[0].facets[0].facets, function (i, entry) {
+          let optionalString = createOptionalString(entry, searchType);
+          let day = removeFirstZero(entry.name);
+          dataList.append($("<option>" + optionalString + " </option>").val(day));
+        });
+        showDataArrowiOS($("#query-day"));
+      }
+    }
+  })
+}
+function showDataArrowiOS(inputBox) {
+  if (inputBox.val() == "") {
+    inputBox.val("1");
+    inputBox.val("");
+  } 
 }
 function removeFirstZero(num) {
   if (parseInt(num) < 10 && num.length == 2) {
