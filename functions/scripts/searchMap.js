@@ -26,7 +26,7 @@ let allSearchHistory = [];
  * QUERY SETTINGS 
  */
 /* Number of queries returned */
-let rows = 50;
+let rows = 30;
 currentLocation = { lat: 49.279430, lng: -123.117276 };
 /**
  * After document load, init search.
@@ -44,6 +44,7 @@ function showSearchType(type) {
   resetTagSelection();
   selectTag($("#" + type));
   $("#query").val("");
+  resetDateSearchBar();
   resetSearchBarOptions();
   if (searchType == "date_planted") {
     $("#date-search-bar").show();
@@ -74,7 +75,7 @@ function treeNameClickSearch() {
   clearLocationMarker();
   map.setZoom(12);
   centerMap();
-  search();
+  search(true);
 }
 /**
  * Search button click that queries a new search.
@@ -88,11 +89,11 @@ function searchBtnClick() {
       map.setZoom(11);
       centerMap();
     }
-    search();
+    search(true);
   }
 }
 function dateSearchBtnClick() {
-  if ($("#query").val() != "") {
+  if ($("#query-year").val().length == 4) {
     clearMarkers();
     clearLocationMarker();
     $("#content").text("");
@@ -100,14 +101,40 @@ function dateSearchBtnClick() {
       map.setZoom(11);
       centerMap();
     }
-    search();
+    let y = $("#query-year").val();
+    let m = addFirstZero($("#query-month").val());
+    let d = addFirstZero($("#query-day").val());
+    let q = createDateQuery(y, m, d);
+    $("#query").val(q);
+    search(true);
+  }
+}
+function createDateQuery(y, m, d) {
+  let q;
+  if (m != "" && d != "") {
+    q = y + "/" + m + "/" + d;
+  } else if (m != "") {
+    q = y + "/" + m;
+  } else {
+    q = y;
+  }
+  return q;
+}
+function addFirstZero(num) {
+  if (parseInt(num) < 10 && num.length == 1) {
+    return "0" + num;
+  } else {
+    return num;
   }
 }
 /**
  * Search function for app.
  * @see Aidan
  */
-function search() {
+function search(reset) {
+  if (reset) {
+    page = 0;
+  }
   let q = $("#query").val()
   let searchType = $("#search-tags>div.tag-selected").attr('id').slice(0, -4);
   let qString = responsiveSearchTitle(heightRangeToFeet(q, searchType));
@@ -235,7 +262,7 @@ function loadMoreButton() {
     page += 1;
     let count = $(".post").length;
     $(".post:nth-child(-n + "+ count + ")").css("background-color", "whitesmoke");
-    search();
+      search();
   });
   return b;
 }
@@ -273,32 +300,54 @@ function loadDateSearchBarOptions(searchType) {
     let y =  $("#query-year").val();
     if (y.length == 4) {
      $("#month").html("");
+     $("#query-month").prop('disabled', false);
      let query = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/facets?facet=date_planted&refine=date_planted%3A" + y + "&timezone=UTC"
      $.getJSON(query, (data) => {
        $.each(data.facets[0].facets[0].facets, function (i, entry) {
          let optionalString = createOptionalString(entry, searchType);
-         $("#month").append($("<option>" + optionalString + " </option>").val(entry.name));
-         console.log(entry.name);
+         let month = removeFirstZero(entry.name);
+         $("#month").append($("<option>" + optionalString + " </option>").val(month));
        });
      })
+    } else {
+      $("#month").html("");
+      $("#day").html("");
     }
   }
   if (searchType == "ms") {
    let y =  $("#query-year").val();
-   let m =  $("#query-month").val();
-   if (m.length == 2) {
+   let m =  addFirstZero($("#query-month").val());
+   if (m.length > 0 && m.length <= 2) {
     $("#day").html("");
-    console.log("hello");
+    $("#query-day").prop('disabled', false);
     let query = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/facets?facet=date_planted&refine=date_planted%3A" + y + "/" + m + "&timezone=UTC"
     $.getJSON(query, (data) => {
       $.each(data.facets[0].facets[0].facets[0].facets, function (i, entry) {
         let optionalString = createOptionalString(entry, searchType);
-        $("#day").append($("<option>" + optionalString + " </option>").val(entry.name));
-        console.log(entry.name);
+        let day = removeFirstZero(entry.name);
+        $("#day").append($("<option>" + optionalString + " </option>").val(day));
       });
     })
+   } else {
+    $("#day").html("");
    }
   }
+}
+function removeFirstZero(num) {
+  if (parseInt(num) < 10 && num.length == 2) {
+    let n = parseInt(num, 10);
+    return n;
+  } else {
+    return num;
+  }
+} 
+function resetDateSearchBar() {
+  $("#query-month").val("");
+  $("#query-day").val("");
+  $("#query-year").val("");
+  $("#year").html("");
+  $("#query-month").prop('disabled', true);
+  $("#query-day").prop('disabled', true);
 }
 /**
  * Creates optional string for search bar options.
@@ -510,7 +559,7 @@ function loadSearchHistoryItem(lastSearch) {
       showSearchType(lastSearch.searchType + "-tag");
       $("#query").val(lastSearch.q);
       $("#content").text("");
-      search();
+      search(true);
     }
 }
 /**
@@ -909,7 +958,7 @@ function stepBackSearchHistory() {
       $("#content").text("");
       searchHistory.splice(index + 1, 1);
       searchHistory.splice(index, 1);
-      search();
+      search(true);
     }
   }
 }

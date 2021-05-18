@@ -385,7 +385,7 @@ button:hover {
 
 input {
     font-size:18px;
-    width:71%;
+    width:72.6%;
     padding:10px;
     border-radius:4px;
     margin:auto;
@@ -483,14 +483,14 @@ input::placeholder {
     float:left;
     /* border-right:none; */
     border-radius: 0;
-    width:50px;
+    width:60px;
 }
 
 #query-day {
     float:left;
     /* border-right:none; */
     border-radius: 0;
-    width:50px;
+    width:60px;
 }
 #search-btn {
     float:left;

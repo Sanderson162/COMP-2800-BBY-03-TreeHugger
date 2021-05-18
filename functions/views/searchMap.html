@@ -35,9 +35,9 @@
                     </button>
             </div>
             <div id="date-search-bar">
-                <input type="number" placeholder="YYYY" onchange="loadDateSearchBarOptions('ys')" list="year" id="query-year"/>
-                <input type="number" placeholder="MM" onchange="loadDateSearchBarOptions('ms')" list="month" id="query-month"/>
-                <input type="number" placeholder="DD" onchange="loadDateSearchBarOptions('d')" list="day" id="query-day"/>
+                <input type="number" placeholder="YYYY" onkeyup="loadDateSearchBarOptions('ys')" list="year" id="query-year"/>
+                <input type="number" placeholder="MM" onkeyup="loadDateSearchBarOptions('ms')" list="month" id="query-month"/>
+                <input type="number" placeholder="DD" onkeyup="loadDateSearchBarOptions('d')" list="day" id="query-day"/>
                 <datalist id="year">
                 </datalist>
                 <datalist id="month">
