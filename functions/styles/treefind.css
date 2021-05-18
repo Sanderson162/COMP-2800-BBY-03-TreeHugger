@@ -28,6 +28,10 @@ h1 {
     border-bottom: 1px solid rgb(236, 236, 236);
 }
 
+.post:last-of-type{
+    border:none;
+}
+
 #content {
     border-radius: 4px;
     background-color:white;

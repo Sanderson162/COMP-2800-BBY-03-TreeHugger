@@ -481,7 +481,7 @@ function createToggleLocationBtn() {
   toggleLocationBtn.style.height = "50px";
   toggleLocationBtn.style.width = "50px";
   toggleLocationBtn.style.margin = "10px";
-  toggleLocationBtn.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke + "'stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
+  toggleLocationBtn.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke + "'stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
   toggleLocationBtn.addEventListener("click", function () {
     if (locationInterval == null) {
       toggleLocation(true);
@@ -489,14 +489,14 @@ function createToggleLocationBtn() {
       this.style.backgroundColor = "white";
       $("#center-locate-btn").css("background-color", "white");
       $("#center-locate-btn").fadeIn(300);
-      this.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke + "'stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
+      this.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke + "'stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
     } else {
       toggleLocation(false);
       stroke = "#000000";
       this.style.backgroundColor = "gainsboro";
       $("#center-locate-btn").css("background-color", "gainsboro");
       $("#center-locate-btn").fadeOut(300);
-      this.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke + "'stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
+      this.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke + "'stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
     }
   });
   return toggleLocationBtn;

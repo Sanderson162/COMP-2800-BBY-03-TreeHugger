@@ -28,6 +28,10 @@ h1 {
     border-bottom: 1px solid rgb(236, 236, 236);
 }
 
+.post:last-of-type{
+    border:none;
+}
+
 #content {
     border-radius: 4px;
     background-color:white;
@@ -420,6 +424,9 @@ input:focus {
     border:none;
     padding-top:2px;
     border-radius: 0px;
+    font-weight:lighter;
+    box-shadow:         inset 0 8px 6px -6px rgba(0, 0, 0, 0.1);
+    background-color:rgb(247, 247, 247);
 }
 
 #search-history {
@@ -505,4 +512,9 @@ input::placeholder {
     border-bottom-left-radius:0;
     background:whitesmoke;
     width:20%;
+}
+
+.light {
+    color:lightgrey;
+    font-weight:lighter;
 }

@@ -185,7 +185,10 @@ function search(reset) {
       }
     });
     let count = $(".post").length;
-    $("#content-title").text($("#content-title").text() + " (" + (count) + " / " + data.nhits + ")");
+    // $("#content-title").text($("#content-title").text() + " (" + (count) + " / " + data.nhits + ")");
+    let countSpan = $('<span></span>').addClass("light");
+    countSpan.text(" (" + (count) + " / " + data.nhits + ")");
+    $("#content-title").append(countSpan);
     isContent("search");
     if (data.records.length == rows) {
       $("#content").append(loadMoreButton());
@@ -288,7 +291,7 @@ function searchZoom() {
  * @see Aidan
  */
 function loadMoreButton() {
-  let b = $("<button type='button' id='loadmore'>LOAD MORE</button>");
+  let b = $('<button type="button" id="loadmore"><svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.75 16.25L15 22.5L21.25 16.25" stroke="#A9A9A9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.75 7.5L15 13.75L21.25 7.5" stroke="#A9A9A9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>');
   b.click(() => {
     page += 1;
     let count = $(".post").length;
