@@ -13,10 +13,9 @@ let selectedTreeLocation;
 let selectedTreeId;
 let lastPullLocation;
 let lastCalcLocation;
-let iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-let greenTreeIcon = "https://i.imgur.com/tGML9lx.png";
-let selectedTreeIcon = "https://i.imgur.com/y27h9ul.png";
-let locationIcon = "https://i.imgur.com/WRzZWTj.png";
+let greenTreeIcon = "https://firebasestorage.googleapis.com/v0/b/tree-hugger-c60ff.appspot.com/o/treeeee1.png?alt=media&token=1edb09b2-d15f-4a92-bdb2-c76b61de7f18";
+let selectedTreeIcon = "https://firebasestorage.googleapis.com/v0/b/tree-hugger-c60ff.appspot.com/o/treeeee12.png?alt=media&token=aa102c04-5925-4f53-82fc-f4c7d49ee889";
+let locationIcon = "https://firebasestorage.googleapis.com/v0/b/tree-hugger-c60ff.appspot.com/o/loc2.png?alt=media&token=18248c0d-f07c-4a9e-9c3e-a7cd2a2e5e97";
 let locationInterval;
 /**
  * QUERY SETTINGS 
