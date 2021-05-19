@@ -32,7 +32,11 @@ function addNavbarCommon() {
 
 $("#profileHamburgerMenuButton").on('click', (event) => {
 	event.preventDefault();
-	confirm("test");
+	if ($("#profileHamburgerMenu").is(":hidden")) {
+		$("#profileHamburgerMenu").show();
+	} else {
+		$("#profileHamburgerMenu").hide();
+	}
 });
 /** 
  * Wraps the body in a main-container div. 

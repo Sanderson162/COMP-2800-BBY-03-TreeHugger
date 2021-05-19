@@ -31,7 +31,7 @@
 <body>
 
   <!-- <h1 id="firebaseui-auth-container" style="display: none; padding-left: 20px; margin: auto; position: fixed;">&nbsp;</h1> -->
-  <button id="loginLogoutButton">Login/Signup</button>
+  <!-- <button id="loginLogoutButton">Login/Signup</button> -->
   <div id="inputTreeId">Tree recordID: <input type='text' value='0278dd75aa3d0016371651b85bc4232746aa9d91'></div>
   <button id="addFavButton">add</button>
   <button id="removeFavButton">remove</button>
@@ -69,7 +69,9 @@
 
   </div>
   <div id="profileHamburgerMenu">
-
+    <div id="navbarHamProfileButton">Profile</div>
+    <div id="loginLogoutButton">Login</div>
+    <div id="closeHamburgerMenu" onclick="$(this).parent().hide()">Close</div>
   </div>
 
 

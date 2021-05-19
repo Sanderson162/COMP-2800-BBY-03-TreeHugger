@@ -76,8 +76,10 @@ $(() => {
     if (user) {
       $("#loginLogoutButton").html("logout");
       $("#loginContainerPopup").hide();
+      $("#navbarHamProfileButton").show();
     } else {
       $("#loginLogoutButton").html("Login/Signup");
+      $("#navbarHamProfileButton").hide();
     }
   });
 
