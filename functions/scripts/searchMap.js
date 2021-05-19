@@ -1142,17 +1142,20 @@ function clearLocationMarker() {
 
 /**
  * ========================================START=============================================
- * The next two functions utilize wikipedia to source basic descriptive information of
- * the genus_species of a selected tree to complement it's database information.
- * It will produce an article for the genus_species of each selected tree.
- * Therefore, the citation below will be accurate as long a the genus_species name
- * is appended to the end of the link below in the format "genus_species".
- * For example https://en.m.wikipedia.org/wiki/Prunus_cerasifera would append
- * "Prunus_cerasifera" to the end of the url below.
- * Example citation for Prunus cerasifera
+ * The next section utilizes wikipedia to source an extract and thumbnail from
+ * the wikipedia page that corresponds to the genus and species name of the
+ * selected tree to complement it's database information.
+ *
+ * Appending the genus and species name to the end of the following wikipedia link
+ * will provide our citation link, as we cannot link every wikipedia page (there are many of them).
+ *
+ * Below is an example of a citation for a particular genus and species name.
+ * https://en.m.wikipedia.org/wiki/Prunus_cerasifera
+ * Example citation for Prunus cerasifera citation:
  * Wikipedia contributors. (2021, March 5). Prunus cerasifera. In Wikipedia, The Free Encyclopedia. Retrieved 17:51, May 19, 2021, from https://en.wikipedia.org/w/index.php?title=Prunus_cerasifera&oldid=1010448872
+ *
  * @author Wikipedia contributors
- * @see https://en.m.wikipedia.org/wiki/ + genus_species name from database
+ * @see https://en.m.wikipedia.org/wiki/ + genus + _ + species name from database
  */
 
 /**
@@ -1191,6 +1194,10 @@ function getInfoFromWikipediaBasedOnGenusSpecies (genus_species) {
 
 }
 
+/**
+ * Displays wikipedia thumbnail retrieved from query in details division.
+ * @param {*} result
+ */
 function displayWikipediaThumbnail(result) {
   let picturePageId = Object.keys(result.query.pages)[0];
   if (result.query.pages[picturePageId].thumbnail ==  undefined) {
@@ -1201,28 +1208,29 @@ function displayWikipediaThumbnail(result) {
 }
 
 /**
- * Displays wikipedia information retrieved from a query.
+ * Displays wikipedia information retrieved from a query in details division.
  * @param {*} result
  */
 function displayWikipediaInformation (result, link) {
-  let pageid = Object.keys(result.query.pages)[0];
-  if (result.query.pages[pageid].extract == undefined) {
+  let pageId = Object.keys(result.query.pages)[0];
+  if (result.query.pages[pageId].extract == undefined) {
     $("#details").append("No Wikipedia Information Available.");
   } else {
-    $("#details").append(JSON.stringify(result.query.pages[pageid].extract).slice(0, -5));
+    $("#details").append(JSON.stringify(result.query.pages[pageId].extract).slice(0, -5));
     $("#details").append("\"");
     $("#details").append('<br><br>Retrieved from <a href="'+ link +'">Wikipedia</a>');
   }
 }
 // ========================================END=============================================
 
-//https://api.jquery.com/animate/
-//https://stackoverflow.com/questions/25409023/how-to-restart-reset-jquery-animation
 /**
  * Toggles the details overlay when "details-btn" is clicked.
  * Toggles the activeDetails class on the "#outer-tree-content",
  * "#tree-content", and "#main" divisions in order to allow an increase in size
  * of the #main div for the details tab. Resets to original size when toggled off.
+ *
+ * The following code used a concept from stack overflow as a foundation.
+ * @see https://stackoverflow.com/questions/25409023/how-to-restart-reset-jquery-animation
  */
  function toggleDetails() {
   $("#details").html("");
