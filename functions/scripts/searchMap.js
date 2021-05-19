@@ -723,8 +723,12 @@ function updateTreeOverlayContent(entry) {
   }
   $("#date").text("~" + entry.fields.diameter + " inches in diameter. ~" + entry.fields.height_range_id * 10 + " feet in height. Tree ID: " + entry.fields.tree_id);
   $("#updated").text(dateString);
+
+  //Add population of details division here and just toggle hide and show perhaps?
+  getInfoFromWikipediaBasedOnGenusSpecies(entry.fields.genus_name.toLowerCase() + "_" + entry.fields.species_name.toLowerCase());
 }
-/** 
+
+/**
  * Adds a click listener to the StreeView button in TreeOverlay. 
  * @param {obj} entry
  */
@@ -1135,24 +1139,84 @@ function clearLocationMarker() {
   }
 }
 
+/**
+ * ========================================START=============================================
+ * The next two functions utilize wikipedia to source basic descriptive information of
+ * the genus_species of a selected tree to complement it's database information.
+ * It will produce an article for the genus_species of each selected tree.
+ * Therefore, the citation below will be accurate as long a the genus_species name
+ * is appended to the end of the link below in the format "genus_species".
+ * For example https://en.m.wikipedia.org/wiki/Prunus_cerasifera would append
+ * "Prunus_cerasifera" to the end of the url below.
+ * Example citation for Prunus cerasifera
+ * Wikipedia contributors. (2021, March 5). Prunus cerasifera. In Wikipedia, The Free Encyclopedia. Retrieved 17:51, May 19, 2021, from https://en.wikipedia.org/w/index.php?title=Prunus_cerasifera&oldid=1010448872
+ * @author Wikipedia contributors
+ * @see https://en.m.wikipedia.org/wiki/ + genus_species name from database
+ */
+
+/**
+ * Uses wikipedia to retrieve an entry corresponding to the genus_species name of the selected tree.
+ * @param {*} genus_species
+ * @see Stirling
+ */
+function getInfoFromWikipediaBasedOnGenusSpecies (genus_species) {
+  console.log("search query: https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=" + genus_species + "&exintro=1&explaintext=1&callback=?");
+  $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=" + genus_species + "&exintro=1&explaintext=1&callback=?", 
+      success: function(result, status, xhr){
+          console.log("received: ", result);
+          $("#details").html("");
+          let link = "https://en.wikipedia.org/wiki/" + genus_species;
+          displayWikipediaInformation(result, link);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+          console.log("ERROR:", jqXHR, textStatus, errorThrown);
+      }
+  });
+}
+
+/**
+ * Displays wikipedia information retrieved from a query.
+ * @param {*} result
+ */
+function displayWikipediaInformation (result, link) {
+  let pageid = Object.keys(result.query.pages)[0];
+  console.log(result);
+  if (result.query.pages[pageid].extract == undefined) {
+    $("#details").html("");
+    $("#details").append("No Wikipedia Information Available.");
+  } else {
+    $("#details").append(JSON.stringify(result.query.pages[pageid].extract).slice(0, -5));
+    $("#details").append("\"");
+    $("#details").append('<br><br>Retrieved from <a href="'+ link +'">Wikipedia</a>');
+  }
+}
+
+// ========================================END=============================================
+
 //https://api.jquery.com/animate/
 //https://stackoverflow.com/questions/25409023/how-to-restart-reset-jquery-animation
 /**
- * Toggles the details overlay.
+ * Toggles the details overlay when "details-btn" is clicked.
+ * Toggles the activeDetails class on the "#outer-tree-content",
+ * "#tree-content", and "#main" divisions in order to allow an increase in size
+ * of the #main div for the details tab. Resets to original size when toggled off.
  */
  function toggleDetails() {
   if (($("#main").hasClass("activeDetails"))) {
+    $("#details").hide();
     $("#outer-tree-content").toggleClass("activeDetailsParent");
-    $("#tree-content").toggleClass("activeDetails");
-    $("#main").toggleClass("activeDetails");
+    $("#tree-content, #main").toggleClass("activeDetails");
 
     // Responsible for resetting to original CSS.
     $("#outer-tree-content, #tree-content, #main").removeAttr("style");
     // ==============================================
   } else {
+    $("#details").show();
     $("#outer-tree-content").toggleClass("activeDetailsParent");
-    $("#tree-content").toggleClass("activeDetails");
-    $("#main").toggleClass("activeDetails");
+    $("#tree-content, #main").toggleClass("activeDetails");
 
     // Responsible for animation.
     $("#outer-tree-content, #tree-content, #main").animate({
@@ -1161,3 +1225,4 @@ function clearLocationMarker() {
     // ==============================================
   }
 }
+

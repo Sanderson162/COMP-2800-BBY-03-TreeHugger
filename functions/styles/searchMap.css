@@ -519,6 +519,12 @@ input::placeholder {
     font-weight:lighter;
 }
 
+#details {
+    display: none;
+    border: solid 1px black;
+    height: 350px;
+}
+
 .activeDetails {
     /* height: 600px !important; */
     max-height: 600px !important;
