@@ -785,6 +785,7 @@ function updateTreeOverlayContent(entry) {
     ageString = "N/A";
   }
   $("#tree-card-id").text("Tree ID: " + entry.fields.tree_id);
+  $("#tree-card-id").data("id", entry.fields.tree_id);
   $("#tree-card-height").text(entry.fields.height_range_id * 10 + " ft");
   $("#tree-card-diameter").text(entry.fields.diameter + " in");
   $("#tree-card-date").text(dateString);
@@ -804,6 +805,23 @@ function dateStringtoDate(dateString) {
   let day = dateString.substring(7,9);
   let date = new Date(year, month-1, day);
   return date;
+}
+function copyShareLink() {
+  let id = $('#tree-card-id').data('id');
+  let url = window.location.href + "?id=" + id;
+  console.log(url);
+  copyToClipboard(url);
+}
+//TODO DOES NOT WORK ???????????
+//@author: https://stackoverflow.com/questions/33855641/copy-output-of-a-javascript-variable-to-the-clipboard
+function copyToClipboard(text) {
+  var dummy = document.createElement("input");
+  dummy.style.display = 'none'
+  document.body.appendChild(dummy);
+  dummy.value = text;
+  dummy.select();
+  document.execCommand("copy");
+  document.body.removeChild(dummy);
 }
 /** 
  * Adds a click listener to the StreeView button in TreeOverlay. 
