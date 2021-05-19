@@ -724,7 +724,7 @@ function updateTreeOverlayContent(entry) {
   $("#date").text("~" + entry.fields.diameter + " inches in diameter. ~" + entry.fields.height_range_id * 10 + " feet in height. Tree ID: " + entry.fields.tree_id);
   $("#updated").text(dateString);
 
-  //Add population of details division here and just toggle hide and show perhaps?
+  $("#details").html("");
   getInfoFromWikipediaBasedOnGenusSpecies(entry.fields.genus_name.toLowerCase() + "_" + entry.fields.species_name.toLowerCase());
 }
 
@@ -1160,14 +1160,26 @@ function clearLocationMarker() {
  * @see Stirling
  */
 function getInfoFromWikipediaBasedOnGenusSpecies (genus_species) {
-  console.log("search query: https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=" + genus_species + "&exintro=1&explaintext=1&callback=?");
+  console.log("search query: https://en.wikipedia.org/w/api.php?action=query&titles=" + genus_species + "&prop=pageimages&format=json&pithumbsize=100");
+  $.ajax({
+    type: "GET",
+    dataType: "jsonp",
+    url: "https://en.wikipedia.org/w/api.php?action=query&titles=" + genus_species + "&prop=pageimages&format=json&pithumbsize=100&callback=?",
+    success: function(result, status, xhr){
+        console.log("received: ", result);
+        displayWikipediaThumbnail(result);
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        console.log("ERROR:", jqXHR, textStatus, errorThrown);
+    }
+});
+
   $.ajax({
       type: "GET",
       dataType: "json",
-      url: "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=" + genus_species + "&exintro=1&explaintext=1&callback=?", 
+      url: "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=" + genus_species + "&exintro=1&explaintext=1&callback=?",
       success: function(result, status, xhr){
           console.log("received: ", result);
-          $("#details").html("");
           let link = "https://en.wikipedia.org/wiki/" + genus_species;
           displayWikipediaInformation(result, link);
       },
@@ -1175,6 +1187,16 @@ function getInfoFromWikipediaBasedOnGenusSpecies (genus_species) {
           console.log("ERROR:", jqXHR, textStatus, errorThrown);
       }
   });
+
+}
+
+function displayWikipediaThumbnail(result) {
+  let picturePageId = Object.keys(result.query.pages)[0];
+  if (result.query.pages[picturePageId].thumbnail ==  undefined) {
+    return;
+  } else {
+      $("#details").prepend('<img src=' + result.query.pages[picturePageId].thumbnail.source + ' alt=""><br>');
+  }
 }
 
 /**
@@ -1183,9 +1205,7 @@ function getInfoFromWikipediaBasedOnGenusSpecies (genus_species) {
  */
 function displayWikipediaInformation (result, link) {
   let pageid = Object.keys(result.query.pages)[0];
-  console.log(result);
   if (result.query.pages[pageid].extract == undefined) {
-    $("#details").html("");
     $("#details").append("No Wikipedia Information Available.");
   } else {
     $("#details").append(JSON.stringify(result.query.pages[pageid].extract).slice(0, -5));
@@ -1220,7 +1240,7 @@ function displayWikipediaInformation (result, link) {
 
     // Responsible for animation.
     $("#outer-tree-content, #tree-content, #main").animate({
-      height: "+=350px"
+      height: "+=400px"
     }, 500, function () {});
     // ==============================================
   }
