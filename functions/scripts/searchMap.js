@@ -574,6 +574,7 @@ function updateSearchHistoryView(entry) {
   item.append(query,type,arrow);
   item.on( "click", function() {
     loadSearchHistoryItem(entry);
+    document.activeElement.blur();
   });
   $("#search-history").append(item);
 }
