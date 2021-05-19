@@ -23,7 +23,7 @@ let markerIndexCount = 0;
 let searchHistory = [];
 let allSearchHistory = [];
 /**
- * QUERY SETTINGS 
+ * QUERY SETTINGS
  */
 /* Number of queries returned */
 let rows = 40;
