@@ -595,8 +595,6 @@ function updateContent(entry, distanceEnabled) {
   addTreeMarker(entry.fields.geom.coordinates[0], entry.fields.geom.coordinates[1], entry);
   $("#content").append(post);
   post.on("click", (function () {
-    this.style.backgroundColor = "whitesmoke";
-    resetMarkerColor();
     zoom(entry);
   }));
 }
@@ -686,6 +684,8 @@ function loadSearchHistoryItem(lastSearch) {
  * @param {obj} entry
  */
 function zoom(entry) {
+  resetMarkerColor();
+  $('#' + entry.recordid).css("background-color", "whitesmoke");
   zoomVal = map.getZoom();
   selectedTreeId = entry.recordid;
   colorMarker(entry.recordid);
@@ -1170,9 +1170,7 @@ function addTreeMarker(longitude, latitude, entry) {
   });
   markers.push(marker);
   marker.addListener("click", () => {
-    resetMarkerColor();
     // $('#' + ids).get(0).scrollIntoView();
-    $('#' + ids).css("background-color", "whitesmoke");
     marker.setIcon(selectedTreeIcon);
     marker.metadata = { id: ids };
     zoom(entry);
