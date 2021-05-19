@@ -703,6 +703,7 @@ function showTreeOverlay(entry) {
   $(".tree-overlay-container").show();
   updateSearchMapBtn();
   updateTreeOverlayContent(entry);
+  removeDetails();
 }
 /**
  * Updates the TreeOverlay view with data from entry. 
@@ -724,8 +725,6 @@ function updateTreeOverlayContent(entry) {
   $("#date").text("~" + entry.fields.diameter + " inches in diameter. ~" + entry.fields.height_range_id * 10 + " feet in height. Tree ID: " + entry.fields.tree_id);
   $("#updated").text(dateString);
 
-  $("#details").html("");
-  getInfoFromWikipediaBasedOnGenusSpecies(entry.fields.genus_name.toLowerCase() + "_" + entry.fields.species_name.toLowerCase());
 }
 
 /**
@@ -736,6 +735,7 @@ function addStreetViewBtnListener(entry) {
   $("#street-btn").off();
   $("#street-btn").on("click", (function () {
     toggleStreetView(entry);
+    removeDetails();
   }));
 }
 /**
@@ -759,6 +759,7 @@ function hideTreeOverlay() {
       centerMap();
     }
   }
+  $("#details").hide();
 }
 /** 
  * Toggles the content overlay visible or hidden
@@ -1213,7 +1214,6 @@ function displayWikipediaInformation (result, link) {
     $("#details").append('<br><br>Retrieved from <a href="'+ link +'">Wikipedia</a>');
   }
 }
-
 // ========================================END=============================================
 
 //https://api.jquery.com/animate/
@@ -1225,24 +1225,28 @@ function displayWikipediaInformation (result, link) {
  * of the #main div for the details tab. Resets to original size when toggled off.
  */
  function toggleDetails() {
-  if (($("#main").hasClass("activeDetails"))) {
-    $("#details").hide();
-    $("#outer-tree-content").toggleClass("activeDetailsParent");
-    $("#tree-content, #main").toggleClass("activeDetails");
+  $("#details").html("");
+  let textForQuery = $("#tree-name").text();
+  textForQuery = (textForQuery.split(' ').slice(0,2).join('_')).toLowerCase();
+  getInfoFromWikipediaBasedOnGenusSpecies(textForQuery);
 
-    // Responsible for resetting to original CSS.
-    $("#outer-tree-content, #tree-content, #main").removeAttr("style");
-    // ==============================================
+  if (($("#main").hasClass("active"))) {
+    $("#details").hide();
+    $("#main").toggleClass("active");
+    $("#tree-content").toggleClass("activeDetails");
+    $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
+
   } else {
     $("#details").show();
-    $("#outer-tree-content").toggleClass("activeDetailsParent");
-    $("#tree-content, #main").toggleClass("activeDetails");
-
-    // Responsible for animation.
-    $("#outer-tree-content, #tree-content, #main").animate({
-      height: "+=400px"
-    }, 500, function () {});
-    // ==============================================
+    $("#main").toggleClass("active");
+    $("#tree-content").toggleClass("activeDetails");
+    $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
   }
 }
 
+function removeDetails() {
+  $("#details").hide();
+  $("#main").removeClass("active");
+  $("#tree-content").removeClass("activeDetails");
+  $(".tree-overlay-container, #outer-tree-content").removeClass("activeDetailsParent");
+}
