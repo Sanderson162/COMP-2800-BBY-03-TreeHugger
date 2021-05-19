@@ -135,13 +135,13 @@ async function findClosest(date, type) {
     console.log(query);
     let x;
     await $.getJSON(query, (data) => {
+        console.log(data.records.length);
         if (data.records.length > 0) {
             let x = closestTree(data, month, day);
             $("#result").html("");
-            console.log(data);
-            console.log(x);
             $("#result").append(displayTree(x, type.close,saveButton(x, type.message, type.emoji)));
             x = true;
+            return;
         }
         x = false;
     });
