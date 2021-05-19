@@ -38,6 +38,10 @@ app.get("/", function (req, res) {
   res.render("home.html");
 });
 
+app.get("/oldIndex", function (req, res) {
+  res.render("index.html");
+});
+
 app.get("/login", function (req, res) {
   res.render("login.html");
 });
@@ -363,12 +367,13 @@ app.post('/getFavCountByTree', urlencodedParser, (req, res) => {
       console.log("FavCount: " + doc.data().favCount);
       res.send({
         status: "success",
-        data: doc.data().favCount
+        count: doc.data().favCount
       });
     }).catch(function (error) {
       console.log("Error getting documents: ", error);
       res.send({
-        status: "error"
+        status: "error",
+        count: 0
       });
     });
 });
@@ -399,56 +404,28 @@ app.post('/getFavCountLeaderboard', urlencodedParser, (req, res) => {
     });
 });
 
-app.post('/getFavCountLeaderboardSignedIn', urlencodedParser, (req, res) => {
-  // res.setHeader('Content-Type', 'application/json');
+app.post('/getIfUserLiked', urlencodedParser, (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
   const idToken = req.body.idToken.toString();
+  const recordID = req.body.recordID;
+
   admin
     .auth()
     .verifyIdToken(idToken)
     .then((decodedToken) => {
       const uid = decodedToken.uid;
-  db.collection("FavouriteStats")
-  .orderBy("favCount", "desc")
-  .limit(15)
-  .get()
-  .then(querySnapshot => {
-    let resultArray = [];
-    querySnapshot.forEach((doc) => {
-      resultArray.push({
-        recordID: doc.id,
-        favCount: doc.data().favCount,
-        liked: null
-      });
-    });
-    let filledResultArray = getIfUserLiked(resultArray, uid);
-    res.send({
-      status: "success",
-      data: resultArray
-    });
-    }).catch(function (error) {
-      console.log("Error getting documents: ", error);
-      res.send({
-        status: "error"
-      });
-    });
-
-    //End idtoken verified
-  });
-});
-
-async function getIfUserLiked(resultArray, uid) {
-  resultArray.forEach(async (result) => {
-  await db.collection('Favourite').doc(uid + "_" + result.id)
-        .get().then(function (doc) {
-          if (doc.exists) {
-            result.liked = true;
-          } else {
-            result.liked = false;
-          }
+      const docRef = db.collection("Favourite").doc(uid + "_" + recordID);
+      docRef.get().then(function (doc) {
+        res.send({
+          status: "success",
+          liked: doc.exists
         });
-  });
-  return resultArray;
-}
+      });
+    }).catch((error) => {
+      console.log(error);
+      res.status(401).send("UNAUTHORIZED REQUEST!");
+    });
+});
 
 app.post('/update-username', urlencodedParser, (req, res) => {
   res.setHeader('Content-Type', 'application/json');

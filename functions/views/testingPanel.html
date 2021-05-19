@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,49 +13,78 @@
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js" defer></script>
 
-  
+
   <!-- Firebase CSS for Authentication UI -->
   <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css" />
 
 
   <!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
   <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js" defer></script>
-  <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js" defer></script>
+  <!-- <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js" defer></script> -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
-    crossorigin="anonymous">
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
   </script>
   <link rel="stylesheet" href="./testingPanel.css">
   <link rel="stylesheet" href="./navbar-common.css">
 </head>
-  <body>
-    
-    <h1 id="firebaseui-auth-container" style="display: none; margin: auto; position: fixed;">&nbsp;</h1>
-    <button id="loginLogoutButton">Login/Signup</button>
-    <div id="inputTreeId">Tree recordID: <input type='text' value='0278dd75aa3d0016371651b85bc4232746aa9d91'></div>
-    <button id="addFavButton">add</button>
-    <button id="removeFavButton">remove</button>
-    <button id="userFavButton">get by User</button>
-    <button id="treeFavButton">get by tree</button>
-    <button id="getFavCountByTree">get count by tree</button>
-    <button id="getFavCountLeaderboard">Leaderboard</button>
-    <div>
-      <h1>Results</h1>
-      <div id="resultsContainer">
 
+<body>
+
+  <!-- <h1 id="firebaseui-auth-container" style="display: none; padding-left: 20px; margin: auto; position: fixed;">&nbsp;</h1> -->
+  <button id="loginLogoutButton">Login/Signup</button>
+  <div id="inputTreeId">Tree recordID: <input type='text' value='0278dd75aa3d0016371651b85bc4232746aa9d91'></div>
+  <button id="addFavButton">add</button>
+  <button id="removeFavButton">remove</button>
+  <button id="userFavButton">get by User</button>
+  <button id="treeFavButton">get by tree</button>
+  <button id="getFavCountByTree">get count by tree</button>
+  <button id="getFavCountLeaderboard">Leaderboard</button>
+  <div>
+    <h1>Results</h1>
+    <div id="resultsContainer">
+
+    </div>
+  </div>
+  <div id="loginContainerPopup">
+    <div class="loginNavBar">
+      <div id="loginNavButton" class=" selectedNav">Login</div>
+      <div id="signupNavButton" class="">Signup</div>
+      <div id="closeNavButton" class="">Close</div>
+    </div>
+    <div class="loginSignupformContainer">
+      <div id="signupForm">
+        <input id='signup_email' type='email' required="required" placeholder="email" />
+        <input id='signup_username' type='text' required="required" placeholder="username" />
+        <input id='signup_password' type='password' required="required" placeholder="Password" /><br>
+        <input type="button" value="Signup" id="signupSubmit" />
+        <p><span id="signupMsg"></span></p>
+      </div>
+      <div id="loginForm">
+        <input id='login_email' type='email' required="required" placeholder="email" />
+        <input id='login_password' type='password' required="required" placeholder="Password" /><br>
+        <input type="button" value="Login" id="loginSubmit" />
+        <p><span id="loginMsg"></span></p>
       </div>
     </div>
 
-    <!-- This is where the Login Widget will go -->
-    <script src="./loginFunctionForAnyPage.js"></script>
+  </div>
+  <div id="profileHamburgerMenu">
 
-    <!-- Your own Firebase API key information -->
-    <script src="./firebase_api_Group3.js"> </script>
+  </div>
 
-    <!-- Additional Script -->
-    <script src="./testingPanel.js"></script>
 
-    
-    <script src="./navbar-common.js"></script>
-  </body>
+  <!-- This is where the Login Widget will go -->
+  <!-- <script src="./loginFunctionForAnyPage.js"></script> -->
+
+  <!-- Your own Firebase API key information -->
+  <script src="./firebase_api_Group3.js"> </script>
+
+  <!-- Additional Script -->
+  <script src="./testingPanel.js"></script>
+
+  <script src="./newlogin.js"></script>
+  <script src="./likeButtonAndLeaderboard.js"></script>
+  <script src="./navbar-common.js"></script>
+</body>
+
 </html>
