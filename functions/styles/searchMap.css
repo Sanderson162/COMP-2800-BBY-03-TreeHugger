@@ -518,3 +518,13 @@ input::placeholder {
     color:lightgrey;
     font-weight:lighter;
 }
+
+.activeDetails {
+    /* height: 600px !important; */
+    max-height: 600px !important;
+}
+
+.activeDetailsParent {
+    /* height: 640px !important; */
+    max-height: 640px !important;
+}

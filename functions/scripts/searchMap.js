@@ -1126,11 +1126,38 @@ function clearMarkers() {
   }
 }
 /**
- * Clears the location marker. 
+ * Clears the location marker.
  */
 function clearLocationMarker() {
   if (locationMarker != null) {
     locationMarker.setMap(null);
     locationMarker = null;
+  }
+}
+
+//https://api.jquery.com/animate/
+//https://stackoverflow.com/questions/25409023/how-to-restart-reset-jquery-animation
+/**
+ * Toggles the details overlay.
+ */
+ function toggleDetails() {
+  if (($("#main").hasClass("activeDetails"))) {
+    $("#outer-tree-content").toggleClass("activeDetailsParent");
+    $("#tree-content").toggleClass("activeDetails");
+    $("#main").toggleClass("activeDetails");
+
+    // Responsible for resetting to original CSS.
+    $("#outer-tree-content, #tree-content, #main").removeAttr("style");
+    // ==============================================
+  } else {
+    $("#outer-tree-content").toggleClass("activeDetailsParent");
+    $("#tree-content").toggleClass("activeDetails");
+    $("#main").toggleClass("activeDetails");
+
+    // Responsible for animation.
+    $("#outer-tree-content, #tree-content, #main").animate({
+      height: "+=350px"
+    }, 500, function () {});
+    // ==============================================
   }
 }
