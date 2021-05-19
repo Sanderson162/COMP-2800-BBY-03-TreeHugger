@@ -109,10 +109,20 @@ function treeHeightClickSearch() {
   queueSearch();
 }
 function treeDateClickSearch() {
-  showSearchType('date_planted-tag');
-  $("#query").val($("#tree-card-date").text());
-  $("#content").text("");
-  queueSearch();
+  if ($("#tree-card-date").text() != "N/A") {
+    showSearchType('date_planted-tag');
+    $("#query").val($("#tree-card-date").text());
+    $("#content").text("");
+    queueSearch();
+  }
+}
+function treeDateAgeClickSearch() {
+  if ($("#tree-card-date").text() != "N/A") {
+    showSearchType('date_planted-tag');
+    $("#query").val($("#tree-card-date").text().substring(0, 7));
+    $("#content").text("");
+    queueSearch();
+  }
 }
 function treeStreetClickSearch() {
   showSearchType('on_street-tag');
