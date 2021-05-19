@@ -1199,7 +1199,7 @@ function getInfoFromWikipediaBasedOnGenusSpecies (genus_species) {
  */
 function displayWikipediaThumbnail(result) {
   let picturePageId = Object.keys(result.query.pages)[0];
-  if (result.query.pages[picturePageId].thumbnail ==  undefined) {
+  if (!result.query.pages[picturePageId].thumbnail) {
     return;
   } else {
       $("#details").prepend('<img src=' + result.query.pages[picturePageId].thumbnail.source + ' alt=""><br>');
@@ -1212,9 +1212,10 @@ function displayWikipediaThumbnail(result) {
  */
 function displayWikipediaInformation (result, link) {
   let pageId = Object.keys(result.query.pages)[0];
-  if (result.query.pages[pageId].extract == undefined) {
+  if (!result.query.pages[pageId].extract) {
     $("#details").append("No Wikipedia Information Available.");
   } else {
+    console.log(results);
     $("#details").append(JSON.stringify(result.query.pages[pageId].extract).slice(0, -5));
     $("#details").append("\"");
     $("#details").append('<br><br>Retrieved from <a href="'+ link +'">Wikipedia</a>');
