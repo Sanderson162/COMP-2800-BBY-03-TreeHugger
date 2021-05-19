@@ -39,7 +39,25 @@ $(document).ready(function () {
   $("#content").text("");
   showSearchType('common_name-tag');
   addInputListeners();
+  let vars = getUrlVars();
+  if (vars.id) {
+    searchWithID(vars.id);
+  }
 });
+function searchWithID(id) {
+  showSearchType('tree_id-tag');
+  $("#query").val(id);
+  $("#content").text("");
+  queueSearch();
+}
+// Url parsing function. Source: https://html-online.com/articles/get-url-parameters-javascript/
+function getUrlVars() {
+  var vars = {};
+  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+      vars[key] = value;
+  });
+  return vars;
+}
 function addInputListeners() {
   $("#query").on("keyup", function(event) {
     if (event.keyCode === 13) {
@@ -222,7 +240,9 @@ function search(reset) {
       }
     });
     let count = $(".post").length;
-    // $("#content-title").text($("#content-title").text() + " (" + (count) + " / " + data.nhits + ")");
+    if (count == 1) {
+      zoom(data.records[0]);
+    }
     let countSpan = $('<span></span>').addClass("light");
     countSpan.text(" (" + (count) + " / " + data.nhits + ")");
     $("#content-title").append(countSpan);
@@ -635,6 +655,8 @@ function parseType(type) {
     return "Date";
   } else if (type == "all") {
     return "All";
+  }else if (type == "tree_id") {
+    return "ID";
   }
 }
 /**
