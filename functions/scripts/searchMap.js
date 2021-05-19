@@ -902,6 +902,7 @@ function initMap() {
       style: google.maps.MapTypeControlStyle.DEFAULT,
       position: google.maps.ControlPosition.LEFT_BOTTOM,
     },
+    clickableIcons: false,
     zoomControl: false,
     zoomControlOptions: {
       position: google.maps.ControlPosition.RIGHT_BOTTOM,
@@ -912,6 +913,11 @@ function initMap() {
       position: google.maps.ControlPosition.RIGHT_BOTTOM,
     },
     fullscreenControl: false,
+  });
+  map.addListener("click", () => {
+    if (selectedTreeId) {
+      hideTreeOverlay();
+    }
   });
   map.addListener("dblclick", (mapsMouseEvent) => {
     clearLocationMarker();
