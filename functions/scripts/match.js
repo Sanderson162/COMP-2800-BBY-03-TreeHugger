@@ -29,9 +29,9 @@ function loadBirthForm() {
     f.append($("<br><span>on <span><input type='date' id='date'>"));
     f.append($("<br><button type='button' id='loadmore'>Search</button>").click(() => {
         submit({
-            match: "Found " + $("#name").val() + "'s birth tree",
-            close: "Here's the closest match for " + $("#name").val() + "'s birth tree",
-            fail: "Sorry, we couldn't find a tree for " + $("#name").val(),
+            match: "Found " + $("#name").val() + "'s birth tree"+":",
+            close: "Here's the closest match for " + $("#name").val() + "'s birth tree"+":",
+            fail: "Sorry, we couldn't find a tree for " + $("#name").val() + "😥",
             emoji: "🎁",
             message: $("#name").val() + "'s birth tree"
         });
@@ -48,8 +48,8 @@ function loadAnniversaryForm() {
     f.append($("<br><span>on <span><input type='date' id='date'>"));
     f.append($("<br><button type='button' id='loadmore'>Search</button>").click(() => {
         submit({
-            match: "Found a tree for " + $("#name1").val() + " and " + $("#name2").val(),
-            close: "Here's the closest match for " + $("#name1").val() + " and " + $("#name2").val(),
+            match: "Found a tree for " + $("#name1").val() + " and " + $("#name2").val()+":",
+            close: "Here's the closest match for " + $("#name1").val() + " and " + $("#name2").val()+":",
             fail: "Sorry, we couldn't find a tree for " + $("#name1").val() + " and " + $("#name2").val(),
             emoji: "💕",
             message: $("#name1").val() + " and " + $("#name2").val() + "'s anniversary tree"
@@ -65,8 +65,8 @@ function loadEventForm() {
     f.append($("<br><span>on <span><input type='date' id='date'>"));
     f.append($("<br><button type='button' id='loadmore'>Search</button>").click(() => {
         submit({
-            match: "Found a tree for " + $("#name").val(),
-            close: "Here's the closest match for " + $("#name").val(),
+            match: "Found a tree for " + $("#name").val()+":",
+            close: "Here's the closest match for " + $("#name").val()+":",
             fail: "Sorry, we couldn't find a tree for " + $("#name").val(),
             emoji: "🎉",
             message: $("#name").val()
@@ -82,20 +82,29 @@ function submit(type) {
         if (data.records.length > 0) {
             let x = data.records[Math.floor(Math.random() * data.records.length)]
             $("#result").html("")
-            $("#result").append(type.match);
-            $("#result").append(displayTree(x));
-            $("#result").append(saveButton(x, type.message, type.emoji))
+            $("#result").append(displayTree(x,type.match,saveButton(x, type.message, type.emoji)));
         } else {
-            if (!findClosest(q, type)) {
-                if (!differentYear(q, type)){
-                    $("#result").html("");
-                    $("#result").append(type.fail);
-                }
-            }
+            alternateTree(q, type);
 
         }
     });
 }
+
+async function alternateTree(q, type){
+    let x = await findClosest(q, type);
+    console.log(x);
+    if (x) {
+        return;
+    }
+    x = await differentYear(q, type)
+    if (x){
+        return;
+    }
+    $("#result").html("");
+    $("#result").append($("<div class='card'>)").append(type.fail));
+}
+
+
 async function differentYear(date, type){
     let monthDay = date.toString().substring(4);
     let x = [];
@@ -107,13 +116,11 @@ async function differentYear(date, type){
                     x.push(entry)
                 });
             }
-        });
+        })
         if (x.length>0){
             let tree = x[Math.floor(Math.random() * x.length)]
             $("#result").html("");
-            $("#result").append(type.close);
-            $("#result").append(displayTree(tree));
-            $("#result").append(saveButton(tree, type.message, type.emoji))
+            $("#result").append(displayTree(tree,type.close,saveButton(tree, type.message, type.emoji)));
             return true;
         } 
     }
@@ -121,24 +128,24 @@ async function differentYear(date, type){
     
 
 }
-function findClosest(date, type) {
+async function findClosest(date, type) {
     let month = date.toString().substring(0, 7);
     let day = date.toString().substring(8);
     let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine.date_planted=" + month;
     console.log(query);
-    $.getJSON(query, (data) => {
+    let x;
+    await $.getJSON(query, (data) => {
         if (data.records.length > 0) {
             let x = closestTree(data, month, day);
             $("#result").html("");
-            $("#result").append(type.close);
             console.log(data);
             console.log(x);
-            $("#result").append(displayTree(x));
-            $("#result").append(saveButton(x, type.message, type.emoji))
-            return true;
+            $("#result").append(displayTree(x, type.close,saveButton(x, type.message, type.emoji)));
+            x = true;
         }
-        return false;
+        x = false;
     });
+    return x;
 }
 
 function closestTree(data, month, day) {
@@ -162,18 +169,20 @@ function closestTree(data, month, day) {
     console.log("error");
 }
 
-function displayTree(entry) {
+function displayTree(entry,message,saveBtn) {
     let elem = $("<div></div>").addClass("card");
+    elem.append(message);
     elem.append($("<p></p>").html(entry.fields.genus_name + " " + entry.fields.species_name));
     elem.append($("<p></p>").html(entry.fields.common_name));
     elem.append($("<p></p>").html(entry.fields.on_street_block + " " + entry.fields.on_street + " " + entry.fields.neighbourhood_name));
     elem.append($("<p></p>").html("Planted on: " + entry.fields.date_planted));
+    elem.append(saveBtn);
 
     return elem;
 }
 
 function saveButton(tree, message, emoji) {
-    let btn = $("<button id='save'>save</button>");
+    let btn = $("<button id='save'>Save</button>");
     btn.on("click", () => {
         let elem = $("#save");
         elem.attr("disabled", true);
