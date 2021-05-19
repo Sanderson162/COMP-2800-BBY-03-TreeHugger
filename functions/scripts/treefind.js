@@ -282,14 +282,36 @@ function updateTreeOverlayContent(entry) {
   $("#species-name").text(entry.fields.genus_name + " " + entry.fields.species_name);
   $("#distance").text(Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M")) + " meters away from your location.");
   $("#body").text(entry.fields.on_street);
-  var dateString;
+
+  let dateString;
+  let ageString;
   if (entry.fields.date_planted) {
-    dateString = "Planted on " + entry.fields.date_planted;
+    dateString = entry.fields.date_planted;
+    ageString = getAgeOfTree(dateString);
   } else {
-    dateString = "Date planted unavailable"
+    dateString = "N/A"
+    ageString = "N/A";
   }
-  $("#date").text("~" + entry.fields.diameter + " inches in diameter. ~" + entry.fields.height_range_id * 10 + " feet in height. Tree ID: " + entry.fields.tree_id);
-  $("#updated").text(dateString);
+  $("#tree-card-id").text("Tree ID: " + entry.fields.tree_id);
+  $("#tree-card-height").text(entry.fields.height_range_id * 10 + " ft");
+  $("#tree-card-diameter").text(entry.fields.diameter + " in");
+  $("#tree-card-date").text(dateString);
+  $("#tree-card-age").text(ageString);
+}
+//https://stackoverflow.com/questions/4060004/calculate-age-given-the-birth-date-in-the-format-yyyymmdd
+function getAgeOfTree(dateString) {
+  let ageDifMs = Date.now() - dateStringtoDate(dateString).getTime();
+  let ageDate = new Date(ageDifMs); // miliseconds from epoch
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
+}
+//https://stackoverflow.com/questions/10607935/convert-returned-string-yyyymmdd-to-date/10610485
+function dateStringtoDate(dateString) {
+  //1989-11-06
+  let year = dateString.substring(0,4);
+  let month = dateString.substring(5,7);
+  let day = dateString.substring(7,9);
+  let date = new Date(year, month-1, day);
+  return date;
 }
 /** 
  * Adds a click listener to the StreeView button in TreeOverlay. 
