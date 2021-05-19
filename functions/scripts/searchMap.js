@@ -100,6 +100,27 @@ function treeNameClickSearch() {
   showSearchType('common_name-tag');
   $("#query").val($("#species-name").text());
   $("#content").text("");
+  queueSearch();
+}
+function treeHeightClickSearch() {
+  showSearchType('height_range_id-tag');
+  $("#query").val($("#tree-card-height").text().substring(0,1));
+  $("#content").text("");
+  queueSearch();
+}
+function treeDateClickSearch() {
+  showSearchType('date_planted-tag');
+  $("#query").val($("#tree-card-date").text());
+  $("#content").text("");
+  queueSearch();
+}
+function treeStreetClickSearch() {
+  showSearchType('on_street-tag');
+  $("#query").val($("#body").text());
+  $("#content").text("");
+  queueSearch();
+}
+function queueSearch() {
   clearMarkers();
   clearLocationMarker();
   map.setZoom(12);
@@ -141,9 +162,9 @@ function dateSearchBtnClick() {
 function createDateQuery(y, m, d) {
   let q;
   if (m != "" && d != "") {
-    q = y + "/" + m + "/" + d;
+    q = y + "-" + m + "-" + d;
   } else if (m != "") {
-    q = y + "/" + m;
+    q = y + "-" + m;
   } else {
     q = y;
   }

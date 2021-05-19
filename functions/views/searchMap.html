@@ -87,10 +87,10 @@
         <div id="tree-content">
             <div id="main">
                 <h2 id="species-name" onclick="treeNameClickSearch()"></h2>
-                <div id="body"></div>
+                <div id="body" onclick="treeStreetClickSearch()"></div>
                 <div id="distance"></div>
                 <div id=tree-card-box>
-                <div class="tree-card">
+                <div class="tree-card" onclick="treeHeightClickSearch()">
                     <div class="tree-card-label">HEIGHT</div>
                     <div class="tree-card-data" id="tree-card-height"></div>
                 </div>
@@ -102,7 +102,7 @@
                     <div class="tree-card-label">AGE</div>
                     <div class="tree-card-data" id="tree-card-age"></div>
                 </div>
-               <div class="tree-card">
+               <div class="tree-card" onclick="treeDateClickSearch()">
                    <div class="tree-card-label">DATE PLANTED</div>
                    <div class="tree-card-data" id="tree-card-date"></div>
                </div>
