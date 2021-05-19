@@ -107,6 +107,10 @@ h1 {
     margin:10px;
     height:20px;
     display:block;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #tree-content {
@@ -410,12 +414,14 @@ input:focus {
     width:100%;
     box-sizing:border-box;
     padding:10px;
+    display:flex;
 }
 
 #date-search-bar {
     width:100%;
     box-sizing:border-box;
     padding:10px;
+    display:flex;
 }
 
 #loadmore{
@@ -483,21 +489,21 @@ input::placeholder {
     /* border-right:none; */
     border-top-right-radius: 0;
     border-bottom-right-radius:0;
-    width:70px;
+    /* width:70px; */
 }
 
 #query-month {
     float:left;
     /* border-right:none; */
     border-radius: 0;
-    width:60px;
+    /* width:60px; */
 }
 
 #query-day {
     float:left;
     /* border-right:none; */
     border-radius: 0;
-    width:60px;
+    /* width:60px; */
 }
 #search-btn {
     float:left;
@@ -511,10 +517,37 @@ input::placeholder {
     border-top-left-radius: 0;
     border-bottom-left-radius:0;
     background:whitesmoke;
-    width:20%;
+    width:22%;
 }
 
 .light {
     color:lightgrey;
     font-weight:lighter;
+}
+
+#tree-card-box {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tree-card {
+    padding-right:1em;
+    padding-top:1em;
+    padding-bottom:1em;
+
+}
+
+.tree-card-label {
+    color:lightgray;
+    font-size:80%;
+}
+
+.tree-card-data {
+    font-size:110%;
+}
+
+#tree-card-id {
+    color:rgb(235, 235, 235);
+    font-size:80%;
+    display:block;
 }
