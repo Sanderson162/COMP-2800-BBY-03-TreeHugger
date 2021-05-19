@@ -38,6 +38,10 @@ app.get("/", function (req, res) {
   res.render("home.html");
 });
 
+app.get("/oldIndex", function (req, res) {
+  res.render("index.html");
+});
+
 app.get("/login", function (req, res) {
   res.render("login.html");
 });
@@ -368,12 +372,13 @@ app.post('/getFavCountByTree', urlencodedParser, (req, res) => {
       console.log("FavCount: " + doc.data().favCount);
       res.send({
         status: "success",
-        data: doc.data().favCount
+        count: doc.data().favCount
       });
     }).catch(function (error) {
       console.log("Error getting documents: ", error);
       res.send({
-        status: "error"
+        status: "error",
+        count: 0
       });
     });
 });
@@ -404,55 +409,28 @@ app.post('/getFavCountLeaderboard', urlencodedParser, (req, res) => {
     });
 });
 
-app.post('/getFavCountLeaderboardSignedIn', urlencodedParser, (req, res) => {
-  // res.setHeader('Content-Type', 'application/json');
+app.post('/getIfUserLiked', urlencodedParser, (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
   const idToken = req.body.idToken.toString();
+  const recordID = req.body.recordID;
+
   admin
     .auth()
     .verifyIdToken(idToken)
     .then((decodedToken) => {
       const uid = decodedToken.uid;
-      let resultArray = [];
-  db.collection("FavouriteStats")
-  .orderBy("favCount", "desc")
-  .limit(15)
-  .get()
-  .then(querySnapshot => {
-      
-      querySnapshot.forEach((doc) => {
-        db.collection('Favourite').doc(uid + "_" + doc.id)
-        .get().then(function (doc) {
-          if (doc.exists) {
-            resultArray.push({
-              recordID: doc.id,
-              favCount: doc.data().favCount,
-              liked: "liked"
-            });
-          } else {
-            resultArray.push({
-              recordID: doc.id,
-              favCount: doc.data().favCount,
-              liked: null
-            });
-          }
+      const docRef = db.collection("Favourite").doc(uid + "_" + recordID);
+      docRef.get().then(function (doc) {
+        res.send({
+          status: "success",
+          liked: doc.exists
         });
-      })
-    }).then(function () {
-      res.send({
-        status: "success",
-        data: resultArray
       });
-    }).catch(function (error) {
-      console.log("Error getting documents: ", error);
-      res.send({
-        status: "error"
-      });
+    }).catch((error) => {
+      console.log(error);
+      res.status(401).send("UNAUTHORIZED REQUEST!");
     });
-
-    //End idtoken verified
-  });
 });
-
 
 app.post('/update-username', urlencodedParser, (req, res) => {
   res.setHeader('Content-Type', 'application/json');
@@ -483,9 +461,9 @@ app.get('/timestamp', function (req, res) {
 });
 
 
-app.listen(PORT, () => {
-     console.log(`Listening on http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//      console.log(`Listening on http://localhost:${PORT}`);
+// });
 
 
 function msg404(res) {
