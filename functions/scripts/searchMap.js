@@ -771,6 +771,8 @@ function updateTreeOverlayContent(entry) {
   $("#tree-name").text(entry.fields.genus_name + " " + entry.fields.species_name);
   if (locationMarker != null) {
     $("#distance").text(Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M")) + " meters away from dropped marker");
+  } else {
+    $("#distance").text("");
   }
   $("#body").text(entry.fields.on_street);
 
