@@ -22,6 +22,9 @@ let zoomVal;
 let markerIndexCount = 0;
 let searchHistory = [];
 let allSearchHistory = [];
+
+let mouseClickDelay = 250;
+let mouseClickTimer;
 /**
  * QUERY SETTINGS 
  */
@@ -915,12 +918,18 @@ function initMap() {
     },
     fullscreenControl: false,
   });
+  //https://stackoverflow.com/questions/27713304/single-click-interfering-with-double-click-how-can-resolve-this
   map.addListener("click", () => {
-    if (selectedTreeId) {
-      hideTreeOverlay();
-    }
+    mouseClickTimer = setTimeout(function () {
+      //Single click
+      if (selectedTreeId) {
+        hideTreeOverlay();
+      }
+    }, mouseClickDelay);
   });
   map.addListener("dblclick", (mapsMouseEvent) => {
+    clearTimeout(mouseClickTimer); //prevent single-click action
+    //double click
     clearLocationMarker();
     currentLocation = mapsMouseEvent.latLng.toJSON();
     addLocationMarker(mapsMouseEvent.latLng, "");
