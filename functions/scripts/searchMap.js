@@ -343,7 +343,7 @@ function loadDateSearchBarOptions(searchType) {
   } else if (searchType == "ms") {
     let y =  $("#query-year").val();
     let m =  $("#query-month").val();
-    if (m.length > 0 && m.length <= 2) {
+    if (m.length > 0 && m.length <= 2 && m > 0) {
       $("#day").html("");
       $("#query-day").prop('disabled', false);
       m = addFirstZero(m);
