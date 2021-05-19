@@ -1146,14 +1146,13 @@ function clearLocationMarker() {
  * the wikipedia page that corresponds to the genus and species name of the
  * selected tree to complement it's database information.
  *
- * Appending the genus and species name to the end of the following wikipedia link
- * will provide our citation link, as we cannot link every wikipedia page (there are many of them).
- *
  * Below is an example of a citation for a particular genus and species name.
- * https://en.m.wikipedia.org/wiki/Prunus_cerasifera
+ * @see https://en.m.wikipedia.org/wiki/Prunus_cerasifera
  * Example citation for Prunus cerasifera citation:
  * Wikipedia contributors. (2021, March 5). Prunus cerasifera. In Wikipedia, The Free Encyclopedia. Retrieved 17:51, May 19, 2021, from https://en.wikipedia.org/w/index.php?title=Prunus_cerasifera&oldid=1010448872
  *
+ * Appending the genus and species name to the end of the following wikipedia link
+ * will provide our citation link, as we cannot link every wikipedia page (there are many of them).
  * @author Wikipedia contributors
  * @see https://en.m.wikipedia.org/wiki/ + genus + _ + species name from database
  */
@@ -1229,7 +1228,8 @@ function displayWikipediaInformation (result, link) {
  * "#tree-content", and "#main" divisions in order to allow an increase in size
  * of the #main div for the details tab. Resets to original size when toggled off.
  *
- * The following code used a concept from stack overflow as a foundation.
+ * The following code used a snippet from stack overflow as a foundation.
+ * @author Kami @see https://stackoverflow.com/users/1603275/kami
  * @see https://stackoverflow.com/questions/25409023/how-to-restart-reset-jquery-animation
  */
  function toggleDetails() {
