@@ -221,7 +221,6 @@ function search(reset) {
   // $("#content-title").text(searchType.toUpperCase() + ": " + qString);
   $("#content-title").text(qString);
   $(".search-container").hide();
-  $("#outer-search").css('height', '100%');
   $(".tree-overlay-container").hide();
   $(".content-container").show();
   panorama.setVisible(false);
@@ -258,6 +257,7 @@ function search(reset) {
  * @param {string} type  The type of query (species, etc)
  */
 function addSearchHistory(query, type) {
+  $("#outer-search").css('height', '100%');
   updateSearchHistoryBtn();
   updateSearchMapBtn()
   let searchItem = {q:query, searchType: type, zoom: map.getZoom(), pos: map.getCenter()};
