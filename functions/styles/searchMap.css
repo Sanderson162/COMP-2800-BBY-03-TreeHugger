@@ -534,16 +534,18 @@ input::placeholder {
     padding-right:1em;
     padding-top:1em;
     padding-bottom:1em;
-
+    flex-grow: 1;
 }
 
 .tree-card-label {
     color:lightgray;
     font-size:80%;
+    flex-grow: 1;
 }
 
 .tree-card-data {
     font-size:110%;
+    flex-grow: 1;
 }
 
 #tree-card-id {
