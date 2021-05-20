@@ -7,6 +7,17 @@
     <link rel="stylesheet" href="./searchMap.css">
     <link rel="stylesheet" href="./navbar-common.css">
     <title>Trees Near Me</title>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js" defer></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js" defer></script>
+
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
+    crossorigin="anonymous">
+    </script>
 </head>
 
 <body>
@@ -126,11 +137,15 @@
         </div>
         <div id="pano"></div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Your own Firebase API key information -->
+    <script src="./firebase_api_Group3.js"> </script>
+
+    <!-- Common Navbar Script -->
+    <script src="./navbar-common.js"></script>
+
+    <!-- Additional Script -->
     <script src="/searchMap.js"></script>
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIu6Paiio4Zq0ySb6-LuMJOpFSt25RPz0&map_ids=b3163309c37356ea&callback=initMap"> </script>
-        <script src="./navbar-common.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIu6Paiio4Zq0ySb6-LuMJOpFSt25RPz0&map_ids=b3163309c37356ea&callback=initMap"> </script>
 </body>
 
 </html>

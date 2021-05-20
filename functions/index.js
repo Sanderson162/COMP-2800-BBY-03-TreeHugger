@@ -100,6 +100,10 @@ app.get("/aboutUs", function (req, res) {
   res.render("aboutus.html");
 });
 
+app.get("/profile", function (req, res) {
+  res.render("profile.html");
+});
+
 app.post('/profile', urlencodedParser, (req, res) => {
   const idToken = req.body.idToken.toString();
   admin
@@ -113,7 +117,8 @@ app.post('/profile', urlencodedParser, (req, res) => {
         res.send({
           status: "success",
           uid: uid,
-          name: doc.data().name
+          name: doc.data().name,
+          email: doc.data().email
         });
       });
     }).catch((error) => {

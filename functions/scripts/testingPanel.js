@@ -26,6 +26,8 @@ window.addEventListener("DOMContentLoaded", () => {
     let leaderboard = await getFavCountLeaderboard();
     displayLeaderboard(leaderboard);
   });
+
+
 });
 
 /*
