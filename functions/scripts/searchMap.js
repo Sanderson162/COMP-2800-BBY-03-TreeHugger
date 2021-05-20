@@ -35,7 +35,7 @@ currentLocation = { lat: 49.279430, lng: -123.117276 };
  * After document load, init search.
  */
 $(document).ready(function () {
-  $("#outer-search").css('height', '175px');
+  // $("#outer-search").css('height', '175px');
   $("#content").text("");
   showSearchType('common_name-tag');
   addInputListeners();
@@ -772,6 +772,7 @@ function showTreeOverlay(entry) {
   $(".content-container").hide();
   $(".search-container").hide();
   $(".tree-overlay-container").show();
+  updateHistory(entry);
   updateSearchMapBtn();
   updateTreeOverlayContent(entry);
   removeDetails();
@@ -789,6 +790,10 @@ function updateTreeOverlayContent(entry) {
     $("#distance").text("");
   }
   $("#body").text(entry.fields.on_street);
+  
+  
+  
+
 
   let dateString;
   let ageString;
@@ -806,6 +811,25 @@ function updateTreeOverlayContent(entry) {
   $("#tree-card-date").text(dateString);
   $("#tree-card-age").text(ageString);
   addLikeButton($("#like-button-container"), entry.recordid, null, null);
+}
+function updateHistory(entry){
+  var user = firebase.auth().currentUser;
+  var treeID = entry.recordid;
+  console.log(entry);
+  if (user) {
+      user.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+          $.ajax({
+              url: "/ajax-add-history",
+              dataType: "json",
+              type: "POST",
+              data: {tree: treeID, idToken: idToken},
+              success: ()=>{console.log("Successfully added to history")},
+              error: (jqXHR,textStatus,errorThrown )=>{
+                  console.log("Error:"+textStatus);
+              }
+          });
+      });
+  }
 }
 //https://stackoverflow.com/questions/4060004/calculate-age-given-the-birth-date-in-the-format-yyyymmdd
 function getAgeOfTree(dateString) {

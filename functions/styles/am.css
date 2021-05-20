@@ -41,6 +41,14 @@
     grid-template-rows: 100%;
 }
 
+#results .card.history {
+    grid-template-columns: 20% 80%;
+}
+
+#results .card .tree {
+    text-align: right;
+}
+
 #results .card div {
     margin-top: auto;
     margin-bottom: auto;

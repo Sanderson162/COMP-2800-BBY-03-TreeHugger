@@ -276,6 +276,36 @@ app.post("/ajax-add-comment", urlencodedParser, (req, res) => {
     });
 });
 
+app.post("/ajax-add-history", urlencodedParser, (req, res) => {
+  const idToken = req.body.idToken.toString();
+  let comment = req.body;
+
+  admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      const uid = decodedToken.uid;
+
+
+      db.collection("History").add({
+        timestamp: firestore.Timestamp.now(),
+        user: uid,
+        tree: comment.tree
+      }).then((ref) => {
+        res.end(JSON.stringify({
+          status: "success"
+        }));
+      }).catch((error) => {
+        res.status(401);
+      });
+
+
+    }).catch((error) => {
+      console.log(error);
+      res.status(401).send("UNAUTHORIZED REQUEST!");
+    });
+});
+
 app.post("/ajax-get-comment-user", urlencodedParser, (req, res) => {
   const idToken = req.body.idToken.toString();
 
@@ -302,6 +332,38 @@ app.post("/ajax-get-comment-user", urlencodedParser, (req, res) => {
         });
     });
 });
+
+app.post("/ajax-get-history-user", urlencodedParser, (req, res) => {
+  const idToken = req.body.idToken.toString();
+
+
+  res.setHeader('Content-Type', 'application/json');
+  admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      const uid = decodedToken.uid;
+      db.collection("History")
+        .where("user", "==", uid)
+        .orderBy("timestamp", "desc")
+        .get()
+        .then((data) => {
+          let response = [];
+          data.forEach((entry) => {
+            let x = {
+              tree: entry.data().tree,
+              date: entry.data().timestamp.toDate().toDateString()
+            }
+            response.push(x);
+          });
+          res.send(JSON.stringify(response));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+});
+
 
 app.post('/getFavByUser', urlencodedParser, (req, res) => {
   // res.setHeader('Content-Type', 'application/json');
@@ -466,9 +528,9 @@ app.get('/timestamp', function (req, res) {
 });
 
 
-// app.listen(PORT, () => {
-//      console.log(`Listening on http://localhost:${PORT}`);
-// });
+app.listen(PORT, () => {
+    console.log(`Listening on http://localhost:${PORT}`);
+});
 
 
 function msg404(res) {
