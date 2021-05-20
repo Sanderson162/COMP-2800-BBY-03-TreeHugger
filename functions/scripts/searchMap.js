@@ -1162,65 +1162,71 @@ function clearLocationMarker() {
  * @param {*} genus_species
  * @see Stirling
  */
-function getInfoFromWikipediaBasedOnGenusSpecies (genus_species) {
-  console.log("search query: https://en.wikipedia.org/w/api.php?action=query&titles=" + genus_species + "&prop=pageimages&format=json&pithumbsize=100");
-  $.ajax({
-    type: "GET",
-    dataType: "jsonp",
-    url: "https://en.wikipedia.org/w/api.php?action=query&titles=" + genus_species + "&prop=pageimages&format=json&pithumbsize=100&callback=?",
-    success: function(result, status, xhr){
-        console.log("received: ", result);
-        displayWikipediaThumbnail(result);
-    },
-    error: function(jqXHR, textStatus, errorThrown) {
-        console.log("ERROR:", jqXHR, textStatus, errorThrown);
-    }
-});
-
-  $.ajax({
+function getWikipediaThumbnail (genus_species) {
+  return new Promise((resolve) => {
+    let thumbnailUrl = "https://en.wikipedia.org/w/api.php?action=query&titles=" + genus_species + "&prop=pageimages&format=json&pithumbsize=100&callback=?";
+    $.ajax({
       type: "GET",
-      dataType: "json",
-      url: "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=" + genus_species + "&exintro=1&explaintext=1&callback=?",
+      dataType: "jsonp",
+      url: thumbnailUrl,
       success: function(result, status, xhr){
           console.log("received: ", result);
-          let link = "https://en.wikipedia.org/wiki/" + genus_species;
-          displayWikipediaInformation(result, link);
+          let pageIdThumbnail = Object.keys(result.query.pages)[0];
+          if (pageIdThumbnail != -1) {
+            let thumbnail = result.query.pages[pageIdThumbnail].thumbnail;
+            resolve(thumbnail);
+          } else {
+            resolve("Extract not available :(");
+          }
       },
       error: function(jqXHR, textStatus, errorThrown) {
           console.log("ERROR:", jqXHR, textStatus, errorThrown);
+          resolve("Extract not available :(");
       }
+    });
   });
+}
 
+function getWikipediaExtract (genus_species) {
+  return new Promise((resolve) => {
+    let extractUrl = "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=" + genus_species + "&exintro=1&explaintext=1&callback=?";
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: extractUrl,
+        success: function(result, status, xhr){
+            console.log("received: ", result);
+            let pageId = Object.keys(result.query.pages)[0];
+            if (pageId != -1) {
+            let extract = JSON.stringify(result.query.pages[pageId].extract);
+            resolve(extract);
+            } else {
+                resolve("Extract not available :(");
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log("ERROR:", jqXHR, textStatus, errorThrown);
+            resolve("Extract not available :(");
+        }
+    });
+  });
 }
 
 /**
  * Displays wikipedia thumbnail retrieved from query in details division.
  * @param {*} result
  */
-function displayWikipediaThumbnail(result) {
-  let picturePageId = Object.keys(result.query.pages)[0];
-  if (!result.query.pages[picturePageId].thumbnail) {
-    return;
-  } else {
-      $("#details").prepend('<img src=' + result.query.pages[picturePageId].thumbnail.source + ' alt=""><br>');
-  }
+async function displayWikipediaInformation(genus_species) {
+  let extract = await getWikipediaExtract(genus_species);
+  $("#details").text(extract);
+  let link = "https://en.wikipedia.org/wiki/" + genus_species;
+  $("#details").append('<br><br>Retrieved from <a href="'+ link +'">Wikipedia</a>');
+
+  let thumbnail = await getWikipediaThumbnail(genus_species);
+  $("#details").prepend('<img src=' + thumbnail.source + ' alt=""><br>');
+
 }
 
-/**
- * Displays wikipedia information retrieved from a query in details division.
- * @param {*} result
- */
-function displayWikipediaInformation (result, link) {
-  let pageId = Object.keys(result.query.pages)[0];
-  if (!result.query.pages[pageId].extract) {
-    $("#details").append("No Wikipedia Information Available.");
-  } else {
-    console.log(result);
-    $("#details").append(JSON.stringify(result.query.pages[pageId].extract).slice(0, -5));
-    $("#details").append("\"");
-    $("#details").append('<br><br>Retrieved from <a href="'+ link +'">Wikipedia</a>');
-  }
-}
 // ========================================END=============================================
 
 /**
@@ -1237,7 +1243,7 @@ function displayWikipediaInformation (result, link) {
   $("#details").html("");
   let textForQuery = $("#tree-name").text();
   textForQuery = (textForQuery.split(' ').slice(0,2).join('_')).toLowerCase();
-  getInfoFromWikipediaBasedOnGenusSpecies(textForQuery);
+  displayWikipediaInformation(textForQuery);
 
   if (($("#main").hasClass("active"))) {
     $("#details").hide();
