@@ -35,7 +35,7 @@ currentLocation = { lat: 49.279430, lng: -123.117276 };
  * After document load, init search.
  */
 $(document).ready(function () {
-  $("#outer-search").css('height', '175px');
+  // $("#outer-search").css('height', '175px');
   $("#content").text("");
   showSearchType('common_name-tag');
   addInputListeners();
