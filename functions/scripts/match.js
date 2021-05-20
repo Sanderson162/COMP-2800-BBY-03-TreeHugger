@@ -184,11 +184,16 @@ function displayTree(entry,message,saveBtn) {
 function saveButton(tree, message, emoji) {
     let btn = $("<button id='save'>Save</button>");
     btn.on("click", () => {
-        let elem = $("#save");
-        elem.attr("disabled", true);
-        elem.html("saved");
-        console.log(tree);
-        addComment(tree.recordid, message, emoji);
+        if (user) {
+            let elem = $("#save");
+            elem.attr("disabled", true);
+            elem.html("saved");
+            console.log(tree);
+            addComment(tree.recordid, message, emoji);
+        } else {
+            alert("Must be logged in to save")
+        }
+
     });
     return btn;
 }
