@@ -153,8 +153,6 @@ function treeStreetClickSearch() {
 function queueSearch() {
   clearMarkers();
   clearLocationMarker();
-  map.setZoom(12);
-  centerMap();
   search(true);
 }
 /**
@@ -165,10 +163,6 @@ function searchBtnClick() {
     clearMarkers();
     clearLocationMarker();
     $("#content").text("");
-    if (map.getZoom() > 11) {
-      map.setZoom(11);
-      centerMap();
-    }
     search(true);
   }
 }
@@ -177,10 +171,6 @@ function dateSearchBtnClick() {
     clearMarkers();
     clearLocationMarker();
     $("#content").text("");
-    if (map.getZoom() > 11) {
-      map.setZoom(11);
-      centerMap();
-    }
     let y = $("#query-year").val();
     let m = addFirstZero($("#query-month").val());
     let d = addFirstZero($("#query-day").val());
@@ -218,7 +208,6 @@ function search(reset) {
   let q = $("#query").val().toUpperCase();
   let searchType = $("#search-tags>div.tag-selected").attr('id').slice(0, -4);
   let qString = responsiveSearchTitle(heightRangeToFeet(q, searchType));
-  // $("#content-title").text(searchType.toUpperCase() + ": " + qString);
   $("#content-title").text(qString);
   $(".search-container").hide();
   $(".tree-overlay-container").hide();
@@ -237,6 +226,7 @@ function search(reset) {
         updateContent(entry, false);
       }
     });
+    searchZoom();
     let count = $(".post").length;
     if (count == 1) {
       zoom(data.records[0]);
@@ -260,7 +250,7 @@ function addSearchHistory(query, type) {
   $("#outer-search").css('height', '100%');
   updateSearchHistoryBtn();
   updateSearchMapBtn()
-  let searchItem = {q:query, searchType: type, zoom: map.getZoom(), pos: map.getCenter()};
+  let searchItem = {q:query, searchType: type};
   searchHistory.push(searchItem);
   checkSearchHistory(query, type);
   allSearchHistory.push(searchItem);
@@ -333,13 +323,14 @@ function responsiveSearchTitle(query) {
   }
   return qString;
 }
-//TODO
+//https://stackoverflow.com/questions/15719951/auto-center-map-with-multiple-markers-in-google-maps-api-v3
 function searchZoom() {
   var bounds = new google.maps.LatLngBounds();
   for (let i = 0; i < markers.length; i++) {
-    bounds.extend(markers[i]);
+    bounds.extend(markers[i].position);
   }
   map.fitBounds(bounds, 0);
+  centerMap();
 }
 /**
  * Creates load more button for search in content view.
@@ -500,6 +491,7 @@ function getContent() {
     $.each(data.records, function (i, entry) {
       updateContent(entry, true);
     });
+    searchZoom();
     isContent();
   });
   addSearchHistory(currentLocation, "location");
@@ -661,22 +653,20 @@ function parseType(type) {
  * @param {obj} lastSearch Search history object.
  */
 function loadSearchHistoryItem(lastSearch) {
-  map.setZoom(lastSearch.zoom);
-    map.setCenter(lastSearch.pos);
-    clearMarkers();
-    clearLocationMarker();
-    if (lastSearch.searchType == "location") {
-      currentLocation = lastSearch.q;
-      let latlng = new google.maps.LatLng(lastSearch.q.lat, lastSearch.q.lng);
-      addLocationMarker(latlng, "");
-      getContent();
-      $("#content").scrollTop(0);
-    } else {
-      showSearchType(lastSearch.searchType + "-tag");
-      $("#query").val(lastSearch.q);
-      $("#content").text("");
-      search(true);
-    }
+  clearMarkers();
+  clearLocationMarker();
+  if (lastSearch.searchType == "location") {
+    currentLocation = lastSearch.q;
+    let latlng = new google.maps.LatLng(lastSearch.q.lat, lastSearch.q.lng);
+    addLocationMarker(latlng, "");
+    getContent();
+    $("#content").scrollTop(0);
+  } else {
+    showSearchType(lastSearch.searchType + "-tag");
+    $("#query").val(lastSearch.q);
+    $("#content").text("");
+    search(true);
+  }
 }
 /**
  * Zooms on entry, shows overlay and updates various variables. 
@@ -685,17 +675,17 @@ function loadSearchHistoryItem(lastSearch) {
 function zoom(entry) {
   resetMarkerColor();
   $('#' + entry.recordid).css("background-color", "whitesmoke");
-  zoomVal = map.getZoom();
+  let currentZoom = map.getZoom();
+  zoomVal = currentZoom;
   selectedTreeId = entry.recordid;
   colorMarker(entry.recordid);
-  // map.setOptions({ gestureHandling: "none" });
   var treeLocation = { lat: entry.fields.geom.coordinates[1], lng: entry.fields.geom.coordinates[0] }
   selectedTreeLocation = treeLocation;
   map.setCenter(
     treeLocation
   );
-  if (zoomVal < 13) {
-    map.setZoom(13);
+  if (currentZoom < 15) {
+    map.setZoom(15);
   }
   centerMap();
   showTreeOverlay(entry);
@@ -799,7 +789,6 @@ function getAgeOfTree(dateString) {
 }
 //https://stackoverflow.com/questions/10607935/convert-returned-string-yyyymmdd-to-date/10610485
 function dateStringtoDate(dateString) {
-  //1989-11-06
   let year = dateString.substring(0,4);
   let month = dateString.substring(5,7);
   let day = dateString.substring(7,9);
@@ -1113,8 +1102,6 @@ function stepBackSearchHistory() {
   let index = searchHistory.length - 2;
   if (index  > -1) {
     let lastSearch = searchHistory[index];
-    map.setZoom(lastSearch.zoom);
-    map.setCenter(lastSearch.pos);
     clearMarkers();
     clearLocationMarker();
     if (lastSearch.searchType == "location") {
