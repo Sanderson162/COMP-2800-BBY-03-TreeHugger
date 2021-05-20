@@ -325,12 +325,14 @@ function responsiveSearchTitle(query) {
 }
 //https://stackoverflow.com/questions/15719951/auto-center-map-with-multiple-markers-in-google-maps-api-v3
 function searchZoom() {
-  var bounds = new google.maps.LatLngBounds();
-  for (let i = 0; i < markers.length; i++) {
-    bounds.extend(markers[i].position);
+  if (markers.length != 0) {
+    var bounds = new google.maps.LatLngBounds();
+    for (let i = 0; i < markers.length; i++) {
+      bounds.extend(markers[i].position);
+    }
+    map.fitBounds(bounds, 0);
+    centerMap();
   }
-  map.fitBounds(bounds, 0);
-  centerMap();
 }
 /**
  * Creates load more button for search in content view.
