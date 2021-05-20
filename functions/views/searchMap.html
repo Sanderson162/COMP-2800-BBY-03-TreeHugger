@@ -10,6 +10,9 @@
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js" defer></script>
 
+    <!-- font awesome -->
+    <script src="https://kit.fontawesome.com/cd6afecc1d.js" crossorigin="anonymous"></script>
+
     <!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js" defer></script>
 
@@ -127,6 +130,7 @@
             </div>
             <div id="button-container">
                 <div id="street-view-container"><button id="street-btn">StreetView</button></div>
+                <div id="like-button-container"></div>
                 <div id="other-view-container">          <button id="details-btn" onclick="toggleDetails()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0)">
                     <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -166,6 +170,7 @@
 
     <!-- Additional Script -->
     <script src="/searchMap.js"></script>
+    <script src="./likeButtonAndLeaderboard.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIu6Paiio4Zq0ySb6-LuMJOpFSt25RPz0&map_ids=b3163309c37356ea&callback=initMap"> </script>
 </body>
 
