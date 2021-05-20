@@ -1215,7 +1215,7 @@ function displayWikipediaInformation (result, link) {
   if (!result.query.pages[pageId].extract) {
     $("#details").append("No Wikipedia Information Available.");
   } else {
-    console.log(results);
+    console.log(result);
     $("#details").append(JSON.stringify(result.query.pages[pageId].extract).slice(0, -5));
     $("#details").append("\"");
     $("#details").append('<br><br>Retrieved from <a href="'+ link +'">Wikipedia</a>');
