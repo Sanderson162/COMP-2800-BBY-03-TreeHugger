@@ -111,7 +111,11 @@ function showSearchType(type) {
       }
       $("#search-bar>input").focus();
     }
-    $("#query").attr("placeholder", $("#search-tags>div.tag-selected").text());
+    let queryTag = $("#search-tags>div.tag-selected").text();
+    if (queryTag == "Name") {
+      queryTag = "Common Name";
+    }
+    $("#query").attr("placeholder", queryTag);
   }
 }
 /**
