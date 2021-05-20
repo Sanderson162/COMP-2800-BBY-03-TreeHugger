@@ -50,31 +50,6 @@ function getWikipediaExtract(genus_species) {
   });
 }
 
-function getWikipediaExtract(genus_species) {
-  return new Promise((resolve) => {
-    let url = "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=" + genus_species + "&exintro=1&explaintext=1&callback=?";
-    $.ajax({
-      type: "GET",
-      dataType: "json",
-      url: url,
-      success: function (result, status, xhr) {
-        console.log(result);
-        let pageid = Object.keys(result.query.pages)[0];
-        if (pageid != -1) {
-          let extract = JSON.stringify(result.query.pages[pageid].extract);
-          resolve(extract);
-        } else {
-          resolve("Extract not avalible :(");
-        }
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        console.log("ERROR:", jqXHR, textStatus, errorThrown);
-        resolve("Extract not avalible :(");
-      }
-    });
-  });
-}
-
 
 // example function, add extract to element
 async function addWikiExtractToElement(element, genus_species) {
