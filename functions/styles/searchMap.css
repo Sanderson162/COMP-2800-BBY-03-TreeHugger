@@ -518,6 +518,7 @@ input::placeholder {
     border-bottom-left-radius:0;
     background:whitesmoke;
     width:22%;
+    flex-grow:1;
 }
 
 .light {
