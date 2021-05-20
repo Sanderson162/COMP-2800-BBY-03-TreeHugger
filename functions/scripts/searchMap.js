@@ -165,7 +165,12 @@ function searchBtnClick() {
     selectedTreeIcon = "https://firebasestorage.googleapis.com/v0/b/tree-hugger-c60ff.appspot.com/o/dogBlack.png?alt=media&token=684083da-d1ea-41de-85fd-af44246dd200";
     mapIdVar = "36b4aed7bf6f2a28"
     showSearchType('common_name-tag');
-    $("*").css("background-color", "brown");
+    $("*").css("background-color", "#cae4f1");
+    $("*").css("color", "BLACK");
+    $(".search-container").css("background-color", "transparent");
+    $(".content-container").css("background-color", "transparent");
+    $(".tree-overlay-container").css("background-color", "transparent");
+    $("#trees-near-header").text("PUPPY VISION ENGAGED");
     initMap();
     return;
   }
