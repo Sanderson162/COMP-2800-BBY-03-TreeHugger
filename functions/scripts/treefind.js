@@ -28,7 +28,7 @@ currentLocation = { lat: 49.239593, lng: -123.024645 };
 /** 
  * TESTING SETTINGS 
  */
-let testing = false;
+let testing = true;
 /* pace: 20 is crazy driver pace, 10 is safe driver pace, 1 is walking pace. */
 let pace = 1;
 let testLocationInterval;
@@ -312,7 +312,7 @@ function updateTreeOverlayContent(entry) {
   $("#tree-name").text(entry.fields.common_name);
   $("#species-name").text(entry.fields.genus_name + " " + entry.fields.species_name);
   if (locationMarker != null) {
-    $("#distance").text(Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M")) + " meters away from your location.");
+    $("#distance").text(Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M")) + " meters away");
   }else {
     $("#distance").text("");
   }
