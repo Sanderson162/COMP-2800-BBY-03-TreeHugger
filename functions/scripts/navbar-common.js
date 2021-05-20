@@ -51,10 +51,8 @@ $("#navbarHamProfileButton").on('click', (event) => {
 
 $(".main-container").on('click', (event) => {
 	event.preventDefault();
-	if ($("#profileHamburgerMenu").is(":hidden")) {
-	} else {
-		$("#profileHamburgerMenu").hide();
-	}
+  $("#profileHamburgerMenu").hide();
+  $("#loginContainerPopup").hide();
 });
 
 /** 
