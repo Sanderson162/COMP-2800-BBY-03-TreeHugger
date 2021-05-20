@@ -115,25 +115,6 @@ function login(formData) {
     });
 }
 
-function amiloggedin() {
-  $.ajax({
-    url: "/amiloggedin",
-    dataType: "json",
-    type: "POST",
-    success: function (data) {
-      if (data.status == 'success') {
-        userLoggedIn(data.username, data.userID);
-      } else {
-        userLoggedOut();
-      }
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.log("ERROR:", jqXHR, textStatus, errorThrown);
-    }
-
-  });
-}
-
 function createNewAccount(user) {
   console.log(JSON.stringify(user));
   console.log("requesting server makes database slot for user " + user.uid);

@@ -1,12 +1,14 @@
 async function addLikeButton(parentElement, recordID, liked, count) {
-  let heartIcon = "<i class='fas fa-heart fa-2x'></i>";
-  let heartIconEmpty = "<i class='far fa-heart fa-2x'></i>";
+  let heartIcon = "<i class='fas fa-heart fa-2x' style='color: red;'></i>";
+  let heartIconEmpty = "<i class='far fa-heart fa-2x' style='color: red;'></i>";
   let heartIconGray = "<i class='far fa-heart fa-2x' style='color: gray;'></i>";
 
-  let likeButton = $("<span></span>").addClass("likeButton");
-  let likeCount = $("<span></span>");
+  let likeButton = $("<button></button>").addClass("likeButton");
+  let likeCount = $("<span class='likeCount'></span>");
   let likeButtonID = recordID + "_likeButton";
   likeButton.attr("id", likeButtonID);
+
+  parentElement.empty();
 
 
   if (count == null) {
@@ -32,22 +34,22 @@ async function addLikeButton(parentElement, recordID, liked, count) {
   parentElement.append(likeButton);
 
   likeButton.on('click', function () {
-    let heartIcon = "<i class='fas fa-heart fa-2x'></i>";
-    let heartIconEmpty = "<i class='far fa-heart fa-2x'></i>";
+    let heartIcon = "<i class='fas fa-heart fa-2x' style='color: red;'></i>";
+    let heartIconEmpty = "<i class='far fa-heart fa-2x' style='color: red;'></i>";
     let recordID = $(this).attr('id').split("_")[0];
     var user = firebase.auth().currentUser;
     if (user) {
       if ($(this).hasClass("liked")) {
         let count = parseInt($(this).attr("data-count")) - 1;
         $(this).empty();
-        $(this).append(heartIconEmpty + "<span>" + count + "</span>");
+        $(this).append(heartIconEmpty + "<span class='likeCount'>" + count + "</span>");
         $(this).removeClass("liked");
         $(this).attr("data-count", count);
         removeFavFromTree(recordID);
       } else {
         let count = parseInt($(this).attr("data-count")) + 1;
         $(this).empty();
-        $(this).append(heartIcon + "<span>" + count + "</span>");
+        $(this).append(heartIcon + "<span class='likeCount'>" + count + "</span>");
         $(this).addClass("liked");
         $(this).attr("data-count", count);
         addFavToTree(recordID);
@@ -55,6 +57,24 @@ async function addLikeButton(parentElement, recordID, liked, count) {
     } else {
       console.log("cant like if youre not signed in");
     }
+  });
+}
+
+$(() => {
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      refreshLikeButtons();
+    } else {
+      refreshLikeButtons();
+    }
+  });
+});
+
+
+function refreshLikeButtons(){
+  $('.likeButton').each(function(index, element) {
+    let recordID = $(this).attr('id').split("_")[0];
+    addLikeButton($(this).parent(), recordID, null, null);
   });
 }
 

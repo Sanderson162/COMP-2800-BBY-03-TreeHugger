@@ -24,6 +24,7 @@
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr;
     gap: 0px 0px;
+    z-index:2;
     grid-template-areas:
         "mb1 mb2 mb3 mb4";
 }
@@ -58,7 +59,7 @@
 
 
 #loginContainerPopup {
-    width: 270px;
+    /* width: 270px;
     background-color: rgb(212, 212, 212);
     color: rgb(0, 0, 0);
     text-align: center;
@@ -66,63 +67,80 @@
     border-radius: 5px;
     position: absolute;
     z-index: 2;
-    top: 10em;
-    left: 50%;
-    margin-left: -135px;
-    display: none;
+ */
+ top: 10em;
+ left: 50%;
+ margin-left: -135px;
+    text-align: center;
+    z-index: 2;
+    border-radius: 4px;
+    background-color:white;
+    margin: auto;
+    height: 92%;
+    max-width: 475px;
+    max-height:500px;
+    overflow-y:auto;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    pointer-events: all;
+    opacity:98%;
   }
   
   #loginContainerPopup>.loginNavBar {
     display: flex;
     flex-direction: row;
     border-radius: 5px;
-    justify-content: space-around;
+    justify-content: center;
+    gap:4px;
+    height:50px;
   }
   
-  #loginContainerPopup>.loginNavBar>div {
-    flex-grow: 1;
-    border: 1px solid black;
-    padding: 5px;
-    margin: 1px;
-    border-radius: 5px;
-  }
-  #loginContainerPopup>.loginNavBar>div:hover {
-    flex-grow: 1;
-    border: 1px solid black;
-    padding: 5px;
-    margin: 1px;
-    border-radius: 5px;
+  .navButton {
+    background:#ececec;
+    color:black;
+    padding: 0.5em;
+    border-radius: 2em;
+    font-size: 100%;
+    width:80px;
+    height:20px;
+    display:inline-block;
+    text-align:center;
+    margin-top:1em;
+    margin-bottom:1em;
   }
   
   #loginContainerPopup>.loginSignupformContainer {
-    padding: 5px;
+    padding: 1em;
     border-radius: 5px;
     
+  }
+  .selectedNav {
+    background: gray;
+    color:white;
   }
   
   #loginContainerPopup>.loginSignupformContainer>div>input {
-    padding: 5px;
-    margin: 1px;
-    border-radius: 3px;
-    
+    font-size:18px;
+    width:72.6%;
+    padding:10px;
+    border-radius:4px;
+    margin:auto;
+    border-color:gainsboro;
+    border-width:thin;
+    border-style: solid;
+        -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    margin-bottom:4px;
   }
   
-  .selectedNav {
-    background-color: olivedrab;
-  }
-  
-  .likeButton {
-    border: 1px solid black;
-  }
   
   #profileHamburgerMenu {
     width: 200px;
-    background-color: whitesmoke;
-    box-shadow: 0 -4px 10px 0 rgba(0, 0, 0, 0.1);
+    background-color: white;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     color: rgb(0, 0, 0);
     text-align: center;
-    border: 1px solid black;
-    border-radius: 5px;
+    border-radius: 4px;
     position: absolute;
     z-index: 2;
     bottom: 65px;
@@ -132,19 +150,66 @@
   
   #profileHamburgerMenu>div {
     text-align: center;
-    border: 1px solid rgb(122, 122, 122);
-    border-radius: 10px;
+    border-color:gainsboro;
+    border-width:thin;
+    border-style: solid;
+    border-radius: 4px;
     padding-top: 10px;
     padding-bottom: 10px;
     box-sizing: border-box;
     margin: 5px;
-  }
-  
-  #profileHamburgerMenu>div:hover{
-    background-color: rgb(166, 219, 170);
-    border: 1px solid black;
+    background:whitesmoke;
   }
   
   #navbarHamProfileButton {
     display: none;
   }
+
+  #login-header {
+    color:gray;
+    font-size:110%;
+    margin:10px;
+    height:20px;
+    display:block;
+  }
+
+.login-container { 
+    user-select: none;
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    top: 0px;
+    width:100%;
+    height: 100%;
+    overflow: visible;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.2), rgb(0, 0, 0, 0.35));
+    pointer-events: none;
+    padding: 1em;
+    box-sizing:border-box;
+}
+
+#outer-login {
+    border-radius: 4px;
+    background-color:rgb(247, 247, 247);
+    margin: auto;
+    /* margin-top:1em; */
+    height: 100%;
+    max-width: 420px;
+    max-height:275px;
+    overflow-y:hidden;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    pointer-events: all;
+}
+
+#loginMsg{
+    color:red;
+    height:100%;
+    display:block;
+    margin:auto;
+}
+#signupMsg{
+    color:red;
+    height:100%;
+    display:block;
+    margin:auto;
+}
