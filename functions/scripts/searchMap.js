@@ -8,6 +8,7 @@
 "use strict";
 let currentLocation;
 let markers = [];
+let mapIdVar = 'c79c5bedf4efc001';
 let locationMarker;
 let map;
 let panorama;
@@ -159,6 +160,15 @@ function queueSearch() {
  * Search button click that queries a new search.
  */
 function searchBtnClick() {
+  if ($("#query").val() == "CANIS OVUM") { //EASTER EGG!
+    greenTreeIcon = "https://firebasestorage.googleapis.com/v0/b/tree-hugger-c60ff.appspot.com/o/dogGreen.png?alt=media&token=982e67d0-8895-41c8-a69c-852624333c31";
+    selectedTreeIcon = "https://firebasestorage.googleapis.com/v0/b/tree-hugger-c60ff.appspot.com/o/dogBlack.png?alt=media&token=684083da-d1ea-41de-85fd-af44246dd200";
+    mapIdVar = "36b4aed7bf6f2a28"
+    showSearchType('common_name-tag');
+    $("*").css("background-color", "brown");
+    initMap();
+    return;
+  }
   if ($("#query").val() != "") {
     clearMarkers();
     clearLocationMarker();
@@ -926,7 +936,7 @@ function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: currentLocation,
     zoom: 10,
-    mapId: 'c79c5bedf4efc001',
+    mapId: mapIdVar,
     restriction: {
       latLngBounds: VANCOUVER_BOUNDS,
       strictBounds: false,
