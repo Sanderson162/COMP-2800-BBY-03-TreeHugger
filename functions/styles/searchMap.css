@@ -147,17 +147,17 @@ h1 {
     display: none;
 }
 
-.map-container { 
+.map-container {
     z-index: -1;
-    position: absolute; 
-    top: 0; 
+    position: absolute;
+    top: 0;
     left: 0;
     width: 100%;
     height: 100%;
 
 }
 
-.content-container { 
+.content-container {
     display:none;
     user-select: none;
     position: absolute;
@@ -409,7 +409,7 @@ input:focus {
     outline: none;
     border: 1px solid #007ACC;
 }
-  
+
 #search-bar {
     width:100%;
     box-sizing:border-box;
@@ -553,4 +553,23 @@ input::placeholder {
     color:rgb(235, 235, 235);
     font-size:80%;
     display:block;
+}
+#details {
+    display: none;
+    border: solid 1px black;
+    height: 70%;
+}
+
+.active {
+    height: 85% !important;
+}
+
+.activeDetails {
+    height: 95% !important;
+    max-height: 95% !important;
+}
+
+.activeDetailsParent {
+    height: 100% !important;
+    max-height: 100% !important;
 }

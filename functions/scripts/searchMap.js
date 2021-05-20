@@ -26,7 +26,7 @@ let allSearchHistory = [];
 let mouseClickDelay = 250;
 let mouseClickTimer;
 /**
- * QUERY SETTINGS 
+ * QUERY SETTINGS
  */
 /* Number of queries returned */
 let rows = 40;
@@ -770,6 +770,7 @@ function showTreeOverlay(entry) {
   $(".tree-overlay-container").show();
   updateSearchMapBtn();
   updateTreeOverlayContent(entry);
+  removeDetails();
 }
 /**
  * Updates the TreeOverlay view with data from entry. 
@@ -832,7 +833,8 @@ function copyToClipboard(text) {
   document.execCommand("copy");
   document.body.removeChild(dummy);
 }
-/** 
+
+/**
  * Adds a click listener to the StreeView button in TreeOverlay. 
  * @param {obj} entry
  */
@@ -840,6 +842,7 @@ function addStreetViewBtnListener(entry) {
   $("#street-btn").off();
   $("#street-btn").on("click", (function () {
     toggleStreetView(entry);
+    removeDetails();
   }));
 }
 /**
@@ -863,6 +866,7 @@ function hideTreeOverlay() {
       centerMap();
     }
   }
+  $("#details").hide();
 }
 /** 
  * Toggles the content overlay visible or hidden
@@ -1243,11 +1247,137 @@ function clearMarkers() {
   }
 }
 /**
- * Clears the location marker. 
+ * Clears the location marker.
  */
 function clearLocationMarker() {
   if (locationMarker != null) {
     locationMarker.setMap(null);
     locationMarker = null;
   }
+}
+
+/**
+ * ========================================START=============================================
+ * The next section utilizes wikipedia to source an extract and thumbnail from
+ * the wikipedia page that corresponds to the genus and species name of the
+ * selected tree to complement it's database information.
+ *
+ * Below is an example of a citation for a particular genus and species name.
+ * @see https://en.m.wikipedia.org/wiki/Prunus_cerasifera
+ * Example citation for Prunus cerasifera citation:
+ * Wikipedia contributors. (2021, March 5). Prunus cerasifera. In Wikipedia, The Free Encyclopedia. Retrieved 17:51, May 19, 2021, from https://en.wikipedia.org/w/index.php?title=Prunus_cerasifera&oldid=1010448872
+ *
+ * Appending the genus and species name to the end of the following wikipedia link
+ * will provide our citation link, as we cannot link every wikipedia page (there are many of them).
+ * @author Wikipedia contributors
+ * @see https://en.m.wikipedia.org/wiki/ + genus + _ + species name from database
+ */
+
+/**
+ * Uses wikipedia to retrieve an entry corresponding to the genus_species name of the selected tree.
+ * @param {*} genus_species
+ * @see Stirling
+ */
+function getWikipediaThumbnail (genus_species) {
+  return new Promise((resolve) => {
+    let thumbnailUrl = "https://en.wikipedia.org/w/api.php?action=query&titles=" + genus_species + "&prop=pageimages&format=json&pithumbsize=100&callback=?";
+    $.ajax({
+      type: "GET",
+      dataType: "jsonp",
+      url: thumbnailUrl,
+      success: function(result, status, xhr){
+          console.log("received: ", result);
+          let pageIdThumbnail = Object.keys(result.query.pages)[0];
+          if (pageIdThumbnail != -1) {
+            let thumbnail = result.query.pages[pageIdThumbnail].thumbnail;
+            resolve(thumbnail);
+          } else {
+            resolve("Extract not available :(");
+          }
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+          console.log("ERROR:", jqXHR, textStatus, errorThrown);
+          resolve("Extract not available :(");
+      }
+    });
+  });
+}
+
+function getWikipediaExtract (genus_species) {
+  return new Promise((resolve) => {
+    let extractUrl = "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=" + genus_species + "&exintro=1&explaintext=1&callback=?";
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: extractUrl,
+        success: function(result, status, xhr){
+            console.log("received: ", result);
+            let pageId = Object.keys(result.query.pages)[0];
+            if (pageId != -1) {
+            let extract = JSON.stringify(result.query.pages[pageId].extract);
+            resolve(extract);
+            } else {
+                resolve("Extract not available :(");
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log("ERROR:", jqXHR, textStatus, errorThrown);
+            resolve("Extract not available :(");
+        }
+    });
+  });
+}
+
+/**
+ * Displays wikipedia thumbnail retrieved from query in details division.
+ * @param {*} result
+ */
+async function displayWikipediaInformation(genus_species) {
+  let extract = await getWikipediaExtract(genus_species);
+  $("#details").text(extract);
+  let link = "https://en.wikipedia.org/wiki/" + genus_species;
+  $("#details").append('<br><br>Retrieved from <a href="'+ link +'">Wikipedia</a>');
+
+  let thumbnail = await getWikipediaThumbnail(genus_species);
+  $("#details").prepend('<img src=' + thumbnail.source + ' alt=""><br>');
+
+}
+
+// ========================================END=============================================
+
+/**
+ * Toggles the details overlay when "details-btn" is clicked.
+ * Toggles the activeDetails class on the "#outer-tree-content",
+ * "#tree-content", and "#main" divisions in order to allow an increase in size
+ * of the #main div for the details tab. Resets to original size when toggled off.
+ *
+ * The following code used a snippet from stack overflow as a foundation.
+ * @author Kami @see https://stackoverflow.com/users/1603275/kami
+ * @see https://stackoverflow.com/questions/25409023/how-to-restart-reset-jquery-animation
+ */
+ function toggleDetails() {
+  $("#details").html("");
+  let textForQuery = $("#tree-name").text();
+  textForQuery = (textForQuery.split(' ').slice(0,2).join('_')).toLowerCase();
+  displayWikipediaInformation(textForQuery);
+
+  if (($("#main").hasClass("active"))) {
+    $("#details").hide();
+    $("#main").toggleClass("active");
+    $("#tree-content").toggleClass("activeDetails");
+    $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
+
+  } else {
+    $("#details").show();
+    $("#main").toggleClass("active");
+    $("#tree-content").toggleClass("activeDetails");
+    $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
+  }
+}
+
+function removeDetails() {
+  $("#details").hide();
+  $("#main").removeClass("active");
+  $("#tree-content").removeClass("activeDetails");
+  $(".tree-overlay-container, #outer-tree-content").removeClass("activeDetailsParent");
 }

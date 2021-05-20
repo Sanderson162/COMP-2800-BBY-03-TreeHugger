@@ -7,12 +7,23 @@
     <link rel="stylesheet" href="./searchMap.css">
     <link rel="stylesheet" href="./navbar-common.css">
     <title>Trees Near Me</title>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js" defer></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js" defer></script>
+
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous">
+    </script>
 </head>
 
 <body>
     <div class="search-container">
         <div id="outer-search">
-            <span id="trees-near-header">SEARCH BY</span> 
+            <span id="trees-near-header">SEARCH BY</span>
         <div id="search">
             <br>
             <div id="search-tags">
@@ -25,7 +36,7 @@
                 <div class="tag" id="on_street-tag" onclick="showSearchType('on_street-tag')">Street</div>
                 <div class="tag" id="tree_id-tag" onclick="showSearchType('tree_id-tag')">ID</div>
             </div>
-          
+
             <div id="search-bar">
                 <input type="text" list="data" id="query"/>
                 <datalist id="data">
@@ -70,7 +81,7 @@
         <div id="outer-content">
             <span  onclick="toggleContentOverlay()" id="trees-near-header"><svg  id="hide-content-btn" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M6 9L12 15L18 9" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg><span id="content-title">TREES NEAR ME</span></span> 
+                </svg><span id="content-title">TREES NEAR ME</span></span>
 
         <div id="content">
             <!-- <div class="post">
@@ -107,13 +118,16 @@
                    <div class="tree-card-label">DATE PLANTED</div>
                    <div class="tree-card-data" id="tree-card-date"></div>
                </div>
-              
+
             </div>
             <div onclick="copyShareLink()" id="tree-card-id"></div>
+                <div id="date"></div>
+                <div id="updated"></div>
+                <div id="details"></div>
             </div>
             <div id="button-container">
                 <div id="street-view-container"><button id="street-btn">StreetView</button></div>
-                <div id="other-view-container">          <button id="details-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <div id="other-view-container">          <button id="details-btn" onclick="toggleDetails()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0)">
                     <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M12 16V12" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -132,9 +146,9 @@
                     <path d="M14 10L21 3" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M3 21L10 14" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    
+
                     </button></div>
-      
+
             </div>
         </div>
     </div>
@@ -144,11 +158,15 @@
         </div>
         <div id="pano"></div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Your own Firebase API key information -->
+    <script src="./firebase_api_Group3.js"> </script>
+
+    <!-- Common Navbar Script -->
+    <script src="./navbar-common.js"></script>
+
+    <!-- Additional Script -->
     <script src="/searchMap.js"></script>
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIu6Paiio4Zq0ySb6-LuMJOpFSt25RPz0&map_ids=b3163309c37356ea&callback=initMap"> </script>
-        <script src="./navbar-common.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIu6Paiio4Zq0ySb6-LuMJOpFSt25RPz0&map_ids=b3163309c37356ea&callback=initMap"> </script>
 </body>
 
 </html>
