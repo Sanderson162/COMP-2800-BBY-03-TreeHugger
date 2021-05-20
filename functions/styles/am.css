@@ -32,6 +32,10 @@
     
 }
 
+#formmsg{
+    color:red;
+}
+
 #form input{
     height: 30pt;
     text-align: center;
