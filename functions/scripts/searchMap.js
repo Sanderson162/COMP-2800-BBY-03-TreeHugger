@@ -1280,7 +1280,7 @@ function clearLocationMarker() {
  */
 function getWikipediaThumbnail (genus_species) {
   return new Promise((resolve) => {
-    let thumbnailUrl = "https://en.wikipedia.org/w/api.php?action=query&titles=" + genus_species + "&prop=pageimages&format=json&pithumbsize=100&callback=?";
+    let thumbnailUrl = "https://en.wikipedia.org/w/api.php?action=query&titles=" + genus_species + "&prop=pageimages&format=json&pithumbsize=100&callback=?&redirects=";
     $.ajax({
       type: "GET",
       dataType: "jsonp",
@@ -1305,7 +1305,7 @@ function getWikipediaThumbnail (genus_species) {
 
 function getWikipediaExtract (genus_species) {
   return new Promise((resolve) => {
-    let extractUrl = "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=" + genus_species + "&exintro=1&explaintext=1&callback=?";
+    let extractUrl = "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=" + genus_species + "&exintro=1&explaintext=1&callback=?&redirects=";
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -1314,10 +1314,10 @@ function getWikipediaExtract (genus_species) {
             console.log("received: ", result);
             let pageId = Object.keys(result.query.pages)[0];
             if (pageId != -1) {
-            let extract = JSON.stringify(result.query.pages[pageId].extract);
-            resolve(extract);
+              let extract = JSON.stringify(result.query.pages[pageId].extract);
+              resolve(extract);
             } else {
-                resolve("Extract not available :(");
+              resolve("Extract not available :(");
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {

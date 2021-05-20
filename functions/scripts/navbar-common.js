@@ -49,6 +49,14 @@ $("#navbarHamProfileButton").on('click', (event) => {
   }
 });
 
+$(".main-container").on('click', (event) => {
+	event.preventDefault();
+	if ($("#profileHamburgerMenu").is(":hidden")) {
+	} else {
+		$("#profileHamburgerMenu").hide();
+	}
+});
+
 /** 
  * Wraps the body in a main-container div. 
  * @see https://stackoverflow.com/questions/1577814/wrapping-a-div-around-the-document-body-contents
