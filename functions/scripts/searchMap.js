@@ -1336,7 +1336,7 @@ async function displayWikipediaInformation(genus_species) {
   let extract = await getWikipediaExtract(genus_species);
   $("#details").text(extract);
   let link = "https://en.wikipedia.org/wiki/" + genus_species;
-  $("#details").append('<br><br>Retrieved from <a href="'+ link +'">Wikipedia</a>');
+  $("#details").append('<br><br>Retrieved from <a href="'+ link +'" onclick="window.open(\'' + link + '\')">Wikipedia</a>');
 
   let thumbnail = await getWikipediaThumbnail(genus_species);
   $("#details").prepend('<img src=' + thumbnail.source + ' alt=""><br>');
