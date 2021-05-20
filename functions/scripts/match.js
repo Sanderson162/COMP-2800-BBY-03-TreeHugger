@@ -36,6 +36,7 @@ function loadBirthForm() {
             message: $("#name").val() + "'s birth tree"
         });
     }));
+    f.append($("<span id='formmsg'>"));
 }
 function loadAnniversaryForm() {
     $("#result").html("");
@@ -55,6 +56,7 @@ function loadAnniversaryForm() {
             message: $("#name1").val() + " and " + $("#name2").val() + "'s anniversary tree"
         });
     }));
+    f.append($("<span id='formmsg'>"));
 }
 function loadEventForm() {
     $("#result").html("");
@@ -72,8 +74,14 @@ function loadEventForm() {
             message: $("#name").val()
         });
     }));
+    f.append($("<span id='formmsg'>"));
 }
 function submit(type) {
+    if (!validForm()){
+        $("#formmsg").html("Invalid input, try again");
+        return;
+    }
+    $("#formmsg").html("")
     let q = $("#date").val();
     console.log(q.toString());
     let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine.date_planted=" + q.toString();
@@ -88,6 +96,28 @@ function submit(type) {
 
         }
     });
+}
+
+function validForm(){
+    if ($("#name").length && !($("#name").val())){
+        console.log("invalid name")
+        return false;
+    }
+    if ($("#name1").length && !($("#name1").val())){
+        console.log("invalid name1")
+        return false;
+    }
+    if ($("#name2").length && !($("#name2").val())){
+        console.log("invalid name2")
+        return false;
+    }
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!($("#date").val().match(regex))){
+        console.log($("#date").val())
+        console.log("invalid date")
+        return false;
+    }
+    return true;
 }
 
 async function alternateTree(q, type){
