@@ -171,6 +171,9 @@ function searchBtnClick() {
     $(".content-container").css("background-color", "transparent");
     $(".tree-overlay-container").css("background-color", "transparent");
     $("#trees-near-header").text("PUPPY VISION ENGAGED");
+    $(".highlight").css("filter", "none");
+    $("input").css("border-color", "black");
+    $("#search-btn").css("border-color", "black");
     initMap();
     return;
   }
