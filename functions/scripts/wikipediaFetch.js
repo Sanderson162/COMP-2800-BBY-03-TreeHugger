@@ -50,6 +50,23 @@ function getWikipediaExtract(genus_species) {
   });
 }
 
+function getWikipediaExtractPhoto(genus_species) {
+  return new Promise((resolve) => {
+    $.ajax({
+      type: "GET",
+      dataType: "jsonp",
+      url: "https://en.wikipedia.org/w/api.php?action=query&titles=" + genus_species + "&prop=pageimages&format=json&pithumbsize=100&callback=?",
+      success: function(result, status, xhr){
+          console.log("received: ", result);
+          resolve(result);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+          console.log("ERROR:", jqXHR, textStatus, errorThrown);
+      }
+    });
+  });
+}
+
 
 // example function, add extract to element
 async function addWikiExtractToElement(element, genus_species) {
