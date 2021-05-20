@@ -331,6 +331,7 @@ function updateTreeOverlayContent(entry) {
   $("#tree-card-diameter").text(entry.fields.diameter + " in");
   $("#tree-card-date").text(dateString);
   $("#tree-card-age").text(ageString);
+  addLikeButton($("#like-button-container"), entry.recordid, null, null);
 }
 //https://stackoverflow.com/questions/4060004/calculate-age-given-the-birth-date-in-the-format-yyyymmdd
 function getAgeOfTree(dateString) {

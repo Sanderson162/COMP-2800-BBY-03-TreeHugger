@@ -90,9 +90,14 @@ function signup(formData) {
   firebase.auth().createUserWithEmailAndPassword(formData.email, formData.password)
     .then((userCredential) => {
       var user = userCredential.user;
-      user.displayName = formData.username;
-      createNewAccount(user);
-      $("#signupMsg").text("Welcome " + user.displayName);
+
+      var newUser = {
+        name: formData.username,
+        email: user.email,
+        uid: user.uid,
+      }
+      createNewAccount(newUser);
+      $("#signupMsg").text("Welcome " + formData.username);
     })
     .catch((error) => {
       var errorCode = error.code;
@@ -125,7 +130,7 @@ function createNewAccount(user) {
       dataType: "json",
       type: "POST",
       data: {
-        name: user.displayName,
+        name: user.name,
         email: user.email,
         uid: user.uid,
         idToken: idToken

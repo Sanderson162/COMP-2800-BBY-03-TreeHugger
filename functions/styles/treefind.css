@@ -326,3 +326,8 @@ button:hover {
     font-size:80%;
     display:block;
 }
+
+#like-button-container {
+    margin-left: 10px;
+    float: left;
+}

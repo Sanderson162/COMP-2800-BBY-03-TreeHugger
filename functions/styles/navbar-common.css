@@ -146,6 +146,7 @@
     bottom: 65px;
     right: 10px;
     display: none;
+    user-select: none;
   }
   
   #profileHamburgerMenu>div {

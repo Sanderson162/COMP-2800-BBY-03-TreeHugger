@@ -4,12 +4,12 @@ async function addLikeButton(parentElement, recordID, liked, count) {
   let heartIconGray = "<i class='far fa-heart fa-2x' style='color: gray;'></i>";
 
   let likeButton = $("<button></button>").addClass("likeButton");
-  let likeCount = $("<span class='likeCount'></span>");
+  let likeCount = $("<span class='likeCount' style='margin-left: 10px;'></span>");
   let likeButtonID = recordID + "_likeButton";
   likeButton.attr("id", likeButtonID);
 
-  parentElement.empty();
-
+  likeButton.css({"display": "flex", "flex-direction": "row", "justify-content": "center", "align-items": "center"});
+  parentElement.html("<button style='display: flex; flex-direction: row; justify-content: center; align-items: center'><i class='far fa-heart fa-2x' style='color: gray;'></i><span class='likeCount' style='margin-left: 10px;'><i class='fas fa-spinner fa-sm fa-pulse'></i></span></button>");
 
   if (count == null) {
     count = await getFavCountByTree(recordID);
@@ -31,6 +31,8 @@ async function addLikeButton(parentElement, recordID, liked, count) {
 
   likeButton.append(likeCount);
   likeButton.attr("data-count", count);
+
+  parentElement.empty();
   parentElement.append(likeButton);
 
   likeButton.on('click', function () {
@@ -42,14 +44,14 @@ async function addLikeButton(parentElement, recordID, liked, count) {
       if ($(this).hasClass("liked")) {
         let count = parseInt($(this).attr("data-count")) - 1;
         $(this).empty();
-        $(this).append(heartIconEmpty + "<span class='likeCount'>" + count + "</span>");
+        $(this).append(heartIconEmpty + "<span class='likeCount' style='margin-left: 10px;'>" + count + "</span>");
         $(this).removeClass("liked");
         $(this).attr("data-count", count);
         removeFavFromTree(recordID);
       } else {
         let count = parseInt($(this).attr("data-count")) + 1;
         $(this).empty();
-        $(this).append(heartIcon + "<span class='likeCount'>" + count + "</span>");
+        $(this).append(heartIcon + "<span class='likeCount' style='margin-left: 10px;'>" + count + "</span>");
         $(this).addClass("liked");
         $(this).attr("data-count", count);
         addFavToTree(recordID);

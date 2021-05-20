@@ -328,16 +328,6 @@ button:hover {
     float: left;
 }
 
-.likeButton {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-.likeCount {
-    margin-left: 10px;
-}
 
 /* #content>.post:nth-child(2) {
     background-color: rgb(253, 253, 253);
