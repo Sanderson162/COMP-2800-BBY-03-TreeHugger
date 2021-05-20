@@ -214,6 +214,7 @@ function displayTree(entry,message,saveBtn) {
 function saveButton(tree, message, emoji) {
     let btn = $("<button id='save'>Save</button>");
     btn.on("click", () => {
+        var user = firebase.auth().currentUser;
         if (user) {
             let elem = $("#save");
             elem.attr("disabled", true);
