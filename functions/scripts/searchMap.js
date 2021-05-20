@@ -1334,9 +1334,12 @@ function getWikipediaExtract (genus_species) {
  */
 async function displayWikipediaInformation(genus_species) {
   let extract = await getWikipediaExtract(genus_species);
+  // replace regex from https://stackoverflow.com/questions/14948223/how-to-convert-n-to-html-line-break/23736554
+  // see TheLazyHatGuy -> https://stackoverflow.com/users/11219881/thelazyhatguy
+  extract = extract.replace(/\\n|\\r\\n|\\n\\r|\\r/g, '');
   $("#details").text(extract);
   let link = "https://en.wikipedia.org/wiki/" + genus_species;
-  $("#details").append('<br><br>Retrieved from <a href="'+ link +'">Wikipedia</a>');
+  $("#details").append('<br><br>Retrieved from <a href="'+ link +'" onclick="window.open(\'' + link + '\')">Wikipedia</a>');
 
   let thumbnail = await getWikipediaThumbnail(genus_species);
   $("#details").prepend('<img src=' + thumbnail.source + ' alt=""><br>');
