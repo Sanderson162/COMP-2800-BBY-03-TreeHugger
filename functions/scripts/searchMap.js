@@ -1393,15 +1393,12 @@ async function displayWikipediaInformation(genus_species) {
   textForQuery = (textForQuery.split(' ').slice(0,2).join('_')).toLowerCase();
   displayWikipediaInformation(textForQuery);
 
-  if (($("#main").hasClass("active"))) {
+  if (($("#tree-content").hasClass("activeDetails"))) {
     $("#details").hide();
-    $("#main").toggleClass("active");
     $("#tree-content").toggleClass("activeDetails");
     $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
-
   } else {
     $("#details").show();
-    $("#main").toggleClass("active");
     $("#tree-content").toggleClass("activeDetails");
     $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
   }
