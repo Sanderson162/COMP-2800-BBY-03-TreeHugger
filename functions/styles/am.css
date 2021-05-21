@@ -20,7 +20,10 @@
 }
 
 #main {
-    margin: 5%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    margin-top: 2.5%;
+    margin-bottom: 5%;
     display: grid;
     grid-template-columns: 33.3% 33.3% 33.3%;
     height: fit-content;
@@ -55,7 +58,7 @@
 
 #form{
     font-size: larger;
-    margin: 5%;
+    margin: 2.5%;
     background: white;
     border: none;
     padding-right: 1em;
@@ -75,13 +78,17 @@
     font-size: 60pt;
 }
 
-#menu {
-    display: grid;
-    grid-template-columns: 50% 50%;
+#menu .card {
+    margin-left: 5%;
+    width: 50%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    font-size: x-large;
+    font-weight: bold;
 }
 
 #result {
-    margin: 5%;
+    margin: 2.5%;
     text-align: center;
 }
 
@@ -93,6 +100,9 @@
     display: grid;
     grid-template-columns: 15% 42% 42%;
     grid-template-rows: 100%;
+    margin-bottom: 1%;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 #results .card.history {
