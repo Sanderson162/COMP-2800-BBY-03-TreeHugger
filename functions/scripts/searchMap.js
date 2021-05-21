@@ -80,7 +80,7 @@ function clearSearch() {
 function searchWithRecordID(id) {
   clearSearch();
   $("#content-title").text("SHARED TREE");
-  getRecordAndDisplay(id);
+  getRecordAndDisplay(id, null);
 }
 
 async function searchWithFavourites() {
@@ -91,8 +91,8 @@ async function searchWithFavourites() {
   // console.log("favlist ", favList)
 
   if (favList) {
-    favList.forEach(record => {
-      getRecordAndDisplay(record.recordID);
+    favList.forEach((record, index) => {
+      getRecordAndDisplay(record.recordID, index + 1);
     });
   }
 }
@@ -106,19 +106,22 @@ async function searchWithLeaderboard() {
   console.log("favlist ", favList)
 
   if (favList) {
-    favList.forEach(record => {
+    favList.forEach((record, index) => {
       console.log(record);
       console.log(record.recordID);
-      getRecordAndDisplay(record.recordID);
+      getRecordAndDisplay(record.recordID, index + 1);
     });
   }
 }
 
-async function getRecordAndDisplay(recordID) {
+async function getRecordAndDisplay(recordID, order) {
   let entry = await getInfoOnTreeByID(recordID);
   if (entry.fields.geom) {
     entry.fields.geom = entry.fields.geom.geometry;
     entry.recordid = entry.id;
+    if (order) {
+      entry.order = order;
+    }
     updateContent(entry, false);
   }
 }
@@ -843,6 +846,7 @@ function showTreeOverlay(entry) {
   $(".search-container").hide();
   $(".tree-overlay-container").show();
   updateSearchMapBtn();
+  updateHistory(entry);
   updateTreeOverlayContent(entry);
   updateDetails();
   $("#main").scrollTop(0);
@@ -1448,3 +1452,25 @@ function updateDetails() {
 }
 
 
+/**
+ * Saves history to database (Aidan) 
+ */
+ function updateHistory(entry){
+  var user = firebase.auth().currentUser;
+  var treeID = entry.recordid;
+  console.log(entry);
+  if (user) {
+      user.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+          $.ajax({
+              url: "/ajax-add-history",
+              dataType: "json",
+              type: "POST",
+              data: {tree: treeID, idToken: idToken},
+              success: ()=>{console.log("Successfully added to history")},
+              error: (jqXHR,textStatus,errorThrown )=>{
+                  console.log("Error:"+textStatus);
+              }
+          });
+      });
+  }
+}
