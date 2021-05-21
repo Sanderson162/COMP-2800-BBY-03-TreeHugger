@@ -64,7 +64,7 @@ async function searchWithFavourites() {
 
   let favList = await getFavByUser();
 
-  console.log("favlist " ,favList)
+  console.log("favlist ", favList)
 
   if (favList) {
     favList.each()
@@ -74,36 +74,36 @@ async function searchWithFavourites() {
 }
 
 async function getRecordAndDisplay(recordID) {
-  
+
 }
 // Url parsing function. Source: https://html-online.com/articles/get-url-parameters-javascript/
 function getUrlVars() {
   var vars = {};
-  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-      vars[key] = value;
+  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+    vars[key] = value;
   });
   return vars;
 }
 function addInputListeners() {
-  $("#query").on("keyup", function(event) {
+  $("#query").on("keyup", function (event) {
     if (event.keyCode === 13) {
       searchBtnClick();
       document.activeElement.blur();
     }
   });
-  $("#query-year").on("keyup", function(event) {
+  $("#query-year").on("keyup", function (event) {
     if (event.keyCode === 13) {
       dateSearchBtnClick();
       document.activeElement.blur();
     }
   });
-  $("#query-month").on("keyup", function(event) {
+  $("#query-month").on("keyup", function (event) {
     if (event.keyCode === 13) {
       dateSearchBtnClick();
       document.activeElement.blur();
     }
   });
-  $("#query-day").on("keyup", function(event) {
+  $("#query-day").on("keyup", function (event) {
     if (event.keyCode === 13) {
       dateSearchBtnClick();
       document.activeElement.blur();
@@ -155,7 +155,7 @@ function treeNameClickSearch() {
 }
 function treeHeightClickSearch() {
   showSearchType('height_range_id-tag');
-  $("#query").val($("#tree-card-height").text().substring(0,1));
+  $("#query").val($("#tree-card-height").text().substring(0, 1));
   $("#content").text("");
   queueSearch();
 }
@@ -266,7 +266,7 @@ function search(reset) {
   $("#loadmore").remove();
   let query;
   if (searchType == "all") {
-    query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q="+ q + "&rows=" + (rows) + "&start=" + page * rows + "&sort=-date_planted";
+    query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=" + q + "&rows=" + (rows) + "&start=" + page * rows + "&sort=-date_planted";
   } else {
     query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&sort=-date_planted&refine." + searchType + "=" + q + "&rows=" + (rows) + "&start=" + page * rows;
   }
@@ -300,7 +300,7 @@ function addSearchHistory(query, type) {
   $("#outer-search").css('height', '100%');
   updateSearchHistoryBtn();
   updateSearchMapBtn()
-  let searchItem = {q:query, searchType: type};
+  let searchItem = { q: query, searchType: type };
   searchHistory.push(searchItem);
   checkSearchHistory(query, type);
   allSearchHistory.push(searchItem);
@@ -311,7 +311,7 @@ function addSearchHistory(query, type) {
  * @param {string} type The type to be checked.
  */
 function checkSearchHistory(query, type) {
- for (let i = allSearchHistory.length - 1; i >= 0; i--) { 
+  for (let i = allSearchHistory.length - 1; i >= 0; i--) {
     if (allSearchHistory[i].q == query && allSearchHistory[i].searchType == type) {
       allSearchHistory.splice(i, 1);
     }
@@ -322,10 +322,10 @@ function checkSearchHistory(query, type) {
  */
 function updateSearchHistoryBtn() {
   if (searchHistory.length < 1) {
-    $("#search-history-btn").css("backgroundColor","gainsboro");
+    $("#search-history-btn").css("backgroundColor", "gainsboro");
     $("#search-history-btn").html('<svg class="svg-btn width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M38 40L18 24L38 8V40Z" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 38V10" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>');
   } else {
-    $("#search-history-btn").css("backgroundColor","white");
+    $("#search-history-btn").css("backgroundColor", "white");
     $("#search-history-btn").html('<svg class="svg-btn width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M38 40L18 24L38 8V40Z" stroke="#007ACC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 38V10" stroke="#007ACC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>');
   }
 }
@@ -334,10 +334,10 @@ function updateSearchHistoryBtn() {
  */
 function updateSearchMapBtn() {
   if ($(".search-container").css('display') == 'none') {
-    $("#search-map-btn").css("backgroundColor","gainsboro");
+    $("#search-map-btn").css("backgroundColor", "gainsboro");
     $("#search-map-btn").html('<svg class="svg-btn" width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M37 13L1 13M25.125 30.125L22.4063 27.4062M37 5V33C37 35.2091 35.2091 37 33 37H5C2.79086 37 1 35.2091 1 33L1 5C1 2.79086 2.79086 1 5 1L33 1C35.2091 1 37 2.79086 37 5ZM23.875 23.875C23.875 26.6364 21.6364 28.875 18.875 28.875C16.1136 28.875 13.875 26.6364 13.875 23.875C13.875 21.1136 16.1136 18.875 18.875 18.875C21.6364 18.875 23.875 21.1136 23.875 23.875Z" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
   } else {
-    $("#search-map-btn").css("backgroundColor","white");
+    $("#search-map-btn").css("backgroundColor", "white");
     $("#search-map-btn").html('<svg class="svg-btn" width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M37 13L1 13M25.125 30.125L22.4063 27.4062M37 5V33C37 35.2091 35.2091 37 33 37H5C2.79086 37 1 35.2091 1 33L1 5C1 2.79086 2.79086 1 5 1L33 1C35.2091 1 37 2.79086 37 5ZM23.875 23.875C23.875 26.6364 21.6364 28.875 18.875 28.875C16.1136 28.875 13.875 26.6364 13.875 23.875C13.875 21.1136 16.1136 18.875 18.875 18.875C21.6364 18.875 23.875 21.1136 23.875 23.875Z" stroke="#007ACC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
   }
 }
@@ -349,7 +349,7 @@ function updateSearchMapBtn() {
  */
 function heightRangeToFeet(q, searchType) {
   if (searchType == "height_range_id") {
-    return (parseInt(q) * 10) +  "ft";
+    return (parseInt(q) * 10) + "ft";
   } else {
     return q;
   }
@@ -394,8 +394,8 @@ function loadMoreButton() {
   b.click(() => {
     page += 1;
     let count = $(".post").length;
-    $(".post:nth-child(-n + "+ count + ")").css("background-color", "whitesmoke");
-      search();
+    $(".post:nth-child(-n + " + count + ")").css("background-color", "whitesmoke");
+    search();
   });
   return b;
 }
@@ -425,29 +425,23 @@ function loadDateSearchBarOptions(searchType) {
     let query = queryBase + "&timezone=UTC"
     loadDateDataList($("#year"), query, searchType);
   } else if (searchType == "ys") {
-    let y =  $("#query-year").val();
+    let y = $("#query-year").val();
     if (y.length == 4) {
       $("#month").html("");
-      $("#query-month").prop('disabled', false);
       let query = queryBase + "&refine=date_planted%3A" + y + "&timezone=UTC"
       loadDateDataList($("#month"), query, searchType);
-      $("#query-month").focus();
     } else {
       $("#month").html("");
       $("#day").html("");
     }
   } else if (searchType == "ms") {
-    let y =  $("#query-year").val();
-    let m =  $("#query-month").val();
+    let y = $("#query-year").val();
+    let m = $("#query-month").val();
     if (m.length > 0 && m.length <= 2 && m > 0) {
       $("#day").html("");
-      $("#query-day").prop('disabled', false);
       m = addFirstZero(m);
       let query = queryBase + "&refine=date_planted%3A" + y + "/" + m + "&timezone=UTC"
       loadDateDataList($("#day"), query, searchType);
-      if (m > 1){
-        $("#query-day").focus();
-      }
     } else {
       $("#day").html("");
     }
@@ -462,30 +456,31 @@ function loadDateDataList(dataList, query, searchType) {
           let day = removeFirstZero(entry.name);
           dataList.append($("<option>" + optionalString + " </option>").val(day));
         });
-        showDataArrowiOS($("#query-year"));
       } else if (searchType == "ys") {
-        $.each(data.facets[0].facets[0].facets, function (i, entry) {
-          let optionalString = createOptionalString(entry, searchType);
-          let day = removeFirstZero(entry.name);
-          dataList.append($("<option>" + optionalString + " </option>").val(day));
-        });
-        showDataArrowiOS($("#query-month"));
+        if (data?.facets[0]?.facets[0]?.facets) {
+          $("#query-month").prop('disabled', false);
+          $("#query-month").focus();
+          $.each(data.facets[0].facets[0].facets, function (i, entry) {
+            let optionalString = createOptionalString(entry, searchType);
+            let day = removeFirstZero(entry.name);
+            dataList.append($("<option>" + optionalString + " </option>").val(day));
+          });
+        }
       } else if (searchType == "ms") {
-        $.each(data.facets[0].facets[0].facets[0].facets, function (i, entry) {
-          let optionalString = createOptionalString(entry, searchType);
-          let day = removeFirstZero(entry.name);
-          dataList.append($("<option>" + optionalString + " </option>").val(day));
-        });
-        showDataArrowiOS($("#query-day"));
+        if (data?.facets[0]?.facets[0]?.facets[0]?.facets) {
+          $("#query-day").prop('disabled', false);
+          if ($("#query-month").val() > 1) {
+            $("#query-day").focus();
+          }
+          $.each(data.facets[0].facets[0].facets[0].facets, function (i, entry) {
+            let optionalString = createOptionalString(entry, searchType);
+            let day = removeFirstZero(entry.name);
+            dataList.append($("<option>" + optionalString + " </option>").val(day));
+          });
+        }
       }
     }
   })
-}
-function showDataArrowiOS(inputBox) {
-  if (inputBox.val() == "") {
-    inputBox.val("1");
-    inputBox.val("");
-  } 
 }
 function removeFirstZero(num) {
   if (parseInt(num) < 10 && num.length == 2) {
@@ -494,7 +489,7 @@ function removeFirstZero(num) {
   } else {
     return num;
   }
-} 
+}
 function resetDateSearchBar() {
   $("#query-month").val("");
   $("#query-day").val("");
@@ -509,7 +504,7 @@ function resetDateSearchBar() {
  * @param {string} searchType The type.
  * @returns Optional string for search bar options.
  */
-function createOptionalString(entry, searchType){
+function createOptionalString(entry, searchType) {
   let optionalString = "";
   if (searchType == "height_range_id") {
     optionalString = heightRangeToFeet(entry.name, searchType);
@@ -667,8 +662,8 @@ function updateSearchHistoryView(entry) {
     query.text(entry.q);
   }
   type.text(parseType(entry.searchType));
-  item.append(query,type,arrow);
-  item.on( "click", function() {
+  item.append(query, type, arrow);
+  item.on("click", function () {
     loadSearchHistoryItem(entry);
     document.activeElement.blur();
   });
@@ -692,11 +687,11 @@ function parseType(type) {
     return "Location";
   } else if (type == "on_street") {
     return "Street";
-  }  else if (type == "date_planted") {
+  } else if (type == "date_planted") {
     return "Date";
   } else if (type == "all") {
     return "All";
-  }else if (type == "tree_id") {
+  } else if (type == "tree_id") {
     return "ID";
   }
 }
@@ -844,10 +839,10 @@ function getAgeOfTree(dateString) {
 }
 //https://stackoverflow.com/questions/10607935/convert-returned-string-yyyymmdd-to-date/10610485
 function dateStringtoDate(dateString) {
-  let year = dateString.substring(0,4);
-  let month = dateString.substring(5,7);
-  let day = dateString.substring(7,9);
-  let date = new Date(year, month-1, day);
+  let year = dateString.substring(0, 4);
+  let month = dateString.substring(5, 7);
+  let day = dateString.substring(7, 9);
+  let date = new Date(year, month - 1, day);
   return date;
 }
 function copyShareLink() {
@@ -1156,7 +1151,7 @@ function createSearchMapBtn() {
  */
 function stepBackSearchHistory() {
   let index = searchHistory.length - 2;
-  if (index  > -1) {
+  if (index > -1) {
     let lastSearch = searchHistory[index];
     clearMarkers();
     clearLocationMarker();
@@ -1401,10 +1396,10 @@ async function displayWikipediaInformation(element, genus_species) {
  * @author Kami @see https://stackoverflow.com/users/1603275/kami
  * @see https://stackoverflow.com/questions/25409023/how-to-restart-reset-jquery-animation
  */
- function updateDetails() {
+function updateDetails() {
   $("#details").html("");
   let textForQuery = $("#tree-name").text();
-  textForQuery = (textForQuery.split(' ').slice(0,2).join('_')).toLowerCase();
+  textForQuery = (textForQuery.split(' ').slice(0, 2).join('_')).toLowerCase();
   displayWikipediaInformation($("#details"), textForQuery);
 }
 
