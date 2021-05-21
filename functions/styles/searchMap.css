@@ -579,7 +579,11 @@ input::placeholder {
 }
 
 #thumbnail {
-    padding: 1em;
-    margin: 0.5em;
-    border: solid 1px black;
+    padding: 0.5em;
+    /* margin: 0.5em; */
+    /* border: solid 1px black; */
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    border-radius:4px;
 }
