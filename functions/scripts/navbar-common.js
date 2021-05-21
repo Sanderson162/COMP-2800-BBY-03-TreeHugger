@@ -143,38 +143,66 @@ $(() => {
     }
   });
 
-  $('#signupSubmit').on("click", function (e) {
+  $('#loginWithGoogle').on("click", function (e) {
     e.preventDefault();
-	$("#outer-login").css("max-height", "325px");
-    if ($("#signup_email").val() && $("#signup_username").val() && $("#signup_password").val()) {
+	$("#outer-login").css("max-height", "275px");
+    if ($("#login_email").val() && $("#login_password").val()) {
       let formData = {
-        email: $("#signup_email").val(),
-        username: $("#signup_username").val(),
-        password: $("#signup_password").val(),
+        email: $("#login_email").val(),
+        password: $("#login_password").val(),
       };
 
-      $("#signup_password").val("");
+      $("#login_password").val("");
 
-      signup(formData);
+      login(formData);
     } else {
-      $("#signupMsg").text("Please enter signup info.");
+      $("#loginMsg").text("Please enter login info.");
 	  $("#outer-login").css("max-height", "+=75px");
     }
   });
 
+$('#signupSubmit').on("click", function (e) {
+  e.preventDefault();
+  $("#outer-login").css("max-height", "325px");
+  var provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth()
+    .signInWithPopup(provider)
+    .then((result) => {
+      /** @type {firebase.auth.OAuthCredential} */
+      var credential = result.credential;
+
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      var token = credential.accessToken;
+      // The signed-in user info.
+      var user = result.user;
+      // ...
+    }).catch((error) => {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // ...
+    });
+  $("#outer-login").css("max-height", "+=75px");
+
+});
+
   firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-      $("#loginLogoutButton").html("Logout");
-      $(".login-container").hide();
-      $("#navbarHamProfileButton").show();
-      $("#historybtn").show();
-      $("#commentsbtn").show();
-    } else {
-      $("#loginLogoutButton").html("Login/Signup");
-      $("#navbarHamProfileButton").hide();
-      $("#historybtn").hide();
-      $("#commentsbtn").hide();
-    }
+  if (user) {
+    $("#loginLogoutButton").html("Logout");
+    $(".login-container").hide();
+    $("#navbarHamProfileButton").show();
+    $("#historybtn").show();
+    $("#commentsbtn").show();
+  } else {
+    $("#loginLogoutButton").html("Login/Signup");
+    $("#navbarHamProfileButton").hide();
+    $("#historybtn").hide();
+    $("#commentsbtn").hide();
+  }
   });
 
 });
