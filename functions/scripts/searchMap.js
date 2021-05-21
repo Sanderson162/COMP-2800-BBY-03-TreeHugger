@@ -88,12 +88,10 @@ async function searchWithFavourites() {
   $("#content-title").text("FAVOURITE TREE");
   let favList = await getFavByUser();
 
-  console.log("favlist ", favList)
+  // console.log("favlist ", favList)
 
   if (favList) {
     favList.forEach(record => {
-      console.log(record);
-      console.log(record.recordID);
       getRecordAndDisplay(record.recordID);
     });
   }
@@ -119,7 +117,6 @@ async function searchWithLeaderboard() {
 async function getRecordAndDisplay(recordID) {
   let entry = await getInfoOnTreeByID(recordID);
   if (entry.fields.geom) {
-    console.log(entry.fields);
     entry.fields.geom = entry.fields.geom.geometry;
     entry.recordid = entry.id;
     updateContent(entry, false);
@@ -663,7 +660,6 @@ function showDialogue(m) {
  * @param {obj} entry
  */
 function updateContent(entry, distanceEnabled) {
-  console.log("entry test updatecontent", entry);
   var dist = Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M"));
   var dateString = "";
   var post = $("<div></div>").addClass("post");
@@ -1442,14 +1438,7 @@ async function displayWikipediaInformation(element, genus_species) {
 // ========================================END=============================================
 
 /**
- * Toggles the details overlay when "details-btn" is clicked.
- * Toggles the activeDetails class on the "#outer-tree-content",
- * "#tree-content", and "#main" divisions in order to allow an increase in size
- * of the #main div for the details tab. Resets to original size when toggled off.
- *
- * The following code used a snippet from stack overflow as a foundation.
- * @author Kami @see https://stackoverflow.com/users/1603275/kami
- * @see https://stackoverflow.com/questions/25409023/how-to-restart-reset-jquery-animation
+ * Updates the details division with wikipedia information when tree overlay is loaded.
  */
 function updateDetails() {
   $("#details").html("");

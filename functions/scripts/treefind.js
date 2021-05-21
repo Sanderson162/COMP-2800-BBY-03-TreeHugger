@@ -170,12 +170,15 @@ function showDialogue(m) {
       $("#content").append(post);
     }
   } else if (m == "nullContent") {
-    let post = $("<div></div>").addClass("post");
-    post.addClass("dialogue");
-    let title = $("<div></div>").addClass("title").text("No trees near you");
-    let body = $("<div></div>").addClass("body").text("There are no trees from the database in your area.");
-    post.append(title, body);
-    $("#content").append(post);
+    if ($("#content").text() != "No trees near youThere are no trees from the database in your area.") {
+      $("#content").text("");
+      let post = $("<div></div>").addClass("post");
+      post.addClass("dialogue");
+      let title = $("<div></div>").addClass("title").text("No trees near you");
+      let body = $("<div></div>").addClass("body").text("There are no trees from the database in your area.");
+      post.append(title, body);
+      $("#content").append(post);
+    }
   } else if (m == "locationErrorNS") {
     if ($("#content").text() != "Location is not supported on this browserLocation services must be enabled to see nearby trees.") {
       $("#content").text("");
@@ -198,12 +201,15 @@ function showDialogue(m) {
       $("#content").append(post);
     }
   } else if (m == "locationOutofBounds") {
-    let post = $("<div></div>").addClass("post");
-    post.addClass("dialogue");
-    let title = $("<div></div>").addClass("title").text("You are not in Vancouver");
-    let body = $("<div></div>").addClass("body").text("TreeHugger only works in Vancouver, try our search to explore our trees!");
-    post.append(title, body);
-    $("#content").append(post);
+    if ($("#content").text() != "You are not in VancouverTreeHugger only works in Vancouver, try our search to explore our trees!") {
+      $("#content").text("");
+      let post = $("<div></div>").addClass("post");
+      post.addClass("dialogue");
+      let title = $("<div></div>").addClass("title").text("You are not in Vancouver");
+      let body = $("<div></div>").addClass("body").text("TreeHugger only works in Vancouver, try our search to explore our trees!");
+      post.append(title, body);
+      $("#content").append(post);
+    }
   }
 }
 /**
@@ -303,6 +309,8 @@ function showTreeOverlay(entry) {
   $(".tree-overlay-container").show();
   updateTreeOverlayContent(entry);
   updateHistory(entry);
+  updateDetails();
+  $("#main").scrollTop(0);
   showMapButtons(false);
 }
 /**
@@ -786,41 +794,15 @@ function clearLocationMarker() {
 }
 
 /**
- * Toggles the details overlay when "details-btn" is clicked.
- * Toggles the activeDetails class on the "#outer-tree-content",
- * "#tree-content", and "#main" divisions in order to allow an increase in size
- * of the #main div for the details tab. Resets to original size when toggled off.
- *
- * The following code used a snippet from stack overflow as a foundation.
- * @author Kami @see https://stackoverflow.com/users/1603275/kami
- * @see https://stackoverflow.com/questions/25409023/how-to-restart-reset-jquery-animation
+ * Updates the details division with wikipedia information when tree overlay is loaded.
  */
- function toggleDetails() {
+ function updateDetails() {
   $("#details").html("");
   let textForQuery = $("#tree-name").text();
-  textForQuery = (textForQuery.split(' ').slice(0,2).join('_')).toLowerCase();
+  textForQuery = (textForQuery.split(' ').slice(0, 2).join('_')).toLowerCase();
   displayWikipediaInformation($("#details"), textForQuery);
-
-  if (($("#main").hasClass("active"))) {
-    $("#details").hide();
-    $("#main").toggleClass("active");
-    $("#tree-content").toggleClass("activeDetails");
-    $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
-
-  } else {
-    $("#details").show();
-    $("#main").toggleClass("active");
-    $("#tree-content").toggleClass("activeDetails");
-    $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
-  }
 }
 
-function removeDetails() {
-  $("#details").hide();
-  $("#main").removeClass("active");
-  $("#tree-content").removeClass("activeDetails");
-  $(".tree-overlay-container, #outer-tree-content").removeClass("activeDetailsParent");
-}
 /**
  * Saves history to database (Aidan) 
  */

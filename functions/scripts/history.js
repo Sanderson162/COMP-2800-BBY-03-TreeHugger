@@ -1,13 +1,7 @@
+//displays the "history" page when url argument p = history
+//otherwise it displays the saved tree
 $(() => {
     firebase.auth().onAuthStateChanged(() => {
-        // $("#history").click(() => {
-        //     selectCard("#history");
-        //     showHistory();
-        // });
-        // $("#comments").click(() => {
-        //     selectCard("#comments");
-            
-        // });
         if (getUrlVars()["p"]=="history"){
             showHistory();
         } else {
@@ -17,11 +11,8 @@ $(() => {
 
     });
 });
-function selectCard(target) {
-    $(".selected").removeClass("selected")
-    $(target).addClass("selected")
-}
 
+//displays user history
 function showHistory() {
     var user = firebase.auth().currentUser;
     if (user) {
@@ -41,11 +32,13 @@ function showHistory() {
             });
         });
     } else {
+        //user is nott logged in
+        // should not be here.
         console.log("Not signed in");
     }
 }
 
-
+//shows the saved trees
 function showComments() {
     var user = firebase.auth().currentUser;
     if (user) {
@@ -65,10 +58,13 @@ function showComments() {
             });
         });
     } else {
+        //user should not be here
         console.log("Not signed in");
     }
 }
 
+//displays all results if there are results
+//otherwise displays "no results found"
 function spliceComments(data){
     if (data.length == 0){
         $("#results").html("<i>No results found</i>");
@@ -80,12 +76,15 @@ function spliceComments(data){
     }
 }
 
+//displays a comment
 function displayComment(comment){
-    //console.log(comment);
     let elem = $("<div class='card'>");
     elem.append($("<div class='emoji'>").html(comment.Icon))
     elem.append($("<div class='message'>").html(comment.Comment))
-        
+    elem.click(() =>{
+        window.location = "./searchMap?id=" + comment.Tree;
+    })
+    
     let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine.recordid=" + comment.Tree;
     $.getJSON(query, (tree) => {
         let t = $("<div class='tree'>");
@@ -98,6 +97,8 @@ function displayComment(comment){
     return elem;
 }
 
+//displays all results if there are results for history
+//otherwise displays "no results found"
 function spliceHistory(data){
     if (data.length == 0){
         $("#results").html("<i>No results found</i>");
@@ -109,13 +110,17 @@ function spliceHistory(data){
     }
 }
 
+//displays one elemement of history
 function displayHistory(comment){
     //console.log(comment);
     let elem = $("<div class='card history'>");
     let date = comment.date;
     console.log(JSON.stringify(date));
     elem.append($("<div class='message'>").html(date));
-        
+    elem.click(() =>{
+        window.location = "./searchMap?id=" + comment.tree;
+    })
+
     let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine.recordid=" + comment.tree;
     $.getJSON(query, (tree) => {
         let t = $("<div class='tree'>");
