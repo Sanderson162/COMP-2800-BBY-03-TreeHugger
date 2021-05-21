@@ -678,6 +678,9 @@ function updateContent(entry, distanceEnabled) {
   if (entry.fields.date_planted) {
     dateString = "Planted on " + entry.fields.date_planted;
   }
+  if (entry.order) {
+    post.css("order", entry.order);
+  }
   var date = $("<div></div>").addClass("date").text(dateString);
   post.append(title, body, dis, date);
   addTreeMarker(entry.fields.geom.coordinates[0], entry.fields.geom.coordinates[1], entry);
