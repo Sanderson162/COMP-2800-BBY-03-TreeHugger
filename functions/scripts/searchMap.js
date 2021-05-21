@@ -86,19 +86,22 @@ async function searchWithFavourites() {
   console.log("favlist ", favList)
 
   if (favList) {
-    favList.forEach(element => {
-      console.log(element)
-      getRecordAndDisplay(element.recordID);
+    favList.forEach(record => {
+      console.log(record);
+      console.log(record.recordID);
+      getRecordAndDisplay(record.recordID);
     });
   }
 }
 
 async function getRecordAndDisplay(recordID) {
-<<<<<<< HEAD
-  let record = getInfoOnTreeByID();
-=======
-
->>>>>>> c367ad1ae1936cd183bfc4805645ccaa45bc3d31
+  let entry = await getInfoOnTreeByID(recordID);
+  if (entry.fields.geom) {
+    console.log(entry.fields);
+    entry.fields.geom = entry.fields.geom.geometry;
+    entry.recordid = entry.id;
+    updateContent(entry, false);
+  }
 }
 
 // Url parsing function. Source: https://html-online.com/articles/get-url-parameters-javascript/
@@ -638,6 +641,7 @@ function showDialogue(m) {
  * @param {obj} entry
  */
 function updateContent(entry, distanceEnabled) {
+  console.log("entry test updatecontent", entry);
   var dist = Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M"));
   var dateString = "";
   var post = $("<div></div>").addClass("post");
@@ -849,7 +853,7 @@ function updateTreeOverlayContent(entry) {
     ageString = "N/A";
   }
   $("#tree-card-id").text("Tree ID: " + entry.fields.tree_id);
-  $("#tree-card-id").data("id", entry.fields.tree_id);
+  $("#tree-card-id").data("id", entry.recordid);
   $("#tree-card-height").text(entry.fields.height_range_id * 10 + " ft");
   $("#tree-card-diameter").text(entry.fields.diameter + " in");
   $("#tree-card-date").text(dateString);
@@ -872,17 +876,17 @@ function dateStringtoDate(dateString) {
 }
 function copyShareLink() {
   let id = $('#tree-card-id').data('id');
-  let url = window.location.href + "?id=" + id;
+  let url = window.location.href.split('?')[0] + "?id=" + id;
   console.log(url);
   copyToClipboard(url);
 }
 //TODO DOES NOT WORK ???????????
 //@author: https://stackoverflow.com/questions/33855641/copy-output-of-a-javascript-variable-to-the-clipboard
 function copyToClipboard(text) {
-  var dummy = document.createElement("input");
+  var dummy = document.createElement("div");
   dummy.style.display = 'none'
   document.body.appendChild(dummy);
-  dummy.value = text;
+  dummy.innerHTML = text;
   dummy.select();
   document.execCommand("copy");
   document.body.removeChild(dummy);
