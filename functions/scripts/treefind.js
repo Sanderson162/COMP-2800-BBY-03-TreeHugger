@@ -170,12 +170,15 @@ function showDialogue(m) {
       $("#content").append(post);
     }
   } else if (m == "nullContent") {
-    let post = $("<div></div>").addClass("post");
-    post.addClass("dialogue");
-    let title = $("<div></div>").addClass("title").text("No trees near you");
-    let body = $("<div></div>").addClass("body").text("There are no trees from the database in your area.");
-    post.append(title, body);
-    $("#content").append(post);
+    if ($("#content").text() != "No trees near youThere are no trees from the database in your area.") {
+      $("#content").text("");
+      let post = $("<div></div>").addClass("post");
+      post.addClass("dialogue");
+      let title = $("<div></div>").addClass("title").text("No trees near you");
+      let body = $("<div></div>").addClass("body").text("There are no trees from the database in your area.");
+      post.append(title, body);
+      $("#content").append(post);
+    }
   } else if (m == "locationErrorNS") {
     if ($("#content").text() != "Location is not supported on this browserLocation services must be enabled to see nearby trees.") {
       $("#content").text("");
@@ -198,12 +201,15 @@ function showDialogue(m) {
       $("#content").append(post);
     }
   } else if (m == "locationOutofBounds") {
-    let post = $("<div></div>").addClass("post");
-    post.addClass("dialogue");
-    let title = $("<div></div>").addClass("title").text("You are not in Vancouver");
-    let body = $("<div></div>").addClass("body").text("TreeHugger only works in Vancouver, try our search to explore our trees!");
-    post.append(title, body);
-    $("#content").append(post);
+    if ($("#content").text() != "You are not in VancouverTreeHugger only works in Vancouver, try our search to explore our trees!") {
+      $("#content").text("");
+      let post = $("<div></div>").addClass("post");
+      post.addClass("dialogue");
+      let title = $("<div></div>").addClass("title").text("You are not in Vancouver");
+      let body = $("<div></div>").addClass("body").text("TreeHugger only works in Vancouver, try our search to explore our trees!");
+      post.append(title, body);
+      $("#content").append(post);
+    }
   }
 }
 /**
