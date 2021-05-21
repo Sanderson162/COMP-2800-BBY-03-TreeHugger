@@ -35,7 +35,7 @@ currentLocation = { lat: 49.279430, lng: -123.117276 };
  * After document load, init search.
  */
 $(document).ready(function () {
-  // $("#outer-search").css('height', '175px');
+  $("#outer-search").css('height', '175px');
   $("#content").text("");
   showSearchType('common_name-tag');
   addInputListeners();
@@ -43,12 +43,36 @@ $(document).ready(function () {
   if (vars.id) {
     searchWithID(vars.id);
   }
+  if (vars.favourites) {
+    searchWithFavourites();
+  }
 });
 function searchWithID(id) {
   showSearchType('tree_id-tag');
   $("#query").val(id);
   $("#content").text("");
   queueSearch();
+}
+
+async function searchWithFavourites() {
+  clearMarkers();
+  clearLocationMarker();
+  $("#content-title").text("FAVOURITE TREES");
+  $(".search-container").hide();
+  $(".tree-overlay-container").hide();
+  $(".content-container").show();
+
+  let favList = await getFavByUser();
+
+  if (favList) {
+    favList.each()
+
+  }
+
+}
+
+async function getRecordAndDisplay(recordID) {
+  
 }
 // Url parsing function. Source: https://html-online.com/articles/get-url-parameters-javascript/
 function getUrlVars() {
@@ -182,6 +206,7 @@ function searchBtnClick() {
     return;
   }
   if ($("#query").val() != "") {
+    selectedTreeId = null;
     clearMarkers();
     clearLocationMarker();
     $("#content").text("");
@@ -190,6 +215,7 @@ function searchBtnClick() {
 }
 function dateSearchBtnClick() {
   if ($("#query-year").val().length == 4) {
+    selectedTreeId = null;
     clearMarkers();
     clearLocationMarker();
     $("#content").text("");
@@ -772,10 +798,9 @@ function showTreeOverlay(entry) {
   $(".content-container").hide();
   $(".search-container").hide();
   $(".tree-overlay-container").show();
-  updateHistory(entry);
   updateSearchMapBtn();
   updateTreeOverlayContent(entry);
-  removeDetails();
+  updateDetails();
 }
 /**
  * Updates the TreeOverlay view with data from entry. 
@@ -790,10 +815,6 @@ function updateTreeOverlayContent(entry) {
     $("#distance").text("");
   }
   $("#body").text(entry.fields.on_street);
-  
-  
-  
-
 
   let dateString;
   let ageString;
@@ -811,25 +832,6 @@ function updateTreeOverlayContent(entry) {
   $("#tree-card-date").text(dateString);
   $("#tree-card-age").text(ageString);
   addLikeButton($("#like-button-container"), entry.recordid, null, null);
-}
-function updateHistory(entry){
-  var user = firebase.auth().currentUser;
-  var treeID = entry.recordid;
-  console.log(entry);
-  if (user) {
-      user.getIdToken(/* forceRefresh */ true).then(function(idToken) {
-          $.ajax({
-              url: "/ajax-add-history",
-              dataType: "json",
-              type: "POST",
-              data: {tree: treeID, idToken: idToken},
-              success: ()=>{console.log("Successfully added to history")},
-              error: (jqXHR,textStatus,errorThrown )=>{
-                  console.log("Error:"+textStatus);
-              }
-          });
-      });
-  }
 }
 //https://stackoverflow.com/questions/4060004/calculate-age-given-the-birth-date-in-the-format-yyyymmdd
 function getAgeOfTree(dateString) {
@@ -871,7 +873,6 @@ function addStreetViewBtnListener(entry) {
   $("#street-btn").off();
   $("#street-btn").on("click", (function () {
     toggleStreetView(entry);
-    removeDetails();
   }));
 }
 /**
@@ -895,7 +896,6 @@ function hideTreeOverlay() {
       centerMap();
     }
   }
-  $("#details").hide();
 }
 /** 
  * Toggles the content overlay visible or hidden
@@ -1031,7 +1031,7 @@ function initMap() {
     if (panorama.getVisible()) {
       $("#street-btn").text("Map");
     } else {
-      $("#street-btn").text("StreetView");
+      $("#street-btn").text("Street");
     }
   });
   let panoOptions = {
@@ -1216,7 +1216,7 @@ function addTreeMarker(longitude, latitude, entry) {
   /* Check if tree selected is being updated and set its color to selected. */
   if (selectedTreeId) {
     if (selectedTreeId == ids) {
-      treeIcon = selectedTreeIcon;
+      return;
     }
   }
   var treeLocation = { lat: latitude, lng: longitude }
@@ -1230,12 +1230,18 @@ function addTreeMarker(longitude, latitude, entry) {
   markers.push(marker);
   marker.addListener("click", () => {
     // $('#' + ids).get(0).scrollIntoView();
-    marker.setIcon(selectedTreeIcon);
-    marker.metadata = { id: ids };
-    zoom(entry);
-    /* Preload StreetView */
-    setStreetView(entry);
-    panorama.getPosition() // Preload again to fix first launch.
+    if (ids == selectedTreeId && $(".tree-overlay-container").css('display') != 'none') {
+      setStreetView(entry);
+      toggleStreetView(entry);
+      $(".tree-overlay-container").show();
+    } else {
+      marker.setIcon(selectedTreeIcon);
+      marker.metadata = { id: ids };
+      zoom(entry);
+      /* Preload StreetView */
+      setStreetView(entry);
+      panorama.getPosition() // Preload again to fix first launch.
+    }
   });
 }
 /**
@@ -1307,6 +1313,9 @@ function clearLocationMarker() {
  * @param {*} genus_species
  * @see Stirling
  */
+
+/*
+
 function getWikipediaThumbnail (genus_species) {
   return new Promise((resolve) => {
     let thumbnailUrl = "https://en.wikipedia.org/w/api.php?action=query&titles=" + genus_species + "&prop=pageimages&format=json&pithumbsize=100&callback=?&redirects=";
@@ -1356,25 +1365,27 @@ function getWikipediaExtract (genus_species) {
     });
   });
 }
+*/
 
 /**
  * Displays wikipedia thumbnail retrieved from query in details division.
  * @param {*} result
  */
-async function displayWikipediaInformation(genus_species) {
+/*
+async function displayWikipediaInformation(element, genus_species) {
   let extract = await getWikipediaExtract(genus_species);
   // replace regex from https://stackoverflow.com/questions/14948223/how-to-convert-n-to-html-line-break/23736554
   // see TheLazyHatGuy -> https://stackoverflow.com/users/11219881/thelazyhatguy
   extract = extract.replace(/\\n|\\r\\n|\\n\\r|\\r/g, '');
-  $("#details").text(extract);
+  element.text(extract);
   let link = "https://en.wikipedia.org/wiki/" + genus_species;
-  $("#details").append('<br><br>Retrieved from <a href="'+ link +'" onclick="window.open(\'' + link + '\')">Wikipedia</a>');
+  element.append('<br><br>Retrieved from <a href="'+ link +'" onclick="window.open(\'' + link + '\')">Wikipedia</a>');
 
   let thumbnail = await getWikipediaThumbnail(genus_species);
-  $("#details").prepend('<img src=' + thumbnail.source + ' alt=""><br>');
+  element.prepend('<img id="textwrap" src=' + thumbnail.source + ' alt=""><br>');
 
 }
-
+*/
 // ========================================END=============================================
 
 /**
@@ -1387,26 +1398,11 @@ async function displayWikipediaInformation(genus_species) {
  * @author Kami @see https://stackoverflow.com/users/1603275/kami
  * @see https://stackoverflow.com/questions/25409023/how-to-restart-reset-jquery-animation
  */
- function toggleDetails() {
+ function updateDetails() {
   $("#details").html("");
   let textForQuery = $("#tree-name").text();
   textForQuery = (textForQuery.split(' ').slice(0,2).join('_')).toLowerCase();
-  displayWikipediaInformation(textForQuery);
-
-  if (($("#tree-content").hasClass("activeDetails"))) {
-    $("#details").hide();
-    $("#tree-content").toggleClass("activeDetails");
-    $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
-  } else {
-    $("#details").show();
-    $("#tree-content").toggleClass("activeDetails");
-    $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
-  }
+  displayWikipediaInformation($("#details"), textForQuery);
 }
 
-function removeDetails() {
-  $("#details").hide();
-  $("#main").removeClass("active");
-  $("#tree-content").removeClass("activeDetails");
-  $(".tree-overlay-container, #outer-tree-content").removeClass("activeDetailsParent");
-}
+

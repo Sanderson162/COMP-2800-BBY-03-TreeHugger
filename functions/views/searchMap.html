@@ -126,24 +126,12 @@
             <div onclick="copyShareLink()" id="tree-card-id"></div>
                 <div id="date"></div>
                 <div id="updated"></div>
+                <div id="details"></div>
             </div>
-            <div id="details"></div>
             <div id="button-container">
-                <div id="street-view-container"><button id="street-btn">StreetView</button></div>
-                <div id="like-button-container"><button style='display: flex; flex-direction: row; justify-content: center; align-items: center'><i class='far fa-heart fa-2x' style='color: gray;'></i><span class='likeCount' style='margin-left: 10px;'><i class="fas fa-spinner fa-sm fa-pulse"></i></span></button></div>
-                <div id="other-view-container">          <button id="details-btn" onclick="toggleDetails()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0)">
-                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M12 16V12" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M12 8H12.01" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </g>
-                    <defs>
-                    <clipPath id="clip0">
-                    <rect width="24" height="24" fill="white"/>
-                    </clipPath>
-                    </defs>
-                    </svg>
-                    </button>
+                <div id="street-view-container"><button id="street-btn">Street</button></div>
+                <div id="like-button-container"></div>
+                <div id="other-view-container">
                 <button id="close-btn" onclick="hideTreeOverlay()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4 14H10V20" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M20 10H14V4" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -172,6 +160,7 @@
     <script src="/searchMap.js"></script>
     <script src="./likeButtonAndLeaderboard.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIu6Paiio4Zq0ySb6-LuMJOpFSt25RPz0&map_ids=b3163309c37356ea&callback=initMap"> </script>
+    <script src="./wikipediaFetch.js"></script>
 </body>
 
 </html>

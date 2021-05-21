@@ -513,7 +513,7 @@ function initMap() {
     if (panorama.getVisible()) {
       $("#street-btn").text("Map");
     } else {
-      $("#street-btn").text("StreetView");
+      $("#street-btn").text("Street");
     }
   });
   let panoOptions = {
@@ -689,7 +689,7 @@ function addTreeMarker(longitude, latitude, entry) {
   /* Check if tree selected is being updated and set its color to selected. */
   if (selectedTreeId) {
     if (selectedTreeId == ids) {
-      treeIcon = selectedTreeIcon;
+      return;
     }
   }
   var treeLocation = { lat: latitude, lng: longitude }
@@ -701,6 +701,10 @@ function addTreeMarker(longitude, latitude, entry) {
   });
   markers.push(marker);
   marker.addListener("click", () => {
+    if (ids == selectedTreeId) {
+      setStreetView(entry);
+      toggleStreetView(entry);
+    } else {
     resetMarkerColor();
     // $('#' + ids).get(0).scrollIntoView();
     marker.setIcon(selectedTreeIcon);
@@ -708,6 +712,7 @@ function addTreeMarker(longitude, latitude, entry) {
     zoom(entry);
     /* Preload StreetView */
     setStreetView(entry);
+    }
   });
 }
 /**
@@ -778,6 +783,43 @@ function clearLocationMarker() {
     locationMarker = null;
     lastPullLocation = null;
   }
+}
+
+/**
+ * Toggles the details overlay when "details-btn" is clicked.
+ * Toggles the activeDetails class on the "#outer-tree-content",
+ * "#tree-content", and "#main" divisions in order to allow an increase in size
+ * of the #main div for the details tab. Resets to original size when toggled off.
+ *
+ * The following code used a snippet from stack overflow as a foundation.
+ * @author Kami @see https://stackoverflow.com/users/1603275/kami
+ * @see https://stackoverflow.com/questions/25409023/how-to-restart-reset-jquery-animation
+ */
+ function toggleDetails() {
+  $("#details").html("");
+  let textForQuery = $("#tree-name").text();
+  textForQuery = (textForQuery.split(' ').slice(0,2).join('_')).toLowerCase();
+  displayWikipediaInformation($("#details"), textForQuery);
+
+  if (($("#main").hasClass("active"))) {
+    $("#details").hide();
+    $("#main").toggleClass("active");
+    $("#tree-content").toggleClass("activeDetails");
+    $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
+
+  } else {
+    $("#details").show();
+    $("#main").toggleClass("active");
+    $("#tree-content").toggleClass("activeDetails");
+    $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
+  }
+}
+
+function removeDetails() {
+  $("#details").hide();
+  $("#main").removeClass("active");
+  $("#tree-content").removeClass("activeDetails");
+  $(".tree-overlay-container, #outer-tree-content").removeClass("activeDetailsParent");
 }
 /**
  * Saves history to database (Aidan) 
