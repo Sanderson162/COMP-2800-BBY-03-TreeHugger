@@ -85,7 +85,10 @@ function displayComment(comment){
     let elem = $("<div class='card'>");
     elem.append($("<div class='emoji'>").html(comment.Icon))
     elem.append($("<div class='message'>").html(comment.Comment))
-        
+    elem.click(() =>{
+        window.location = "./searchMap?id=" + comment.Tree;
+    })
+    
     let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine.recordid=" + comment.Tree;
     $.getJSON(query, (tree) => {
         let t = $("<div class='tree'>");
@@ -115,7 +118,10 @@ function displayHistory(comment){
     let date = comment.date;
     console.log(JSON.stringify(date));
     elem.append($("<div class='message'>").html(date));
-        
+    elem.click(() =>{
+        window.location = "./searchMap?id=" + comment.tree;
+    })
+
     let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine.recordid=" + comment.tree;
     $.getJSON(query, (tree) => {
         let t = $("<div class='tree'>");
