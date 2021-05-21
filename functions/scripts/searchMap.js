@@ -48,6 +48,10 @@ $(document).ready(function () {
     searchWithID(vars.id);
   }
 
+  if (vars.leaderboard) {
+    searchWithLeaderboard(vars.id);
+  }
+
   firebase.auth().onAuthStateChanged(function (user) {
     if (user && vars.favourites) {
       searchWithFavourites();
@@ -64,24 +68,42 @@ function searchWithID(id) {
   queueSearch();
 }
 
-async function searchWithRecordID(id) {
-  showSearchType('tree_id-tag');
-  let record = await getInfoOnTreeByID(id);
-  let treeId = record.fields.tree_id;
-  $("#query").val(treeId);
-  $("#content").text("");
-  queueSearch();
-}
-
-async function searchWithFavourites() {
+function clearSearch() {
   clearMarkers();
   clearLocationMarker();
-  $("#content-title").text("FAVOURITE TREES");
+  $("#content").text("");
   $(".search-container").hide();
   $(".tree-overlay-container").hide();
   $(".content-container").show();
+}
 
+function searchWithRecordID(id) {
+  clearSearch();
+  $("#content-title").text("SHARED TREE");
+  getRecordAndDisplay(id);
+}
+
+async function searchWithFavourites() {
+  clearSearch();
+  $("#content-title").text("FAVOURITE TREE");
   let favList = await getFavByUser();
+
+  console.log("favlist ", favList)
+
+  if (favList) {
+    favList.forEach(record => {
+      console.log(record);
+      console.log(record.recordID);
+      getRecordAndDisplay(record.recordID);
+    });
+  }
+}
+
+async function searchWithLeaderboard() {
+  clearSearch();
+
+  $("#content-title").text("LEADERBOARD");
+  let favList = await getFavCountLeaderboard();
 
   console.log("favlist ", favList)
 
@@ -876,17 +898,21 @@ function dateStringtoDate(dateString) {
 }
 function copyShareLink() {
   let id = $('#tree-card-id').data('id');
+  
   let url = window.location.href.split('?')[0] + "?id=" + id;
+  
+  $("#link-container").show();
+  $("#shareLink").val(url);
   console.log(url);
   copyToClipboard(url);
 }
 //TODO DOES NOT WORK ???????????
 //@author: https://stackoverflow.com/questions/33855641/copy-output-of-a-javascript-variable-to-the-clipboard
 function copyToClipboard(text) {
-  var dummy = document.createElement("div");
+  var dummy = document.createElement("textarea");
   dummy.style.display = 'none'
   document.body.appendChild(dummy);
-  dummy.innerHTML = text;
+  dummy.value = text;
   dummy.select();
   document.execCommand("copy");
   document.body.removeChild(dummy);
