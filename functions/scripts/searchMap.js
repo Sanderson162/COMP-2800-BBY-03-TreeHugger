@@ -43,12 +43,36 @@ $(document).ready(function () {
   if (vars.id) {
     searchWithID(vars.id);
   }
+  if (vars.favourites) {
+    searchWithFavourites();
+  }
 });
 function searchWithID(id) {
   showSearchType('tree_id-tag');
   $("#query").val(id);
   $("#content").text("");
   queueSearch();
+}
+
+async function searchWithFavourites() {
+  clearMarkers();
+  clearLocationMarker();
+  $("#content-title").text("FAVOURITE TREES");
+  $(".search-container").hide();
+  $(".tree-overlay-container").hide();
+  $(".content-container").show();
+
+  let favList = await getFavByUser();
+
+  if (favList) {
+    favList.each()
+
+  }
+
+}
+
+async function getRecordAndDisplay(recordID) {
+  
 }
 // Url parsing function. Source: https://html-online.com/articles/get-url-parameters-javascript/
 function getUrlVars() {
@@ -1283,6 +1307,9 @@ function clearLocationMarker() {
  * @param {*} genus_species
  * @see Stirling
  */
+
+/*
+
 function getWikipediaThumbnail (genus_species) {
   return new Promise((resolve) => {
     let thumbnailUrl = "https://en.wikipedia.org/w/api.php?action=query&titles=" + genus_species + "&prop=pageimages&format=json&pithumbsize=100&callback=?&redirects=";
@@ -1332,25 +1359,27 @@ function getWikipediaExtract (genus_species) {
     });
   });
 }
+*/
 
 /**
  * Displays wikipedia thumbnail retrieved from query in details division.
  * @param {*} result
  */
-async function displayWikipediaInformation(genus_species) {
+/*
+async function displayWikipediaInformation(element, genus_species) {
   let extract = await getWikipediaExtract(genus_species);
   // replace regex from https://stackoverflow.com/questions/14948223/how-to-convert-n-to-html-line-break/23736554
   // see TheLazyHatGuy -> https://stackoverflow.com/users/11219881/thelazyhatguy
   extract = extract.replace(/\\n|\\r\\n|\\n\\r|\\r/g, '');
-  $("#details").text(extract);
+  element.text(extract);
   let link = "https://en.wikipedia.org/wiki/" + genus_species;
-  $("#details").append('<br><br>Retrieved from <a href="'+ link +'" onclick="window.open(\'' + link + '\')">Wikipedia</a>');
+  element.append('<br><br>Retrieved from <a href="'+ link +'" onclick="window.open(\'' + link + '\')">Wikipedia</a>');
 
   let thumbnail = await getWikipediaThumbnail(genus_species);
-  $("#details").prepend('<img id="textwrap" src=' + thumbnail.source + ' alt=""><br>');
+  element.prepend('<img id="textwrap" src=' + thumbnail.source + ' alt=""><br>');
 
 }
-
+*/
 // ========================================END=============================================
 
 /**
@@ -1367,7 +1396,7 @@ async function displayWikipediaInformation(genus_species) {
   $("#details").html("");
   let textForQuery = $("#tree-name").text();
   textForQuery = (textForQuery.split(' ').slice(0,2).join('_')).toLowerCase();
-  displayWikipediaInformation(textForQuery);
+  displayWikipediaInformation($("#details"), textForQuery);
 
   if (($("#main").hasClass("active"))) {
     $("#details").hide();
@@ -1389,3 +1418,5 @@ function removeDetails() {
   $("#tree-content").removeClass("activeDetails");
   $(".tree-overlay-container, #outer-tree-content").removeClass("activeDetailsParent");
 }
+
+
