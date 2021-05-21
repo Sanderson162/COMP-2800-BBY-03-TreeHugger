@@ -800,7 +800,7 @@ function showTreeOverlay(entry) {
   $(".tree-overlay-container").show();
   updateSearchMapBtn();
   updateTreeOverlayContent(entry);
-  removeDetails();
+  updateDetails();
 }
 /**
  * Updates the TreeOverlay view with data from entry. 
@@ -873,7 +873,6 @@ function addStreetViewBtnListener(entry) {
   $("#street-btn").off();
   $("#street-btn").on("click", (function () {
     toggleStreetView(entry);
-    removeDetails();
   }));
 }
 /**
@@ -897,7 +896,6 @@ function hideTreeOverlay() {
       centerMap();
     }
   }
-  $("#details").hide();
 }
 /** 
  * Toggles the content overlay visible or hidden
@@ -1400,31 +1398,11 @@ async function displayWikipediaInformation(element, genus_species) {
  * @author Kami @see https://stackoverflow.com/users/1603275/kami
  * @see https://stackoverflow.com/questions/25409023/how-to-restart-reset-jquery-animation
  */
- function toggleDetails() {
+ function updateDetails() {
   $("#details").html("");
   let textForQuery = $("#tree-name").text();
   textForQuery = (textForQuery.split(' ').slice(0,2).join('_')).toLowerCase();
   displayWikipediaInformation($("#details"), textForQuery);
-
-  if (($("#main").hasClass("active"))) {
-    $("#details").hide();
-    $("#main").toggleClass("active");
-    $("#tree-content").toggleClass("activeDetails");
-    $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
-
-  } else {
-    $("#details").show();
-    $("#main").toggleClass("active");
-    $("#tree-content").toggleClass("activeDetails");
-    $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
-  }
-}
-
-function removeDetails() {
-  $("#details").hide();
-  $("#main").removeClass("active");
-  $("#tree-content").removeClass("activeDetails");
-  $(".tree-overlay-container, #outer-tree-content").removeClass("activeDetailsParent");
 }
 
 
