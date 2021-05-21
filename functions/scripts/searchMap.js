@@ -94,11 +94,7 @@ async function searchWithFavourites() {
 }
 
 async function getRecordAndDisplay(recordID) {
-<<<<<<< HEAD
   let record = getInfoOnTreeByID();
-=======
-
->>>>>>> c367ad1ae1936cd183bfc4805645ccaa45bc3d31
 }
 
 // Url parsing function. Source: https://html-online.com/articles/get-url-parameters-javascript/
