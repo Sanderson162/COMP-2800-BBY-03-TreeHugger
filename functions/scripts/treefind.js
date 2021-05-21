@@ -28,7 +28,7 @@ currentLocation = { lat: 49.239593, lng: -123.024645 };
 /** 
  * TESTING SETTINGS 
  */
-let testing = true;
+let testing = false;
 /* pace: 20 is crazy driver pace, 10 is safe driver pace, 1 is walking pace. */
 let pace = 1;
 let testLocationInterval;

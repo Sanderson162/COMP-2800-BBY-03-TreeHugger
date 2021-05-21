@@ -64,6 +64,8 @@ async function searchWithFavourites() {
 
   let favList = await getFavByUser();
 
+  console.log("favlist " ,favList)
+
   if (favList) {
     favList.each()
 

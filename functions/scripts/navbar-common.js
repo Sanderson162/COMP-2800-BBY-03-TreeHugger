@@ -88,7 +88,7 @@ $(() => {
     $("#loginForm").show();
     $("#signupNavButton").removeClass("selectedNav");
     $("#loginNavButton").addClass("selectedNav");
-	$("#outer-login").css("max-height", "310px");
+	$("#outer-login").css("max-height", "325px");
 	$("#loginMsg").text("");
 	$("#signupMsg").text("");
   });
@@ -98,7 +98,7 @@ $(() => {
     $("#signupForm").show();
     $("#loginNavButton").removeClass("selectedNav");
     $("#signupNavButton").addClass("selectedNav");
-	$("#outer-login").css("max-height", "350px");
+	$("#outer-login").css("max-height", "370px");
 	$("#loginMsg").text("");
 	$("#signupMsg").text("");
   });
@@ -139,7 +139,7 @@ $(() => {
       login(formData);
     } else {
       $("#loginMsg").text("Please enter login info.");
-	  $("#outer-login").css("max-height", "+=75px");
+	  $("#outer-login").css("max-height", "+=50px");
     }
   });
 
@@ -185,7 +185,7 @@ $(() => {
       signup(formData);
     } else {
       $("#signupMsg").text("Please enter signup info.");
-	  $("#outer-login").css("max-height", "+=75px");
+	  $("#outer-login").css("max-height", "+=85px");
     }
   });
 
