@@ -201,7 +201,7 @@
     /* margin-top:1em; */
     height: 100%;
     max-width: 420px;
-    max-height:275px;
+    max-height: 310px;
     overflow-y:hidden;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
