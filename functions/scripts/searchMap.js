@@ -39,17 +39,36 @@ $(document).ready(function () {
   $("#content").text("");
   showSearchType('common_name-tag');
   addInputListeners();
+
   let vars = getUrlVars();
-  if (vars.id) {
+  if (vars.id && vars.id.length > 10) {
+    searchWithRecordID(vars.id);
+  }
+  if (vars.id && vars.id.length < 10) {
     searchWithID(vars.id);
   }
-  if (vars.favourites) {
-    searchWithFavourites();
-  }
+
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user && vars.favourites) {
+      searchWithFavourites();
+    } 
+  });
+
 });
+
+
 function searchWithID(id) {
   showSearchType('tree_id-tag');
   $("#query").val(id);
+  $("#content").text("");
+  queueSearch();
+}
+
+async function searchWithRecordID(id) {
+  showSearchType('tree_id-tag');
+  let record = await getInfoOnTreeByID(id);
+  let treeId = record.fields.tree_id;
+  $("#query").val(treeId);
   $("#content").text("");
   queueSearch();
 }
@@ -64,18 +83,20 @@ async function searchWithFavourites() {
 
   let favList = await getFavByUser();
 
-  console.log("favlist " ,favList)
+  console.log("favlist ", favList)
 
   if (favList) {
-    favList.each()
-
+    favList.forEach(element => {
+      console.log(element)
+      getRecordAndDisplay(element.recordID);
+    });
   }
-
 }
 
 async function getRecordAndDisplay(recordID) {
-  
+  let record = getInfoOnTreeByID();
 }
+
 // Url parsing function. Source: https://html-online.com/articles/get-url-parameters-javascript/
 function getUrlVars() {
   var vars = {};
