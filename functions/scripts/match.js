@@ -206,9 +206,19 @@ function displayTree(entry,message,saveBtn) {
     elem.append($("<p></p>").html(entry.fields.common_name));
     elem.append($("<p></p>").html(entry.fields.on_street_block + " " + entry.fields.on_street + " " + entry.fields.neighbourhood_name));
     elem.append($("<p></p>").html("Planted on: " + entry.fields.date_planted));
+    elem.append(viewButton(entry.recordid));
     elem.append(saveBtn);
+    
 
     return elem;
+}
+
+function viewButton(tree){
+    let btn = $("<button id='save'>View</button>");
+    btn.click(() =>{
+        window.open("./searchMap?id=" + tree);
+    })
+    return btn
 }
 
 function saveButton(tree, message, emoji) {
