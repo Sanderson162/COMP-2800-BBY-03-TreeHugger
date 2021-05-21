@@ -121,6 +121,7 @@ h1 {
     height: 100%;
     max-width: 475px;
     max-height:300px;
+    overflow-y:auto;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
     opacity:98%;
@@ -328,6 +329,16 @@ button:hover {
     float: left;
 }
 
+.likeButton {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.likeCount {
+    margin-left: 10px;
+}
 
 /* #content>.post:nth-child(2) {
     background-color: rgb(253, 253, 253);
@@ -561,12 +572,11 @@ input::placeholder {
     display:block;
 }
 #details {
+    text-align: center;
     display: none;
-    border: solid 1px black;
-    height: 50%;
+    height: 70%;
     padding-right:1em;
     padding-left: 1em;
-    overflow-y: scroll;
 }
 
 .active {
@@ -581,4 +591,8 @@ input::placeholder {
 .activeDetailsParent {
     height: 100% !important;
     max-height: 100% !important;
+}
+
+#textwrap {
+    float: left;
 }
