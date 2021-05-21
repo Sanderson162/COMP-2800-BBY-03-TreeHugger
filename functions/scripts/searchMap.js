@@ -1408,14 +1408,7 @@ async function displayWikipediaInformation(element, genus_species) {
 // ========================================END=============================================
 
 /**
- * Toggles the details overlay when "details-btn" is clicked.
- * Toggles the activeDetails class on the "#outer-tree-content",
- * "#tree-content", and "#main" divisions in order to allow an increase in size
- * of the #main div for the details tab. Resets to original size when toggled off.
- *
- * The following code used a snippet from stack overflow as a foundation.
- * @author Kami @see https://stackoverflow.com/users/1603275/kami
- * @see https://stackoverflow.com/questions/25409023/how-to-restart-reset-jquery-animation
+ * Updates the details division with wikipedia information when tree overlay is loaded.
  */
 function updateDetails() {
   $("#details").html("");
