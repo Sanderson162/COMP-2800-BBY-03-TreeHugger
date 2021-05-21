@@ -571,11 +571,13 @@ input::placeholder {
     font-size:80%;
     display:block;
 }
+
 #details {
     text-align: left;
     height: 70%;
-    padding-right:1em;
+    padding-right: 1em;
     padding-left: 1em;
+    margin: auto;
 }
 
 #thumbnail {
