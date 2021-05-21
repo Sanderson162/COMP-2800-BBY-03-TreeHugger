@@ -45,6 +45,19 @@ h1 {
     opacity:98%;
 }
 
+#search {
+    border-radius: 4px;
+    background-color:white;
+    margin: auto;
+    height: 92%;
+    max-width: 475px;
+    max-height:500px;
+    overflow-y:auto;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    pointer-events: all;
+    opacity:98%;
+}
+
 #outer-content {
     border-radius: 4px;
     background-color:rgb(247, 247, 247);
@@ -57,6 +70,21 @@ h1 {
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
     opacity:98%;
+}
+
+#outer-search {
+    border-radius: 4px;
+    background-color:rgb(247, 247, 247);
+    margin: auto;
+    /* margin-top:1em; */
+    /* height: 100%; */
+    max-width: 475px;
+    max-height:500px;
+    overflow-y:hidden;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    pointer-events: all;
+    opacity:98%;
+    height:175px;
 }
 
 #outer-tree-content {
@@ -74,12 +102,16 @@ h1 {
     opacity:98%;
 }
 
-#trees-near-header, #trees-content-header, #species-name {
+#trees-near-header, #trees-content-header, #tree-name {
     color:gray;
     font-size:110%;
     margin:10px;
     height:20px;
     display:block;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #tree-content {
@@ -89,7 +121,6 @@ h1 {
     height: 100%;
     max-width: 475px;
     max-height:300px;
-    overflow-y:auto;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
     opacity:98%;
@@ -116,17 +147,18 @@ h1 {
     display: none;
 }
 
-.map-container { 
+.map-container {
     z-index: -1;
-    position: absolute; 
-    top: 0; 
+    position: absolute;
+    top: 0;
     left: 0;
     width: 100%;
     height: 100%;
 
 }
 
-.content-container { 
+.content-container {
+    display:none;
     user-select: none;
     position: absolute;
     z-index: 0;
@@ -143,6 +175,21 @@ h1 {
 
 .tree-overlay-container {
     display: none;
+    user-select: none;
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0px;
+    width: 100%;
+    height: 50%;
+    overflow: visible;
+    background-image: linear-gradient(to top, rgba(255, 255, 255, 0), rgb(243, 243, 243));
+    pointer-events: none;
+    padding: 1em;
+    box-sizing:border-box;
+}
+
+.search-container {
     user-select: none;
     position: absolute;
     z-index: 1;
@@ -182,6 +229,17 @@ button:hover {
 }
 
 #button-container {
+    position: sticky;
+    bottom:0;
+    padding:1em;
+    background-color:rgb(247, 247, 247);
+    display:block;
+    color: rgb(25,25,25);
+    height:50px;
+    box-shadow:         inset 0 8px 6px -6px rgba(0, 0, 0, 0.1);
+}
+
+#search-button-container {
     position: sticky;
     bottom:0;
     padding:1em;
@@ -234,7 +292,15 @@ button:hover {
     right:2px;
 }
 
-#tree-name {
+#hide-search-btn {
+    height:17px;
+    position:relative;
+    top:2px;
+    right:2px;
+}
+
+
+#species-name {
     background: white;
     margin-bottom:0.5em;
     position:sticky;
@@ -257,7 +323,13 @@ button:hover {
     width:100px;
 }
 
-#content>.post:nth-child(2) {
+#like-button-container {
+    margin-left: 10px;
+    float: left;
+}
+
+
+/* #content>.post:nth-child(2) {
     background-color: rgb(253, 253, 253);
 }
 
@@ -295,8 +367,170 @@ button:hover {
 #content>.post:nth-child(n+10) {
     background-color: rgb(237, 237, 237);
     border-bottom-color: rgb(228, 228, 228);
+} */
+
+.tag {
+    background:#ececec;
+    color:black;
+    padding: 0.5em;
+    border-radius: 2em;
+    font-size: 100%;
+    width:80px;
+    height:20px;
+    display:inline-block;
+    text-align:center;
 }
 
+#search-tags {
+    width:100%;
+    overflow-x:scroll;
+    height:50px;
+    white-space: nowrap;
+}
+
+.tag-selected {
+    background: gray;
+    color:white;
+}
+
+#species-search {
+    display:none;
+}
+
+input {
+    font-size:18px;
+    width:72.6%;
+    padding:10px;
+    border-radius:4px;
+    margin:auto;
+    border-color:gainsboro;
+    border-width:thin;
+    border-style: solid;
+        -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+}
+
+input:focus {
+    outline: none;
+    border: 1px solid #007ACC;
+}
+
+#search-bar {
+    width:100%;
+    box-sizing:border-box;
+    padding:10px;
+    display:flex;
+}
+
+#date-search-bar {
+    width:100%;
+    box-sizing:border-box;
+    padding:10px;
+    display:flex;
+}
+
+#loadmore{
+    width:100%;
+    color:lightgray;
+    border:none;
+    padding-top:2px;
+    border-radius: 0px;
+    font-weight:lighter;
+    box-shadow:         inset 0 8px 6px -6px rgba(0, 0, 0, 0.1);
+    background-color:rgb(247, 247, 247);
+}
+
+#search-history {
+    display:block;
+    max-height:55%;
+    height:55%;
+    overflow-y:scroll;
+    float:left;
+    width:100%;
+    margin-top:14px;
+    box-shadow:         inset 0 8px 6px -6px rgba(0, 0, 0, 0.1);
+    background-color:rgb(247, 247, 247);
+}
+.search-history-item {
+    width: 80%;
+    border-bottom: 1px solid rgb(236, 236, 236);
+    padding: 2em;
+    padding-top:1em;
+}
+
+.search-query {
+    float: left;
+    width:150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color:gray;
+}
+.search-type {
+    float:left;
+    color:gainsboro;
+    font-style: italic;
+    margin-left:2em;
+    font-weight:lighter;
+}
+.arrow-icon {
+    float:right;
+}
+input::placeholder {
+    color: gainsboro;
+    font-style:italic;
+    font-weight:lighter;
+}
+
+#query {
+    float:left;
+    /* border-right:none; */
+    border-top-right-radius: 0;
+    border-bottom-right-radius:0;
+}
+
+#query-year {
+    float:left;
+    /* border-right:none; */
+    border-top-right-radius: 0;
+    border-bottom-right-radius:0;
+    /* width:70px; */
+}
+
+#query-month {
+    float:left;
+    /* border-right:none; */
+    border-radius: 0;
+    /* width:60px; */
+}
+
+#query-day {
+    float:left;
+    /* border-right:none; */
+    border-radius: 0;
+    /* width:60px; */
+}
+#search-btn {
+    float:left;
+    box-shadow:none;
+    border-color:gainsboro;
+    border-width:thin;
+    border-style: solid;
+    border-left:none;
+    height:43.5px;
+    /* margin-left:-2px; */
+    border-top-left-radius: 0;
+    border-bottom-left-radius:0;
+    background:whitesmoke;
+    width:22%;
+    flex-grow:1;
+}
+
+.light {
+    color:lightgrey;
+    font-weight:lighter;
+}
 
 #tree-card-box {
     display: flex;
@@ -326,8 +560,25 @@ button:hover {
     font-size:80%;
     display:block;
 }
+#details {
+    display: none;
+    border: solid 1px black;
+    height: 50%;
+    padding-right:1em;
+    padding-left: 1em;
+    overflow-y: scroll;
+}
 
-#like-button-container {
-    margin-left: 10px;
-    float: left;
+.active {
+    height: 85% !important;
+}
+
+.activeDetails {
+    height: 95% !important;
+    max-height: 95% !important;
+}
+
+.activeDetailsParent {
+    height: 100% !important;
+    max-height: 100% !important;
 }
