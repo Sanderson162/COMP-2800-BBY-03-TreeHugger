@@ -1,5 +1,5 @@
 // gets all the info regarding a particular tree using the recordID from opendata
-// returns null if tree not able to be retrieved 
+// returns null if tree not able to be retrieved
 function getInfoOnTreeByID(recordID) {
   return new Promise((resolve) => {
     let url = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/records/" + recordID + "?select=*&pretty=false&timezone=UTC"
@@ -11,12 +11,12 @@ function getInfoOnTreeByID(recordID) {
         if (status == 'success') {
           resolve(result.record);
         } else {
-          resolve("Record not avalible :(");
+          resolve("");
         }
       },
       error: function (jqXHR, textStatus, errorThrown) {
         console.log("ERROR:", jqXHR, textStatus, errorThrown);
-        resolve("Record not avalible :(");
+        resolve("");
       }
     });
   });
@@ -39,12 +39,12 @@ function getWikipediaExtract (genus_species) {
               let extract = JSON.stringify(result.query.pages[pageId].extract);
               resolve(extract);
             } else {
-              resolve("Extract not available :(");
+              resolve("");
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log("ERROR:", jqXHR, textStatus, errorThrown);
-            resolve("Extract not available :(");
+            resolve("");
         }
     });
   });
@@ -64,12 +64,12 @@ function getWikipediaThumbnail (genus_species) {
             let thumbnail = result.query.pages[pageIdThumbnail].thumbnail;
             resolve(thumbnail);
           } else {
-            resolve("Extract not available :(");
+            resolve("");
           }
       },
       error: function(jqXHR, textStatus, errorThrown) {
           console.log("ERROR:", jqXHR, textStatus, errorThrown);
-          resolve("Extract not available :(");
+          resolve("");
       }
     });
   });
@@ -86,11 +86,13 @@ function getWikipediaThumbnail (genus_species) {
   // see TheLazyHatGuy -> https://stackoverflow.com/users/11219881/thelazyhatguy
   extract = extract.replace(/\\n|\\r\\n|\\n\\r|\\r/g, '');
   element.text(extract);
-  let link = "https://en.wikipedia.org/wiki/" + genus_species;
+  if (extract) {
+    let link = "https://en.wikipedia.org/wiki/" + genus_species;
   element.append('<br><br>Retrieved from <a href="'+ link +'" onclick="window.open(\'' + link + '\')">Wikipedia</a>');
 
   let thumbnail = await getWikipediaThumbnail(genus_species);
   element.prepend('<img id="thumbnail" src=' + thumbnail.source + ' alt=""><br>');
+  }
 
 }
 
