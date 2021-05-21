@@ -575,6 +575,8 @@ input::placeholder {
 #details {
     text-align: left;
     margin: auto;
+    padding-right: 1em;
+    padding-left: 1em;
 }
 
 #thumbnail {
