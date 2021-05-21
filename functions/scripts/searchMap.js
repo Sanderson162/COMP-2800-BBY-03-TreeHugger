@@ -83,18 +83,22 @@ async function searchWithFavourites() {
 
   let favList = await getFavByUser();
 
-  console.log("favlist ", favList)
+  // console.log("favlist ", favList)
 
   if (favList) {
-    favList.forEach(element => {
-      console.log(element)
-      getRecordAndDisplay(element.recordID);
+    favList.forEach(record => {
+      getRecordAndDisplay(record.recordID);
     });
   }
 }
 
 async function getRecordAndDisplay(recordID) {
-  let record = getInfoOnTreeByID();
+  let entry = await getInfoOnTreeByID(recordID);
+  if (entry.fields.geom) {
+    entry.fields.geom = entry.fields.geom.geometry;
+    entry.recordid = entry.id;
+    updateContent(entry, false);
+  }
 }
 
 // Url parsing function. Source: https://html-online.com/articles/get-url-parameters-javascript/
@@ -845,7 +849,7 @@ function updateTreeOverlayContent(entry) {
     ageString = "N/A";
   }
   $("#tree-card-id").text("Tree ID: " + entry.fields.tree_id);
-  $("#tree-card-id").data("id", entry.fields.tree_id);
+  $("#tree-card-id").data("id", entry.recordid);
   $("#tree-card-height").text(entry.fields.height_range_id * 10 + " ft");
   $("#tree-card-diameter").text(entry.fields.diameter + " in");
   $("#tree-card-date").text(dateString);
@@ -868,17 +872,17 @@ function dateStringtoDate(dateString) {
 }
 function copyShareLink() {
   let id = $('#tree-card-id').data('id');
-  let url = window.location.href + "?id=" + id;
+  let url = window.location.href.split('?')[0] + "?id=" + id;
   console.log(url);
   copyToClipboard(url);
 }
 //TODO DOES NOT WORK ???????????
 //@author: https://stackoverflow.com/questions/33855641/copy-output-of-a-javascript-variable-to-the-clipboard
 function copyToClipboard(text) {
-  var dummy = document.createElement("input");
+  var dummy = document.createElement("div");
   dummy.style.display = 'none'
   document.body.appendChild(dummy);
-  dummy.value = text;
+  dummy.innerHTML = text;
   dummy.select();
   document.execCommand("copy");
   document.body.removeChild(dummy);

@@ -212,7 +212,7 @@ app.post('/removeTreeFav', urlencodedParser, (req, res) => {
       const docRef = db.collection("Favourite").doc(uid + "_" + recordID);
       const statsRef = db.collection('FavouriteStats').doc(recordID);
       docRef.get().then(function (doc) {
-        if (doc.exists) {
+        if (doc.exists /*&& firestore.Timestamp.now() - doc.data().timestamp > 2000*/) {
           const batchFav = db.batch();
           batchFav.delete(docRef);
           batchFav.set(statsRef, {
