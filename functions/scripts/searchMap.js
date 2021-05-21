@@ -801,6 +801,7 @@ function showTreeOverlay(entry) {
   updateSearchMapBtn();
   updateTreeOverlayContent(entry);
   updateDetails();
+  $("#main").scrollTop(0);
 }
 /**
  * Updates the TreeOverlay view with data from entry. 
