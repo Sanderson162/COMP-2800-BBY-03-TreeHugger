@@ -287,7 +287,7 @@ app.post("/ajax-add-history", urlencodedParser, (req, res) => {
       const uid = decodedToken.uid;
 
 
-      db.collection("History").add({
+      db.collection("History").doc(uid + "_" + comment.tree).set({
         timestamp: firestore.Timestamp.now(),
         user: uid,
         tree: comment.tree

@@ -302,6 +302,7 @@ function showTreeOverlay(entry) {
   $(".content-container").hide();
   $(".tree-overlay-container").show();
   updateTreeOverlayContent(entry);
+  updateHistory(entry);
   showMapButtons(false);
 }
 /**
@@ -776,5 +777,27 @@ function clearLocationMarker() {
     locationMarker.setMap(null);
     locationMarker = null;
     lastPullLocation = null;
+  }
+}
+/**
+ * Saves history to database (Aidan) 
+ */
+function updateHistory(entry){
+  var user = firebase.auth().currentUser;
+  var treeID = entry.recordid;
+  console.log(entry);
+  if (user) {
+      user.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+          $.ajax({
+              url: "/ajax-add-history",
+              dataType: "json",
+              type: "POST",
+              data: {tree: treeID, idToken: idToken},
+              success: ()=>{console.log("Successfully added to history")},
+              error: (jqXHR,textStatus,errorThrown )=>{
+                  console.log("Error:"+textStatus);
+              }
+          });
+      });
   }
 }
