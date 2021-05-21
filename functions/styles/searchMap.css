@@ -321,11 +321,11 @@ button:hover {
 }
 
 #street-btn {
-    width:100px;
+    width:75px;
 }
 
 #like-button-container {
-    margin-left: 10px;
+    margin-left: 4px;
     float: left;
 }
 
