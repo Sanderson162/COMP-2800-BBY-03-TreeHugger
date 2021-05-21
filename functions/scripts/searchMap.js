@@ -206,6 +206,7 @@ function searchBtnClick() {
     return;
   }
   if ($("#query").val() != "") {
+    selectedTreeId = null;
     clearMarkers();
     clearLocationMarker();
     $("#content").text("");
@@ -214,6 +215,7 @@ function searchBtnClick() {
 }
 function dateSearchBtnClick() {
   if ($("#query-year").val().length == 4) {
+    selectedTreeId = null;
     clearMarkers();
     clearLocationMarker();
     $("#content").text("");
@@ -1230,7 +1232,7 @@ function addTreeMarker(longitude, latitude, entry) {
   markers.push(marker);
   marker.addListener("click", () => {
     // $('#' + ids).get(0).scrollIntoView();
-    if (ids == selectedTreeId) {
+    if (ids == selectedTreeId && $(".tree-overlay-container").css('display') != 'none') {
       setStreetView(entry);
       toggleStreetView(entry);
       $(".tree-overlay-container").show();
