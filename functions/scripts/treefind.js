@@ -778,3 +778,40 @@ function clearLocationMarker() {
     lastPullLocation = null;
   }
 }
+
+/**
+ * Toggles the details overlay when "details-btn" is clicked.
+ * Toggles the activeDetails class on the "#outer-tree-content",
+ * "#tree-content", and "#main" divisions in order to allow an increase in size
+ * of the #main div for the details tab. Resets to original size when toggled off.
+ *
+ * The following code used a snippet from stack overflow as a foundation.
+ * @author Kami @see https://stackoverflow.com/users/1603275/kami
+ * @see https://stackoverflow.com/questions/25409023/how-to-restart-reset-jquery-animation
+ */
+ function toggleDetails() {
+  $("#details").html("");
+  let textForQuery = $("#tree-name").text();
+  textForQuery = (textForQuery.split(' ').slice(0,2).join('_')).toLowerCase();
+  displayWikipediaInformation($("#details"), textForQuery);
+
+  if (($("#main").hasClass("active"))) {
+    $("#details").hide();
+    $("#main").toggleClass("active");
+    $("#tree-content").toggleClass("activeDetails");
+    $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
+
+  } else {
+    $("#details").show();
+    $("#main").toggleClass("active");
+    $("#tree-content").toggleClass("activeDetails");
+    $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
+  }
+}
+
+function removeDetails() {
+  $("#details").hide();
+  $("#main").removeClass("active");
+  $("#tree-content").removeClass("activeDetails");
+  $(".tree-overlay-container, #outer-tree-content").removeClass("activeDetailsParent");
+}
