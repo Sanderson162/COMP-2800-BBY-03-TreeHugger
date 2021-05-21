@@ -572,27 +572,14 @@ input::placeholder {
     display:block;
 }
 #details {
-    text-align: center;
-    display: none;
+    text-align: left;
     height: 70%;
     padding-right:1em;
     padding-left: 1em;
 }
 
-.active {
-    height: 85% !important;
-}
-
-.activeDetails {
-    height: 95% !important;
-    max-height: 95% !important;
-}
-
-.activeDetailsParent {
-    height: 100% !important;
-    max-height: 100% !important;
-}
-
-#textwrap {
-    float: left;
+#thumbnail {
+    padding: 1em;
+    margin: 0.5em;
+    border: solid 1px black;
 }
