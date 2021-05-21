@@ -513,7 +513,7 @@ function initMap() {
     if (panorama.getVisible()) {
       $("#street-btn").text("Map");
     } else {
-      $("#street-btn").text("StreetView");
+      $("#street-btn").text("Street");
     }
   });
   let panoOptions = {
@@ -689,7 +689,7 @@ function addTreeMarker(longitude, latitude, entry) {
   /* Check if tree selected is being updated and set its color to selected. */
   if (selectedTreeId) {
     if (selectedTreeId == ids) {
-      treeIcon = selectedTreeIcon;
+      return;
     }
   }
   var treeLocation = { lat: latitude, lng: longitude }
@@ -701,6 +701,10 @@ function addTreeMarker(longitude, latitude, entry) {
   });
   markers.push(marker);
   marker.addListener("click", () => {
+    if (ids == selectedTreeId) {
+      setStreetView(entry);
+      toggleStreetView(entry);
+    } else {
     resetMarkerColor();
     // $('#' + ids).get(0).scrollIntoView();
     marker.setIcon(selectedTreeIcon);
@@ -708,6 +712,7 @@ function addTreeMarker(longitude, latitude, entry) {
     zoom(entry);
     /* Preload StreetView */
     setStreetView(entry);
+    }
   });
 }
 /**

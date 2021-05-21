@@ -254,7 +254,7 @@ button:hover {
 }
 
 #street-btn {
-    width:100px;
+    width:75px;
 }
 
 #content>.post:nth-child(2) {
@@ -328,6 +328,6 @@ button:hover {
 }
 
 #like-button-container {
-    margin-left: 10px;
+    margin-left: 4px;
     float: left;
 }

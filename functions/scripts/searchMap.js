@@ -35,7 +35,7 @@ currentLocation = { lat: 49.279430, lng: -123.117276 };
  * After document load, init search.
  */
 $(document).ready(function () {
-  // $("#outer-search").css('height', '175px');
+  $("#outer-search").css('height', '175px');
   $("#content").text("");
   showSearchType('common_name-tag');
   addInputListeners();
@@ -206,6 +206,7 @@ function searchBtnClick() {
     return;
   }
   if ($("#query").val() != "") {
+    selectedTreeId = null;
     clearMarkers();
     clearLocationMarker();
     $("#content").text("");
@@ -214,6 +215,7 @@ function searchBtnClick() {
 }
 function dateSearchBtnClick() {
   if ($("#query-year").val().length == 4) {
+    selectedTreeId = null;
     clearMarkers();
     clearLocationMarker();
     $("#content").text("");
@@ -796,7 +798,6 @@ function showTreeOverlay(entry) {
   $(".content-container").hide();
   $(".search-container").hide();
   $(".tree-overlay-container").show();
-  updateHistory(entry);
   updateSearchMapBtn();
   updateTreeOverlayContent(entry);
   removeDetails();
@@ -814,10 +815,6 @@ function updateTreeOverlayContent(entry) {
     $("#distance").text("");
   }
   $("#body").text(entry.fields.on_street);
-  
-  
-  
-
 
   let dateString;
   let ageString;
@@ -835,25 +832,6 @@ function updateTreeOverlayContent(entry) {
   $("#tree-card-date").text(dateString);
   $("#tree-card-age").text(ageString);
   addLikeButton($("#like-button-container"), entry.recordid, null, null);
-}
-function updateHistory(entry){
-  var user = firebase.auth().currentUser;
-  var treeID = entry.recordid;
-  console.log(entry);
-  if (user) {
-      user.getIdToken(/* forceRefresh */ true).then(function(idToken) {
-          $.ajax({
-              url: "/ajax-add-history",
-              dataType: "json",
-              type: "POST",
-              data: {tree: treeID, idToken: idToken},
-              success: ()=>{console.log("Successfully added to history")},
-              error: (jqXHR,textStatus,errorThrown )=>{
-                  console.log("Error:"+textStatus);
-              }
-          });
-      });
-  }
 }
 //https://stackoverflow.com/questions/4060004/calculate-age-given-the-birth-date-in-the-format-yyyymmdd
 function getAgeOfTree(dateString) {
@@ -1055,7 +1033,7 @@ function initMap() {
     if (panorama.getVisible()) {
       $("#street-btn").text("Map");
     } else {
-      $("#street-btn").text("StreetView");
+      $("#street-btn").text("Street");
     }
   });
   let panoOptions = {
@@ -1240,7 +1218,7 @@ function addTreeMarker(longitude, latitude, entry) {
   /* Check if tree selected is being updated and set its color to selected. */
   if (selectedTreeId) {
     if (selectedTreeId == ids) {
-      treeIcon = selectedTreeIcon;
+      return;
     }
   }
   var treeLocation = { lat: latitude, lng: longitude }
@@ -1254,12 +1232,18 @@ function addTreeMarker(longitude, latitude, entry) {
   markers.push(marker);
   marker.addListener("click", () => {
     // $('#' + ids).get(0).scrollIntoView();
-    marker.setIcon(selectedTreeIcon);
-    marker.metadata = { id: ids };
-    zoom(entry);
-    /* Preload StreetView */
-    setStreetView(entry);
-    panorama.getPosition() // Preload again to fix first launch.
+    if (ids == selectedTreeId && $(".tree-overlay-container").css('display') != 'none') {
+      setStreetView(entry);
+      toggleStreetView(entry);
+      $(".tree-overlay-container").show();
+    } else {
+      marker.setIcon(selectedTreeIcon);
+      marker.metadata = { id: ids };
+      zoom(entry);
+      /* Preload StreetView */
+      setStreetView(entry);
+      panorama.getPosition() // Preload again to fix first launch.
+    }
   });
 }
 /**
@@ -1422,12 +1406,15 @@ async function displayWikipediaInformation(element, genus_species) {
   textForQuery = (textForQuery.split(' ').slice(0,2).join('_')).toLowerCase();
   displayWikipediaInformation($("#details"), textForQuery);
 
-  if (($("#tree-content").hasClass("activeDetails"))) {
+  if (($("#main").hasClass("active"))) {
     $("#details").hide();
+    $("#main").toggleClass("active");
     $("#tree-content").toggleClass("activeDetails");
     $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
+
   } else {
     $("#details").show();
+    $("#main").toggleClass("active");
     $("#tree-content").toggleClass("activeDetails");
     $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
   }
