@@ -83,12 +83,10 @@ async function searchWithFavourites() {
 
   let favList = await getFavByUser();
 
-  console.log("favlist ", favList)
+  // console.log("favlist ", favList)
 
   if (favList) {
     favList.forEach(record => {
-      console.log(record);
-      console.log(record.recordID);
       getRecordAndDisplay(record.recordID);
     });
   }
@@ -97,7 +95,6 @@ async function searchWithFavourites() {
 async function getRecordAndDisplay(recordID) {
   let entry = await getInfoOnTreeByID(recordID);
   if (entry.fields.geom) {
-    console.log(entry.fields);
     entry.fields.geom = entry.fields.geom.geometry;
     entry.recordid = entry.id;
     updateContent(entry, false);
@@ -641,7 +638,6 @@ function showDialogue(m) {
  * @param {obj} entry
  */
 function updateContent(entry, distanceEnabled) {
-  console.log("entry test updatecontent", entry);
   var dist = Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M"));
   var dateString = "";
   var post = $("<div></div>").addClass("post");
