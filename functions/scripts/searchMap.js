@@ -58,11 +58,14 @@ function checkUrlParams(params) {
       $("#content").text("");
       queueSearch();
     }
-  } else if (params.id && params.id.length > 10) {
+  } 
+  if (params.id && params.id.length > 10) {
     searchWithRecordID(params.id);
-  } else if (params.id && params.id.length < 10) {
+  }
+  if (params.id && params.id.length < 10) {
     searchWithID(params.id);
-  } else if (params.leaderboard) {
+  }
+  if (params.leaderboard) {
     searchWithLeaderboard(params.id);
   }
   firebase.auth().onAuthStateChanged(function (user) {
@@ -96,7 +99,7 @@ function clearSearch() {
 
 function searchWithRecordID(id) {
   clearSearch();
-  $("#content-title").text("TREEHUGGER");
+  // $("#content-title").text("TREEHUGGER");
   getRecordAndDisplay(id, null, true);
 }
 
@@ -145,11 +148,9 @@ async function getRecordAndDisplay(recordID, order, zoomOnTree) {
     if (zoomOnTree) {
       zoom(entry);
     }
-    searchZoom();
+    // searchZoom();
   } else {
-    if (searchZoom) {
       showDialogue("treeNotAvailable");
-    }
   }
 }
 
@@ -369,6 +370,8 @@ function search(reset) {
   let searchType = $("#search-tags>div.tag-selected").attr('id').slice(0, -4);
   setUrlParam("q", q);
   setUrlParam("type", searchType);
+  removeUrlParam("favourites");
+  removeUrlParam("leaderboard");
   let qString = responsiveSearchTitle(heightRangeToFeet(q, searchType));
   $("#content-title").text(qString);
   $(".search-container").hide();
@@ -657,6 +660,8 @@ function getContent() {
   addSearchHistory(currentLocation, "location");
   setUrlParam("q", currentLocation.lat + " " + currentLocation.lng);
   setUrlParam("type", "location");
+  removeUrlParam("favourites");
+  removeUrlParam("leaderboard");
 }
 /**
  * Checks if content is empty. 
