@@ -1,3 +1,4 @@
+//Loads the event listeners for the menu buttons. 
 $(document).ready(() => {
     $("#form").hide();
     $("#birth").click(() => {
@@ -16,27 +17,34 @@ $(document).ready(() => {
         loadEventForm()
     });
 });
+
+//highlights a selected card, unhighlights the others
 function selectCard(target) {
     $(".selected").removeClass("selected")
     $(target).addClass("selected")
 }
+
+//loads the form for birth tree
 function loadBirthForm() {
     $("#result").html("");
     let f = $("#form").html("");
     f.append($("<span id='logo'>🎁</span>"))
     f.append($("<br><input id='name' placeholder='name'>"));
     f.append("'s birthday ");
-    f.append($("<br><span>on <span><input type='date' id='date'>"));
+    f.append($("<br><span>on </span><input type='date' id='date'>"));
     f.append($("<br><button type='button' id='loadmore'>Search</button>").click(() => {
         submit({
-            match: "Found " + $("#name").val() + "'s birth tree",
-            close: "Here's the closest match for " + $("#name").val() + "'s birth tree",
-            fail: "Sorry, we couldn't find a tree for " + $("#name").val(),
+            match: "Found " + $("#name").val() + "'s birth tree"+":",
+            close: "Here's the closest match for " + $("#name").val() + "'s birth tree"+":",
+            fail: "Sorry, we couldn't find a tree for " + $("#name").val() + "😥",
             emoji: "🎁",
             message: $("#name").val() + "'s birth tree"
         });
     }));
+    f.append($("<span id='formmsg'>"));
 }
+
+//loads the form for the anniversary tree
 function loadAnniversaryForm() {
     $("#result").html("");
     let f = $("#form").html("");
@@ -45,35 +53,49 @@ function loadAnniversaryForm() {
     f.append(" and ");
     f.append($("<input id='name2' placeholder='name'>"));
     f.append("'s anniversary ");
-    f.append($("<br><span>on <span><input type='date' id='date'>"));
+    f.append($("<br><span>on </span><input type='date' id='date'>"));
     f.append($("<br><button type='button' id='loadmore'>Search</button>").click(() => {
         submit({
-            match: "Found a tree for " + $("#name1").val() + " and " + $("#name2").val(),
-            close: "Here's the closest match for " + $("#name1").val() + " and " + $("#name2").val(),
+            match: "Found a tree for " + $("#name1").val() + " and " + $("#name2").val()+":",
+            close: "Here's the closest match for " + $("#name1").val() + " and " + $("#name2").val()+":",
             fail: "Sorry, we couldn't find a tree for " + $("#name1").val() + " and " + $("#name2").val(),
             emoji: "💕",
             message: $("#name1").val() + " and " + $("#name2").val() + "'s anniversary tree"
         });
     }));
+    f.append($("<span id='formmsg'>"));
 }
+
+//loads the form for event tree
 function loadEventForm() {
     $("#result").html("");
     let f = $("#form").html("");
     f.append($("<span id='logo'>🎉</span>"))
     f.append("<br>");
     f.append($("<input id='name' placeholder='name of event'>"));
-    f.append($("<br><span>on <span><input type='date' id='date'>"));
+    f.append($("<br><span>on </span><input type='date' id='date'>"));
     f.append($("<br><button type='button' id='loadmore'>Search</button>").click(() => {
         submit({
-            match: "Found a tree for " + $("#name").val(),
-            close: "Here's the closest match for " + $("#name").val(),
+            match: "Found a tree for " + $("#name").val()+":",
+            close: "Here's the closest match for " + $("#name").val()+":",
             fail: "Sorry, we couldn't find a tree for " + $("#name").val(),
             emoji: "🎉",
             message: $("#name").val()
         });
     }));
+    f.append($("<span id='formmsg'>"));
 }
+
+//click event for form submission
 function submit(type) {
+    //form validation
+    if (!validForm()){
+        $("#formmsg").html("Invalid input, try again");
+        return;
+    }
+    $("#formmsg").html("")
+
+    //query by date (find exact match)
     let q = $("#date").val();
     console.log(q.toString());
     let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine.date_planted=" + q.toString();
@@ -82,20 +104,59 @@ function submit(type) {
         if (data.records.length > 0) {
             let x = data.records[Math.floor(Math.random() * data.records.length)]
             $("#result").html("")
-            $("#result").append(type.match);
-            $("#result").append(displayTree(x));
-            $("#result").append(saveButton(x, type.message, type.emoji))
+            $("#result").append(displayTree(x,type.match,saveButton(x, type.message, type.emoji)));
         } else {
-            if (!findClosest(q, type)) {
-                if (!differentYear(q, type)){
-                    $("#result").html("");
-                    $("#result").append(type.fail);
-                }
-            }
+            // no exact match
+            alternateTree(q, type);
 
         }
     });
 }
+
+//performs form validation
+function validForm(){
+    if ($("#name").length && !($("#name").val())){
+        console.log("invalid name")
+        return false;
+    }
+    if ($("#name1").length && !($("#name1").val())){
+        console.log("invalid name1")
+        return false;
+    }
+    if ($("#name2").length && !($("#name2").val())){
+        console.log("invalid name2")
+        return false;
+    }
+    //checks for ####-##-##
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!($("#date").val().match(regex))){
+        console.log($("#date").val())
+        console.log("invalid date")
+        return false;
+    }
+    return true;
+}
+
+//looks for an alternate tree if there is no exact match
+async function alternateTree(q, type){
+    //find one in the same month
+    let x = await findClosest(q, type);
+    console.log(x);
+    if (x) {
+        return;
+    }
+    //find with a different year but the same day and month
+    x = await differentYear(q, type)
+    if (x){
+        return;
+    }
+    //no result found
+    $("#result").html("");
+    $("#result").append($("<div class='card'>)").append(type.fail));
+}
+
+//finds a tree between 1989 and 2022 with the same day and month
+//returns the first tree it finds. 
 async function differentYear(date, type){
     let monthDay = date.toString().substring(4);
     let x = [];
@@ -107,40 +168,41 @@ async function differentYear(date, type){
                     x.push(entry)
                 });
             }
-        });
+        })
         if (x.length>0){
             let tree = x[Math.floor(Math.random() * x.length)]
             $("#result").html("");
-            $("#result").append(type.close);
-            $("#result").append(displayTree(tree));
-            $("#result").append(saveButton(tree, type.message, type.emoji))
+            $("#result").append(displayTree(tree,type.close,saveButton(tree, type.message, type.emoji)));
             return true;
         } 
     }
     return false;
-    
-
 }
-function findClosest(date, type) {
+
+//finds the trees in the same month
+async function findClosest(date, type) {
     let month = date.toString().substring(0, 7);
     let day = date.toString().substring(8);
     let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine.date_planted=" + month;
     console.log(query);
-    $.getJSON(query, (data) => {
+    let x;
+    await $.getJSON(query, (data) => {
+        console.log(data.records.length);
         if (data.records.length > 0) {
             let x = closestTree(data, month, day);
             $("#result").html("");
-            $("#result").append(type.close);
-            console.log(data);
-            console.log(x);
-            $("#result").append(displayTree(x));
-            $("#result").append(saveButton(x, type.message, type.emoji))
-            return true;
+            $("#result").append(displayTree(x, type.close,saveButton(x, type.message, type.emoji)));
+            x = true;
+            return;
         }
-        return false;
+        x = false;
     });
+    return x;
 }
 
+//given trees in the same month, finds the closest. 
+//if there are multiple closest trees, 
+//returns a random tree among the closest
 function closestTree(data, month, day) {
     let d = parseInt(day);
     let x = [];
@@ -162,24 +224,45 @@ function closestTree(data, month, day) {
     console.log("error");
 }
 
-function displayTree(entry) {
+//displays the tree
+function displayTree(entry,message,saveBtn) {
     let elem = $("<div></div>").addClass("card");
+    elem.append(message);
     elem.append($("<p></p>").html(entry.fields.genus_name + " " + entry.fields.species_name));
     elem.append($("<p></p>").html(entry.fields.common_name));
     elem.append($("<p></p>").html(entry.fields.on_street_block + " " + entry.fields.on_street + " " + entry.fields.neighbourhood_name));
     elem.append($("<p></p>").html("Planted on: " + entry.fields.date_planted));
+    elem.append(viewButton(entry.recordid));
+    elem.append(saveBtn);
 
     return elem;
 }
 
+//returns a button with a link to the tree
+function viewButton(tree){
+    let btn = $("<button id='save'>View</button>");
+    btn.click(() =>{
+        window.open("./searchMap?id=" + tree);
+    })
+    return btn
+}
+
+//returns a save button
+//if the user is not logged in it displays a warning
 function saveButton(tree, message, emoji) {
-    let btn = $("<button id='save'>save</button>");
+    let btn = $("<button id='save'>Save</button>");
     btn.on("click", () => {
-        let elem = $("#save");
-        elem.attr("disabled", true);
-        elem.html("saved");
-        console.log(tree);
-        addComment(tree.recordid, message, emoji);
+        var user = firebase.auth().currentUser;
+        if (user) {
+            let elem = $("#save");
+            elem.attr("disabled", true);
+            elem.html("saved");
+            console.log(tree);
+            addComment(tree.recordid, message, emoji);
+        } else {
+            alert("Must be logged in to save")
+        }
+
     });
     return btn;
 }

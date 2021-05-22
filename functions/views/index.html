@@ -8,27 +8,19 @@
     <link rel="stylesheet" href="./navbar-common.css">
     <link rel="stylesheet" href="./index.css">
 
-
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js" defer></script>
 
     <!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-analytics.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js" defer></script>
+
+    <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-        crossorigin="anonymous">
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
+    crossorigin="anonymous">
     </script>
-
-    <!-- Firebase CSS for Authentication UI -->
-    <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css" />
-
 </head>
     <body>
-        <!-- This is where the Login Widget will go -->
-        <h1 id="firebaseui-auth-container" style="display: none; margin: auto; position: fixed;">&nbsp;</h1>
-        <script src="./loginFunctionForAnyPage.js"></script>
 
         <button id="profileButton">profileNew</button>
         <button id="loginLogoutButton">Login/Signup</button>
@@ -54,9 +46,11 @@
        
         <!-- Your own Firebase API key information -->
         <script src="./firebase_api_Group3.js"> </script>
-        <!-- Header Navigation Bar -->
+
+        <!-- Common Navbar Script -->
         <script src="./navbar-common.js"></script>
 
+        <!-- Additional Script -->
         <script src="./client.js"></script>
         <script src="./viewIndividualTree.js"></script>
     </body>

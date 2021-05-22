@@ -38,6 +38,10 @@ app.get("/", function (req, res) {
   res.render("home.html");
 });
 
+app.get("/oldIndex", function (req, res) {
+  res.render("index.html");
+});
+
 app.get("/login", function (req, res) {
   res.render("login.html");
 });
@@ -49,6 +53,11 @@ app.get("/signup", function (req, res) {
 app.get("/treefind", function (req, res) {
   res.render("treefind.html");
 });
+
+app.get("/searchMap", function (req, res) {
+  res.render("searchMap.html");
+});
+
 
 app.get("/match", function (req, res) {
   res.render("match.html");
@@ -91,6 +100,10 @@ app.get("/aboutUs", function (req, res) {
   res.render("aboutus.html");
 });
 
+app.get("/profile", function (req, res) {
+  res.render("profile.html");
+});
+
 app.post('/profile', urlencodedParser, (req, res) => {
   const idToken = req.body.idToken.toString();
   admin
@@ -104,7 +117,8 @@ app.post('/profile', urlencodedParser, (req, res) => {
         res.send({
           status: "success",
           uid: uid,
-          name: doc.data().name
+          name: doc.data().name,
+          email: doc.data().email
         });
       });
     }).catch((error) => {
@@ -198,7 +212,7 @@ app.post('/removeTreeFav', urlencodedParser, (req, res) => {
       const docRef = db.collection("Favourite").doc(uid + "_" + recordID);
       const statsRef = db.collection('FavouriteStats').doc(recordID);
       docRef.get().then(function (doc) {
-        if (doc.exists) {
+        if (doc.exists /*&& firestore.Timestamp.now() - doc.data().timestamp > 2000*/) {
           const batchFav = db.batch();
           batchFav.delete(docRef);
           batchFav.set(statsRef, {
@@ -262,6 +276,36 @@ app.post("/ajax-add-comment", urlencodedParser, (req, res) => {
     });
 });
 
+app.post("/ajax-add-history", urlencodedParser, (req, res) => {
+  const idToken = req.body.idToken.toString();
+  let comment = req.body;
+
+  admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      const uid = decodedToken.uid;
+
+
+      db.collection("History").doc(uid + "_" + comment.tree).set({
+        timestamp: firestore.Timestamp.now(),
+        user: uid,
+        tree: comment.tree
+      }).then((ref) => {
+        res.end(JSON.stringify({
+          status: "success"
+        }));
+      }).catch((error) => {
+        res.status(401);
+      });
+
+
+    }).catch((error) => {
+      console.log(error);
+      res.status(401).send("UNAUTHORIZED REQUEST!");
+    });
+});
+
 app.post("/ajax-get-comment-user", urlencodedParser, (req, res) => {
   const idToken = req.body.idToken.toString();
 
@@ -288,6 +332,38 @@ app.post("/ajax-get-comment-user", urlencodedParser, (req, res) => {
         });
     });
 });
+
+app.post("/ajax-get-history-user", urlencodedParser, (req, res) => {
+  const idToken = req.body.idToken.toString();
+
+
+  res.setHeader('Content-Type', 'application/json');
+  admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      const uid = decodedToken.uid;
+      db.collection("History")
+        .where("user", "==", uid)
+        .orderBy("timestamp", "desc")
+        .get()
+        .then((data) => {
+          let response = [];
+          data.forEach((entry) => {
+            let x = {
+              tree: entry.data().tree,
+              date: entry.data().timestamp.toDate().toDateString()
+            }
+            response.push(x);
+          });
+          res.send(JSON.stringify(response));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+});
+
 
 app.post('/getFavByUser', urlencodedParser, (req, res) => {
   // res.setHeader('Content-Type', 'application/json');
@@ -363,12 +439,13 @@ app.post('/getFavCountByTree', urlencodedParser, (req, res) => {
       console.log("FavCount: " + doc.data().favCount);
       res.send({
         status: "success",
-        data: doc.data().favCount
+        count: doc.data().favCount
       });
     }).catch(function (error) {
       console.log("Error getting documents: ", error);
       res.send({
-        status: "error"
+        status: "error",
+        count: 0
       });
     });
 });
@@ -399,55 +476,28 @@ app.post('/getFavCountLeaderboard', urlencodedParser, (req, res) => {
     });
 });
 
-app.post('/getFavCountLeaderboardSignedIn', urlencodedParser, (req, res) => {
-  // res.setHeader('Content-Type', 'application/json');
+app.post('/getIfUserLiked', urlencodedParser, (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
   const idToken = req.body.idToken.toString();
+  const recordID = req.body.recordID;
+
   admin
     .auth()
     .verifyIdToken(idToken)
     .then((decodedToken) => {
       const uid = decodedToken.uid;
-      let resultArray = [];
-  db.collection("FavouriteStats")
-  .orderBy("favCount", "desc")
-  .limit(15)
-  .get()
-  .then(querySnapshot => {
-      
-      querySnapshot.forEach((doc) => {
-        db.collection('Favourite').doc(uid + "_" + doc.id)
-        .get().then(function (doc) {
-          if (doc.exists) {
-            resultArray.push({
-              recordID: doc.id,
-              favCount: doc.data().favCount,
-              liked: "liked"
-            });
-          } else {
-            resultArray.push({
-              recordID: doc.id,
-              favCount: doc.data().favCount,
-              liked: null
-            });
-          }
+      const docRef = db.collection("Favourite").doc(uid + "_" + recordID);
+      docRef.get().then(function (doc) {
+        res.send({
+          status: "success",
+          liked: doc.exists
         });
-      })
-    }).then(function () {
-      res.send({
-        status: "success",
-        data: resultArray
       });
-    }).catch(function (error) {
-      console.log("Error getting documents: ", error);
-      res.send({
-        status: "error"
-      });
+    }).catch((error) => {
+      console.log(error);
+      res.status(401).send("UNAUTHORIZED REQUEST!");
     });
-
-    //End idtoken verified
-  });
 });
-
 
 app.post('/update-username', urlencodedParser, (req, res) => {
   res.setHeader('Content-Type', 'application/json');
@@ -478,9 +528,9 @@ app.get('/timestamp', function (req, res) {
 });
 
 
-app.listen(PORT, () => {
-     console.log(`Listening on http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Listening on http://localhost:${PORT}`);
+// });
 
 
 function msg404(res) {

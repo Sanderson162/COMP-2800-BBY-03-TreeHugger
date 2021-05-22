@@ -8,22 +8,23 @@ $(document).ready(() => {
         }
       },
       uiShown: function() {
-        // The widget is rendered.
-        // Hide the loader.
+        $(".firebaseui-form-actions").append("<button class='firebaseui-id-secondary-link firebaseui-button mdl-button mdl-js-button mdl-button--primary' data-upgraded=',MaterialButton'>Cancel</button>")
       }
     },
     // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
     signInFlow: 'popup',
-    signInOptions: [
-      firebase.auth.EmailAuthProvider.PROVIDER_ID,
-    ],
+    signInOptions: [{
+      provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+      //requireDisplayName: true
+    }],
     // Terms of service url.
-    tosUrl: '',
+    //tosUrl: '',
     // Privacy policy url.
-    privacyPolicyUrl: '',
+    //privacyPolicyUrl: '',
+    credentialHelper: 'none',
   };
 
-
+  
   $('#loginLogoutButton').click(function(e) {
     var user = firebase.auth().currentUser;
     if (user) {

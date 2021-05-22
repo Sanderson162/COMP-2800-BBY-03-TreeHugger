@@ -13,10 +13,9 @@ let selectedTreeLocation;
 let selectedTreeId;
 let lastPullLocation;
 let lastCalcLocation;
-let iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-let greenTreeIcon = iconBase + "parks.png";
-let selectedTreeIcon = "https://i.imgur.com/GE8YWSy.png";
-let locationIcon = "https://i.imgur.com/WRzZWTj.png";
+let greenTreeIcon = "https://firebasestorage.googleapis.com/v0/b/tree-hugger-c60ff.appspot.com/o/treeeee1.png?alt=media&token=1edb09b2-d15f-4a92-bdb2-c76b61de7f18";
+let selectedTreeIcon = "https://firebasestorage.googleapis.com/v0/b/tree-hugger-c60ff.appspot.com/o/treeeee12.png?alt=media&token=aa102c04-5925-4f53-82fc-f4c7d49ee889";
+let locationIcon = "https://firebasestorage.googleapis.com/v0/b/tree-hugger-c60ff.appspot.com/o/loc2.png?alt=media&token=18248c0d-f07c-4a9e-9c3e-a7cd2a2e5e97";
 let locationInterval;
 /**
  * QUERY SETTINGS 
@@ -29,7 +28,7 @@ currentLocation = { lat: 49.239593, lng: -123.024645 };
 /** 
  * TESTING SETTINGS 
  */
-let testing = true;
+let testing = false;
 /* pace: 20 is crazy driver pace, 10 is safe driver pace, 1 is walking pace. */
 let pace = 1;
 let testLocationInterval;
@@ -58,6 +57,12 @@ function getLocation(center) {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        if (!testing) {
+          if (checkLocationBounds(position)) {
+            showDialogue("locationOutofBounds");
+            return;
+          }
+        }
         let location = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
@@ -80,6 +85,23 @@ function getLocation(center) {
   } else {
     showDialogue("locationErrorNS");
     clearLocationMarker();
+  }
+}
+/**
+ * Checks if user is in Vancouver.
+ * @param {obj} position Current location. 
+ * @returns true if location is out of bounds.
+ */
+function checkLocationBounds(position) {
+  let bounds = new google.maps.LatLngBounds(
+    new google.maps.LatLng(49.198387, -123.224944), 
+    new google.maps.LatLng(49.317422, -122.980440));
+  let posLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+  if (bounds.contains(posLatLng) == false) {
+    return true;
+  } else {
+    return false;
   }
 }
 /**
@@ -116,7 +138,9 @@ function getContent() {
     $("#content").text("");
     clearMarkers();
     $.each(data.records, function (i, entry) {
-      updateContent(entry);
+      if (entry.fields.hasOwnProperty('geom')) {
+        updateContent(entry);
+      }
     });
     isContent();
   });
@@ -146,12 +170,15 @@ function showDialogue(m) {
       $("#content").append(post);
     }
   } else if (m == "nullContent") {
-    let post = $("<div></div>").addClass("post");
-    post.addClass("dialogue");
-    let title = $("<div></div>").addClass("title").text("No trees near you");
-    let body = $("<div></div>").addClass("body").text("There are no trees from the database in your area.");
-    post.append(title, body);
-    $("#content").append(post);
+    if ($("#content").text() != "No trees near youThere are no trees from the database in your area.") {
+      $("#content").text("");
+      let post = $("<div></div>").addClass("post");
+      post.addClass("dialogue");
+      let title = $("<div></div>").addClass("title").text("No trees near you");
+      let body = $("<div></div>").addClass("body").text("There are no trees from the database in your area.");
+      post.append(title, body);
+      $("#content").append(post);
+    }
   } else if (m == "locationErrorNS") {
     if ($("#content").text() != "Location is not supported on this browserLocation services must be enabled to see nearby trees.") {
       $("#content").text("");
@@ -170,6 +197,16 @@ function showDialogue(m) {
       post.addClass("dialogue");
       let title = $("<div></div>").addClass("title").text("Location is turned off");
       let body = $("<div></div>").addClass("body").text("Tap the location icon below to start TreeHugging.");
+      post.append(title, body);
+      $("#content").append(post);
+    }
+  } else if (m == "locationOutofBounds") {
+    if ($("#content").text() != "You are not in VancouverTreeHugger only works in Vancouver, try our search to explore our trees!") {
+      $("#content").text("");
+      let post = $("<div></div>").addClass("post");
+      post.addClass("dialogue");
+      let title = $("<div></div>").addClass("title").text("You are not in Vancouver");
+      let body = $("<div></div>").addClass("body").text("TreeHugger only works in Vancouver, try our search to explore our trees!");
       post.append(title, body);
       $("#content").append(post);
     }
@@ -241,7 +278,7 @@ function setStreetView(entry) {
         pitch: 10,
         zoom: 0
       });
-    }, 200);
+    }, 300);
   }
 }
 /**
@@ -260,7 +297,7 @@ function colorMarker(id) {
  */
 function resetMarkerColor() {
   for (let i = 0; i < markers.length; i++) {
-    markers[i].setIcon(iconBase + "parks.png");
+    markers[i].setIcon(greenTreeIcon);
   }
 }
 /**
@@ -271,6 +308,9 @@ function showTreeOverlay(entry) {
   $(".content-container").hide();
   $(".tree-overlay-container").show();
   updateTreeOverlayContent(entry);
+  updateHistory(entry);
+  updateDetails();
+  $("#main").scrollTop(0);
   showMapButtons(false);
 }
 /**
@@ -280,16 +320,42 @@ function showTreeOverlay(entry) {
 function updateTreeOverlayContent(entry) {
   $("#tree-name").text(entry.fields.common_name);
   $("#species-name").text(entry.fields.genus_name + " " + entry.fields.species_name);
-  $("#distance").text(Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M")) + " meters away from your location.");
-  $("#body").text(entry.fields.on_street);
-  var dateString;
-  if (entry.fields.date_planted) {
-    dateString = "Planted on " + entry.fields.date_planted;
-  } else {
-    dateString = "Date planted unavailable"
+  if (locationMarker != null) {
+    $("#distance").text(Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M")) + " meters away");
+  }else {
+    $("#distance").text("");
   }
-  $("#date").text("~" + entry.fields.diameter + " inches in diameter. ~" + entry.fields.height_range_id * 10 + " feet in height. Tree ID: " + entry.fields.tree_id);
-  $("#updated").text(dateString);
+  $("#body").text(entry.fields.on_street);
+  let dateString;
+  let ageString;
+  if (entry.fields.date_planted) {
+    dateString = entry.fields.date_planted;
+    ageString = getAgeOfTree(dateString);
+  } else {
+    dateString = "N/A"
+    ageString = "N/A";
+  }
+  $("#tree-card-id").text("Tree ID: " + entry.fields.tree_id);
+  $("#tree-card-height").text(entry.fields.height_range_id * 10 + " ft");
+  $("#tree-card-diameter").text(entry.fields.diameter + " in");
+  $("#tree-card-date").text(dateString);
+  $("#tree-card-age").text(ageString);
+  addLikeButton($("#like-button-container"), entry.recordid, null, null);
+}
+//https://stackoverflow.com/questions/4060004/calculate-age-given-the-birth-date-in-the-format-yyyymmdd
+function getAgeOfTree(dateString) {
+  let ageDifMs = Date.now() - dateStringtoDate(dateString).getTime();
+  let ageDate = new Date(ageDifMs); // miliseconds from epoch
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
+}
+//https://stackoverflow.com/questions/10607935/convert-returned-string-yyyymmdd-to-date/10610485
+function dateStringtoDate(dateString) {
+  //1989-11-06
+  let year = dateString.substring(0,4);
+  let month = dateString.substring(5,7);
+  let day = dateString.substring(7,9);
+  let date = new Date(year, month-1, day);
+  return date;
 }
 /** 
  * Adds a click listener to the StreeView button in TreeOverlay. 
@@ -397,7 +463,7 @@ function updateLocationMarker(location, lbl) {
  */
 function updateTreeOverlayDistance() {
   if (selectedTreeLocation) {
-    $("#distance").text(Math.round(distance(selectedTreeLocation.lat, selectedTreeLocation.lng, currentLocation.lat, currentLocation.lng, "M")) + " meters away from your location.");
+    $("#distance").text(Math.round(distance(selectedTreeLocation.lat, selectedTreeLocation.lng, currentLocation.lat, currentLocation.lng, "M")) + " meters away");
   }
 }
 /**
@@ -414,7 +480,7 @@ function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: currentLocation,
     zoom: 20,
-    mapId: 'b3163309c37356ea',
+    mapId: 'c79c5bedf4efc001',
     restriction: {
       latLngBounds: VANCOUVER_BOUNDS,
       strictBounds: false,
@@ -425,6 +491,7 @@ function initMap() {
       style: google.maps.MapTypeControlStyle.DEFAULT,
       position: google.maps.ControlPosition.LEFT_BOTTOM,
     },
+    clickableIcons: false,
     zoomControl: false,
     zoomControlOptions: {
       position: google.maps.ControlPosition.RIGHT_BOTTOM,
@@ -454,7 +521,7 @@ function initMap() {
     if (panorama.getVisible()) {
       $("#street-btn").text("Map");
     } else {
-      $("#street-btn").text("StreetView");
+      $("#street-btn").text("Street");
     }
   });
   let panoOptions = {
@@ -481,7 +548,7 @@ function createToggleLocationBtn() {
   toggleLocationBtn.style.height = "50px";
   toggleLocationBtn.style.width = "50px";
   toggleLocationBtn.style.margin = "10px";
-  toggleLocationBtn.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke + "'stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
+  toggleLocationBtn.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke + "'stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
   toggleLocationBtn.addEventListener("click", function () {
     if (locationInterval == null) {
       toggleLocation(true);
@@ -489,14 +556,14 @@ function createToggleLocationBtn() {
       this.style.backgroundColor = "white";
       $("#center-locate-btn").css("background-color", "white");
       $("#center-locate-btn").fadeIn(300);
-      this.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke + "'stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
+      this.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke + "'stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
     } else {
       toggleLocation(false);
       stroke = "#000000";
       this.style.backgroundColor = "gainsboro";
       $("#center-locate-btn").css("background-color", "gainsboro");
       $("#center-locate-btn").fadeOut(300);
-      this.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke + "'stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
+      this.innerHTML = "<svg class='svg-btn' width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M6 22L44 4L26 42L22 26L6 22Z' stroke='" + stroke + "'stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/> </svg>";
     }
   });
   return toggleLocationBtn;
@@ -630,7 +697,7 @@ function addTreeMarker(longitude, latitude, entry) {
   /* Check if tree selected is being updated and set its color to selected. */
   if (selectedTreeId) {
     if (selectedTreeId == ids) {
-      treeIcon = selectedTreeIcon;
+      return;
     }
   }
   var treeLocation = { lat: latitude, lng: longitude }
@@ -642,6 +709,10 @@ function addTreeMarker(longitude, latitude, entry) {
   });
   markers.push(marker);
   marker.addListener("click", () => {
+    if (ids == selectedTreeId) {
+      setStreetView(entry);
+      toggleStreetView(entry);
+    } else {
     resetMarkerColor();
     // $('#' + ids).get(0).scrollIntoView();
     marker.setIcon(selectedTreeIcon);
@@ -649,6 +720,7 @@ function addTreeMarker(longitude, latitude, entry) {
     zoom(entry);
     /* Preload StreetView */
     setStreetView(entry);
+    }
   });
 }
 /**
@@ -718,5 +790,38 @@ function clearLocationMarker() {
     locationMarker.setMap(null);
     locationMarker = null;
     lastPullLocation = null;
+  }
+}
+
+/**
+ * Updates the details division with wikipedia information when tree overlay is loaded.
+ */
+ function updateDetails() {
+  $("#details").html("");
+  let textForQuery = $("#tree-name").text();
+  textForQuery = (textForQuery.split(' ').slice(0, 2).join('_')).toLowerCase();
+  displayWikipediaInformation($("#details"), textForQuery);
+}
+
+/**
+ * Saves history to database (Aidan) 
+ */
+function updateHistory(entry){
+  var user = firebase.auth().currentUser;
+  var treeID = entry.recordid;
+  console.log(entry);
+  if (user) {
+      user.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+          $.ajax({
+              url: "/ajax-add-history",
+              dataType: "json",
+              type: "POST",
+              data: {tree: treeID, idToken: idToken},
+              success: ()=>{console.log("Successfully added to history")},
+              error: (jqXHR,textStatus,errorThrown )=>{
+                  console.log("Error:"+textStatus);
+              }
+          });
+      });
   }
 }

@@ -9,11 +9,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js" defer></script>
 
     <!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-analytics.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-firestore.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-functions.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js" defer ></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
         crossorigin="anonymous">
@@ -23,6 +19,7 @@
 </head>
     <body>
         <div id="inputTreeId">find Individual tree by record ID: <input type='text' value='0278dd75aa3d0016371651b85bc4232746aa9d91'></div>
+        <div id="newElementForTesting"></div>
         <div id="debuginputTreeId"><b>searching tree: </b><span class="info"></span></div>
         <div id="resultsinputTreeIdFormatted"><b>formatted Tree Info: </b></br><span class="info"></span></div>
         <div id="resultsWikiQuery"><b>Extract: </b></br><span class="info"></span></div>
@@ -30,13 +27,16 @@
         <p>Raw Data</p>
         <div id="resultsWikiQueryRaw"><b>Raw from wiki: </b></br><span class="info"></span></div>
         <div id="resultsinputTreeIdRaw"><b>Raw tree info: </b></br><span class="info"></span></div>
+        
         <!-- Your own Firebase API key information -->
-
-        <span style="display: none;" id="recordIDFromOtherPage"><%=recordid%></span>
         <script src="./firebase_api_Group3.js"> </script>
-        
-        <script src="./viewIndividualTree.js"></script>
-        
+
+        <!-- Common Navbar Script -->
         <script src="./navbar-common.js"></script>
+
+        <!-- Additional Script -->
+        <script src="./viewIndividualTree.js"></script>
+        <script src="./wikipediaFetch.js"></script>
+        
     </body>
 </html>
