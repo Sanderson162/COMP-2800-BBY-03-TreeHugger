@@ -68,6 +68,7 @@ function clearSearch() {
   selectedTreeId = null;
   clearMarkers();
   clearLocationMarker();
+  panorama.setVisible(false);
   $("#content").text("");
   $(".search-container").hide();
   $(".tree-overlay-container").hide();
