@@ -79,8 +79,8 @@ function clearSearch() {
 
 function searchWithRecordID(id) {
   clearSearch();
-  $("#content-title").text("SHARED TREE");
-  getRecordAndDisplay(id, null);
+  $("#content-title").text("TREEHUGGER");
+  getRecordAndDisplay(id, null, true);
 }
 
 async function searchWithFavourites() {
@@ -92,8 +92,10 @@ async function searchWithFavourites() {
 
   if (favList) {
     favList.forEach((record, index) => {
-      getRecordAndDisplay(record.recordID, index + 1);
+      getRecordAndDisplay(record.recordID, index + 1, false);
     });
+  } else {
+    showDialogue("noFavouites");
   }
 }
 
@@ -109,12 +111,12 @@ async function searchWithLeaderboard() {
     favList.forEach((record, index) => {
       console.log(record);
       console.log(record.recordID);
-      getRecordAndDisplay(record.recordID, index + 1);
+      getRecordAndDisplay(record.recordID, index + 1, false);
     });
-  }
+  } 
 }
 
-async function getRecordAndDisplay(recordID, order) {
+async function getRecordAndDisplay(recordID, order, zoomOnTree) {
   let entry = await getInfoOnTreeByID(recordID);
   if (entry.fields.geom) {
     entry.fields.geom = entry.fields.geom.geometry;
@@ -123,6 +125,9 @@ async function getRecordAndDisplay(recordID, order) {
       entry.order = order;
     }
     updateContent(entry, false);
+    if (zoomOnTree) {
+      zoom(entry);
+    }
   }
 }
 
@@ -656,6 +661,20 @@ function showDialogue(m) {
       post.append(title, body);
       $("#content").append(post);
     }
+  } else if (m == "noFavourites") {
+    let post = $("<div></div>").addClass("post");
+    post.addClass("dialogue");
+    let title = $("<div></div>").addClass("title").text("No favourites");
+    let body = $("<div></div>").addClass("body").text("You don't have any favourite trees yet, tap the heart button to add one");
+    post.append(title, body);
+    $("#content").append(post);
+  } else if (m == "treeNotAvailable") {
+    let post = $("<div></div>").addClass("post");
+    post.addClass("dialogue");
+    let title = $("<div></div>").addClass("title").text("Tree not found");
+    let body = $("<div></div>").addClass("body").text("Tree with this ID does not exist, or is missing location data. ");
+    post.append(title, body);
+    $("#content").append(post);
   }
 }
 /**
