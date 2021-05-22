@@ -86,6 +86,8 @@ function clearSearch() {
   removeUrlParam("id");
   removeUrlParam("type");
   removeUrlParam("q");
+  removeUrlParam("favourites");
+  removeUrlParam("leaderboard");
   selectedTreeId = null;
   clearMarkers();
   clearLocationMarker();
@@ -148,7 +150,7 @@ async function getRecordAndDisplay(recordID, order, zoomOnTree) {
     if (zoomOnTree) {
       zoom(entry);
     }
-    // searchZoom();
+    searchZoom();
   } else {
       showDialogue("treeNotAvailable");
   }
