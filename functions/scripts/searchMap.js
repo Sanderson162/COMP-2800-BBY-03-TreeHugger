@@ -1475,8 +1475,8 @@ function updateDetails() {
   let textForQuery = $("#tree-name").text();
   textForQuery = (textForQuery.split(' ').slice(0, 2).join('_')).toLowerCase();
   displayWikipediaInformation($("#details"), textForQuery, $("#details-arrow-container"));
-
 }
+
 function addMainScrollListener() {
   $("#main").scroll(function() {
     $("#details-arrow-container").css("opacity", 100 - $("#main").scrollTop() + "%");

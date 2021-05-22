@@ -88,7 +88,7 @@ function getWikipediaThumbnail (genus_species) {
   element.text(extract);
   if (extract) {
     let link = "https://en.wikipedia.org/wiki/" + genus_species;
-    element.append('<br><br>Retrieved from <a href="'+ link +'" onclick="window.open(\'' + link + '\')">Wikipedia</a>');
+    element.append('<br><a href="'+ link +'" onclick="event.preventDefault();window.open(\'' + link + '\');"><img style="display:block;margin:auto;padding:1em;width:35px;height:auto;"src="https://upload.wikimedia.org/wikipedia/commons/7/77/Wikipedia_svg_logo.svg"></img></a>');
     let thumbnail = await getWikipediaThumbnail(genus_species);
     element.prepend('<img id="thumbnail" src=' + thumbnail.source + ' alt=""><br>');
     isDetails(true, arrowElement);
