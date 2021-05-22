@@ -105,11 +105,12 @@ h1 {
     font-style: italic;
     font-weight: 100;
     margin-top:1em;
-    color:lightgray;
+    color: #8a8a8d
 }
 
 .distance {
     font-style: italic;
+    color:#8a8a8d
 }
 
 *::-webkit-scrollbar {
@@ -311,7 +312,7 @@ button:hover {
 }
 
 .tree-card-label {
-    color:lightgray;
+    color:#8a8a8d;
     font-size:80%;
     flex-grow: 1;
 }
