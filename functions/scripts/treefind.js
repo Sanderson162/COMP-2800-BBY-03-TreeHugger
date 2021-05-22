@@ -825,3 +825,42 @@ function updateHistory(entry){
       });
   }
 }
+
+function treeNameClickSearch() {
+  let type = 'common_name';
+  let query = ($("#tree-name").text());
+  navigateUrl(createUrl(query, type));
+}
+function treeHeightClickSearch() {
+  let type = 'height_range_id';
+  let query = ($("#tree-card-height").text().substring(0, 1));
+  navigateUrl(createUrl(query, type));
+}
+function treeDateClickSearch() {
+  if ($("#tree-card-date").text() != "N/A") {
+    let type = 'date_planted';
+    let query = ($("#tree-card-date").text());
+    navigateUrl(createUrl(query, type));
+  }
+}
+function treeDateAgeClickSearch() {
+  if ($("#tree-card-date").text() != "N/A") {
+    let type = 'date_planted';
+    let query = ($("#tree-card-date").text().substring(0, 7));
+    navigateUrl(createUrl(query, type));
+  }
+}
+function treeStreetClickSearch() {
+  let type = 'on_street';
+  let query = ($("#body").text());
+  navigateUrl(createUrl(query, type));
+}
+function createUrl(query, type) {
+  let url = "/searchMap?q=" + query + "&type=" + type; 
+  console.log(url);
+  return url;
+}
+function navigateUrl(url) {
+
+  window.location.href = url;
+}

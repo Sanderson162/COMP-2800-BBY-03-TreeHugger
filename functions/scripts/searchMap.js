@@ -58,11 +58,6 @@ function checkUrlParams(params) {
       $("#content").text("");
       queueSearch();
     }
-    if (params.id) {
-      selectedTreeId = params.id;
-      resetMarkerColor();
-
-    }
   } else if (params.id && params.id.length > 10) {
     searchWithRecordID(params.id);
   } else if (params.id && params.id.length < 10) {
@@ -466,7 +461,7 @@ function updateSearchMapBtn() {
  */
 function heightRangeToFeet(q, searchType) {
   if (searchType == "height_range_id") {
-    return (parseInt(q) * 10) + "ft";
+    return (parseInt(q) * 10) + " ft";
   } else {
     return q;
   }
@@ -1359,7 +1354,7 @@ function addTreeMarker(longitude, latitude, entry) {
   /* Check if tree selected is being updated and set its color to selected. */
   if (selectedTreeId) {
     if (selectedTreeId == ids) {
-      treeIcon = selectedTreeIcon;
+      return;
     }
   }
   var treeLocation = { lat: latitude, lng: longitude }
