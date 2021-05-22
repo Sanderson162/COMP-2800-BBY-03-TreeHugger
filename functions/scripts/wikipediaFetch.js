@@ -52,7 +52,7 @@ function getWikipediaExtract (genus_species) {
 
 function getWikipediaThumbnail (genus_species) {
   return new Promise((resolve) => {
-    let thumbnailUrl = "https://en.wikipedia.org/w/api.php?action=query&titles=" + genus_species + "&prop=pageimages&format=json&pithumbsize=150&callback=?&redirects=";
+    let thumbnailUrl = "https://en.wikipedia.org/w/api.php?action=query&titles=" + genus_species + "&prop=pageimages&format=json&pithumbsize=400&callback=?&redirects=";
     $.ajax({
       type: "GET",
       dataType: "jsonp",
@@ -90,7 +90,7 @@ function getWikipediaThumbnail (genus_species) {
     let link = "https://en.wikipedia.org/wiki/" + genus_species;
     element.append('<br><a href="'+ link +'" onclick="event.preventDefault();window.open(\'' + link + '\');"><img style="display:block;margin:auto;padding:1em;width:35px;height:auto;"src="https://upload.wikimedia.org/wikipedia/commons/7/77/Wikipedia_svg_logo.svg"></img></a>');
     let thumbnail = await getWikipediaThumbnail(genus_species);
-    element.prepend('<img id="thumbnail" src=' + thumbnail.source + ' alt=""><br>');
+    element.prepend('<img style="width:100%;max-height:125px;object-fit: cover;"id="thumbnail" src=' + thumbnail.source + ' alt=""><br>');
     isDetails(true, arrowElement);
   } else {
     isDetails(false, arrowElement);
