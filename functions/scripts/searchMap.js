@@ -40,37 +40,42 @@ $(document).ready(function () {
   showSearchType('common_name-tag');
   addInputListeners();
   addMainScrollListener();
-  let vars = getUrlParams();
-  if (vars.q && vars.type) {
-    if (vars.type == "location") {
-      var splitLatLng = vars.q.split(" ");
+  checkUrlParams(getUrlParams());
+});
+
+function checkUrlParams(params) {
+  if (params.q && params.type) {
+    if (params.type == "location") {
+      var splitLatLng = params.q.split(" ");
       let latlng = new google.maps.LatLng(splitLatLng[0], splitLatLng[1]);
       currentLocation = {"lat": splitLatLng[0], "lng": splitLatLng[1]};
       addLocationMarker(latlng, "");
       getContent();
       $("#content").scrollTop(0);
     } else {
-      showSearchType(vars.type + '-tag');
-      $("#query").val(vars.q);
+      showSearchType(params.type + '-tag');
+      $("#query").val(params.q);
       $("#content").text("");
       queueSearch();
     }
-  }
-  if (vars.id && vars.id.length > 10) {
-    searchWithRecordID(vars.id);
-  }
-  if (vars.id && vars.id.length < 10) {
-    searchWithID(vars.id);
-  }
-  if (vars.leaderboard) {
-    searchWithLeaderboard(vars.id);
+    if (params.id) {
+      selectedTreeId = params.id;
+      resetMarkerColor();
+
+    }
+  } else if (params.id && params.id.length > 10) {
+    searchWithRecordID(params.id);
+  } else if (params.id && params.id.length < 10) {
+    searchWithID(params.id);
+  } else if (params.leaderboard) {
+    searchWithLeaderboard(params.id);
   }
   firebase.auth().onAuthStateChanged(function (user) {
-    if (user && vars.favourites) {
+    if (user && params.favourites) {
       searchWithFavourites();
     } 
   });
-});
+}
 
 function searchWithID(id) {
   showSearchType('tree_id-tag');
@@ -81,6 +86,8 @@ function searchWithID(id) {
 
 function clearSearch() {
   removeUrlParam("id");
+  removeUrlParam("type");
+  removeUrlParam("q");
   selectedTreeId = null;
   clearMarkers();
   clearLocationMarker();
@@ -1352,7 +1359,7 @@ function addTreeMarker(longitude, latitude, entry) {
   /* Check if tree selected is being updated and set its color to selected. */
   if (selectedTreeId) {
     if (selectedTreeId == ids) {
-      return;
+      treeIcon = selectedTreeIcon;
     }
   }
   var treeLocation = { lat: latitude, lng: longitude }
