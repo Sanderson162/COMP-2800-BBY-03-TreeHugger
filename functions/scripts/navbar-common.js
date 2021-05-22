@@ -48,6 +48,7 @@ $("#favouritesButton").on('click', (event) => {
   } else {
     window.location = "./searchMap?favourites=true";
   }
+  $("#profileHamburgerMenu").hide();
 })
 $("#leaderboardButton").on('click', (event) => {
 	event.preventDefault();
@@ -56,14 +57,11 @@ $("#leaderboardButton").on('click', (event) => {
   } else {
     window.location = "./searchMap?leaderboard=true";
   }
+  $("#profileHamburgerMenu").hide();
 })
 $("#profileHamburgerMenuButton").on('click', (event) => {
 	event.preventDefault();
-	if ($("#profileHamburgerMenu").is(":hidden")) {
-		$("#profileHamburgerMenu").show();
-	} else {
-		$("#profileHamburgerMenu").hide();
-	}
+  $("#profileHamburgerMenu").toggle();
 });
 
 $("#navbarHamProfileButton").on('click', (event) => {

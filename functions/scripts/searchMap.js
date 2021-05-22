@@ -39,7 +39,6 @@ $(document).ready(function () {
   $("#content").text("");
   showSearchType('common_name-tag');
   addInputListeners();
-
   let vars = getUrlVars();
   if (vars.id && vars.id.length > 10) {
     searchWithRecordID(vars.id);
@@ -47,19 +46,15 @@ $(document).ready(function () {
   if (vars.id && vars.id.length < 10) {
     searchWithID(vars.id);
   }
-
   if (vars.leaderboard) {
     searchWithLeaderboard(vars.id);
   }
-
   firebase.auth().onAuthStateChanged(function (user) {
     if (user && vars.favourites) {
       searchWithFavourites();
     } 
   });
-
 });
-
 
 function searchWithID(id) {
   showSearchType('tree_id-tag');
@@ -74,7 +69,9 @@ function clearSearch() {
   $("#content").text("");
   $(".search-container").hide();
   $(".tree-overlay-container").hide();
+  selectedTreeId = null;
   $(".content-container").show();
+  updateSearchMapBtn();
 }
 
 function searchWithRecordID(id) {
@@ -105,12 +102,12 @@ async function searchWithLeaderboard() {
   $("#content-title").text("LEADERBOARD");
   let favList = await getFavCountLeaderboard();
 
-  console.log("favlist ", favList)
+  // console.log("favlist ", favList)
 
   if (favList) {
     favList.forEach((record, index) => {
-      console.log(record);
-      console.log(record.recordID);
+      // console.log(record);
+      // console.log(record.recordID);
       getRecordAndDisplay(record.recordID, index + 1, false);
     });
   } 
@@ -127,6 +124,11 @@ async function getRecordAndDisplay(recordID, order, zoomOnTree) {
     updateContent(entry, false);
     if (zoomOnTree) {
       zoom(entry);
+    }
+    searchZoom();
+  } else {
+    if (searchZoom) {
+      showDialogue("treeNotAvailable");
     }
   }
 }
@@ -354,7 +356,7 @@ function search(reset) {
 function addSearchHistory(query, type) {
   $("#outer-search").css('height', '100%');
   updateSearchHistoryBtn();
-  updateSearchMapBtn()
+  updateSearchMapBtn();
   let searchItem = { q: query, searchType: type };
   searchHistory.push(searchItem);
   checkSearchHistory(query, type);
@@ -665,14 +667,14 @@ function showDialogue(m) {
     let post = $("<div></div>").addClass("post");
     post.addClass("dialogue");
     let title = $("<div></div>").addClass("title").text("No favourites");
-    let body = $("<div></div>").addClass("body").text("You don't have any favourite trees yet, tap the heart button to add one");
+    let body = $("<div></div>").addClass("body").text("You have no favourite trees yet; tap the heart button to add one.");
     post.append(title, body);
     $("#content").append(post);
   } else if (m == "treeNotAvailable") {
     let post = $("<div></div>").addClass("post");
     post.addClass("dialogue");
     let title = $("<div></div>").addClass("title").text("Tree not found");
-    let body = $("<div></div>").addClass("body").text("Tree with this ID does not exist, or is missing location data. ");
+    let body = $("<div></div>").addClass("body").text("A tree with this ID does not exist or is missing its location data. ");
     post.append(title, body);
     $("#content").append(post);
   }
@@ -1480,7 +1482,7 @@ function updateDetails() {
  function updateHistory(entry){
   var user = firebase.auth().currentUser;
   var treeID = entry.recordid;
-  console.log(entry);
+  // console.log(entry);
   if (user) {
       user.getIdToken(/* forceRefresh */ true).then(function(idToken) {
           $.ajax({
