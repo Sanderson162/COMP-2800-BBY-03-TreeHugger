@@ -612,6 +612,7 @@ input::placeholder {
     margin: auto;
     padding-right: 1em;
     padding-left: 1em;
+    line-height:1.6;
 }
 
 #thumbnail {
