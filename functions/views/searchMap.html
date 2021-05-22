@@ -18,57 +18,73 @@
 
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-    crossorigin="anonymous">
-    </script>
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
+        </script>
 </head>
 
 <body>
     <div class="search-container">
         <div id="outer-search">
             <span id="trees-near-header">SEARCH BY</span>
-        <div id="search">
-            <br>
-            <div id="search-tags">
-                <div class="tag" id="all-tag" onclick="showSearchType('all-tag')">All</div>
-                <div class="tag" id="common_name-tag" onclick="showSearchType('common_name-tag')">Name</div>
-                <div class="tag" id="date_planted-tag" onclick="showSearchType('date_planted-tag')">Date</div>
-                <div class="tag" id="species_name-tag" onclick="showSearchType('species_name-tag')">Species</div>
-                <div class="tag" id="genus_name-tag" onclick="showSearchType('genus_name-tag')">Genus</div>
-                <div class="tag" id="height_range_id-tag" onclick="showSearchType('height_range_id-tag')">Height</div>
-                <div class="tag" id="on_street-tag" onclick="showSearchType('on_street-tag')">Street</div>
-                <div class="tag" id="tree_id-tag" onclick="showSearchType('tree_id-tag')">ID</div>
-            </div>
+            <div id="search">
+                <br>
+                <div id="search-tags">
+                    <div class="tag" id="all-tag" onclick="showSearchType('all-tag')">All</div>
+                    <div class="tag" id="common_name-tag" onclick="showSearchType('common_name-tag')">Name</div>
+                    <div class="tag" id="date_planted-tag" onclick="showSearchType('date_planted-tag')">Date</div>
+                    <div class="tag" id="species_name-tag" onclick="showSearchType('species_name-tag')">Species</div>
+                    <div class="tag" id="genus_name-tag" onclick="showSearchType('genus_name-tag')">Genus</div>
+                    <div class="tag" id="height_range_id-tag" onclick="showSearchType('height_range_id-tag')">Height
+                    </div>
+                    <div class="tag" id="on_street-tag" onclick="showSearchType('on_street-tag')">Street</div>
+                    <div class="tag" id="tree_id-tag" onclick="showSearchType('tree_id-tag')">ID</div>
+                </div>
 
-            <div id="search-bar">
-                <input autocomplete="off" type="search" list="data" id="query"/>
-                <datalist id="data">
-                </datalist>
-                <button onclick="searchBtnClick()" id="search-btn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9.16667 15.8333C12.8486 15.8333 15.8333 12.8486 15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333Z" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M17.5 17.5L13.875 13.875" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+                <div id="search-bar">
+                    <input autocomplete="off" type="search" list="data" id="query" />
+                    <datalist id="data">
+                    </datalist>
+                    <button onclick="searchBtnClick()" id="search-btn"><svg width="20" height="20" viewBox="0 0 20 20"
+                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M9.16667 15.8333C12.8486 15.8333 15.8333 12.8486 15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333Z"
+                                stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M17.5 17.5L13.875 13.875" stroke="#111111" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
                     </button>
-            </div>
-            <div id="date-search-bar">
-                <!-- https://stackoverflow.com/questions/18510845/maxlength-ignored-for-input-type-number-in-chrome -->
-                <input maxlength="4" onkeypress="if(this.value.length==this.maxLength) return false;"  type="number" inputmode="numeric" pattern="[0-9]"  placeholder="YYYY" oninput="loadDateSearchBarOptions('ys')" list="year" id="query-year"/>
-                <input maxlength="2" onkeypress="if(this.value.length==this.maxLength || this.value > 1) return false;" type="number" inputmode="numeric" pattern="[0-9]" placeholder="MM" oninput="loadDateSearchBarOptions('ms')" list="month" id="query-month"/>
-                <input maxlength="2" onkeypress="if(this.value.length==this.maxLength || this.value > 3) return false;" type="number" inputmode="numeric" pattern="[0-9]" placeholder="DD"  oninput="loadDateSearchBarOptions('d')" list="day" id="query-day"/>
-                <datalist id="year">
-                </datalist>
-                <datalist id="month">
-                </datalist>
-                <datalist id="day">
-                </datalist>
-                <button onclick="dateSearchBtnClick()" id="search-btn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9.16667 15.8333C12.8486 15.8333 15.8333 12.8486 15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333Z" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M17.5 17.5L13.875 13.875" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+                </div>
+                <div id="date-search-bar">
+                    <!-- https://stackoverflow.com/questions/18510845/maxlength-ignored-for-input-type-number-in-chrome -->
+                    <input maxlength="4" onkeypress="if(this.value.length==this.maxLength) return false;" type="number"
+                        inputmode="numeric" pattern="[0-9]" placeholder="YYYY" oninput="loadDateSearchBarOptions('ys')"
+                        list="year" id="query-year" />
+                    <input maxlength="2"
+                        onkeypress="if(this.value.length==this.maxLength || this.value > 1) return false;" type="number"
+                        inputmode="numeric" pattern="[0-9]" placeholder="MM" oninput="loadDateSearchBarOptions('ms')"
+                        list="month" id="query-month" />
+                    <input maxlength="2"
+                        onkeypress="if(this.value.length==this.maxLength || this.value > 3) return false;" type="number"
+                        inputmode="numeric" pattern="[0-9]" placeholder="DD" oninput="loadDateSearchBarOptions('d')"
+                        list="day" id="query-day" />
+                    <datalist id="year">
+                    </datalist>
+                    <datalist id="month">
+                    </datalist>
+                    <datalist id="day">
+                    </datalist>
+                    <button onclick="dateSearchBtnClick()" id="search-btn"><svg width="20" height="20"
+                            viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M9.16667 15.8333C12.8486 15.8333 15.8333 12.8486 15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333Z"
+                                stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M17.5 17.5L13.875 13.875" stroke="#111111" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
                     </button>
-            </div>
-            <div id="search-history">
-                <!-- <div class="search-history-item">
+                </div>
+                <div id="search-history">
+                    <!-- <div class="search-history-item">
                     <div class="search-query"></div>
                     <div class="search-type"></div>
                     <div class="arrow-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -76,83 +92,100 @@
                         </svg>
                         </div>
                 </div> -->
+                </div>
             </div>
         </div>
     </div>
-    </div>
     <div class="content-container">
         <div id="outer-content">
-            <span  onclick="toggleContentOverlay()" id="trees-near-header"><svg  id="hide-content-btn" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 9L12 15L18 9" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <span onclick="toggleContentOverlay()" id="trees-near-header"><svg id="hide-content-btn" width="24"
+                    height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 9L12 15L18 9" stroke="#808080" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
                 </svg><span id="content-title">TREES NEAR ME</span></span>
 
-        <div id="content">
-            <!-- <div class="post">
+            <div id="content">
+                <!-- <div class="post">
                 <div class="title"></div>
                 <div class="distance"></div>
                 <div class="body"></div>
                 <div class="date"></div>
             </div> -->
+            </div>
         </div>
-    </div>
     </div>
     <div class="tree-overlay-container">
         <div id="outer-tree-content">
             <span id="tree-name">PREVIEW</span>
-        <div id="tree-content">
-            <div id="main">
-                <h2 id="species-name" onclick="treeNameClickSearch()"></h2>
-                <div id="body" onclick="treeStreetClickSearch()"></div>
-                <div id="distance"></div>
-                <div id=tree-card-box>
-                <div class="tree-card" onclick="treeHeightClickSearch()">
-                    <div class="tree-card-label">HEIGHT</div>
-                    <div class="tree-card-data" id="tree-card-height"></div>
-                </div>
-                <div class="tree-card">
-                    <div class="tree-card-label">DIAMETER</div>
-                    <div class="tree-card-data" id="tree-card-diameter"></div>
-                </div>
-                <div class="tree-card" onclick="treeDateAgeClickSearch()">
-                    <div class="tree-card-label">AGE</div>
-                    <div class="tree-card-data" id="tree-card-age"></div>
-                </div>
-               <div class="tree-card" onclick="treeDateClickSearch()">
-                   <div class="tree-card-label">DATE PLANTED</div>
-                   <div class="tree-card-data" id="tree-card-date"></div>
-               </div>
+            <div id="tree-content">
+                <div id="main">
+                    <h2 id="species-name" onclick="treeNameClickSearch()"></h2>
+                    <div id="body" onclick="treeStreetClickSearch()"></div>
+                    <div id="distance"></div>
+                    <div id=tree-card-box>
+                        <div class="tree-card" onclick="treeHeightClickSearch()">
+                            <div class="tree-card-label">HEIGHT</div>
+                            <div class="tree-card-data" id="tree-card-height"></div>
+                        </div>
+                        <div class="tree-card">
+                            <div class="tree-card-label">DIAMETER</div>
+                            <div class="tree-card-data" id="tree-card-diameter"></div>
+                        </div>
+                        <div class="tree-card" onclick="treeDateAgeClickSearch()">
+                            <div class="tree-card-label">AGE</div>
+                            <div class="tree-card-data" id="tree-card-age"></div>
+                        </div>
+                        <div class="tree-card" onclick="treeDateClickSearch()">
+                            <div class="tree-card-label">DATE PLANTED</div>
+                            <div class="tree-card-data" id="tree-card-date"></div>
+                        </div>
 
-            </div>
-            <div onclick="copyShareLink()" id="tree-card-id"></div>
-                <div id="date"></div>
-                <div id="updated"></div>
-                <div id="details"></div>
-            </div>
-            <div id="button-container">
-                <div id="street-view-container"><button id="street-btn">Street</button></div>
-                <div id="like-button-container"></div>
-                <div id="other-view-container">
-                    <button id="close-btn" onclick="hideTreeOverlay()">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 14H10V20" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M20 10H14V4" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M14 10L21 3" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M3 21L10 14" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
+                    </div>
+                    <div onclick="copyShareLink()" id="tree-card-id"></div>
+                    <div id="details"></div>
                 </div>
-                <div id="share-button-container">
-                    <button onclick="copyShareLink()" id="share-btn">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 12V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V12" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M16 6L12 2L8 6" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M12 2V15" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
+                <div id="button-container">
+                    <div id="details-arrow-container">
+                        <div id="details-arrow"><svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.75 16.25L15 22.5L21.25 16.25" stroke="#D3D3D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8.75 7.5L15 13.75L21.25 7.5" stroke="#D3D3D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            </div>
+                    </div>
+                    <div id="street-view-container"><button id="street-btn">Street</button></div>
+                    <div id="like-button-container"></div>
+                    <div id="other-view-container">
+                        <button id="close-btn" onclick="hideTreeOverlay()">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 14H10V20" stroke="#111111" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M20 10H14V4" stroke="#111111" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M14 10L21 3" stroke="#111111" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M3 21L10 14" stroke="#111111" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="share-button-container">
+                        <button onclick="copyShareLink()" id="share-btn">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M4 12V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V12"
+                                    stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M16 6L12 2L8 6" stroke="#111111" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M12 2V15" stroke="#111111" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
     <div class="map-container">
         <div id="map">
@@ -171,7 +204,8 @@
 
     <!-- Additional Script -->
     <script src="/searchMap.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIu6Paiio4Zq0ySb6-LuMJOpFSt25RPz0&map_ids=b3163309c37356ea&callback=initMap"> </script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIu6Paiio4Zq0ySb6-LuMJOpFSt25RPz0&map_ids=b3163309c37356ea&callback=initMap"> </script>
     <script src="./wikipediaFetch.js"></script>
     <script src="./likeButtonAndLeaderboard.js"></script>
 </body>

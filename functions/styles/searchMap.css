@@ -620,3 +620,13 @@ input::placeholder {
     display: block;
     border-radius: 4px;
 }
+
+#details-arrow-container {
+    display: block;
+    position:absolute;
+    bottom: 82px;
+    right:1em;
+    height:30px;
+    pointer-events:none;
+    display:none;
+}

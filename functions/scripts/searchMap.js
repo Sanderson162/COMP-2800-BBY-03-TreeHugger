@@ -39,6 +39,7 @@ $(document).ready(function () {
   $("#content").text("");
   showSearchType('common_name-tag');
   addInputListeners();
+  addMainScrollListener();
   let vars = getUrlVars();
   if (vars.id && vars.id.length > 10) {
     searchWithRecordID(vars.id);
@@ -869,6 +870,7 @@ function showTreeOverlay(entry) {
   $(".content-container").hide();
   $(".search-container").hide();
   $(".tree-overlay-container").show();
+  $("#details-arrow-container").fadeOut();
   updateSearchMapBtn();
   updateHistory(entry);
   updateTreeOverlayContent(entry);
@@ -1473,9 +1475,19 @@ function updateDetails() {
   let textForQuery = $("#tree-name").text();
   textForQuery = (textForQuery.split(' ').slice(0, 2).join('_')).toLowerCase();
   displayWikipediaInformation($("#details"), textForQuery);
+  isDetails();
 }
 
+//doesnt work, whats a promise :(
+function isDetails() {
+    $("#details-arrow-container").fadeIn();
+}
 
+function addMainScrollListener() {
+  $("#main").scroll(function() {
+    $("#details-arrow-container").css("opacity", 100 - $("#main").scrollTop() + "%");
+  });
+}
 /**
  * Saves history to database (Aidan) 
  */
