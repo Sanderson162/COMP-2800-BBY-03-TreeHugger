@@ -40,7 +40,7 @@ $(document).ready(function () {
   showSearchType('common_name-tag');
   addInputListeners();
   addMainScrollListener();
-  let vars = getUrlVars();
+  let vars = getUrlParams();
   if (vars.id && vars.id.length > 10) {
     searchWithRecordID(vars.id);
   }
@@ -135,14 +135,36 @@ async function getRecordAndDisplay(recordID, order, zoomOnTree) {
   }
 }
 
-// Url parsing function. Source: https://html-online.com/articles/get-url-parameters-javascript/
-function getUrlVars() {
-  var vars = {};
-  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
-    vars[key] = value;
-  });
-  return vars;
+/**
+ * Uses URL to get URL parameters.
+ * @returns params
+ * @see https://stackoverflow.com/questions/7722683/how-to-get-all-query-string-values-using-javascript
+ */
+function getUrlParams() {
+  let urlParams = (new URL(document.location)).searchParams;
+  let params = {};
+  for(let param of urlParams.keys()) {
+    params[param] = urlParams.get(param);
+  }
+  console.log(params);
+  return params;
 }
+
+/**
+ * Sets url parameter.
+ * @param {string} key 
+ * @param {string} value 
+ * @author https://stackoverflow.com/questions/10970078/modifying-a-query-string-without-reloading-the-page
+ */
+function setUrlParam(key, value) {
+  if (history.pushState) {
+    let searchParams = new URLSearchParams(window.location.search);
+    searchParams.set(key, value);
+    let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
+    window.history.pushState({path: newurl}, '', newurl);
+}
+}
+
 function addInputListeners() {
   $("#query").on("keyup", function (event) {
     if (event.keyCode === 13) {
