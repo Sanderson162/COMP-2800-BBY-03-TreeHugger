@@ -80,7 +80,7 @@ function getWikipediaThumbnail (genus_species) {
  * Displays wikipedia thumbnail retrieved from query in details division.
  * @param {*} result
  */
- async function displayWikipediaInformation(element, genus_species) {
+ async function displayWikipediaInformation(element, genus_species, arrowElement) {
   let extract = await getWikipediaExtract(genus_species);
   // replace regex from https://stackoverflow.com/questions/14948223/how-to-convert-n-to-html-line-break/23736554
   // see TheLazyHatGuy -> https://stackoverflow.com/users/11219881/thelazyhatguy
@@ -88,11 +88,19 @@ function getWikipediaThumbnail (genus_species) {
   element.text(extract);
   if (extract) {
     let link = "https://en.wikipedia.org/wiki/" + genus_species;
-  element.append('<br><br>Retrieved from <a href="'+ link +'" onclick="window.open(\'' + link + '\')">Wikipedia</a>');
-
-  let thumbnail = await getWikipediaThumbnail(genus_species);
-  element.prepend('<img id="thumbnail" src=' + thumbnail.source + ' alt=""><br>');
+    element.append('<br><br>Retrieved from <a href="'+ link +'" onclick="window.open(\'' + link + '\')">Wikipedia</a>');
+    let thumbnail = await getWikipediaThumbnail(genus_species);
+    element.prepend('<img id="thumbnail" src=' + thumbnail.source + ' alt=""><br>');
+    isDetails(true, arrowElement);
+  } else {
+    isDetails(false, arrowElement);
   }
-
 }
 
+function isDetails(detailExists, arrowElement) {
+  if (detailExists) {
+    arrowElement.fadeIn();
+  } else {
+    arrowElement.fadeOut();
+  }
+}

@@ -870,7 +870,7 @@ function showTreeOverlay(entry) {
   $(".content-container").hide();
   $(".search-container").hide();
   $(".tree-overlay-container").show();
-  $("#details-arrow-container").fadeOut();
+  $("#details-arrow-container").hide();
   updateSearchMapBtn();
   updateHistory(entry);
   updateTreeOverlayContent(entry);
@@ -1474,20 +1474,15 @@ function updateDetails() {
   $("#details").html("");
   let textForQuery = $("#tree-name").text();
   textForQuery = (textForQuery.split(' ').slice(0, 2).join('_')).toLowerCase();
-  displayWikipediaInformation($("#details"), textForQuery);
-  isDetails();
-}
+  displayWikipediaInformation($("#details"), textForQuery, $("#details-arrow-container"));
 
-//doesnt work, whats a promise :(
-function isDetails() {
-    $("#details-arrow-container").fadeIn();
 }
-
 function addMainScrollListener() {
   $("#main").scroll(function() {
     $("#details-arrow-container").css("opacity", 100 - $("#main").scrollTop() + "%");
   });
 }
+
 /**
  * Saves history to database (Aidan) 
  */
