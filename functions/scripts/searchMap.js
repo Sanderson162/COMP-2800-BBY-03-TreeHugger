@@ -65,12 +65,12 @@ function searchWithID(id) {
 }
 
 function clearSearch() {
+  selectedTreeId = null;
   clearMarkers();
   clearLocationMarker();
   $("#content").text("");
   $(".search-container").hide();
   $(".tree-overlay-container").hide();
-  selectedTreeId = null;
   $(".content-container").show();
   updateSearchMapBtn();
 }
