@@ -201,7 +201,7 @@
     /* margin-top:1em; */
     height: 100%;
     max-width: 420px;
-    max-height: 325px;
+    max-height: 355px;
     overflow-y:hidden;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
@@ -218,4 +218,21 @@
     height:100%;
     display:block;
     margin:auto;
+}
+
+.signInWithGoogle {
+  height:50px;
+  width: auto;
+}
+
+#loginSubmit, #signupSubmit {
+  height: 45px;
+  width: 202px !important;
+  font-weight: 600;
+  background-color: white;
+  color: gray;
+  border: none !important;
+  font-size: 100% !important;
+  margin-top:1em !important;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 2px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
