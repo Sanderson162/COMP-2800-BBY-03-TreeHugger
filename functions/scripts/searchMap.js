@@ -41,6 +41,21 @@ $(document).ready(function () {
   addInputListeners();
   addMainScrollListener();
   let vars = getUrlParams();
+  if (vars.q && vars.type) {
+    if (vars.type == "location") {
+      var splitLatLng = vars.q.split(" ");
+      let latlng = new google.maps.LatLng(splitLatLng[0], splitLatLng[1]);
+      currentLocation = {"lat": splitLatLng[0], "lng": splitLatLng[1]};
+      addLocationMarker(latlng, "");
+      getContent();
+      $("#content").scrollTop(0);
+    } else {
+      showSearchType(vars.type + '-tag');
+      $("#query").val(vars.q);
+      $("#content").text("");
+      queueSearch();
+    }
+  }
   if (vars.id && vars.id.length > 10) {
     searchWithRecordID(vars.id);
   }
@@ -65,6 +80,7 @@ function searchWithID(id) {
 }
 
 function clearSearch() {
+  removeUrlParam("id");
   selectedTreeId = null;
   clearMarkers();
   clearLocationMarker();
@@ -160,6 +176,15 @@ function setUrlParam(key, value) {
   if (history.pushState) {
     let searchParams = new URLSearchParams(window.location.search);
     searchParams.set(key, value);
+    let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
+    window.history.pushState({path: newurl}, '', newurl);
+}
+}
+
+function removeUrlParam(key) {
+  if (history.pushState) {
+    let searchParams = new URLSearchParams(window.location.search);
+    searchParams.delete(key);
     let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
     window.history.pushState({path: newurl}, '', newurl);
 }
@@ -289,6 +314,7 @@ function searchBtnClick() {
     return;
   }
   if ($("#query").val() != "") {
+    removeUrlParam("id");
     selectedTreeId = null;
     clearMarkers();
     clearLocationMarker();
@@ -298,6 +324,7 @@ function searchBtnClick() {
 }
 function dateSearchBtnClick() {
   if ($("#query-year").val().length == 4) {
+    removeUrlParam("id");
     selectedTreeId = null;
     clearMarkers();
     clearLocationMarker();
@@ -338,6 +365,8 @@ function search(reset) {
   }
   let q = $("#query").val().toUpperCase();
   let searchType = $("#search-tags>div.tag-selected").attr('id').slice(0, -4);
+  setUrlParam("q", q);
+  setUrlParam("type", searchType);
   let qString = responsiveSearchTitle(heightRangeToFeet(q, searchType));
   $("#content-title").text(qString);
   $(".search-container").hide();
@@ -622,7 +651,10 @@ function getContent() {
     searchZoom();
     isContent();
   });
+  console.log(currentLocation);
   addSearchHistory(currentLocation, "location");
+  setUrlParam("q", currentLocation.lat + " " + currentLocation.lng);
+  setUrlParam("type", "location");
 }
 /**
  * Checks if content is empty. 
@@ -818,6 +850,7 @@ function loadSearchHistoryItem(lastSearch) {
  * @param {obj} entry
  */
 function zoom(entry) {
+  setUrlParam("id", entry.recordid);
   resetMarkerColor();
   $('#' + entry.recordid).css("background-color", "whitesmoke");
   let currentZoom = map.getZoom();
@@ -981,6 +1014,7 @@ function addStreetViewBtnListener(entry) {
  * Hides the TreeOverlay and resets variables. 
  */
 function hideTreeOverlay() {
+  removeUrlParam("id");
   $(".tree-overlay-container").hide();
   $(".content-container").show();
   panorama.setVisible(false);
