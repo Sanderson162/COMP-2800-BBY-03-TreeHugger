@@ -327,11 +327,13 @@ function treeStreetClickSearch() {
 function queueSearch(_callback) {
   clearMarkers();
   clearLocationMarker();
-  // This updates the current search selectedId data to the current selected tree.
+  updateSearchHistorySelectedId();
+  search(true, _callback);
+}
+function updateSearchHistorySelectedId() {
   if (searchHistory.length > 0) {
     searchHistory[searchHistory.length - 1].selected = selectedTreeId;
   }
-  search(true, _callback);
 }
 /**
  * Search button click that queries a new search.
@@ -1293,6 +1295,7 @@ function initMap() {
   map.addListener("dblclick", (mapsMouseEvent) => {
     clearTimeout(mouseClickTimer); //prevent single-click action
     clearLocationMarker();
+    updateSearchHistorySelectedId();
     currentLocation = mapsMouseEvent.latLng.toJSON();
     addLocationMarker(mapsMouseEvent.latLng, "");
     getContent();
@@ -1448,7 +1451,7 @@ function stepBackSearchHistory() {
       addLocationMarker(latlng, "");
       searchHistory.splice((index + 1), 1);
       searchHistory.splice(index, 1);
-      getContent();
+      getContent(function () {selectedTreeId = null;$("#" + selectedTree).click()});
       $("#content").scrollTop(0);
     } else {
       showSearchType(lastSearch.searchType + "-tag");
