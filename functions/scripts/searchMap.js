@@ -758,10 +758,10 @@ function getContent(_callback) {
     $.each(data.records, function (i, entry) {
       updateContent(entry, true);
     });
+    searchZoom();
     if (_callback) {
       _callback();
     }
-    searchZoom();
     isContent();
   });
   addSearchHistory(currentLocation, "location");
