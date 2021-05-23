@@ -355,6 +355,7 @@ function resetMarkerColor() {
 function showTreeOverlay(entry) {
   $(".content-container").hide();
   $(".tree-overlay-container").show();
+  $("#details-arrow-container").hide();
   updateTreeOverlayContent(entry);
   updateHistory(entry);
   updateDetails();
