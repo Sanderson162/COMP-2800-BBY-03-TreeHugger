@@ -1097,6 +1097,7 @@ function dateStringtoDate(dateString) {
   return date;
 }
 /**
+ * TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  * Copies tree share link and saves it to clipboard.
  * @author Amrit, Stirling
  */
@@ -1108,7 +1109,7 @@ function copyShareLink() {
   console.log(url);
   copyToClipboard(url);
 }
-//TODO DOES NOT WORK ???????????
+//TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //@author: https://stackoverflow.com/questions/33855641/copy-output-of-a-javascript-variable-to-the-clipboard
 function copyToClipboard(text) {
   var dummy = document.createElement("textarea");
@@ -1119,7 +1120,6 @@ function copyToClipboard(text) {
   document.execCommand("copy");
   document.body.removeChild(dummy);
 }
-
 /**
  * Adds a click listener to the StreeView button in TreeOverlay. 
  * @param {obj} entry
