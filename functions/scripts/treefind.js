@@ -384,6 +384,7 @@ function updateTreeOverlayContent(entry) {
     ageString = "N/A";
   }
   $("#tree-card-id").text("Tree ID: " + entry.fields.tree_id);
+  $("#tree-card-id").data("id", entry.recordid);
   $("#tree-card-height").text(entry.fields.height_range_id * 10 + " ft");
   $("#tree-card-diameter").text(entry.fields.diameter + " in");
   $("#tree-card-date").text(dateString);
@@ -916,6 +917,16 @@ function createUrl(query, type) {
   return url;
 }
 function navigateUrl(url) {
-
   window.location.href = url;
+}
+function copyShareLink() {
+  let id = $('#tree-card-id').data('id');
+  let url = window.location.href;
+  let urlBase = url.substring(0, url.lastIndexOf('/')+1);
+  let newUrl = urlBase + "/searchMap?id=" + id;
+  console.log(newUrl);  
+  // $("#link-container").show();
+  // $("#shareLink").val(url);
+  // console.log(url);
+  // copyToClipboard(url);
 }
