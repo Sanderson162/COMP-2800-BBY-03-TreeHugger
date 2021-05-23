@@ -176,20 +176,20 @@ function getUrlParams() {
  * @author https://stackoverflow.com/questions/10970078/modifying-a-query-string-without-reloading-the-page
  */
 function setUrlParam(key, value) {
-  if (history.pushState) {
+  if (history.replaceState) {
     let searchParams = new URLSearchParams(window.location.search);
     searchParams.set(key, value);
     let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
-    window.history.pushState({path: newurl}, '', newurl);
+    window.history.replaceState({path: newurl}, '', newurl);
 }
 }
 
 function removeUrlParam(key) {
-  if (history.pushState) {
+  if (history.replaceState) {
     let searchParams = new URLSearchParams(window.location.search);
     searchParams.delete(key);
     let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
-    window.history.pushState({path: newurl}, '', newurl);
+    window.history.replaceState({path: newurl}, '', newurl);
 }
 }
 
