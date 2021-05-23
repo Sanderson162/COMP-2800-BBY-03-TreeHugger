@@ -48,7 +48,53 @@ $(document).ready(function () {
     testLocationInterval = setInterval(testGPS, 30);
   }
   locationInterval = setInterval("getLocation(false)", 3000);
+  checkUrlParams(getUrlParams());
 });
+
+function checkUrlParams(params) {
+  if (params.id) {
+    setTimeout(function(){$("#" + params.id).click()}, 500);
+  } 
+}
+
+/**
+ * Uses URL to get URL parameters.
+ * @returns params
+ * @see https://stackoverflow.com/questions/7722683/how-to-get-all-query-string-values-using-javascript
+ */
+ function getUrlParams() {
+  let urlParams = (new URL(document.location)).searchParams;
+  let params = {};
+  for(let param of urlParams.keys()) {
+    params[param] = urlParams.get(param);
+  }
+  console.log(params);
+  return params;
+}
+
+/**
+ * Sets url parameter.
+ * @param {string} key 
+ * @param {string} value 
+ * @author https://stackoverflow.com/questions/10970078/modifying-a-query-string-without-reloading-the-page
+ */
+function setUrlParam(key, value) {
+  if (history.pushState) {
+    let searchParams = new URLSearchParams(window.location.search);
+    searchParams.set(key, value);
+    let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
+    window.history.pushState({path: newurl}, '', newurl);
+}
+}
+
+function removeUrlParam(key) {
+  if (history.pushState) {
+    let searchParams = new URLSearchParams(window.location.search);
+    searchParams.delete(key);
+    let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
+    window.history.pushState({path: newurl}, '', newurl);
+}
+}
 /**
  * Gets location, pulls content, and shows error dialogues if any occur. 
  * @see https://developers.google.com/maps/documentation/javascript/geolocation
@@ -252,6 +298,7 @@ function zoom(entry) {
   centerMap();
   showTreeOverlay(entry);
   addStreetViewBtnListener(entry);
+  setUrlParam("id", entry.recordid);
 }
 /**
  * Sets the position and direction of StreetView to face the treeLocation, if it is visible. 
@@ -381,6 +428,7 @@ function hideTreeOverlay() {
   selectedTreeId = null;
   showMapButtons(true);
   centerMap();
+  removeUrlParam("id");
 }
 /** 
  * Toggles the content overlay visible or hidden

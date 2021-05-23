@@ -58,14 +58,14 @@ function checkUrlParams(params) {
       $("#content").text("");
       queueSearch();
     }
-  } 
-  if (params.id && params.id.length > 10) {
+    if (params.id) {
+      setTimeout(function(){$("#" + params.id).click()}, 500);
+    } 
+  } else if (params.id && params.id.length > 10) {
     searchWithRecordID(params.id);
-  }
-  if (params.id && params.id.length < 10) {
+  } else if (params.id && params.id.length < 10) {
     searchWithID(params.id);
-  }
-  if (params.leaderboard) {
+  } else if (params.leaderboard) {
     searchWithLeaderboard(params.id);
   }
   firebase.auth().onAuthStateChanged(function (user) {
