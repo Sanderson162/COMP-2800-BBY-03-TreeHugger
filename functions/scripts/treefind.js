@@ -53,7 +53,7 @@ $(document).ready(function () {
 
 function checkUrlParams(params) {
   if (params.id) {
-    setTimeout(function(){$("#" + params.id).click()}, 500);
+    setTimeout(function(){$("#" + params.id).click()}, 1000);
   } 
 }
 

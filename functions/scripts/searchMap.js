@@ -59,7 +59,7 @@ function checkUrlParams(params) {
       queueSearch();
     }
     if (params.id) {
-      setTimeout(function(){$("#" + params.id).click()}, 500);
+      setTimeout(function(){$("#" + params.id).click()}, 1000);
     } 
   } else if (params.id && params.id.length > 10) {
     searchWithRecordID(params.id);
@@ -415,7 +415,7 @@ function addSearchHistory(query, type) {
   $("#outer-search").css('height', '100%');
   updateSearchHistoryBtn();
   updateSearchMapBtn();
-  let searchItem = { q: query, searchType: type };
+  let searchItem = { q: query, searchType: type, selected: selectedTreeId };
   searchHistory.push(searchItem);
   checkSearchHistory(query, type);
   allSearchHistory.push(searchItem);
@@ -1316,6 +1316,8 @@ function stepBackSearchHistory() {
       searchHistory.splice(index, 1);
       search(true);
     }
+    selectedTreeId = null;
+    setTimeout(function(){$("#" + searchHistory[index].selected).click()}, 1000);
   }
 }
 /**
@@ -1417,11 +1419,9 @@ function distance(lat1, lon1, lat2, lon2, unit) {
  * Removes the markers from the map, but keeps them in the array. */
 function clearMarkers() {
   for (let i = 0; i < markers.length; i++) {
-    if (markers[i].get('id') != selectedTreeId) {
       markers[i].setMap(null);
       markers.splice(i, 1);
       i--;
-    }
   }
 }
 /**
