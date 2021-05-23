@@ -51,7 +51,7 @@ function checkUrlParams(params) {
     let _callback;
     if (params.id) {
       // This call back simulates a mouse click on the selected treeId from the params.
-      _callback = function () {selectedTreeId = null;$("#" + params.id).click()};
+      _callback = function () {selectedTreeId = null;$("#" + params.id).click();};
     } 
     if (params.type == "location") {
       var splitLatLng = params.q.split(" ");
@@ -1562,8 +1562,8 @@ function distance(lat1, lon1, lat2, lon2, unit) {
   }
 }
 /**
- * Removes the markers from the map, but keeps them in the array. 
- * @author https://developers.google.com/maps/documentation/javascript/examples/marker-remove
+ * Removes all markers from the map and array.
+ * @author https://developers.google.com/maps/documentation/javascript/examples/marker-remove, Amrit
  * @see https://love2dev.com/blog/javascript-remove-from-array/
  */
 function clearMarkers() {

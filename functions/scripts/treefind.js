@@ -60,7 +60,7 @@ $(document).ready(function () {
 function checkUrlParams(params) {
   let _callback;
   if (params.id) {
-    // Stimulates a click on listItem to initiate the zoom function on that particular ID.
+    // Simulates a click on listItem to initiate the zoom function on that particular ID.
     _callback = function () {
       selectedTreeId = null;
       if ($("#" + params.id).length) {
@@ -69,7 +69,7 @@ function checkUrlParams(params) {
         getLocation(true);
       }
     };
-    getLocation(false, _callback)
+    getLocation(false, _callback);
   } else {
     getLocation(true);
   }
