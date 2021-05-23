@@ -92,6 +92,8 @@ function clearSearch() {
   removeUrlParam("id");
   removeUrlParam("type");
   removeUrlParam("q");
+  searchHistory = [];
+  updateSearchHistoryBtn();
   selectedTreeId = null;
   clearMarkers();
   clearLocationMarker();
@@ -105,13 +107,13 @@ function clearSearch() {
 
 function searchWithRecordID(id) {
   clearSearch();
-  $("#content-title").text("TREEHUGGER");
+  $("#content-title").text("TREE");
   getRecordAndDisplay(id, null, true);
 }
 
 async function searchWithFavourites() {
   clearSearch();
-  $("#content-title").text("FAVOURITE TREE");
+  $("#content-title").text("FAVOURITE TREES");
   let favList = await getFavByUser();
 
   // console.log("favlist ", favList)
