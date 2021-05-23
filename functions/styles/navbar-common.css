@@ -141,7 +141,6 @@
   
   #profileHamburgerMenu {
     width: 200px;
-    background-color: white;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     color: rgb(0, 0, 0);
     text-align: center;
@@ -152,21 +151,24 @@
     right: 2px;
     display: none;
     user-select: none;
+    background-color:rgb(247, 247, 247);
   }
   
   #profileHamburgerMenu>div {
     text-align: center;
-    border-color:gainsboro;
-    border-width:thin;
-    border-style: solid;
-    border-radius: 4px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    border-radius:4px;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    width:150px;
+    padding:15px;
     box-sizing: border-box;
-    margin: 5px;
+    margin-left: auto;
+    margin-right:auto;
+    margin-top:10px;
     margin-bottom:10px;
     font-weight:500;
-    background:whitesmoke;
+    background:white;
+    display:block;
+    height:50px;
   }
   
   #navbarHamProfileButton {
