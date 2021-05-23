@@ -165,7 +165,6 @@ function getUrlParams() {
   for(let param of urlParams.keys()) {
     params[param] = urlParams.get(param);
   }
-  console.log(params);
   return params;
 }
 
@@ -296,7 +295,6 @@ function queueSearch() {
   if (searchHistory.length > 0) {
     searchHistory[searchHistory.length - 1].selected = selectedTreeId;
   }
-
   search(true);
 }
 /**
@@ -421,7 +419,6 @@ function addSearchHistory(query, type) {
   updateSearchMapBtn();
   let searchItem = { q: query, searchType: type, selected: selectedTreeId };
   searchHistory.push(searchItem);
-  console.log(searchHistory);
   checkSearchHistory(query, type);
   allSearchHistory.push(searchItem);
 }
@@ -661,7 +658,6 @@ function getContent() {
     searchZoom();
     isContent();
   });
-  console.log(currentLocation);
   addSearchHistory(currentLocation, "location");
   setUrlParam("q", currentLocation.lat + " " + currentLocation.lng);
   setUrlParam("type", "location");
@@ -992,9 +988,7 @@ function dateStringtoDate(dateString) {
 }
 function copyShareLink() {
   let id = $('#tree-card-id').data('id');
-  
   let url = window.location.href.split('?')[0] + "?id=" + id;
-  
   $("#link-container").show();
   $("#shareLink").val(url);
   console.log(url);
@@ -1324,7 +1318,7 @@ function stepBackSearchHistory() {
       search(true);
     }
     selectedTreeId = null;
-    setTimeout(function(){$("#" + selectedTree).click();console.log(selectedTree)}, 1000);
+    setTimeout(function(){$("#" + selectedTree).click();}, 1000);
   }
 }
 /**
