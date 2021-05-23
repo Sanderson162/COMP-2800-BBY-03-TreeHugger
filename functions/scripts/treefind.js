@@ -49,6 +49,7 @@ $(document).ready(function () {
   }
   locationInterval = setInterval("getLocation(false)", 3000);
   checkUrlParams(getUrlParams());
+  addMainScrollListener();
 });
 
 function checkUrlParams(params) {
@@ -846,9 +847,15 @@ function clearLocationMarker() {
  */
  function updateDetails() {
   $("#details").html("");
-  let textForQuery = $("#tree-name").text();
+  let textForQuery = $("#species-name").text();
   textForQuery = (textForQuery.split(' ').slice(0, 2).join('_')).toLowerCase();
-  displayWikipediaInformation($("#details"), textForQuery);
+  displayWikipediaInformation($("#details"), textForQuery, $("#details-arrow-container"));
+}
+
+function addMainScrollListener() {
+  $("#main").scroll(function() {
+    $("#details-arrow-container").css("opacity", 100 - $("#main").scrollTop() + "%");
+  });
 }
 
 /**

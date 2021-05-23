@@ -326,6 +326,7 @@ button:hover {
     color:rgb(235, 235, 235);
     font-size:80%;
     display:block;
+    margin-bottom:3em;
 }
 
 #like-button-container {
@@ -338,6 +339,7 @@ button:hover {
     margin: auto;
     padding-right: 1em;
     padding-left: 1em;
+    line-height:1.6;
 }
 
 #thumbnail {
@@ -346,4 +348,30 @@ button:hover {
     margin-right: auto;
     display: block;
     border-radius: 4px;
+}
+
+#details-arrow-container {
+    display: block;
+    position:absolute;
+    bottom: 82px;
+    right:0.5em;
+    height:30px;
+    pointer-events:none;
+    display:none;
+}
+
+#share-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-right: 4px;
+    float: right;
+}
+
+#share-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
