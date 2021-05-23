@@ -29,7 +29,7 @@ currentLocation = { lat: 49.239593, lng: -123.024645 };
 /** 
  * TESTING SETTINGS 
  */
-let testing = true;
+let testing = false;
 /* pace: 20 is crazy driver pace, 10 is safe driver pace, 1 is walking pace. */
 let pace = 1;
 let testLocationInterval;
@@ -45,12 +45,11 @@ function testGPS() {
  * @author Amrit
  */
 $(document).ready(function () {
-  getLocation(true);
   if (testing) {
     testLocationInterval = setInterval(testGPS, 30);
   }
-  locationInterval = setInterval("getLocation(false)", 3000);
   checkUrlParams(getUrlParams());
+  locationInterval = setInterval("getLocation(false)", 3000);
   addMainScrollListener();
 });
 /**
@@ -59,10 +58,21 @@ $(document).ready(function () {
  * @author Amrit
  */
 function checkUrlParams(params) {
+  let _callback;
   if (params.id) {
     // Stimulates a click on listItem to initiate the zoom function on that particular ID.
-    setTimeout(function(){$("#" + params.id).click()}, 1000);
-  } 
+    _callback = function () {
+      selectedTreeId = null;
+      if ($("#" + params.id).length) {
+        $("#" + params.id).click();
+      } else {
+        getLocation(true);
+      }
+    };
+    getLocation(false, _callback)
+  } else {
+    getLocation(true);
+  }
 }
 /**
  * Uses URL to get URL parameters.
@@ -107,9 +117,10 @@ function removeUrlParam(key) {
 }
 /**
  * Gets location, pulls content, and shows error dialogues if any occur. 
+ * @param {obj} _callback Function to be passed to pullLocation (optional).
  * @author https://developers.google.com/maps/documentation/javascript/geolocation, Amrit
  */
-function getLocation(center) {
+function getLocation(center, _callback) {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -127,7 +138,7 @@ function getLocation(center) {
           currentLocation = location;
           updateLocationMarker(currentLocation);
         }
-        contentPullLocation();
+        contentPullLocation(_callback);
         if (center) {
           map.setCenter(currentLocation);
           centerMap();
@@ -162,16 +173,17 @@ function checkLocationBounds(position) {
 }
 /**
  * Only gets new content after x (distanceRefresh) meters distance from last get. Updates distance only between gets.
+ * @param {obj} _callback Function to be passed to getContent (optional).
  * @author Amrit 
  */
-function contentPullLocation() {
+function contentPullLocation(_callback) {
   if (!lastPullLocation) {
-    getContent();
+    getContent(_callback);
     lastPullLocation = currentLocation;
   } else {
     if (lastPullLocation.lat != currentLocation.lat || lastPullLocation.lng != currentLocation.lng) {
       if (Math.round(distance(lastPullLocation.lat, lastPullLocation.lng, currentLocation.lat, currentLocation.lng, "M")) > distanceRefresh) {
-        getContent();
+        getContent(_callback);
         lastPullLocation = currentLocation;
       }
       if (!lastCalcLocation) {
@@ -188,10 +200,11 @@ function contentPullLocation() {
 }
 /**
  * Gets entries from opendatabase API. 
+ * @param {obj} _callback Function to be called back after completion (optional).
  * @author Amrit
  * @see https://www.w3schools.com/jquery/ajax_getjson.asp
  */
-function getContent() {
+function getContent(_callback) {
   $.getJSON('https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&geofilter.distance=' + currentLocation.lat + '%2C' + currentLocation.lng + '%2C1000&rows=' + rows, function (data) {
     $("#content").text("");
     clearMarkers();
@@ -200,6 +213,9 @@ function getContent() {
         updateContent(entry);
       }
     });
+    if (_callback) {
+      _callback();
+    }
     isContent();
   });
 }
@@ -541,6 +557,7 @@ function updateLocationMarker(location, lbl) {
       label: lbl,
       icon: locationIcon,
       id: "location",
+      zIndex: 1000000,
     });
     locationMarker = marker;
   }
@@ -592,7 +609,7 @@ function initMap() {
       position: google.maps.ControlPosition.RIGHT_BOTTOM,
     },
     fullscreenControl: false,
-    minZoom: 18,
+    minZoom: 15,
   });
   map.addListener("click", () => {
     if (selectedTreeId) {
@@ -675,6 +692,7 @@ function createCenterLocationBtn() {
     if (locationInterval == null) {
     } else {
       map.setCenter(currentLocation);
+      map.setZoom(20);
       centerMap();
     }
   });

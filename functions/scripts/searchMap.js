@@ -48,22 +48,25 @@ $(document).ready(function () {
  */
 function checkUrlParams(params) {
   if (params.q && params.type) {
+    let _callback;
+    if (params.id) {
+      // This call back simulates a mouse click on the selected treeId from the params.
+      _callback = function () {selectedTreeId = null;$("#" + params.id).click()};
+    } 
     if (params.type == "location") {
       var splitLatLng = params.q.split(" ");
       let latlng = new google.maps.LatLng(splitLatLng[0], splitLatLng[1]);
       currentLocation = {"lat": splitLatLng[0], "lng": splitLatLng[1]};
       addLocationMarker(latlng, "");
-      getContent();
+      getContent(_callback);
       $("#content").scrollTop(0);
     } else {
       showSearchType(params.type + '-tag');
       $("#query").val(params.q);
       $("#content").text("");
-      queueSearch();
+      queueSearch(_callback);
     }
-    if (params.id) {
-      setTimeout(function(){$("#" + params.id).click()}, 1000);
-    } 
+
   } else if (params.id && params.id.length > 10) {
     searchWithRecordID(params.id);
   } else if (params.id && params.id.length < 10) {
@@ -318,16 +321,17 @@ function treeStreetClickSearch() {
 }
 /**
  * Queues search for treeOverlay tap searches.
+ * @param {obj} _callback Function to be passed to search on completion (optional).
  * @author Amrit
  */
-function queueSearch() {
+function queueSearch(_callback) {
   clearMarkers();
   clearLocationMarker();
   // This updates the current search selectedId data to the current selected tree.
   if (searchHistory.length > 0) {
     searchHistory[searchHistory.length - 1].selected = selectedTreeId;
   }
-  search(true);
+  search(true, _callback);
 }
 /**
  * Search button click that queries a new search.
@@ -414,9 +418,11 @@ function addFirstZero(num) {
 }
 /**
  * Search function for app.
+ * @param {bool} reset Resets the page count (optional).
+ * @param {obj} _callback Function to be called back after completion (optional).
  * @author Amrit, Aidan
  */
-function search(reset) {
+function search(reset, _callback) {
   if (reset) {
     page = 0;
   }
@@ -446,6 +452,9 @@ function search(reset) {
       }
     });
     searchZoom();
+    if (_callback) {
+      _callback();
+    }
     let count = $(".post").length;
     if (count == 1) {
       zoom(data.records[0]);
@@ -732,10 +741,11 @@ function resetTagSelection() {
 }
 /**
  * Gets entries from opendatabase API. 
+ * @param {obj} _callback Function to be called back after completion (optional).
  * @see https://www.w3schools.com/jquery/ajax_getjson.asp
  * @author Amrit
  */
-function getContent() {
+function getContent(_callback) {
   let url = 'https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&geofilter.distance=' + currentLocation.lat + '%2C' + currentLocation.lng + '%2C1000&rows=' + rows;
   $.getJSON(url, function (data) {
     $("#content").text("");
@@ -743,6 +753,9 @@ function getContent() {
     $.each(data.records, function (i, entry) {
       updateContent(entry, true);
     });
+    if (_callback) {
+      _callback();
+    }
     searchZoom();
     isContent();
   });
@@ -935,6 +948,7 @@ function parseType(type) {
 function loadSearchHistoryItem(lastSearch) {
   clearMarkers();
   clearLocationMarker();
+  selectedTreeId = null;
   if (lastSearch.searchType == "location") {
     currentLocation = lastSearch.q;
     let latlng = new google.maps.LatLng(lastSearch.q.lat, lastSearch.q.lng);
@@ -1442,10 +1456,9 @@ function stepBackSearchHistory() {
       $("#content").text("");
       searchHistory.splice(index + 1, 1);
       searchHistory.splice(index, 1);
-      search(true);
+      search(true, function () {selectedTreeId = null;$("#" + selectedTree).click()});
     }
-    selectedTreeId = null;
-    setTimeout(function(){$("#" + selectedTree).click();}, 1000);
+    
   }
 }
 /**
