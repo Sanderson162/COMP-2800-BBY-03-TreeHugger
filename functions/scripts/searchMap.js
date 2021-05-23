@@ -293,6 +293,10 @@ function treeStreetClickSearch() {
 function queueSearch() {
   clearMarkers();
   clearLocationMarker();
+  if (searchHistory.length > 0) {
+    searchHistory[searchHistory.length - 1].selected = selectedTreeId;
+  }
+
   search(true);
 }
 /**
@@ -417,6 +421,7 @@ function addSearchHistory(query, type) {
   updateSearchMapBtn();
   let searchItem = { q: query, searchType: type, selected: selectedTreeId };
   searchHistory.push(searchItem);
+  console.log(searchHistory);
   checkSearchHistory(query, type);
   allSearchHistory.push(searchItem);
 }
@@ -1296,7 +1301,9 @@ function createSearchMapBtn() {
  */
 function stepBackSearchHistory() {
   let index = searchHistory.length - 2;
+ 
   if (index > -1) {
+    let selectedTree = searchHistory[index].selected;
     let lastSearch = searchHistory[index];
     clearMarkers();
     clearLocationMarker();
@@ -1317,7 +1324,7 @@ function stepBackSearchHistory() {
       search(true);
     }
     selectedTreeId = null;
-    setTimeout(function(){$("#" + searchHistory[index].selected).click()}, 1000);
+    setTimeout(function(){$("#" + selectedTree).click();console.log(selectedTree)}, 1000);
   }
 }
 /**
