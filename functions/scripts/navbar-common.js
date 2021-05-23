@@ -46,6 +46,7 @@ $("#favouritesButton").on('click', (event) => {
   if (window.location.pathname == "/searchMap") {
     searchWithFavourites();
     setUrlParam("favourites", "true");
+    removeUrlParam("leaderboard");
   } else {
     window.location = "./searchMap?favourites=true";
   }
@@ -56,6 +57,7 @@ $("#leaderboardButton").on('click', (event) => {
   if (window.location.pathname == "/searchMap") {
     searchWithLeaderboard();
     setUrlParam("leaderboard", "true");
+    removeUrlParam("favourites");
   } else {
     window.location = "./searchMap?leaderboard=true";
   }

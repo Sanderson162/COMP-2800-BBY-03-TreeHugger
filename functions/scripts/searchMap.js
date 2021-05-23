@@ -86,8 +86,6 @@ function clearSearch() {
   removeUrlParam("id");
   removeUrlParam("type");
   removeUrlParam("q");
-  removeUrlParam("favourites");
-  removeUrlParam("leaderboard");
   selectedTreeId = null;
   clearMarkers();
   clearLocationMarker();
@@ -101,7 +99,7 @@ function clearSearch() {
 
 function searchWithRecordID(id) {
   clearSearch();
-  // $("#content-title").text("TREEHUGGER");
+  $("#content-title").text("TREEHUGGER");
   getRecordAndDisplay(id, null, true);
 }
 
