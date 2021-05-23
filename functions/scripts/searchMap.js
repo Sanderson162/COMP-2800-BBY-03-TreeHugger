@@ -330,6 +330,9 @@ function queueSearch(_callback) {
   updateSearchHistorySelectedId();
   search(true, _callback);
 }
+/**
+ * Updates the current search history item with the selectedTreeId for stepping back zoom.
+ */
 function updateSearchHistorySelectedId() {
   if (searchHistory.length > 0) {
     searchHistory[searchHistory.length - 1].selected = selectedTreeId;
