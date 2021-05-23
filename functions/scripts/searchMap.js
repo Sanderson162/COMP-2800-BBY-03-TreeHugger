@@ -334,7 +334,7 @@ function queueSearch() {
  * @author Amrit
  */
 function searchBtnClick() {
-  if ($("#query").val() == "CANIS OVUM") { //EASTER EGG!
+  if ($("#query").val() == "CANIS OVUM") { // EASTER EGG!
     greenTreeIcon = "https://firebasestorage.googleapis.com/v0/b/tree-hugger-c60ff.appspot.com/o/dogGreen.png?alt=media&token=982e67d0-8895-41c8-a69c-852624333c31";
     selectedTreeIcon = "https://firebasestorage.googleapis.com/v0/b/tree-hugger-c60ff.appspot.com/o/dogBlack.png?alt=media&token=684083da-d1ea-41de-85fd-af44246dd200";
     mapIdVar = "36b4aed7bf6f2a28"
@@ -348,6 +348,7 @@ function searchBtnClick() {
     $(".highlight").css("filter", "none");
     $("input").css("border-color", "black");
     $("#search-btn").css("border-color", "black");
+    $("#details-arrow-container").css("background-color", "transparent")
     initMap();
     return;
   }
