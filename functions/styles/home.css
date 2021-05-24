@@ -34,7 +34,7 @@ body {
 }
 
 .circle-btn {
-    background-color:rgba(255, 255, 255, 0.5);
+    background-color:rgba(255, 255, 255, 0.192);
     border-radius: 100%;
     padding: 1em;
     margin-left:0.5em;
@@ -79,13 +79,14 @@ a {
       "menu3";
     grid-area: menu;
     border-radius:4px;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(0, 0, 0, 0);
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     padding:1em;
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
     margin:1em;
     height:max-content;
+    max-width:350px;
   }
   .menu1 { grid-area: menu1; 
     display:flex;
