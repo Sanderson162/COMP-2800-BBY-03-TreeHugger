@@ -1037,7 +1037,7 @@ function copyShareLink() {
 function createShareLink(id) {
   let url = window.location.href;
   let urlBase = url.substring(0, url.lastIndexOf('/') + 1);
-  let newUrl = urlBase + "/searchMap?id=" + id; 
+  let newUrl = urlBase + "searchMap?id=" + id; 
   return newUrl;
 }
 /**
