@@ -1023,18 +1023,31 @@ function navigateUrl(url) {
   window.location.href = url;
 }
 /**
- * TODO!!!!!!!!!!!!!!!!!!!!!
  * Copys share link.
  * @author Amrit
  */
 function copyShareLink() {
-  let id = $('#tree-card-id').data('id');
+  let url = createShareLink($('#tree-card-id').data('id'));
+  copyToClipboard(url);
+}
+/**
+ * Creates share link with tree id.
+ * @param id Tree id.
+ * @returns newUrl URL link.
+ * @author Amrit
+ */
+function createShareLink(id) {
   let url = window.location.href;
-  let urlBase = url.substring(0, url.lastIndexOf('/')+1);
-  let newUrl = urlBase + "/searchMap?id=" + id;
-  console.log(newUrl);  
-  // $("#link-container").show();
-  // $("#shareLink").val(url);
-  // console.log(url);
-  // copyToClipboard(url);
+  let urlBase = url.substring(0, url.lastIndexOf('/') + 1);
+  let newUrl = urlBase + "/searchMap?id=" + id; 
+  return newUrl;
+}
+/**
+ * Copys text to clipboard.
+ * TODO SHOW DIALOG!!!!!!!!!
+ * @param {string} text 
+ * @author Amrit
+ */
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text);
 }

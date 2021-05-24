@@ -1119,28 +1119,33 @@ function dateStringtoDate(dateString) {
   return date;
 }
 /**
- * TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- * Copies tree share link and saves it to clipboard.
- * @author Amrit, Stirling
+ * Copys share link.
+ * @author Amrit
  */
-function copyShareLink() {
-  let id = $('#tree-card-id').data('id');
-  let url = window.location.href.split('?')[0] + "?id=" + id;
-  $("#link-container").show();
-  $("#shareLink").val(url);
-  console.log(url);
+ function copyShareLink() {
+  let url = createShareLink($('#tree-card-id').data('id'));
   copyToClipboard(url);
 }
-//TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//@author: https://stackoverflow.com/questions/33855641/copy-output-of-a-javascript-variable-to-the-clipboard
+/**
+ * Creates share link with tree id.
+ * @param id Tree id.
+ * @returns newUrl URL link.
+ * @author Amrit
+ */
+function createShareLink(id) {
+  let url = window.location.href;
+  let urlBase = url.substring(0, url.lastIndexOf('/') + 1);
+  let newUrl = urlBase + "/searchMap?id=" + id; 
+  return newUrl;
+}
+/**
+ * Copys text to clipboard.
+ * TODO SHOW DIALOG!!!!!!!!!
+ * @param {string} text 
+ * @author Amrit
+ */
 function copyToClipboard(text) {
-  var dummy = document.createElement("textarea");
-  dummy.style.display = 'none'
-  document.body.appendChild(dummy);
-  dummy.value = text;
-  dummy.select();
-  document.execCommand("copy");
-  document.body.removeChild(dummy);
+  navigator.clipboard.writeText(text);
 }
 /**
  * Adds a click listener to the StreeView button in TreeOverlay. 
