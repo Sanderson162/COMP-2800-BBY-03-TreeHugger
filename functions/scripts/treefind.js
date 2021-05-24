@@ -3,7 +3,7 @@
  * Uses the opendata 'Street Trees' database and Google Maps API to find trees near a users location in Vancouver.
  * @author Amrit Manhas apsm100
  * @see Stirling, Steven, stackoverflow
-*/
+ */
 "use strict";
 let currentLocation;
 let markers = [];
@@ -85,7 +85,6 @@ function checkUrlParams(params) {
   for(let param of urlParams.keys()) {
     params[param] = urlParams.get(param);
   }
-  console.log(params);
   return params;
 }
 /**
@@ -1011,7 +1010,6 @@ function treeStreetClickSearch() {
  */
 function createUrl(query, type) {
   let url = "/searchMap?q=" + query + "&type=" + type; 
-  console.log(url);
   return url;
 }
 /**

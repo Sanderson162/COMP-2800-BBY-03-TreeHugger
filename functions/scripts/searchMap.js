@@ -1,9 +1,10 @@
 /**
  * SearchMap
  * Uses the opendata 'Street Trees' database and Google Maps API to find trees via various queries in Vancouver.
+ * Built from treefind.js
  * @author Amrit Manhas apsm100
  * @see Aidan, Stirling, Steven, stackoverflow
-*/
+ */
 "use strict";
 let currentLocation;
 let markers = [];
@@ -66,7 +67,6 @@ function checkUrlParams(params) {
       $("#content").text("");
       queueSearch(_callback);
     }
-
   } else if (params.id && params.id.length > 10) {
     searchWithRecordID(params.id);
   } else if (params.id && params.id.length < 10) {
@@ -100,9 +100,9 @@ function clearSearch() {
   panorama.setVisible(false);
   $("#content").text("");
   $(".search-container").hide();
+  updateSearchMapBtn();
   $(".tree-overlay-container").hide();
   $(".content-container").show();
-  updateSearchMapBtn();
 }
 
 function searchWithRecordID(id) {
