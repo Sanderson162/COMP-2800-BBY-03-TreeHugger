@@ -42,28 +42,24 @@ h1 {
     overflow-y:auto;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
 }
 
 #outer-content {
     border-radius: 4px;
     background-color:rgb(247, 247, 247);
     margin: auto;
-    /* margin-top:1em; */
     height: 100%;
     max-width: 475px;
     max-height:500px;
     overflow-y:hidden;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
 }
 
 #outer-tree-content {
     border-radius: 4px;
     background-color:rgb(247, 247, 247);
     margin: auto;
-    /* margin-top:1em; */
     height: 81%;
     max-width: 475px;
     max-height:320px;
@@ -71,7 +67,6 @@ h1 {
     overflow-y:hidden;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
 }
 
 #trees-near-header, #trees-content-header, #species-name {
@@ -92,7 +87,6 @@ h1 {
     overflow-y:auto;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
 }
 
 .title {

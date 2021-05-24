@@ -42,7 +42,6 @@ h1 {
     overflow-y:auto;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
     display: flex;
     flex-direction: column;
 }
@@ -57,35 +56,29 @@ h1 {
     overflow-y:auto;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
 }
 
 #outer-content {
     border-radius: 4px;
     background-color:rgb(247, 247, 247);
     margin: auto;
-    /* margin-top:1em; */
     height: 100%;
     max-width: 475px;
     max-height:500px;
     overflow-y:hidden;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
 }
 
 #outer-search {
     border-radius: 4px;
     background-color:rgb(247, 247, 247);
     margin: auto;
-    /* margin-top:1em; */
-    /* height: 100%; */
     max-width: 475px;
     max-height:500px;
     overflow-y:hidden;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
     height:175px;
 }
 
@@ -93,7 +86,6 @@ h1 {
     border-radius: 4px;
     background-color:rgb(247, 247, 247);
     margin: auto;
-    /* margin-top:1em; */
     height: 81%;
     max-width: 475px;
     max-height:320px;
@@ -101,7 +93,6 @@ h1 {
     overflow-y:hidden;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
 }
 
 #trees-near-header, #trees-content-header, #tree-name {
@@ -126,7 +117,6 @@ h1 {
     overflow-y:auto;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
 }
 
 .title {
@@ -378,46 +368,6 @@ button:hover {
     margin-left: 10px;
 }
 
-/* #content>.post:nth-child(2) {
-    background-color: rgb(253, 253, 253);
-}
-
-#content>.post:nth-child(3) {
-    background-color: rgb(251, 251, 251);
-}
-
-#content>.post:nth-child(4) {
-    background-color: rgb(249, 249, 249);
-}
-
-#content>.post:nth-child(5) {
-    background-color: rgb(247, 247, 247);
-}
-
-#content>.post:nth-child(6) {
-    background-color: rgb(245, 245, 245);
-}
-
-#content>.post:nth-child(7) {
-    background-color: rgb(243, 243, 243);
-    border-bottom-color: rgb(234, 234, 234);
-}
-
-#content>.post:nth-child(8) {
-    background-color: rgb(241, 241, 241);
-    border-bottom-color: rgb(232, 232, 232);
-}
-
-#content>.post:nth-child(9) {
-    background-color: rgb(239, 239, 239);
-    border-bottom-color: rgb(230, 230, 230);
-}
-
-#content>.post:nth-child(n+10) {
-    background-color: rgb(237, 237, 237);
-    border-bottom-color: rgb(228, 228, 228);
-} */
-
 .tag {
     background:#ececec;
     color:black;
@@ -534,32 +484,26 @@ input::placeholder {
 
 #query {
     float:left;
-    /* border-right:none; */
     border-top-right-radius: 0;
     border-bottom-right-radius:0;
 }
 
 #query-year {
     float:left;
-    /* border-right:none; */
     border-top-right-radius: 0;
     border-bottom-right-radius:0;
-    /* width:70px; */
 }
 
 #query-month {
     float:left;
-    /* border-right:none; */
     border-radius: 0;
-    /* width:60px; */
 }
 
 #query-day {
     float:left;
-    /* border-right:none; */
     border-radius: 0;
-    /* width:60px; */
 }
+
 #search-btn {
     float:left;
     box-shadow:none;
@@ -568,7 +512,6 @@ input::placeholder {
     border-style: solid;
     border-left:none;
     height:43.5px;
-    /* margin-left:-2px; */
     border-top-left-radius: 0;
     border-bottom-left-radius:0;
     background:whitesmoke;
