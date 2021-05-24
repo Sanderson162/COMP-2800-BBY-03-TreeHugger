@@ -10,6 +10,9 @@ body {
     background-position: center;
     background-attachment: fixed;
     background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -o-background-size:cover;
+    -moz-background-size:cover;
 }
 
 #logo-bg {
@@ -67,7 +70,7 @@ a {
     height:100%;
 
   }
-  .logo { grid-area: logo; }
+  .logo { grid-area: logo; display: none; }
   .menu {
     display: grid;
     grid-template-columns: 1fr;

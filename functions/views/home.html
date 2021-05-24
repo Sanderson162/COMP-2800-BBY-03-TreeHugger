@@ -60,7 +60,10 @@
 
     <!-- Common Navbar Script -->
     <script src="./navbar-common.js"></script>
-    <script>  
+    <script>
+    $(document).ready(function () {
+      $(".logo").fadeIn();
+    });  
     $(".main-container").scroll(function() {
     $(".logo").css("opacity", 100 - ($(".main-container").scrollTop()-150) + "%");
       });
