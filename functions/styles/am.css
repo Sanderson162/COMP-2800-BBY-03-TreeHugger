@@ -100,7 +100,7 @@
     display: grid;
     grid-template-columns: 15% 42% 42%;
     grid-template-rows: 100%;
-    margin-bottom: 1%;
+    margin-bottom:1em;
     margin-left: 5%;
     margin-right: 5%;
 }
