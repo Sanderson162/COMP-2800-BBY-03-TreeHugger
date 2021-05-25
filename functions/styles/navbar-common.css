@@ -193,7 +193,6 @@
     height: 100%;
     overflow: visible;
     background-image: linear-gradient(to top, rgba(0, 0, 0, 0.2), rgb(0, 0, 0, 0.35));
-    pointer-events: none;
     padding: 1em;
     box-sizing:border-box;
 }

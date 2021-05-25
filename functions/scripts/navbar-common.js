@@ -79,8 +79,11 @@ $("#navbarHamProfileButton").on('click', (event) => {
 
 $(".main-container").on('click', (event) => {
   $("#profileHamburgerMenu").hide();
+});
+$(".login-container").on('click', (event) => {
   $(".login-container").hide();
 });
+
 
 /** 
  * Wraps the body in a main-container div. 
