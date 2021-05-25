@@ -481,9 +481,41 @@ app.post('/update-username', urlencodedParser, (req, res) => {
     });
 });
 
-// app.listen(PORT, () => {
-//     console.log(`Listening on http://localhost:${PORT}`);
-// });
+app.post('/update-email', urlencodedParser, (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  const idToken = req.body.idToken.toString();
+
+  admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      const uid = decodedToken.uid;
+      db.collection("Users").doc(uid).update({
+        email: req.body.email
+      }).then(function () { //if successful
+        console.log("Username updated in database");
+        admin
+          .auth()
+          .updateUser(uid, {
+            email: req.body.email
+          })
+          .then((userRecord) => {
+            console.log('Successfully updated user', userRecord.toJSON());
+            res.send({
+              status: "success"
+            });
+          });
+      });
+    }).catch((error) => {
+      console.log(error);
+      res.status(401).send("UNAUTHORIZED REQUEST!");
+    });
+});
+
+
+app.listen(PORT, () => {
+    console.log(`Listening on http://localhost:${PORT}`);
+});
 
 function msg404(res) {
   //res.render('home.html');

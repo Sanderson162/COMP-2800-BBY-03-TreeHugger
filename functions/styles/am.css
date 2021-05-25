@@ -78,7 +78,7 @@
     font-size: 60pt;
 }
 
-#menu .card {
+#profile, #title {
     margin-left: 5%;
     width: 50%;
     margin-top: 1%;
@@ -120,9 +120,25 @@
     margin-left: 0%;
 }
 
+#profileContainer {
+    margin-left: 5%;
+    margin-right: 5%;
+    cursor: default;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    background-color: white;
+}
+
+.right{
+    text-align: right;
+}
+
+#profileContainer p {
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
 .card:hover {
-    /* background-color: darkgreen;
-    color: white; */
     background: rgb(236, 236, 236);
 }
 
@@ -132,14 +148,18 @@
 
 body {
     background-color: whitesmoke;
-    /* background-image:
-    linear-gradient(217deg, #176314, #78E874 70.71%); */
 }
 
-#title {
+#title, #profile {
     box-shadow: none;
     background-color: whitesmoke;
+    cursor: default;
 }
+
+#userNameArea, #emailArea {
+    background-color: whitesmoke;
+    cursor: pointer
+} 
 
 .common-name {
     font-weight: 900;

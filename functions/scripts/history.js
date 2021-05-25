@@ -1,10 +1,12 @@
 //displays the "history" page when url argument p = history
 //otherwise it displays the saved tree
-$(() => {
+window.addEventListener("DOMContentLoaded",() => {
     firebase.auth().onAuthStateChanged(() => {
         if (getUrlVars()["p"]=="history"){
             showHistory();
         } else {
+            $("#profile").hide();
+            $("#profileContainer").hide();
             $("#title").html("Your Trees");
             showComments();
         }
@@ -35,6 +37,7 @@ function showHistory() {
         //user is nott logged in
         // should not be here.
         console.log("Not signed in");
+        $("#results").html("");
     }
 }
 
@@ -60,6 +63,7 @@ function showComments() {
     } else {
         //user should not be here
         console.log("Not signed in");
+
     }
 }
 
