@@ -62,87 +62,76 @@
     filter: invert(50%) sepia(30%) saturate(2595%) hue-rotate(349deg) brightness(100%) contrast(91%);
 }
 
-
 #loginContainerPopup {
-    /* width: 270px;
-    background-color: rgb(212, 212, 212);
-    color: rgb(0, 0, 0);
-    text-align: center;
-    border: 1px solid black;
-    border-radius: 5px;
-    position: absolute;
-    z-index: 2;
- */
- top: 10em;
- left: 50%;
- margin-left: -135px;
-    text-align: center;
-    z-index: 2;
-    border-radius: 4px;
-    background-color:rgba(255, 255, 255, 0.096);
-    margin: auto;
-    height: 92%;
-    max-width: 475px;
-    max-height:500px;
-    overflow-y:auto;
-    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
-    pointer-events: all;
-    opacity:98%;
-  }
-  
-  #loginContainerPopup>.loginNavBar {
-    display: flex;
-    flex-direction: row;
-    border-radius: 5px;
-    justify-content: center;
-    gap:4px;
-    height:50px;
-  }
-  
-  .navButton {
-    background:rgba(0, 0, 0, 0.1);
-    color:black;
-    padding: 0.5em;
-    border-radius: 2em;
-    font-size: 100%;
-    width:80px;
-    height:20px;
-    display:inline-block;
-    text-align:center;
-    margin-top:1em;
-    margin-bottom:1em;
-  }
-  
-  #loginContainerPopup>.loginSignupformContainer {
-    padding: 1em;
-    border-radius: 5px;
-    
-  }
-  .selectedNav {
-    background: rgba(255, 255, 255, 0.24);
-    color:white;
-  }
-  
-  #loginContainerPopup>.loginSignupformContainer>div>input {
-    font-size:18px;
-    width:72.6%;
-    padding:10px;
-    border-radius:4px;
-    margin:auto;
-    border:none;
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    appearance: none !important;
-    margin-bottom:4px;
-    background-color:rgba(255, 255, 255, 0.11);
-    color:white;
+  top: 10em;
+  left: 50%;
+  margin-left: -135px;
+  text-align: center;
+  z-index: 2;
+  border-radius: 4px;
+  background-color:rgba(255, 255, 255, 0.096);
+  margin: auto;
+  height: 92%;
+  max-width: 475px;
+  max-height:500px;
+  overflow-y:auto;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+  pointer-events: all;
+  opacity:98%;
+}
 
-  }
+#loginContainerPopup>.loginNavBar {
+  display: flex;
+  flex-direction: row;
+  border-radius: 5px;
+  justify-content: center;
+  gap:4px;
+  height:50px;
+}
+
+.navButton {
+  background:rgba(0, 0, 0, 0.1);
+  color:rgb(133, 133, 133);
+  padding: 0.5em;
+  border-radius: 2em;
+  font-size: 100%;
+  width:80px;
+  height:20px;
+  display:inline-block;
+  text-align:center;
+  margin-top:1em;
+  margin-bottom:1em;
+}
+
+#loginContainerPopup>.loginSignupformContainer {
+  padding: 1em;
+  border-radius: 5px;
   
-  #loginContainerPopup>.loginSignupformContainer>div>input::placeholder {
-    color: rgb(172, 172, 172);
-    font-style:italic;
-    font-weight:lighter;
+}
+.selectedNav {
+  background: rgba(255, 255, 255, 0.24);
+  color:white;
+}
+  
+#loginContainerPopup>.loginSignupformContainer>div>input {
+  font-size:18px;
+  width:72.6%;
+  padding:10px;
+  border-radius:4px;
+  margin:auto;
+  border:none;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  margin-bottom:4px;
+  background-color:rgba(255, 255, 255, 0.11);
+  color:white;
+}
+  
+#loginContainerPopup>.loginSignupformContainer>div>input::placeholder {
+  color: rgb(172, 172, 172);
+  font-style:italic;
+  font-weight:lighter;
 }
 
 #loginContainerPopup>.loginSignupformContainer>div>input:focus {
@@ -150,49 +139,49 @@
   border: 1px solid #007ACC;
 }
   
-  #profileHamburgerMenu {
-    width: 200px;
-    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
-    color: rgb(0, 0, 0);
-    text-align: center;
-    border-radius: 4px;
-    position: absolute;
-    z-index: 1;
-    bottom: 53px;
-    right: 2px;
-    display: none;
-    user-select: none;
-    background-color:rgb(247, 247, 247);
-  }
+#profileHamburgerMenu {
+  width: 200px;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+  color: rgb(0, 0, 0);
+  text-align: center;
+  border-radius: 4px;
+  position: absolute;
+  z-index: 1;
+  bottom: 53px;
+  right: 2px;
+  display: none;
+  user-select: none;
+  background-color:rgb(247, 247, 247);
+}
   
-  #profileHamburgerMenu>div {
-    text-align: center;
-    border-radius:4px;
-    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.1);
-    width:150px;
-    padding:15px;
-    box-sizing: border-box;
-    margin-left: auto;
-    margin-right:auto;
-    margin-top:10px;
-    margin-bottom:10px;
-    font-weight:bold;
-    background:white;
-    display:block;
-    height:50px;
-  }
-  
-  #navbarHamProfileButton {
-    display: none;
-  }
+#profileHamburgerMenu>div {
+  text-align: center;
+  border-radius:4px;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  width:150px;
+  padding:15px;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right:auto;
+  margin-top:10px;
+  margin-bottom:10px;
+  font-weight:bold;
+  background:white;
+  display:block;
+  height:50px;
+}
 
-  #login-header {
-    color:rgb(131, 131, 131);
-    font-size:110%;
-    margin:10px;
-    height:20px;
-    display:block;
-  }
+#navbarHamProfileButton {
+  display: none;
+}
+
+#login-header {
+  color:rgb(131, 131, 131);
+  font-size:110%;
+  margin:10px;
+  height:20px;
+  display:block;
+}
 
 .login-container { 
     user-select: none;
@@ -233,6 +222,7 @@
     display:block;
     margin:auto;
 }
+
 #signupMsg{
     color:rgb(255, 177, 177);
     height:100%;
