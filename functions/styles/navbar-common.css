@@ -79,7 +79,7 @@
     text-align: center;
     z-index: 2;
     border-radius: 4px;
-    background-color:white;
+    background-color:rgba(83, 83, 83, 0.4);
     margin: auto;
     height: 92%;
     max-width: 475px;
@@ -193,13 +193,15 @@
     height: 100%;
     overflow: visible;
     background-image: linear-gradient(to top, rgba(0, 0, 0, 0.2), rgb(0, 0, 0, 0.35));
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
     padding: 1em;
     box-sizing:border-box;
 }
 
 #outer-login {
     border-radius: 4px;
-    background-color:rgb(247, 247, 247);
+    background-color:rgba(83, 83, 83, 0.4);
     margin: auto;
     /* margin-top:1em; */
     height: 100%;
@@ -208,6 +210,8 @@
     overflow-y:hidden;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
+    margin:auto;
+    z-index:1;
 }
 
 #loginMsg{

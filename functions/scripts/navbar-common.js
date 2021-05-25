@@ -81,7 +81,10 @@ $(".main-container").on('click', (event) => {
   $("#profileHamburgerMenu").hide();
 });
 $(".login-container").on('click', (event) => {
+  if($(event.target).is("#outer-login, #loginContainerPopup *")) return;
   $(".login-container").hide();
+
+
 });
 
 
