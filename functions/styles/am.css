@@ -154,11 +154,12 @@ body {
     box-shadow: none;
     background-color: whitesmoke;
     cursor: default;
+    border:none;
 }
 
-#userNameArea, #emailArea {
+#userNameArea, #emailArea, #viewsaved {
     background-color: whitesmoke;
-    cursor: pointer
+    cursor: pointer;
 } 
 
 .common-name {

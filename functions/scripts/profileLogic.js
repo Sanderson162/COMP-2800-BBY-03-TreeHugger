@@ -44,6 +44,10 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  $("#viewsaved").on("click",()=>{
+    window.location = "./profile?p=saved"
+  })
+  
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
       getUserInfo();
