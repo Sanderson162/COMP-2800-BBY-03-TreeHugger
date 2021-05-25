@@ -213,9 +213,9 @@ app.post("/ajax-add-comment", urlencodedParser, (req, res) => {
         Tree: comment.tree,
         Icon: comment.icon
       }).then((ref) => {
-        res.end(JSON.stringify({
+        res.send({
           status: "success"
-        }));
+        });
       }).catch((error) => {
         res.status(401);
       });
@@ -243,9 +243,9 @@ app.post("/ajax-add-history", urlencodedParser, (req, res) => {
         user: uid,
         tree: comment.tree
       }).then((ref) => {
-        res.end(JSON.stringify({
+        res.send({
           status: "success"
-        }));
+        });
       }).catch((error) => {
         res.status(401);
       });
