@@ -22,6 +22,15 @@ function getInfoOnTreeByID(recordID) {
   });
 }
 
+
+/**
+ * Searching wikipedia articles and picking first result. Idea came from stack overflow.
+ * @see https://stackoverflow.com/questions/27457977/searching-wikipedia-using-api
+ * @author octosquidopus https://stackoverflow.com/users/908703/octosquidopus
+ * @see https://www.mediawiki.org/wiki/API:Opensearch
+ * @param {*} genus_species
+ * @returns extract from wikipedia opensearch result
+ */
 function getWikipediaExtractNew(genus_species) {
   return new Promise((resolve) => {
     let extractUrl = "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + genus_species.split('_')[0] + "+" + genus_species.split('_')[1] + "&limit=1&namespace=0&format=json&callback=?";
@@ -113,6 +122,7 @@ async function displayWikipediaInformation(element, genus_species, arrowElement)
   // replace regex from https://stackoverflow.com/questions/14948223/how-to-convert-n-to-html-line-break/23736554
   // see TheLazyHatGuy -> https://stackoverflow.com/users/11219881/thelazyhatguy
   extract = extract.replace(/\\n|\\r\\n|\\n\\r|\\r/g, '');
+  extract = extract.replace(/\\"/g, '\"');
   element.text(extract);
 
   if (extract) {
