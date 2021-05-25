@@ -82,7 +82,7 @@ $(".main-container").on('click', (event) => {
 });
 // https://stackoverflow.com/questions/714471/how-do-i-hide-an-element-on-a-click-event-anywhere-outside-of-the-element
 $(".login-container").on('click', (event) => {
-  if($(event.target).is("#outer-login, #loginContainerPopup *")) return;
+  if($(event.target).is("#outer-login *")) return;
   $(".login-container").hide();
   $("#profileHamburgerMenu").hide();
 });

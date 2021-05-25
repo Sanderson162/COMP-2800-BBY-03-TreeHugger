@@ -187,7 +187,7 @@
   }
 
   #login-header {
-    color:lightgray;
+    color:rgb(131, 131, 131);
     font-size:110%;
     margin:10px;
     height:20px;
@@ -249,8 +249,7 @@
   height: 45px;
   width: 202px !important;
   font-weight: 600;
-  background-color: white;
-  color: rgba(255, 255, 255, 0.548);
+  background-color: rgba(255, 255, 255, 0.055) !important;
   border: none !important;
   font-size: 100% !important;
   margin-top:1em !important;
