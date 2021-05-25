@@ -1127,6 +1127,14 @@ function dateStringtoDate(dateString) {
   copyToClipboard(url);
 }
 /**
+ * Opens a FB share link
+ * @auther Amrit
+ */
+function fbShare() {
+  let url = createShareLink($('#tree-card-id').data('id'));
+  window.open("https://www.facebook.com/sharer/sharer.php?u=" + url + "&src=sdkpreparse");
+}
+/**
  * Creates share link with tree id.
  * @param id Tree id.
  * @returns newUrl URL link.
