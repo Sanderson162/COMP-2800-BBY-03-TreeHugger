@@ -394,7 +394,6 @@ app.post('/getFavCountByTree', urlencodedParser, (req, res) => {
           count: doc.data().favCount
         });
       } else {
-        console.log("FavCount: " + doc.data().favCount);
         res.send({
           status: "success",
           count: 0
