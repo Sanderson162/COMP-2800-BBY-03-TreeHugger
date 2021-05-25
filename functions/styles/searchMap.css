@@ -613,7 +613,7 @@ input::placeholder {
     background-color:rgba(0, 0, 0, 0.425);
     height: 100%;
     max-width: 325px;
-    max-height: 355px;
+    max-height: 220px;
     overflow-y:hidden;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
@@ -639,4 +639,15 @@ input::placeholder {
     backdrop-filter: blur(20px);
     padding: 1em;
     box-sizing:border-box;
+    display:none;
+}
+
+#copy-div {
+    padding: 2em;
+}
+
+#copy-btn {
+    font-weight:bold;
+    background-color:rgba(255, 255, 255, 0.11);
+    color:white;
 }
