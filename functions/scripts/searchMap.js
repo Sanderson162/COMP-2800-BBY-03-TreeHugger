@@ -1069,7 +1069,7 @@ function showTreeOverlay(entry) {
  */
 function updateTreeOverlayContent(entry) {
   $("#species-name").text(entry.fields.common_name);
-  $("#tree-name").text(entry.fields.genus_name + " " + entry.fields.species_name);
+  $("#tree-content-title").text(entry.fields.genus_name + " " + entry.fields.species_name);
   if (locationMarker != null) {
     $("#distance").text(Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M")) + " meters away from dropped marker");
   } else {
@@ -1194,31 +1194,31 @@ function hideTreeOverlay() {
  * Toggles the content overlay visible or hidden
  * @author Amrit
  */
-function toggleContentOverlay() {
-  if ($("#outer-content").css('height') == '40px') {
-    showContentOverlay();
+function toggleContentOverlay(element, button) {
+  if (element.css('height') == '40px') {
+    showContentOverlay(element, button);
   } else {
-    hideContentOverlay();
+    hideContentOverlay(element, button);
   }
 }
 /** 
  * Hides the content overlay
  * @author Amrit
  */
-function hideContentOverlay() {
+function hideContentOverlay(element, button) {
   let height = window.innerHeight;
-  $("#outer-content").css('height', '40px');
-  rotateChevron($("#hide-content-btn"), -90);
+  element.css('height', '40px');
+  rotateChevron(button, -90);
   map.panBy(0, height * 0.25);
 }
 /**
  * Show the content overlay
  * @author Amrit
  */
-function showContentOverlay() {
+function showContentOverlay(element, button) {
   let height = window.innerHeight;
-  $("#outer-content").css('height', '100%');
-  rotateChevron($("#hide-content-btn"), 0);
+  element.css('height', '100%');
+  rotateChevron(button, 0);
   map.panBy(0, -height * 0.25);
 }
 /**
@@ -1228,41 +1228,9 @@ function showContentOverlay() {
  */
 function rotateChevron(chevron, amount) {
   chevron.css({ transition: "transform 0.3s", transform: "rotate(" + amount + "deg)" });
-  setTimeout(function () { $("#hide-content-btn").css({ transition: "none" }) }, 300);
+  setTimeout(function () { chevron.css({ transition: "none" }) }, 300);
 }
-/** 
- * Toggles the content overlay visible or hidden
- * @author Amrit
- */
-function toggleSearchOverlay() {
-  if ($("#outer-search").css('height') == '40px') {
-    showSearchOverlay();
-  } else {
-    hideSearchOverlay();
-  }
-}
-/** 
- * Hides the content overlay
- * @author Amrit
- */
-function hideSearchOverlay() {
-  let height = window.innerHeight;
-  $("#outer-search").css('height', '40px');
-  rotateChevron($("#hide-search-btn"), -90);
-  map.panBy(0, height * 0.25);
-  $("#search-button-container").hide();
-}
-/**
- * Show the content overlay
- * @author Amrit
- */
-function showSearchOverlay() {
-  let height = window.innerHeight;
-  $("#outer-search").css('height', '100%');
-  rotateChevron($("#hide-search-btn"), 0);
-  map.panBy(0, -height * 0.25);
-  $("#search-button-container").show();
-}
+
 /**
  * Initializes Google Maps and sets custom Map and StreetView.
  * @see https://developers.google.com/maps/documentation/ 
@@ -1604,7 +1572,7 @@ function clearLocationMarker() {
  */
 function updateDetails() {
   $("#details").html("");
-  let textForQuery = $("#tree-name").text();
+  let textForQuery = $("#tree-content-title").text();
   textForQuery = (textForQuery.split(' ').slice(0, 2).join('_')).toLowerCase();
   displayWikipediaInformation($("#details"), textForQuery, $("#details-arrow-container"));
 }

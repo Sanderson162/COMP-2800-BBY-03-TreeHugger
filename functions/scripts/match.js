@@ -240,7 +240,7 @@ function displayTree(entry,message,saveBtn) {
 
 //returns a button with a link to the tree
 function viewButton(tree){
-    let btn = $("<button id='save'>View</button>");
+    let btn = $("<button id='view'>View</button>");
     btn.click(() =>{
         window.open("./searchMap?id=" + tree);
     })

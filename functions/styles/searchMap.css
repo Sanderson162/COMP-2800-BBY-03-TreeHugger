@@ -89,7 +89,7 @@ h1 {
     height: 81%;
     max-width: 475px;
     max-height:320px;
-    min-height:320px;
+    /*min-height:320px;*/
     overflow-y:hidden;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
@@ -179,7 +179,7 @@ h1 {
     left: 0;
     top: 0px;
     width: 100%;
-    height: 50%;
+    /*height: 50%;*/
     overflow: visible;
     background-image: linear-gradient(to top, rgba(255, 255, 255, 0), rgb(243, 243, 243));
     pointer-events: none;
@@ -290,7 +290,21 @@ button:hover {
     right:2px;
 }
 
+#hide-content-btn-tree {
+    height:17px;
+    position:relative;
+    top:2px;
+    right:2px;
+}
+
 #hide-search-btn {
+    height:17px;
+    position:relative;
+    top:2px;
+    right:2px;
+}
+
+#hide-content-btn-tree {
     height:17px;
     position:relative;
     top:2px;

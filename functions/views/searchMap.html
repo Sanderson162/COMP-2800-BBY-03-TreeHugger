@@ -56,14 +56,16 @@
                 </div>
                 <div id="date-search-bar">
                     <!-- https://stackoverflow.com/questions/18510845/maxlength-ignored-for-input-type-number-in-chrome -->
-                    <input maxlength="4" onkeypress="if(this.value.length==this.maxLength) return false;" type="number"
+                    <input maxlength="4" autocomplete="off" onkeypress="if(this.value.length==this.maxLength) return false;" type="number"
                         inputmode="numeric" pattern="[0-9]" placeholder="YYYY" oninput="loadDateSearchBarOptions('ys')"
                         list="year" id="query-year" />
                     <input maxlength="2"
+                        autocomplete="off"
                         onkeypress="if(this.value.length==this.maxLength || this.value > 1) return false;" type="number"
                         inputmode="numeric" pattern="[0-9]" placeholder="MM" oninput="loadDateSearchBarOptions('ms')"
                         list="month" id="query-month" />
                     <input maxlength="2"
+                        autocomplete="off"
                         onkeypress="if(this.value.length==this.maxLength || this.value > 3) return false;" type="number"
                         inputmode="numeric" pattern="[0-9]" placeholder="DD" oninput="loadDateSearchBarOptions('d')"
                         list="day" id="query-day" />
@@ -98,7 +100,7 @@
     </div>
     <div class="content-container">
         <div id="outer-content">
-            <span onclick="toggleContentOverlay()" id="trees-near-header"><svg id="hide-content-btn" width="24"
+            <span onclick="toggleContentOverlay($('#outer-content'), $('#hide-content-btn'))" id="trees-near-header"><svg id="hide-content-btn" width="24"
                     height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M6 9L12 15L18 9" stroke="#808080" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
@@ -116,7 +118,11 @@
     </div>
     <div class="tree-overlay-container">
         <div id="outer-tree-content">
-            <span id="tree-name">PREVIEW</span>
+            <span onclick="toggleContentOverlay($('#outer-tree-content'), $('#hide-content-btn-tree'))" id="tree-name"><svg id="hide-content-btn-tree" width="24"
+                height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 9L12 15L18 9" stroke="#808080" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg><span id="tree-content-title"></span></span>
             <div id="tree-content">
                 <div id="main">
                     <h2 id="species-name" onclick="treeNameClickSearch()"></h2>
@@ -145,7 +151,7 @@
                     <div id="details"></div>
                 </div>
                 <div id="button-container">
-                    <div id="details-arrow-container">
+                    <div style="border: 1px solid black;" id="details-arrow-container">
                         <div id="details-arrow"><svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M8.75 16.25L15 22.5L21.25 16.25" stroke="#DCDCDC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M8.75 7.5L15 13.75L21.25 7.5" stroke="#DCDCDC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

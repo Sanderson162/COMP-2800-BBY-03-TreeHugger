@@ -38,16 +38,8 @@ app.get("/", function (req, res) {
   res.render("home.html");
 });
 
-app.get("/oldIndex", function (req, res) {
-  res.render("index.html");
-});
-
-app.get("/login", function (req, res) {
-  res.render("login.html");
-});
-
-app.get("/signup", function (req, res) {
-  res.render("signup.html");
+app.get('/timestamp', function (req, res) {
+  res.send("Timestamp from the server: " + Date.now());
 });
 
 app.get("/treefind", function (req, res) {
@@ -58,38 +50,12 @@ app.get("/searchMap", function (req, res) {
   res.render("searchMap.html");
 });
 
-
 app.get("/match", function (req, res) {
   res.render("match.html");
 });
 
-app.get("/whoami", function (req, res) {
-  res.send("test");
-});
-
-app.get("/findtree", function (req, res) {
-  res.render("findtree.html");
-});
-
-app.get("/viewIndividualTree", urlencodedParser, (req, res) => {
-  var id = req.query.id;
-  res.render("viewIndividualTree.html", { 'recordid': id });
-});
-
-app.get("/search", function (req, res) {
-  res.render("search.html");
-});
-
 app.get("/history", function (req, res) {
   res.render("history.html");
-});
-
-app.get("/searchDate", function (req, res) {
-  res.render("searchDate.html");
-});
-
-app.get("/testingPanel", function (req, res) {
-  res.render("testingPanel.html");
 });
 
 app.get("/home", function (req, res) {
@@ -152,8 +118,6 @@ app.post('/ajax-add-user', urlencodedParser, (req, res) => {
       res.status(401).send("UNAUTHORIZED REQUEST!");
     });
 });
-
-
 
 app.post('/addTreeFav', urlencodedParser, (req, res) => {
   // res.setHeader('Content-Type', 'application/json');
@@ -522,16 +486,9 @@ app.post('/update-username', urlencodedParser, (req, res) => {
     });
 });
 
-
-app.get('/timestamp', function (req, res) {
-  res.send("hello from firebase" + Date.now());
-});
-
-
 // app.listen(PORT, () => {
 //     console.log(`Listening on http://localhost:${PORT}`);
 // });
-
 
 function msg404(res) {
   //res.render('home.html');

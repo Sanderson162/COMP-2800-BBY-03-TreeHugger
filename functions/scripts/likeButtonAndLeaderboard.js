@@ -1,7 +1,8 @@
 async function addLikeButton(parentElement, recordID, liked, count) {
-  let heartIcon = "<i class='fas fa-heart fa-2x' style='color: red;'></i>";
-  let heartIconEmpty = "<i class='far fa-heart fa-2x' style='color: red;'></i>";
-  let heartIconGray = "<i class='far fa-heart fa-2x' style='color: gray;'></i>";
+  let heartIcon = "<i class='fas fa-heart fa-lg' style='color: red;'></i>";
+  let heartIconEmpty = "<i class='far fa-heart fa-lg' style='color: red;'></i>";
+  let heartIconGray = "<i class='far fa-heart fa-lg' style='color: gray;'></i>";
+  let loadingIcon = "<i class='fas fa-spinner fa-sm fa-pulse'></i>";
 
   let likeButton = $("<button></button>").addClass("likeButton");
   let likeCount = $("<span class='likeCount' style='margin-left: 10px;'></span>");
@@ -9,7 +10,7 @@ async function addLikeButton(parentElement, recordID, liked, count) {
   likeButton.attr("id", likeButtonID);
 
   likeButton.css({"display": "flex", "flex-direction": "row", "justify-content": "center", "align-items": "center"});
-  parentElement.html("<button style='display: flex; flex-direction: row; justify-content: center; align-items: center'><i class='far fa-heart fa-2x' style='color: gray;'></i><span class='likeCount' style='margin-left: 10px;'><i class='fas fa-spinner fa-sm fa-pulse'></i></span></button>");
+  parentElement.html("<button style='display: flex; flex-direction: row; justify-content: center; align-items: center'>" + heartIconGray + "<span class='likeCount' style='margin-left: 10px;'>" + loadingIcon + "</span></button>");
 
   if (count == null) {
     count = await getFavCountByTree(recordID);
@@ -36,8 +37,6 @@ async function addLikeButton(parentElement, recordID, liked, count) {
   parentElement.append(likeButton);
 
   likeButton.on('click', function () {
-    let heartIcon = "<i class='fas fa-heart fa-2x' style='color: red;'></i>";
-    let heartIconEmpty = "<i class='far fa-heart fa-2x' style='color: red;'></i>";
     let recordID = $(this).attr('id').split("_")[0];
     var user = firebase.auth().currentUser;
     if (user) {
