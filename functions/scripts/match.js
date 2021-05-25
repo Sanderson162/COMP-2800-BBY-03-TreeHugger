@@ -240,7 +240,7 @@ function displayTree(entry,message,saveBtn) {
 
 //returns a button with a link to the tree
 function viewButton(tree){
-    let btn = $("<button id='save'>View</button>");
+    let btn = $("<button id='viewbtn'>View</button>");
     btn.click(() =>{
         window.open("./searchMap?id=" + tree);
     })
@@ -251,7 +251,7 @@ function viewButton(tree){
 //if the user is not logged in it displays a warning
 function saveButton(tree, message, emoji) {
     let btn = $("<button id='save'>Save</button>");
-    btn.on("click", () => {
+    btn.on("click", (elem) => {
         var user = firebase.auth().currentUser;
         if (user) {
             let elem = $("#save");
