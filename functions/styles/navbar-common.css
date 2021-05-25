@@ -79,7 +79,7 @@
     text-align: center;
     z-index: 2;
     border-radius: 4px;
-    background-color:rgba(83, 83, 83, 0.4);
+    background-color:rgba(255, 255, 255, 0.096);
     margin: auto;
     height: 92%;
     max-width: 475px;
@@ -134,13 +134,13 @@
     -moz-appearance: none !important;
     appearance: none !important;
     margin-bottom:4px;
-    background-color:rgba(255,255,255,0.25);
+    background-color:rgba(255, 255, 255, 0.11);
     color:white;
 
   }
   
   #loginContainerPopup>.loginSignupformContainer>div>input::placeholder {
-    color: darkgray;
+    color: rgb(172, 172, 172);
     font-style:italic;
     font-weight:lighter;
 }
@@ -212,7 +212,7 @@
 
 #outer-login {
     border-radius: 4px;
-    background-color:rgba(0, 0, 0, 0.5);
+    background-color:rgba(0, 0, 0, 0.425);
     height: 100%;
     max-width: 325px;
     max-height: 355px;
