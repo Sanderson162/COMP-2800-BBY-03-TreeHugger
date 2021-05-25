@@ -387,11 +387,19 @@ app.post('/getFavCountByTree', urlencodedParser, (req, res) => {
   db.collection('FavouriteStats').doc(recordID)
     .get()
     .then(function (doc) {
-      console.log("FavCount: " + doc.data().favCount);
-      res.send({
-        status: "success",
-        count: doc.data().favCount
-      });
+      if (doc.exists) {
+        console.log("FavCount: " + doc.data().favCount);
+        res.send({
+          status: "success",
+          count: doc.data().favCount
+        });
+      } else {
+        console.log("FavCount: " + doc.data().favCount);
+        res.send({
+          status: "success",
+          count: 0
+        });
+      }
     }).catch(function (error) {
       console.log("Error getting documents: ", error);
       res.send({
