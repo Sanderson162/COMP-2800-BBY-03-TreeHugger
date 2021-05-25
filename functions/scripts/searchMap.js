@@ -1,10 +1,10 @@
 /**
  * SearchMap
- * Uses the opendata 'Street Trees' database and Google Maps to find trees via various queries in Vancouver.
+ * Uses the opendata 'Street Trees' database and Google Maps API to find trees via various queries in Vancouver.
+ * Built from treefind.js
  * @author Amrit Manhas apsm100
- * @see Aidan
- * @see Steven
-*/
+ * @see Aidan, Stirling, Steven, stackoverflow
+ */
 "use strict";
 let currentLocation;
 let markers = [];
@@ -22,7 +22,6 @@ let zoomVal;
 let markerIndexCount = 0;
 let searchHistory = [];
 let allSearchHistory = [];
-
 let mouseClickDelay = 250;
 let mouseClickTimer;
 /**
@@ -32,30 +31,55 @@ let mouseClickTimer;
 let rows = 40;
 currentLocation = { lat: 49.279430, lng: -123.117276 };
 /**
- * After document load, init search.
+ * Drives the application on load.
+ * @author Amrit
  */
 $(document).ready(function () {
   $("#outer-search").css('height', '175px');
   $("#content").text("");
   showSearchType('common_name-tag');
   addInputListeners();
-
-  let vars = getUrlVars();
-  if (vars.id && vars.id.length > 10) {
-    searchWithRecordID(vars.id);
+  addMainScrollListener();
+  checkUrlParams(getUrlParams());
+});
+/**
+ * Checks URL params and executes appropriate action.
+ * @param {*} params URL params.
+ * @author Amrit, Stirling
+ */
+function checkUrlParams(params) {
+  if (params.q && params.type) {
+    let _callback;
+    if (params.id) {
+      // This call back simulates a mouse click on the selected treeId from the params.
+      _callback = function () {selectedTreeId = null;$("#" + params.id).click();};
+    } 
+    if (params.type == "location") {
+      var splitLatLng = params.q.split(" ");
+      let latlng = new google.maps.LatLng(splitLatLng[0], splitLatLng[1]);
+      currentLocation = {"lat": splitLatLng[0], "lng": splitLatLng[1]};
+      addLocationMarker(latlng, "");
+      getContent(_callback);
+      $("#content").scrollTop(0);
+    } else {
+      showSearchType(params.type + '-tag');
+      $("#query").val(params.q);
+      $("#content").text("");
+      queueSearch(_callback);
+    }
+  } else if (params.id && params.id.length > 10) {
+    searchWithRecordID(params.id);
+  } else if (params.id && params.id.length < 10) {
+    searchWithID(params.id);
+  } else if (params.leaderboard) {
+    searchWithLeaderboard(params.id);
   }
-  if (vars.id && vars.id.length < 10) {
-    searchWithID(vars.id);
-  }
-
   firebase.auth().onAuthStateChanged(function (user) {
-    if (user && vars.favourites) {
+    if (user && params.favourites) {
       searchWithFavourites();
     } 
   });
-
-});
-
+}
 
 function searchWithID(id) {
   showSearchType('tree_id-tag');
@@ -64,55 +88,129 @@ function searchWithID(id) {
   queueSearch();
 }
 
-async function searchWithRecordID(id) {
-  showSearchType('tree_id-tag');
-  let record = await getInfoOnTreeByID(id);
-  let treeId = record.fields.tree_id;
-  $("#query").val(treeId);
+function clearSearch() {
+  removeUrlParam("id");
+  removeUrlParam("type");
+  removeUrlParam("q");
+  searchHistory = [];
+  updateSearchHistoryBtn();
+  selectedTreeId = null;
+  clearMarkers();
+  clearLocationMarker();
+  panorama.setVisible(false);
   $("#content").text("");
-  queueSearch();
+  $(".search-container").hide();
+  updateSearchMapBtn();
+  $(".tree-overlay-container").hide();
+  $(".content-container").show();
+}
+
+function searchWithRecordID(id) {
+  clearSearch();
+  $("#content-title").text("TREE");
+  getRecordAndDisplay(id, null, true);
 }
 
 async function searchWithFavourites() {
-  clearMarkers();
-  clearLocationMarker();
+  clearSearch();
   $("#content-title").text("FAVOURITE TREES");
-  $(".search-container").hide();
-  $(".tree-overlay-container").hide();
-  $(".content-container").show();
-
   let favList = await getFavByUser();
 
   // console.log("favlist ", favList)
 
   if (favList) {
-    favList.forEach(record => {
-      getRecordAndDisplay(record.recordID);
+    favList.forEach((record, index) => {
+      getRecordAndDisplay(record.recordID, index + 1, false);
     });
+  } else {
+    showDialogue("noFavouites");
   }
 }
 
-async function getRecordAndDisplay(recordID) {
+async function searchWithLeaderboard() {
+  clearSearch();
+
+  $("#content-title").text("LEADERBOARD");
+  let favList = await getFavCountLeaderboard();
+
+  // console.log("favlist ", favList)
+
+  if (favList) {
+    favList.forEach((record, index) => {
+      // console.log(record);
+      // console.log(record.recordID);
+      getRecordAndDisplay(record.recordID, index + 1, false);
+    });
+  } 
+}
+
+async function getRecordAndDisplay(recordID, order, zoomOnTree) {
   let entry = await getInfoOnTreeByID(recordID);
   if (entry.fields.geom) {
     entry.fields.geom = entry.fields.geom.geometry;
     entry.recordid = entry.id;
+    if (order) {
+      entry.order = order;
+    }
     updateContent(entry, false);
+    if (zoomOnTree) {
+      zoom(entry);
+    }
+    searchZoom();
+  } else {
+      showDialogue("treeNotAvailable");
   }
 }
 
-// Url parsing function. Source: https://html-online.com/articles/get-url-parameters-javascript/
-function getUrlVars() {
-  var vars = {};
-  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
-    vars[key] = value;
-  });
-  return vars;
+/**
+ * Uses URL to get URL parameters.
+ * @returns params
+ * @author https://stackoverflow.com/questions/7722683/how-to-get-all-query-string-values-using-javascript, Amrit
+ */
+function getUrlParams() {
+  let urlParams = (new URL(document.location)).searchParams;
+  let params = {};
+  for(let param of urlParams.keys()) {
+    params[param] = urlParams.get(param);
+  }
+  return params;
 }
+/**
+ * Sets a url parameter.
+ * @param {string} key 
+ * @param {string} value 
+ * @author https://stackoverflow.com/questions/10970078/modifying-a-query-string-without-reloading-the-page, Amrit
+ */
+function setUrlParam(key, value) {
+  if (history.replaceState) {
+    let searchParams = new URLSearchParams(window.location.search);
+    searchParams.set(key, value);
+    let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
+    window.history.replaceState({path: newurl}, '', newurl);
+}
+}
+/**
+ * Removes a url paramater with key.
+ * @param {string} key 
+ * @author Amrit, https://stackoverflow.com/questions/10970078/modifying-a-query-string-without-reloading-the-page
+ */
+function removeUrlParam(key) {
+  if (history.replaceState) {
+    let searchParams = new URLSearchParams(window.location.search);
+    searchParams.delete(key);
+    let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
+    window.history.replaceState({path: newurl}, '', newurl);
+  }
+}
+/**
+ * Adds listeners for enter key for query inputs for search, and search-date.
+ * @author Amrit
+ */
 function addInputListeners() {
   $("#query").on("keyup", function (event) {
     if (event.keyCode === 13) {
       searchBtnClick();
+      // iOS; hides the keyboard.
       document.activeElement.blur();
     }
   });
@@ -170,7 +268,8 @@ function showSearchType(type) {
   }
 }
 /**
- * Queries a new search when tree name is clicked on in treeoverlay.
+ * Tree name search for treeOverlay.
+ * @author Amrit
  */
 function treeNameClickSearch() {
   showSearchType('common_name-tag');
@@ -178,12 +277,20 @@ function treeNameClickSearch() {
   $("#content").text("");
   queueSearch();
 }
+/**
+ * Tree Height click search for treeOverlay.
+ * @author Amrit
+ */
 function treeHeightClickSearch() {
   showSearchType('height_range_id-tag');
   $("#query").val($("#tree-card-height").text().substring(0, 1));
   $("#content").text("");
   queueSearch();
 }
+/**
+ * Date click search for treeOverlay.
+ * @author Amrit
+ */
 function treeDateClickSearch() {
   if ($("#tree-card-date").text() != "N/A") {
     showSearchType('date_planted-tag');
@@ -192,6 +299,10 @@ function treeDateClickSearch() {
     queueSearch();
   }
 }
+/**
+ * Age click search for treeOverlay.
+ * @author Amrit
+ */
 function treeDateAgeClickSearch() {
   if ($("#tree-card-date").text() != "N/A") {
     showSearchType('date_planted-tag');
@@ -200,22 +311,41 @@ function treeDateAgeClickSearch() {
     queueSearch();
   }
 }
+/**
+ * Street click search for treeOverlay.
+ * @author Amrit
+ */
 function treeStreetClickSearch() {
   showSearchType('on_street-tag');
   $("#query").val($("#body").text());
   $("#content").text("");
   queueSearch();
 }
-function queueSearch() {
+/**
+ * Queues search for treeOverlay tap searches.
+ * @param {obj} _callback Function to be passed to search on completion (optional).
+ * @author Amrit
+ */
+function queueSearch(_callback) {
   clearMarkers();
   clearLocationMarker();
-  search(true);
+  updateSearchHistorySelectedId();
+  search(true, _callback);
+}
+/**
+ * Updates the current search history item with the selectedTreeId for stepping back zoom.
+ */
+function updateSearchHistorySelectedId() {
+  if (searchHistory.length > 0) {
+    searchHistory[searchHistory.length - 1].selected = selectedTreeId;
+  }
 }
 /**
  * Search button click that queries a new search.
+ * @author Amrit
  */
 function searchBtnClick() {
-  if ($("#query").val() == "CANIS OVUM") { //EASTER EGG!
+  if ($("#query").val() == "CANIS OVUM") { // EASTER EGG!
     greenTreeIcon = "https://firebasestorage.googleapis.com/v0/b/tree-hugger-c60ff.appspot.com/o/dogGreen.png?alt=media&token=982e67d0-8895-41c8-a69c-852624333c31";
     selectedTreeIcon = "https://firebasestorage.googleapis.com/v0/b/tree-hugger-c60ff.appspot.com/o/dogBlack.png?alt=media&token=684083da-d1ea-41de-85fd-af44246dd200";
     mapIdVar = "36b4aed7bf6f2a28"
@@ -229,10 +359,12 @@ function searchBtnClick() {
     $(".highlight").css("filter", "none");
     $("input").css("border-color", "black");
     $("#search-btn").css("border-color", "black");
+    $("#details-arrow-container").css("background-color", "transparent")
     initMap();
     return;
   }
   if ($("#query").val() != "") {
+    removeUrlParam("id");
     selectedTreeId = null;
     clearMarkers();
     clearLocationMarker();
@@ -240,8 +372,13 @@ function searchBtnClick() {
     search(true);
   }
 }
+/**
+ * Handles the dateSearch button click.
+ * @author Amrit
+ */
 function dateSearchBtnClick() {
   if ($("#query-year").val().length == 4) {
+    removeUrlParam("id");
     selectedTreeId = null;
     clearMarkers();
     clearLocationMarker();
@@ -254,6 +391,14 @@ function dateSearchBtnClick() {
     search(true);
   }
 }
+/**
+ * Returns a y-m-d string for querys.
+ * @param {string} y 
+ * @param {string} m 
+ * @param {string} d 
+ * @returns y-m-d string
+ * @author Amrit
+ */
 function createDateQuery(y, m, d) {
   let q;
   if (m != "" && d != "") {
@@ -265,6 +410,12 @@ function createDateQuery(y, m, d) {
   }
   return q;
 }
+/**
+ * Adds a zero infront of a number.
+ * @param {string} num 
+ * @returns number with a zero added.
+ * @author Amrit
+ */
 function addFirstZero(num) {
   if (parseInt(num) < 10 && num.length == 1) {
     return "0" + num;
@@ -274,14 +425,20 @@ function addFirstZero(num) {
 }
 /**
  * Search function for app.
- * @see Aidan
+ * @param {bool} reset Resets the page count (optional).
+ * @param {obj} _callback Function to be called back after completion (optional).
+ * @author Amrit, Aidan
  */
-function search(reset) {
+function search(reset, _callback) {
   if (reset) {
     page = 0;
   }
   let q = $("#query").val().toUpperCase();
   let searchType = $("#search-tags>div.tag-selected").attr('id').slice(0, -4);
+  setUrlParam("q", q);
+  setUrlParam("type", searchType);
+  removeUrlParam("favourites");
+  removeUrlParam("leaderboard");
   let qString = responsiveSearchTitle(heightRangeToFeet(q, searchType));
   $("#content-title").text(qString);
   $(".search-container").hide();
@@ -302,6 +459,9 @@ function search(reset) {
       }
     });
     searchZoom();
+    if (_callback) {
+      _callback();
+    }
     let count = $(".post").length;
     if (count == 1) {
       zoom(data.records[0]);
@@ -320,12 +480,13 @@ function search(reset) {
  * Add a search history item to list.
  * @param {string} query The query
  * @param {string} type  The type of query (species, etc)
+ * @author Amrit
  */
 function addSearchHistory(query, type) {
   $("#outer-search").css('height', '100%');
   updateSearchHistoryBtn();
-  updateSearchMapBtn()
-  let searchItem = { q: query, searchType: type };
+  updateSearchMapBtn();
+  let searchItem = { q: query, searchType: type, selected: selectedTreeId };
   searchHistory.push(searchItem);
   checkSearchHistory(query, type);
   allSearchHistory.push(searchItem);
@@ -334,6 +495,7 @@ function addSearchHistory(query, type) {
  * Checks for duplicates in the search history and removes them.
  * @param {string} query The query to be checked.
  * @param {string} type The type to be checked.
+ * @author Amrit
  */
 function checkSearchHistory(query, type) {
   for (let i = allSearchHistory.length - 1; i >= 0; i--) {
@@ -344,6 +506,7 @@ function checkSearchHistory(query, type) {
 }
 /**
  * Updates search history button on the map to enabled or disabled.
+ * @author Amrit
  */
 function updateSearchHistoryBtn() {
   if (searchHistory.length < 1) {
@@ -356,6 +519,7 @@ function updateSearchHistoryBtn() {
 }
 /**
  * Updates the search overlay toggle button on the map to enabled or disabled.
+ * @author Amrit
  */
 function updateSearchMapBtn() {
   if ($(".search-container").css('display') == 'none') {
@@ -371,10 +535,11 @@ function updateSearchMapBtn() {
  * @param {string} q The query. 
  * @param {string} searchType The type.
  * @returns query multipled by 10 if a height.
+ * @author Amrit
  */
 function heightRangeToFeet(q, searchType) {
   if (searchType == "height_range_id") {
-    return (parseInt(q) * 10) + "ft";
+    return (parseInt(q) * 10) + " ft";
   } else {
     return q;
   }
@@ -383,6 +548,7 @@ function heightRangeToFeet(q, searchType) {
  * Adds a ... to the search query result title.
  * @param {string} query Query of search.
  * @returns qString to be used in content title.
+ * @author Amrit
  */
 function responsiveSearchTitle(query) {
   let q = query;
@@ -398,7 +564,10 @@ function responsiveSearchTitle(query) {
   }
   return qString;
 }
-//https://stackoverflow.com/questions/15719951/auto-center-map-with-multiple-markers-in-google-maps-api-v3
+/**
+ * Zooms to fit the markers bounds in map view.
+ * @author https://stackoverflow.com/questions/15719951/auto-center-map-with-multiple-markers-in-google-maps-api-v3, Amrit
+ */
 function searchZoom() {
   if (markers.length != 0) {
     var bounds = new google.maps.LatLngBounds();
@@ -412,7 +581,7 @@ function searchZoom() {
 /**
  * Creates load more button for search in content view.
  * @returns loadMoreButton
- * @see Aidan
+ * @author Aidan, Amrit
  */
 function loadMoreButton() {
   let b = $('<button type="button" id="loadmore"><svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.75 16.25L15 22.5L21.25 16.25" stroke="#A9A9A9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.75 7.5L15 13.75L21.25 7.5" stroke="#A9A9A9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>');
@@ -426,6 +595,7 @@ function loadMoreButton() {
 }
 /**
  * Resets searchbar autofill data.
+ * @author Amrit
  */
 function resetSearchBarOptions() {
   $("#data").html("");
@@ -433,7 +603,7 @@ function resetSearchBarOptions() {
 /**
  * Loads search bar autofill data.
  * @param {string} searchType The type of search to be done (genus, species, etc)
- * @see Aidan
+ * @author Aidan, Amrit
  */
 function loadSearchBarOptions(searchType) {
   let query = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/facets?facet=" + searchType + "&timezone=UTC"
@@ -444,6 +614,11 @@ function loadSearchBarOptions(searchType) {
     });
   })
 }
+/**
+ * Driver for loading suggestions in to date search bar inputs.
+ * @param {*} searchType 
+ * @author Amrit
+ */
 function loadDateSearchBarOptions(searchType) {
   let queryBase = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/facets?facet=date_planted";
   if (searchType == "y") {
@@ -472,6 +647,13 @@ function loadDateSearchBarOptions(searchType) {
     }
   }
 }
+/**
+ * Pulls facets from opendatabase to load into suggestion for the date input boxes in search.
+ * @param {obj} dataList DOM list object.
+ * @param {string} query URL to pull data from.
+ * @param {string} searchType Type of search, year, month, or day.
+ * @author Amrit
+ */
 function loadDateDataList(dataList, query, searchType) {
   $.getJSON(query, (data) => {
     if (data) {
@@ -507,6 +689,12 @@ function loadDateDataList(dataList, query, searchType) {
     }
   })
 }
+/**
+ * Returns a number with first zero removed.
+ * @param {string} num 
+ * @returns int Number with first zero removed.
+ * @author Amrit
+ */
 function removeFirstZero(num) {
   if (parseInt(num) < 10 && num.length == 2) {
     let n = parseInt(num, 10);
@@ -515,6 +703,10 @@ function removeFirstZero(num) {
     return num;
   }
 }
+/**
+ * Resets the date inputs in the datesearchbar.
+ * @author Amrit
+ */
 function resetDateSearchBar() {
   $("#query-month").val("");
   $("#query-day").val("");
@@ -528,6 +720,7 @@ function resetDateSearchBar() {
  * @param {obj} entry Entry object from opendata.
  * @param {string} searchType The type.
  * @returns Optional string for search bar options.
+ * @author Amrit
  */
 function createOptionalString(entry, searchType) {
   let optionalString = "";
@@ -541,21 +734,25 @@ function createOptionalString(entry, searchType) {
 /**
  * Highlights type search tag.
  * @param {obj} tag Tag DOM
+ * @author Amrit
  */
 function selectTag(tag) {
   tag.addClass("tag-selected");
 }
 /**
  * Resets all search tags that are highlighted.
+ * @author Amrit
  */
 function resetTagSelection() {
   $("#search-tags>div.tag-selected").removeClass("tag-selected");
 }
 /**
  * Gets entries from opendatabase API. 
+ * @param {obj} _callback Function to be called back after completion (optional).
  * @see https://www.w3schools.com/jquery/ajax_getjson.asp
+ * @author Amrit
  */
-function getContent() {
+function getContent(_callback) {
   let url = 'https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&geofilter.distance=' + currentLocation.lat + '%2C' + currentLocation.lng + '%2C1000&rows=' + rows;
   $.getJSON(url, function (data) {
     $("#content").text("");
@@ -564,12 +761,20 @@ function getContent() {
       updateContent(entry, true);
     });
     searchZoom();
+    if (_callback) {
+      _callback();
+    }
     isContent();
   });
   addSearchHistory(currentLocation, "location");
+  setUrlParam("q", currentLocation.lat + " " + currentLocation.lng);
+  setUrlParam("type", "location");
+  removeUrlParam("favourites");
+  removeUrlParam("leaderboard");
 }
 /**
- * Checks if content is empty. 
+ * Checks if content list view is empty. 
+ * @author Amrit
  */
 function isContent(p) {
   if ($("#content").text() == "") {
@@ -583,6 +788,7 @@ function isContent(p) {
 /**
  * Uses the content div to show a dialogue. 
  * @param {string} m Message to show.
+ * @author Amrit
  */
 function showDialogue(m) {
   if (m == "locationError") {
@@ -631,11 +837,26 @@ function showDialogue(m) {
       post.append(title, body);
       $("#content").append(post);
     }
+  } else if (m == "noFavourites") {
+    let post = $("<div></div>").addClass("post");
+    post.addClass("dialogue");
+    let title = $("<div></div>").addClass("title").text("No favourites");
+    let body = $("<div></div>").addClass("body").text("You have no favourite trees yet; tap the heart button to add one.");
+    post.append(title, body);
+    $("#content").append(post);
+  } else if (m == "treeNotAvailable") {
+    let post = $("<div></div>").addClass("post");
+    post.addClass("dialogue");
+    let title = $("<div></div>").addClass("title").text("Tree not found");
+    let body = $("<div></div>").addClass("body").text("A tree with this ID does not exist or is missing its location data. ");
+    post.append(title, body);
+    $("#content").append(post);
   }
 }
 /**
  * Updates and appends content with entry. 
  * @param {obj} entry
+ * @author Amrit
  */
 function updateContent(entry, distanceEnabled) {
   var dist = Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M"));
@@ -653,6 +874,9 @@ function updateContent(entry, distanceEnabled) {
   if (entry.fields.date_planted) {
     dateString = "Planted on " + entry.fields.date_planted;
   }
+  if (entry.order) {
+    post.css("order", entry.order);
+  }
   var date = $("<div></div>").addClass("date").text(dateString);
   post.append(title, body, dis, date);
   addTreeMarker(entry.fields.geom.coordinates[0], entry.fields.geom.coordinates[1], entry);
@@ -663,6 +887,7 @@ function updateContent(entry, distanceEnabled) {
 }
 /**
  * Gets the search history for search overlay.
+ * @author Amrit
  */
 function getSearchHistoryView() {
   $("#search-history").text("");
@@ -674,6 +899,7 @@ function getSearchHistoryView() {
 /**
  * Updates the search history view in the search overlay.
  * @param {obj} entry Search history object.
+ * @author Amrit
  */
 function updateSearchHistoryView(entry) {
   let item = $("<div></div>").addClass("search-history-item");
@@ -698,6 +924,7 @@ function updateSearchHistoryView(entry) {
  * Parses the search type for the search history view.
  * @param {string} type The type.
  * @returns Parsed string for search history view.
+ * @author Amrit
  */
 function parseType(type) {
   if (type == "common_name") {
@@ -723,10 +950,12 @@ function parseType(type) {
 /**
  * Queries the selected search item from search history.
  * @param {obj} lastSearch Search history object.
+ * @author Amrit
  */
 function loadSearchHistoryItem(lastSearch) {
   clearMarkers();
   clearLocationMarker();
+  selectedTreeId = null;
   if (lastSearch.searchType == "location") {
     currentLocation = lastSearch.q;
     let latlng = new google.maps.LatLng(lastSearch.q.lat, lastSearch.q.lng);
@@ -743,8 +972,10 @@ function loadSearchHistoryItem(lastSearch) {
 /**
  * Zooms on entry, shows overlay and updates various variables. 
  * @param {obj} entry
+ * @author Amrit
  */
 function zoom(entry) {
+  setUrlParam("id", entry.recordid);
   resetMarkerColor();
   $('#' + entry.recordid).css("background-color", "whitesmoke");
   let currentZoom = map.getZoom();
@@ -766,6 +997,7 @@ function zoom(entry) {
 /**
  * Sets the position and direction of StreetView to face the treeLocation, if it is visible. 
  * @param {obj} entry
+ * @author Amrit
  * @see https://stackoverflow.com/questions/32064302/google-street-view-js-calculate-heading-to-face-marker
  */
 function setStreetView(entry) {
@@ -794,6 +1026,7 @@ function setStreetView(entry) {
 /**
  * Sets a TreeMarker color to 'selected', by id, also brings it to the front with zIndex.
  * @param {int} id Tree ID.
+ * @author Amrit
  */
 function colorMarker(id) {
   for (let i = 0; i < markers.length; i++) {
@@ -806,6 +1039,7 @@ function colorMarker(id) {
 }
 /**
  * Resets all TreeMarker colors to default. 
+ * @author Amrit
  */
 function resetMarkerColor() {
   for (let i = 0; i < markers.length; i++) {
@@ -815,12 +1049,15 @@ function resetMarkerColor() {
 /**
  * Shows the TreeOverlay. 
  * @param {obj} entry
+ * @author Amrit
  */
 function showTreeOverlay(entry) {
   $(".content-container").hide();
   $(".search-container").hide();
   $(".tree-overlay-container").show();
+  $("#details-arrow-container").hide();
   updateSearchMapBtn();
+  updateHistory(entry);
   updateTreeOverlayContent(entry);
   updateDetails();
   $("#main").scrollTop(0);
@@ -828,6 +1065,7 @@ function showTreeOverlay(entry) {
 /**
  * Updates the TreeOverlay view with data from entry. 
  * @param {obj} entry
+ * @author Amrit
  */
 function updateTreeOverlayContent(entry) {
   $("#species-name").text(entry.fields.common_name);
@@ -856,13 +1094,23 @@ function updateTreeOverlayContent(entry) {
   $("#tree-card-age").text(ageString);
   addLikeButton($("#like-button-container"), entry.recordid, null, null);
 }
-//https://stackoverflow.com/questions/4060004/calculate-age-given-the-birth-date-in-the-format-yyyymmdd
+/**
+ * Gets age of tree.
+ * @param {string} dateString 
+ * @returns age of tree.
+ * @author https://stackoverflow.com/questions/4060004/calculate-age-given-the-birth-date-in-the-format-yyyymmdd, Amrit
+ */
 function getAgeOfTree(dateString) {
   let ageDifMs = Date.now() - dateStringtoDate(dateString).getTime();
   let ageDate = new Date(ageDifMs); // miliseconds from epoch
   return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
-//https://stackoverflow.com/questions/10607935/convert-returned-string-yyyymmdd-to-date/10610485
+/**
+ * Helper function for getAgeOfTree, converts date string to a date object.
+ * @param {string} dateString 
+ * @returns date object
+ * @author https://stackoverflow.com/questions/10607935/convert-returned-string-yyyymmdd-to-date/10610485, Amrit
+ */
 function dateStringtoDate(dateString) {
   let year = dateString.substring(0, 4);
   let month = dateString.substring(5, 7);
@@ -870,27 +1118,47 @@ function dateStringtoDate(dateString) {
   let date = new Date(year, month - 1, day);
   return date;
 }
-function copyShareLink() {
-  let id = $('#tree-card-id').data('id');
-  let url = window.location.href.split('?')[0] + "?id=" + id;
-  console.log(url);
+/**
+ * Copys share link.
+ * @author Amrit
+ */
+ function copyShareLink() {
+  let url = createShareLink($('#tree-card-id').data('id'));
   copyToClipboard(url);
 }
-//TODO DOES NOT WORK ???????????
-//@author: https://stackoverflow.com/questions/33855641/copy-output-of-a-javascript-variable-to-the-clipboard
-function copyToClipboard(text) {
-  var dummy = document.createElement("div");
-  dummy.style.display = 'none'
-  document.body.appendChild(dummy);
-  dummy.innerHTML = text;
-  dummy.select();
-  document.execCommand("copy");
-  document.body.removeChild(dummy);
+/**
+ * Opens a FB share link
+ * @auther Amrit
+ */
+function fbShare() {
+  let url = createShareLink($('#tree-card-id').data('id'));
+  window.open("https://www.facebook.com/sharer/sharer.php?u=" + url + "&src=sdkpreparse");
 }
-
+/**
+ * Creates share link with tree id.
+ * @param id Tree id.
+ * @returns newUrl URL link.
+ * @author Amrit
+ */
+function createShareLink(id) {
+  let url = window.location.href;
+  let urlBase = url.substring(0, url.lastIndexOf('/') + 1);
+  let newUrl = urlBase + "searchMap?id=" + id; 
+  return newUrl;
+}
+/**
+ * Copys text to clipboard.
+ * TODO SHOW DIALOG!!!!!!!!!
+ * @param {string} text 
+ * @author Amrit
+ */
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text);
+}
 /**
  * Adds a click listener to the StreeView button in TreeOverlay. 
  * @param {obj} entry
+ * @author Amrit
  */
 function addStreetViewBtnListener(entry) {
   $("#street-btn").off();
@@ -900,8 +1168,10 @@ function addStreetViewBtnListener(entry) {
 }
 /**
  * Hides the TreeOverlay and resets variables. 
+ * @author Amrit
  */
 function hideTreeOverlay() {
+  removeUrlParam("id");
   $(".tree-overlay-container").hide();
   $(".content-container").show();
   panorama.setVisible(false);
@@ -922,6 +1192,7 @@ function hideTreeOverlay() {
 }
 /** 
  * Toggles the content overlay visible or hidden
+ * @author Amrit
  */
 function toggleContentOverlay() {
   if ($("#outer-content").css('height') == '40px') {
@@ -932,6 +1203,7 @@ function toggleContentOverlay() {
 }
 /** 
  * Hides the content overlay
+ * @author Amrit
  */
 function hideContentOverlay() {
   let height = window.innerHeight;
@@ -941,6 +1213,7 @@ function hideContentOverlay() {
 }
 /**
  * Show the content overlay
+ * @author Amrit
  */
 function showContentOverlay() {
   let height = window.innerHeight;
@@ -951,6 +1224,7 @@ function showContentOverlay() {
 /**
  * Rotates the chevron.
  * @param {int} amount Amount of rotation.
+ * @author Amrit
  */
 function rotateChevron(chevron, amount) {
   chevron.css({ transition: "transform 0.3s", transform: "rotate(" + amount + "deg)" });
@@ -958,6 +1232,7 @@ function rotateChevron(chevron, amount) {
 }
 /** 
  * Toggles the content overlay visible or hidden
+ * @author Amrit
  */
 function toggleSearchOverlay() {
   if ($("#outer-search").css('height') == '40px') {
@@ -968,6 +1243,7 @@ function toggleSearchOverlay() {
 }
 /** 
  * Hides the content overlay
+ * @author Amrit
  */
 function hideSearchOverlay() {
   let height = window.innerHeight;
@@ -978,6 +1254,7 @@ function hideSearchOverlay() {
 }
 /**
  * Show the content overlay
+ * @author Amrit
  */
 function showSearchOverlay() {
   let height = window.innerHeight;
@@ -989,6 +1266,7 @@ function showSearchOverlay() {
 /**
  * Initializes Google Maps and sets custom Map and StreetView.
  * @see https://developers.google.com/maps/documentation/ 
+ * @author Amrit
  */
 function initMap() {
   const VANCOUVER_BOUNDS = {
@@ -1024,10 +1302,9 @@ function initMap() {
     },
     fullscreenControl: false,
   });
-  //https://stackoverflow.com/questions/27713304/single-click-interfering-with-double-click-how-can-resolve-this
+  // @see https://stackoverflow.com/questions/27713304/single-click-interfering-with-double-click-how-can-resolve-this
   map.addListener("click", () => {
     mouseClickTimer = setTimeout(function () {
-      //Single click
       if (selectedTreeId) {
         hideTreeOverlay();
       }
@@ -1035,8 +1312,8 @@ function initMap() {
   });
   map.addListener("dblclick", (mapsMouseEvent) => {
     clearTimeout(mouseClickTimer); //prevent single-click action
-    //double click
     clearLocationMarker();
+    updateSearchHistorySelectedId();
     currentLocation = mapsMouseEvent.latLng.toJSON();
     addLocationMarker(mapsMouseEvent.latLng, "");
     getContent();
@@ -1076,6 +1353,7 @@ function initMap() {
  * Adds location marker to map.
  * @param {latlng} location Current location.
  * @param {string} lbl Optional label.
+ * @author Amrit
  */
 function addLocationMarker(location, lbl) {
   $(".search-container").hide();
@@ -1096,6 +1374,7 @@ function addLocationMarker(location, lbl) {
 /**
  * Creates a button that toggles the type of map for map. 
  * @returns button.
+ * @author Amrit
  */
 function createToggleTypeBtn() {
   let toggleTypeBtn = document.createElement("button");
@@ -1126,6 +1405,7 @@ function createToggleTypeBtn() {
 /**
  * Creates undo button for search history for map.
  * @returns button
+ * @author Amrit
  */
 function createSearchHistoryBtn() {
   let toggleTypeBtn = document.createElement("button");
@@ -1144,6 +1424,7 @@ function createSearchHistoryBtn() {
 /**
  * Creates search toggle button for map.
  * @returns button
+ * @author Amrit
  */
 function createSearchMapBtn() {
   let toggleTypeBtn = document.createElement("button");
@@ -1173,10 +1454,12 @@ function createSearchMapBtn() {
 }
 /**
  * Steps back in search history list and queries the search.
+ * @author Amrit
  */
 function stepBackSearchHistory() {
   let index = searchHistory.length - 2;
   if (index > -1) {
+    let selectedTree = searchHistory[index].selected;
     let lastSearch = searchHistory[index];
     clearMarkers();
     clearLocationMarker();
@@ -1186,7 +1469,7 @@ function stepBackSearchHistory() {
       addLocationMarker(latlng, "");
       searchHistory.splice((index + 1), 1);
       searchHistory.splice(index, 1);
-      getContent();
+      getContent(function () {selectedTreeId = null;$("#" + selectedTree).click()});
       $("#content").scrollTop(0);
     } else {
       showSearchType(lastSearch.searchType + "-tag");
@@ -1194,12 +1477,14 @@ function stepBackSearchHistory() {
       $("#content").text("");
       searchHistory.splice(index + 1, 1);
       searchHistory.splice(index, 1);
-      search(true);
+      search(true, function () {selectedTreeId = null;$("#" + selectedTree).click()});
     }
+    
   }
 }
 /**
  * Toggles StreetView for a tree. 
+ * @author Amrit
  */
 function toggleStreetView(entry) {
   if ($("#street-btn").html() == "Map") {
@@ -1210,7 +1495,8 @@ function toggleStreetView(entry) {
   }
 }
 /**
- * Centers the map with respect to 50% div overlay. 
+ * Centers the map with respect to 50% div overlay.
+ * @author Amrit 
  */
 function centerMap() {
   let contentHidden = false;
@@ -1232,6 +1518,7 @@ function centerMap() {
  * @param {float} longitude 
  * @param {float} latitude 
  * @param {obj} entry 
+ * @author Amrit
  */
 function addTreeMarker(longitude, latitude, entry) {
   var ids = entry.recordid;
@@ -1239,7 +1526,7 @@ function addTreeMarker(longitude, latitude, entry) {
   /* Check if tree selected is being updated and set its color to selected. */
   if (selectedTreeId) {
     if (selectedTreeId == ids) {
-      return;
+      treeIcon = selectedTreeIcon;
     }
   }
   var treeLocation = { lat: latitude, lng: longitude }
@@ -1252,7 +1539,6 @@ function addTreeMarker(longitude, latitude, entry) {
   });
   markers.push(marker);
   marker.addListener("click", () => {
-    // $('#' + ids).get(0).scrollIntoView();
     if (ids == selectedTreeId && $(".tree-overlay-container").css('display') != 'none') {
       setStreetView(entry);
       toggleStreetView(entry);
@@ -1261,7 +1547,6 @@ function addTreeMarker(longitude, latitude, entry) {
       marker.setIcon(selectedTreeIcon);
       marker.metadata = { id: ids };
       zoom(entry);
-      /* Preload StreetView */
       setStreetView(entry);
       panorama.getPosition() // Preload again to fix first launch.
     }
@@ -1270,7 +1555,7 @@ function addTreeMarker(longitude, latitude, entry) {
 /**
  * Returns the distance given two lnglat values.
  * @author https://www.geodatasource.com/developers/javascript 
-*/
+ */
 function distance(lat1, lon1, lat2, lon2, unit) {
   if ((lat1 == lat2) && (lon1 == lon2)) {
     return 0;
@@ -1292,20 +1577,20 @@ function distance(lat1, lon1, lat2, lon2, unit) {
   }
 }
 /**
- * @see https://developers.google.com/maps/documentation/javascript/examples/marker-remove
+ * Removes all markers from the map and array.
+ * @author https://developers.google.com/maps/documentation/javascript/examples/marker-remove, Amrit
  * @see https://love2dev.com/blog/javascript-remove-from-array/
- * Removes the markers from the map, but keeps them in the array. */
+ */
 function clearMarkers() {
   for (let i = 0; i < markers.length; i++) {
-    if (markers[i].get('id') != selectedTreeId) {
       markers[i].setMap(null);
       markers.splice(i, 1);
       i--;
-    }
   }
 }
 /**
  * Clears the location marker.
+ * @author Amrit
  */
 function clearLocationMarker() {
   if (locationMarker != null) {
@@ -1313,119 +1598,45 @@ function clearLocationMarker() {
     locationMarker = null;
   }
 }
-
 /**
- * ========================================START=============================================
- * The next section utilizes wikipedia to source an extract and thumbnail from
- * the wikipedia page that corresponds to the genus and species name of the
- * selected tree to complement it's database information.
- *
- * Below is an example of a citation for a particular genus and species name.
- * @see https://en.m.wikipedia.org/wiki/Prunus_cerasifera
- * Example citation for Prunus cerasifera citation:
- * Wikipedia contributors. (2021, March 5). Prunus cerasifera. In Wikipedia, The Free Encyclopedia. Retrieved 17:51, May 19, 2021, from https://en.wikipedia.org/w/index.php?title=Prunus_cerasifera&oldid=1010448872
- *
- * Appending the genus and species name to the end of the following wikipedia link
- * will provide our citation link, as we cannot link every wikipedia page (there are many of them).
- * @author Wikipedia contributors
- * @see https://en.m.wikipedia.org/wiki/ + genus + _ + species name from database
- */
-
-/**
- * Uses wikipedia to retrieve an entry corresponding to the genus_species name of the selected tree.
- * @param {*} genus_species
- * @see Stirling
- */
-
-/*
-
-function getWikipediaThumbnail (genus_species) {
-  return new Promise((resolve) => {
-    let thumbnailUrl = "https://en.wikipedia.org/w/api.php?action=query&titles=" + genus_species + "&prop=pageimages&format=json&pithumbsize=100&callback=?&redirects=";
-    $.ajax({
-      type: "GET",
-      dataType: "jsonp",
-      url: thumbnailUrl,
-      success: function(result, status, xhr){
-          console.log("received: ", result);
-          let pageIdThumbnail = Object.keys(result.query.pages)[0];
-          if (pageIdThumbnail != -1) {
-            let thumbnail = result.query.pages[pageIdThumbnail].thumbnail;
-            resolve(thumbnail);
-          } else {
-            resolve("Extract not available :(");
-          }
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-          console.log("ERROR:", jqXHR, textStatus, errorThrown);
-          resolve("Extract not available :(");
-      }
-    });
-  });
-}
-
-function getWikipediaExtract (genus_species) {
-  return new Promise((resolve) => {
-    let extractUrl = "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=" + genus_species + "&exintro=1&explaintext=1&callback=?&redirects=";
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: extractUrl,
-        success: function(result, status, xhr){
-            console.log("received: ", result);
-            let pageId = Object.keys(result.query.pages)[0];
-            if (pageId != -1) {
-              let extract = JSON.stringify(result.query.pages[pageId].extract);
-              resolve(extract);
-            } else {
-              resolve("Extract not available :(");
-            }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log("ERROR:", jqXHR, textStatus, errorThrown);
-            resolve("Extract not available :(");
-        }
-    });
-  });
-}
-*/
-
-/**
- * Displays wikipedia thumbnail retrieved from query in details division.
- * @param {*} result
- */
-/*
-async function displayWikipediaInformation(element, genus_species) {
-  let extract = await getWikipediaExtract(genus_species);
-  // replace regex from https://stackoverflow.com/questions/14948223/how-to-convert-n-to-html-line-break/23736554
-  // see TheLazyHatGuy -> https://stackoverflow.com/users/11219881/thelazyhatguy
-  extract = extract.replace(/\\n|\\r\\n|\\n\\r|\\r/g, '');
-  element.text(extract);
-  let link = "https://en.wikipedia.org/wiki/" + genus_species;
-  element.append('<br><br>Retrieved from <a href="'+ link +'" onclick="window.open(\'' + link + '\')">Wikipedia</a>');
-
-  let thumbnail = await getWikipediaThumbnail(genus_species);
-  element.prepend('<img id="textwrap" src=' + thumbnail.source + ' alt=""><br>');
-
-}
-*/
-// ========================================END=============================================
-
-/**
- * Toggles the details overlay when "details-btn" is clicked.
- * Toggles the activeDetails class on the "#outer-tree-content",
- * "#tree-content", and "#main" divisions in order to allow an increase in size
- * of the #main div for the details tab. Resets to original size when toggled off.
- *
- * The following code used a snippet from stack overflow as a foundation.
- * @author Kami @see https://stackoverflow.com/users/1603275/kami
- * @see https://stackoverflow.com/questions/25409023/how-to-restart-reset-jquery-animation
+ * Updates the details division with wikipedia information when tree overlay is loaded.
+ * @author Steven
  */
 function updateDetails() {
   $("#details").html("");
   let textForQuery = $("#tree-name").text();
   textForQuery = (textForQuery.split(' ').slice(0, 2).join('_')).toLowerCase();
-  displayWikipediaInformation($("#details"), textForQuery);
+  displayWikipediaInformation($("#details"), textForQuery, $("#details-arrow-container"));
 }
-
-
+/**
+ * Scroll listener for Wikipedia scroll; details arrow is visible with scrollTop percentage.
+ * @author Amrit
+ */
+function addMainScrollListener() {
+  $("#main").scroll(function() {
+    $("#details-arrow-container").css("opacity", 100 - $("#main").scrollTop() + "%");
+  });
+}
+/**
+ * Saves history to database
+ * @author Aidan
+ */
+ function updateHistory(entry){
+  var user = firebase.auth().currentUser;
+  var treeID = entry.recordid;
+  // console.log(entry);
+  if (user) {
+      user.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+          $.ajax({
+              url: "/ajax-add-history",
+              dataType: "json",
+              type: "POST",
+              data: {tree: treeID, idToken: idToken},
+              success: ()=>{console.log("Successfully added to history")},
+              error: (jqXHR,textStatus,errorThrown )=>{
+                  console.log("Error:"+textStatus);
+              }
+          });
+      });
+  }
+}

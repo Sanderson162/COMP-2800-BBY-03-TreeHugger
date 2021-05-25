@@ -42,28 +42,24 @@ h1 {
     overflow-y:auto;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
 }
 
 #outer-content {
     border-radius: 4px;
     background-color:rgb(247, 247, 247);
     margin: auto;
-    /* margin-top:1em; */
     height: 100%;
     max-width: 475px;
     max-height:500px;
     overflow-y:hidden;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
 }
 
 #outer-tree-content {
     border-radius: 4px;
     background-color:rgb(247, 247, 247);
     margin: auto;
-    /* margin-top:1em; */
     height: 81%;
     max-width: 475px;
     max-height:320px;
@@ -71,7 +67,6 @@ h1 {
     overflow-y:hidden;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
 }
 
 #trees-near-header, #trees-content-header, #species-name {
@@ -92,7 +87,6 @@ h1 {
     overflow-y:auto;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
 }
 
 .title {
@@ -105,15 +99,20 @@ h1 {
     font-style: italic;
     font-weight: 100;
     margin-top:1em;
-    color:lightgray;
+    color: #8a8a8d
 }
 
 .distance {
     font-style: italic;
+    color:#8a8a8d
 }
 
 *::-webkit-scrollbar {
     display: none;
+}
+
+* {
+    scrollbar-width: none;
 }
 
 .map-container { 
@@ -311,7 +310,7 @@ button:hover {
 }
 
 .tree-card-label {
-    color:lightgray;
+    color:#8a8a8d;
     font-size:80%;
     flex-grow: 1;
 }
@@ -325,9 +324,52 @@ button:hover {
     color:rgb(235, 235, 235);
     font-size:80%;
     display:block;
+    margin-bottom:3em;
 }
 
 #like-button-container {
     margin-left: 4px;
     float: left;
+}
+
+#details {
+    text-align: left;
+    margin: auto;
+    padding-right: 1em;
+    padding-left: 1em;
+    line-height:1.6;
+}
+
+#thumbnail {
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    border-radius: 4px;
+}
+
+#details-arrow-container {
+    display: block;
+    position:absolute;
+    bottom: 82px;
+    right:0.5em;
+    height:30px;
+    pointer-events:none;
+    display:none;
+}
+
+#share-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-right: 4px;
+    float: right;
+}
+
+#share-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }

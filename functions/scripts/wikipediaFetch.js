@@ -52,7 +52,7 @@ function getWikipediaExtract (genus_species) {
 
 function getWikipediaThumbnail (genus_species) {
   return new Promise((resolve) => {
-    let thumbnailUrl = "https://en.wikipedia.org/w/api.php?action=query&titles=" + genus_species + "&prop=pageimages&format=json&pithumbsize=150&callback=?&redirects=";
+    let thumbnailUrl = "https://en.wikipedia.org/w/api.php?action=query&titles=" + genus_species + "&prop=pageimages&format=json&pithumbsize=400&callback=?&redirects=";
     $.ajax({
       type: "GET",
       dataType: "jsonp",
@@ -80,7 +80,7 @@ function getWikipediaThumbnail (genus_species) {
  * Displays wikipedia thumbnail retrieved from query in details division.
  * @param {*} result
  */
- async function displayWikipediaInformation(element, genus_species) {
+ async function displayWikipediaInformation(element, genus_species, arrowElement) {
   let extract = await getWikipediaExtract(genus_species);
   // replace regex from https://stackoverflow.com/questions/14948223/how-to-convert-n-to-html-line-break/23736554
   // see TheLazyHatGuy -> https://stackoverflow.com/users/11219881/thelazyhatguy
@@ -88,11 +88,19 @@ function getWikipediaThumbnail (genus_species) {
   element.text(extract);
   if (extract) {
     let link = "https://en.wikipedia.org/wiki/" + genus_species;
-  element.append('<br><br>Retrieved from <a href="'+ link +'" onclick="window.open(\'' + link + '\')">Wikipedia</a>');
-
-  let thumbnail = await getWikipediaThumbnail(genus_species);
-  element.prepend('<img id="thumbnail" src=' + thumbnail.source + ' alt=""><br>');
+    element.append('<br><a href="'+ link +'" onclick="event.preventDefault();window.open(\'' + link + '\');"><img style="display:block;margin:auto;padding:1em;width:35px;height:auto;"src="https://upload.wikimedia.org/wikipedia/commons/7/77/Wikipedia_svg_logo.svg"></img></a>');
+    let thumbnail = await getWikipediaThumbnail(genus_species);
+    element.prepend('<img style="width:100%;max-height:125px;object-fit: cover;"id="thumbnail" src=' + thumbnail.source + ' alt=""><br>');
+    isDetails(true, arrowElement);
+  } else {
+    isDetails(false, arrowElement);
   }
-
 }
 
+function isDetails(detailExists, arrowElement) {
+  if (detailExists) {
+    arrowElement.fadeIn();
+  } else {
+    arrowElement.fadeOut();
+  }
+}

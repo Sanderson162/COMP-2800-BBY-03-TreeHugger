@@ -23,25 +23,52 @@
 </head>
 
 <body>
-    <div id="logo-bg"><img class="logo" src="https://firebasestorage.googleapis.com/v0/b/tree-hugger-c60ff.appspot.com/o/treehug-logo.png?alt=media&token=65d15b73-9386-4ae5-a769-6b14bec02555" alt=""></div>
-    <div id="container">
-        <a><div class="card"><b>Welcome</b> to TreeHugger!</div></a>
-        <a href="/aboutUs">
-
-            <div class="card">About Us</div>
-        </a>
-        <a href="https://vancouver.ca/parks-recreation-culture/vancouver-tree-weekend.aspx" target="_blank">
-
-            <div class="card">Help Plant Trees</div>
-        </a>
-    </div>
-    
+    <div class="grid-container">
+        <div class="logo"><img class="logo" src="https://firebasestorage.googleapis.com/v0/b/tree-hugger-c60ff.appspot.com/o/treehug-logo.png?alt=media&token=65d15b73-9386-4ae5-a769-6b14bec02555" alt=""></div>
+        <div class="menu">
+          <div class="menu1">
+            <a href="/treefind">
+              <div class=circle-btn><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M26.9867 16.32C28.4879 14.8188 29.3312 12.7829 29.3312 10.66C29.3312 8.53705 28.4879 6.50109 26.9867 4.99997C25.4856 3.49884 23.4497 2.65552 21.3267 2.65552C19.2038 2.65552 17.1679 3.49884 15.6667 4.99997L6.66675 14V25.3333H18.0001L26.9867 16.32Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M21.3334 10.6666L2.66675 29.3333" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M23.3333 20H12" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>                               
+                </div>
+              <div class="card" style="color:white;"><b>Start</b></div></div>
+            </a>
+          <div class="menu2">        <a href="/aboutUs">
+            <div class="circle-btn"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15.9998 29.3333C23.3636 29.3333 29.3332 23.3638 29.3332 16C29.3332 8.63616 23.3636 2.66663 15.9998 2.66663C8.63604 2.66663 2.6665 8.63616 2.6665 16C2.6665 23.3638 8.63604 29.3333 15.9998 29.3333Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10.6665 18.6666C10.6665 18.6666 12.6665 21.3333 15.9998 21.3333C19.3332 21.3333 21.3332 18.6666 21.3332 18.6666" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 12H12.0133" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M20 12H20.0133" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              
+                </div>
+            <div class="card" style="color:white;"><b>About Us</b></div>
+        </a></div>
+          <div class="menu3">        <a href="https://vancouver.ca/parks-recreation-culture/vancouver-tree-weekend.aspx" target="_blank">
+            <div class="circle-btn"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9.33341 29.3333H5.33341C4.62617 29.3333 3.94789 29.0523 3.4478 28.5522C2.9477 28.0521 2.66675 27.3739 2.66675 26.6666V17.3333C2.66675 16.626 2.9477 15.9478 3.4478 15.4477C3.94789 14.9476 4.62617 14.6666 5.33341 14.6666H9.33341M18.6667 12V6.66663C18.6667 5.60576 18.2453 4.58834 17.4952 3.8382C16.745 3.08805 15.7276 2.66663 14.6667 2.66663L9.33341 14.6666V29.3333H24.3734C25.0165 29.3406 25.6406 29.1152 26.1306 28.6986C26.6207 28.2821 26.9437 27.7025 27.0401 27.0666L28.8801 15.0666C28.9381 14.6844 28.9123 14.2942 28.8045 13.923C28.6968 13.5517 28.5096 13.2084 28.2559 12.9166C28.0022 12.6249 27.6882 12.3919 27.3355 12.2336C26.9828 12.0753 26.6 11.9956 26.2134 12H18.6667Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>              
+                </div>
+            <div class="card" style="color:white;"><b>Plant Trees</b></div>
+        </a></div>
+        </div>
+      </div>
     <!-- Your own Firebase API key information -->
     <script src="./firebase_api_Group3.js"> </script>
 
     <!-- Common Navbar Script -->
     <script src="./navbar-common.js"></script>
-
+    <script>
+    $(document).ready(function () {
+      $(".logo").fadeIn();
+    });  
+    $(".main-container").scroll(function() {
+    $(".logo").css("opacity", 100 - ($(".main-container").scrollTop()-250) + "%");
+      });
+      </script>
     <!-- Additional Script -->
 </body>
 

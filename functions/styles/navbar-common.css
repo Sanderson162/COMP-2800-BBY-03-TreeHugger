@@ -62,122 +62,126 @@
     filter: invert(50%) sepia(30%) saturate(2595%) hue-rotate(349deg) brightness(100%) contrast(91%);
 }
 
-
 #loginContainerPopup {
-    /* width: 270px;
-    background-color: rgb(212, 212, 212);
-    color: rgb(0, 0, 0);
-    text-align: center;
-    border: 1px solid black;
-    border-radius: 5px;
-    position: absolute;
-    z-index: 2;
- */
- top: 10em;
- left: 50%;
- margin-left: -135px;
-    text-align: center;
-    z-index: 2;
-    border-radius: 4px;
-    background-color:white;
-    margin: auto;
-    height: 92%;
-    max-width: 475px;
-    max-height:500px;
-    overflow-y:auto;
-    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
-    pointer-events: all;
-    opacity:98%;
-  }
-  
-  #loginContainerPopup>.loginNavBar {
-    display: flex;
-    flex-direction: row;
-    border-radius: 5px;
-    justify-content: center;
-    gap:4px;
-    height:50px;
-  }
-  
-  .navButton {
-    background:#ececec;
-    color:black;
-    padding: 0.5em;
-    border-radius: 2em;
-    font-size: 100%;
-    width:80px;
-    height:20px;
-    display:inline-block;
-    text-align:center;
-    margin-top:1em;
-    margin-bottom:1em;
-  }
-  
-  #loginContainerPopup>.loginSignupformContainer {
-    padding: 1em;
-    border-radius: 5px;
-    
-  }
-  .selectedNav {
-    background: gray;
-    color:white;
-  }
-  
-  #loginContainerPopup>.loginSignupformContainer>div>input {
-    font-size:18px;
-    width:72.6%;
-    padding:10px;
-    border-radius:4px;
-    margin:auto;
-    border-color:gainsboro;
-    border-width:thin;
-    border-style: solid;
-        -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    appearance: none !important;
-    margin-bottom:4px;
-  }
-  
-  
-  #profileHamburgerMenu {
-    width: 200px;
-    background-color: white;
-    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
-    color: rgb(0, 0, 0);
-    text-align: center;
-    border-radius: 4px;
-    position: absolute;
-    z-index: 2;
-    bottom: 65px;
-    right: 10px;
-    display: none;
-    user-select: none;
-  }
-  
-  #profileHamburgerMenu>div {
-    text-align: center;
-    border-color:gainsboro;
-    border-width:thin;
-    border-style: solid;
-    border-radius: 4px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    box-sizing: border-box;
-    margin: 5px;
-    background:whitesmoke;
-  }
-  
-  #navbarHamProfileButton {
-    display: none;
-  }
+  top: 10em;
+  left: 50%;
+  margin-left: -135px;
+  text-align: center;
+  z-index: 2;
+  border-radius: 4px;
+  background-color:rgba(255, 255, 255, 0.096);
+  margin: auto;
+  height: 92%;
+  max-width: 475px;
+  max-height:500px;
+  overflow-y:auto;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+  pointer-events: all;
+  opacity:98%;
+}
 
-  #login-header {
-    color:gray;
-    font-size:110%;
-    margin:10px;
-    height:20px;
-    display:block;
-  }
+#loginContainerPopup>.loginNavBar {
+  display: flex;
+  flex-direction: row;
+  border-radius: 5px;
+  justify-content: center;
+  gap:4px;
+  height:50px;
+}
+
+.navButton {
+  background:rgba(0, 0, 0, 0.1);
+  color:rgb(133, 133, 133);
+  padding: 0.5em;
+  border-radius: 2em;
+  font-size: 100%;
+  width:80px;
+  height:20px;
+  display:inline-block;
+  text-align:center;
+  margin-top:1em;
+  margin-bottom:1em;
+}
+
+#loginContainerPopup>.loginSignupformContainer {
+  padding: 1em;
+  border-radius: 5px;
+  
+}
+.selectedNav {
+  background: rgba(255, 255, 255, 0.24);
+  color:white;
+}
+  
+#loginContainerPopup>.loginSignupformContainer>div>input {
+  font-size:18px;
+  width:72.6%;
+  padding:10px;
+  border-radius:4px;
+  margin:auto;
+  border:none;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  margin-bottom:4px;
+  background-color:rgba(255, 255, 255, 0.11);
+  color:white;
+}
+  
+#loginContainerPopup>.loginSignupformContainer>div>input::placeholder {
+  color: rgb(172, 172, 172);
+  font-style:italic;
+  font-weight:lighter;
+}
+
+#loginContainerPopup>.loginSignupformContainer>div>input:focus {
+  outline: none;
+  border: 1px solid #007ACC;
+}
+  
+#profileHamburgerMenu {
+  width: 200px;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+  color: rgb(0, 0, 0);
+  text-align: center;
+  border-radius: 4px;
+  position: absolute;
+  z-index: 1;
+  bottom: 53px;
+  right: 2px;
+  display: none;
+  user-select: none;
+  background-color:rgb(247, 247, 247);
+}
+  
+#profileHamburgerMenu>div {
+  text-align: center;
+  border-radius:4px;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  width:150px;
+  padding:15px;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right:auto;
+  margin-top:10px;
+  margin-bottom:10px;
+  font-weight:bold;
+  background:white;
+  display:block;
+  height:50px;
+}
+
+#navbarHamProfileButton {
+  display: none;
+}
+
+#login-header {
+  color:rgb(131, 131, 131);
+  font-size:110%;
+  margin:10px;
+  height:20px;
+  display:block;
+}
 
 .login-container { 
     user-select: none;
@@ -189,33 +193,55 @@
     height: 100%;
     overflow: visible;
     background-image: linear-gradient(to top, rgba(0, 0, 0, 0.2), rgb(0, 0, 0, 0.35));
-    pointer-events: none;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
     padding: 1em;
     box-sizing:border-box;
 }
 
 #outer-login {
     border-radius: 4px;
-    background-color:rgb(247, 247, 247);
-    margin: auto;
-    /* margin-top:1em; */
+    background-color:rgba(0, 0, 0, 0.425);
     height: 100%;
-    max-width: 420px;
-    max-height: 325px;
+    max-width: 325px;
+    max-height: 355px;
     overflow-y:hidden;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
+    z-index:1;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    width:100%;
 }
 
 #loginMsg{
-    color:red;
+    color:rgb(255, 177, 177);
     height:100%;
     display:block;
     margin:auto;
 }
+
 #signupMsg{
-    color:red;
+    color:rgb(255, 177, 177);
     height:100%;
     display:block;
     margin:auto;
+}
+
+.signInWithGoogle {
+  height:50px;
+  width: auto;
+}
+
+#loginSubmit, #signupSubmit {
+  height: 45px;
+  width: 202px !important;
+  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.055) !important;
+  border: none !important;
+  font-size: 100% !important;
+  margin-top:1em !important;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 2px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }

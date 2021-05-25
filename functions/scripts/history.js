@@ -88,9 +88,9 @@ function displayComment(comment){
     let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine.recordid=" + comment.Tree;
     $.getJSON(query, (tree) => {
         let t = $("<div class='tree'>");
-        t.append($("<p></p>").html(tree.records[0].fields.genus_name+" "+tree.records[0].fields.species_name));
-        t.append($("<p></p>").html(tree.records[0].fields.common_name));
-        t.append($("<p></p>").html(tree.records[0].fields.on_street_block+" "+tree.records[0].fields.on_street+" "+tree.records[0].fields.neighbourhood_name));
+        t.append($("<p class='common-name'></p>").html(tree.records[0].fields.common_name));
+        t.append($("<p class='species-name'></p>").html(tree.records[0].fields.genus_name+" "+tree.records[0].fields.species_name));
+        t.append($("<p class='street-name'></p>").html(tree.records[0].fields.on_street_block+" "+tree.records[0].fields.on_street+" "+tree.records[0].fields.neighbourhood_name));
     
         elem.append(t);
     })
@@ -124,9 +124,9 @@ function displayHistory(comment){
     let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine.recordid=" + comment.tree;
     $.getJSON(query, (tree) => {
         let t = $("<div class='tree'>");
-        t.append($("<p></p>").html(tree.records[0].fields.genus_name+" "+tree.records[0].fields.species_name));
-        t.append($("<p></p>").html(tree.records[0].fields.common_name));
-        t.append($("<p></p>").html(tree.records[0].fields.on_street_block+" "+tree.records[0].fields.on_street+" "+tree.records[0].fields.neighbourhood_name));
+        t.append($("<p class='common-name'></p>").html(tree.records[0].fields.common_name));
+        t.append($("<p class='species-name'></p>").html(tree.records[0].fields.genus_name+" "+tree.records[0].fields.species_name));
+        t.append($("<p class='street-name'></p>").html(tree.records[0].fields.on_street_block+" "+tree.records[0].fields.on_street+" "+tree.records[0].fields.neighbourhood_name));
     
         elem.append(t);
     })

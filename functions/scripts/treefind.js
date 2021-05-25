@@ -1,8 +1,9 @@
 /**
  * TreeFind
- * Uses the opendata 'Street Trees' database and Google Maps to find trees near a users location in Vancouver.
+ * Uses the opendata 'Street Trees' database and Google Maps API to find trees near a users location in Vancouver.
  * @author Amrit Manhas apsm100
-*/
+ * @see Stirling, Steven, stackoverflow
+ */
 "use strict";
 let currentLocation;
 let markers = [];
@@ -41,19 +42,84 @@ function testGPS() {
 }
 /**
  * After document load, start the location intervals. 
+ * @author Amrit
  */
 $(document).ready(function () {
-  getLocation(true);
   if (testing) {
     testLocationInterval = setInterval(testGPS, 30);
   }
+  checkUrlParams(getUrlParams());
   locationInterval = setInterval("getLocation(false)", 3000);
+  addMainScrollListener();
 });
 /**
- * Gets location, pulls content, and shows error dialogues if any occur. 
- * @see https://developers.google.com/maps/documentation/javascript/geolocation
+ * Checks URL parameters and executes appropriate action.
+ * @param {string} params 
+ * @author Amrit
  */
-function getLocation(center) {
+function checkUrlParams(params) {
+  let _callback;
+  if (params.id) {
+    // Simulates a click on listItem to initiate the zoom function on that particular ID.
+    _callback = function () {
+      selectedTreeId = null;
+      if ($("#" + params.id).length) {
+        $("#" + params.id).click();
+      } else {
+        getLocation(true);
+      }
+    };
+    getLocation(false, _callback);
+  } else {
+    getLocation(true);
+  }
+}
+/**
+ * Uses URL to get URL parameters.
+ * @returns params
+ * @author https://stackoverflow.com/questions/7722683/how-to-get-all-query-string-values-using-javascript, Amrit
+ */
+ function getUrlParams() {
+  let urlParams = (new URL(document.location)).searchParams;
+  let params = {};
+  for(let param of urlParams.keys()) {
+    params[param] = urlParams.get(param);
+  }
+  return params;
+}
+/**
+ * Sets url parameter.
+ * @param {string} key 
+ * @param {string} value 
+ * @author https://stackoverflow.com/questions/10970078/modifying-a-query-string-without-reloading-the-page, Amrit
+ */
+function setUrlParam(key, value) {
+  if (history.replaceState) {
+    let searchParams = new URLSearchParams(window.location.search);
+    searchParams.set(key, value);
+    let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
+    window.history.replaceState({path: newurl}, '', newurl);
+  }
+}
+/**
+ * Removes a url paramater with key.
+ * @param {string} key 
+ * @author Amrit, https://stackoverflow.com/questions/10970078/modifying-a-query-string-without-reloading-the-page
+ */
+function removeUrlParam(key) {
+  if (history.replaceState) {
+    let searchParams = new URLSearchParams(window.location.search);
+    searchParams.delete(key);
+    let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
+    window.history.replaceState({path: newurl}, '', newurl);
+  }
+}
+/**
+ * Gets location, pulls content, and shows error dialogues if any occur. 
+ * @param {obj} _callback Function to be passed to pullLocation (optional).
+ * @author https://developers.google.com/maps/documentation/javascript/geolocation, Amrit
+ */
+function getLocation(center, _callback) {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -71,7 +137,7 @@ function getLocation(center) {
           currentLocation = location;
           updateLocationMarker(currentLocation);
         }
-        contentPullLocation();
+        contentPullLocation(_callback);
         if (center) {
           map.setCenter(currentLocation);
           centerMap();
@@ -91,13 +157,13 @@ function getLocation(center) {
  * Checks if user is in Vancouver.
  * @param {obj} position Current location. 
  * @returns true if location is out of bounds.
+ * @author Amrit
  */
 function checkLocationBounds(position) {
   let bounds = new google.maps.LatLngBounds(
     new google.maps.LatLng(49.198387, -123.224944), 
     new google.maps.LatLng(49.317422, -122.980440));
   let posLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
   if (bounds.contains(posLatLng) == false) {
     return true;
   } else {
@@ -105,16 +171,18 @@ function checkLocationBounds(position) {
   }
 }
 /**
- * Only gets new content after x (distanceRefresh) meters distance from last get. Updates distance only between gets. 
+ * Only gets new content after x (distanceRefresh) meters distance from last get. Updates distance only between gets.
+ * @param {obj} _callback Function to be passed to getContent (optional).
+ * @author Amrit 
  */
-function contentPullLocation() {
+function contentPullLocation(_callback) {
   if (!lastPullLocation) {
-    getContent();
+    getContent(_callback);
     lastPullLocation = currentLocation;
   } else {
     if (lastPullLocation.lat != currentLocation.lat || lastPullLocation.lng != currentLocation.lng) {
       if (Math.round(distance(lastPullLocation.lat, lastPullLocation.lng, currentLocation.lat, currentLocation.lng, "M")) > distanceRefresh) {
-        getContent();
+        getContent(_callback);
         lastPullLocation = currentLocation;
       }
       if (!lastCalcLocation) {
@@ -131,9 +199,11 @@ function contentPullLocation() {
 }
 /**
  * Gets entries from opendatabase API. 
+ * @param {obj} _callback Function to be called back after completion (optional).
+ * @author Amrit
  * @see https://www.w3schools.com/jquery/ajax_getjson.asp
  */
-function getContent() {
+function getContent(_callback) {
   $.getJSON('https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&geofilter.distance=' + currentLocation.lat + '%2C' + currentLocation.lng + '%2C1000&rows=' + rows, function (data) {
     $("#content").text("");
     clearMarkers();
@@ -142,11 +212,15 @@ function getContent() {
         updateContent(entry);
       }
     });
+    if (_callback) {
+      _callback();
+    }
     isContent();
   });
 }
 /**
  * Checks if content is empty. 
+ * @author Amrit
  */
 function isContent() {
   if ($("#content").text() == "") {
@@ -156,6 +230,7 @@ function isContent() {
 /**
  * Uses the content div to show a dialogue. 
  * @param {string} m Message to show.
+ * @author Amrit
  */
 function showDialogue(m) {
   if (m == "locationError") {
@@ -215,6 +290,7 @@ function showDialogue(m) {
 /**
  * Updates and appends content with entry. 
  * @param {obj} entry
+ * @author Amrit
  */
 function updateContent(entry) {
   var dist = Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M"));
@@ -238,6 +314,7 @@ function updateContent(entry) {
 /**
  * Zooms on entry, shows overlay and updates various variables. 
  * @param {obj} entry
+ * @author Amrit
  */
 function zoom(entry) {
   selectedTreeId = entry.recordid;
@@ -252,10 +329,12 @@ function zoom(entry) {
   centerMap();
   showTreeOverlay(entry);
   addStreetViewBtnListener(entry);
+  setUrlParam("id", entry.recordid);
 }
 /**
  * Sets the position and direction of StreetView to face the treeLocation, if it is visible. 
  * @param {obj} entry
+ * @author Amrit
  * @see https://stackoverflow.com/questions/32064302/google-street-view-js-calculate-heading-to-face-marker
  */
 function setStreetView(entry) {
@@ -284,6 +363,7 @@ function setStreetView(entry) {
 /**
  * Sets a TreeMarker color to 'selected', by id. 
  * @param {int} id Tree ID.
+ * @author Amrit
  */
 function colorMarker(id) {
   for (let i = 0; i < markers.length; i++) {
@@ -294,6 +374,7 @@ function colorMarker(id) {
 }
 /**
  * Resets all TreeMarker colors to default. 
+ * @author Amrit
  */
 function resetMarkerColor() {
   for (let i = 0; i < markers.length; i++) {
@@ -303,17 +384,22 @@ function resetMarkerColor() {
 /**
  * Shows the TreeOverlay. 
  * @param {obj} entry
+ * @author Amrit
  */
 function showTreeOverlay(entry) {
   $(".content-container").hide();
   $(".tree-overlay-container").show();
+  $("#details-arrow-container").hide();
   updateTreeOverlayContent(entry);
   updateHistory(entry);
+  updateDetails();
+  $("#main").scrollTop(0);
   showMapButtons(false);
 }
 /**
  * Updates the TreeOverlay view with data from entry. 
  * @param {obj} entry
+ * @author Amrit
  */
 function updateTreeOverlayContent(entry) {
   $("#tree-name").text(entry.fields.common_name);
@@ -334,21 +420,31 @@ function updateTreeOverlayContent(entry) {
     ageString = "N/A";
   }
   $("#tree-card-id").text("Tree ID: " + entry.fields.tree_id);
+  $("#tree-card-id").data("id", entry.recordid);
   $("#tree-card-height").text(entry.fields.height_range_id * 10 + " ft");
   $("#tree-card-diameter").text(entry.fields.diameter + " in");
   $("#tree-card-date").text(dateString);
   $("#tree-card-age").text(ageString);
   addLikeButton($("#like-button-container"), entry.recordid, null, null);
 }
-//https://stackoverflow.com/questions/4060004/calculate-age-given-the-birth-date-in-the-format-yyyymmdd
+/**
+ * Gets age of tree.
+ * @param {string} dateString 
+ * @returns age of tree.
+ * @author https://stackoverflow.com/questions/4060004/calculate-age-given-the-birth-date-in-the-format-yyyymmdd, Amrit
+ */
 function getAgeOfTree(dateString) {
   let ageDifMs = Date.now() - dateStringtoDate(dateString).getTime();
   let ageDate = new Date(ageDifMs); // miliseconds from epoch
   return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
-//https://stackoverflow.com/questions/10607935/convert-returned-string-yyyymmdd-to-date/10610485
+/**
+ * Helper function for getAgeOfTree, converts date string to a date object.
+ * @param {string} dateString 
+ * @returns date object
+ * @author https://stackoverflow.com/questions/10607935/convert-returned-string-yyyymmdd-to-date/10610485, Amrit
+ */
 function dateStringtoDate(dateString) {
-  //1989-11-06
   let year = dateString.substring(0,4);
   let month = dateString.substring(5,7);
   let day = dateString.substring(7,9);
@@ -358,6 +454,7 @@ function dateStringtoDate(dateString) {
 /** 
  * Adds a click listener to the StreeView button in TreeOverlay. 
  * @param {obj} entry
+ * @author Amrit
  */
 function addStreetViewBtnListener(entry) {
   $("#street-btn").off();
@@ -367,6 +464,7 @@ function addStreetViewBtnListener(entry) {
 }
 /**
  * Hides the TreeOverlay and resets variables. 
+ * @author Amrit
  */
 function hideTreeOverlay() {
   $(".tree-overlay-container").hide();
@@ -379,9 +477,11 @@ function hideTreeOverlay() {
   selectedTreeId = null;
   showMapButtons(true);
   centerMap();
+  removeUrlParam("id");
 }
 /** 
  * Toggles the content overlay visible or hidden
+ * @author Amrit
  */
 function toggleContentOverlay() {
   if ($("#outer-content").css('height') == '40px') {
@@ -392,6 +492,7 @@ function toggleContentOverlay() {
 }
 /** 
  * Hides the content overlay
+ * @author Amrit
  */
 function hideContentOverlay() {
   let height = window.innerHeight;
@@ -400,7 +501,8 @@ function hideContentOverlay() {
   map.panBy(0, height * 0.25);
 }
 /**
- * Show the content overlay
+ * Shows the content overlay
+ * @author Amrit
  */
 function showContentOverlay() {
   let height = window.innerHeight;
@@ -411,6 +513,7 @@ function showContentOverlay() {
 /**
  * Rotates the chevron.
  * @param {int} amount Amount of rotation.
+ * @author Amrit
  */
 function rotateChevron(amount) {
   $("#hide-content-btn").css({ transition: "transform 0.3s", transform: "rotate(" + amount + "deg)" });
@@ -419,6 +522,7 @@ function rotateChevron(amount) {
 /**
  * Shows or hides the center-locate and enable-location buttons. 
  * @param {bool} enabled If location is enabled.
+ * @author Amrit
  */
 function showMapButtons(enabled) {
   if (enabled) {
@@ -440,6 +544,7 @@ function showMapButtons(enabled) {
  * Updates the location marker, or creates it if it is null. 
  * @param {latlng} location 
  * @param {string} lbl 
+ * @author Amrit
  */
 function updateLocationMarker(location, lbl) {
   if (locationMarker != null) {
@@ -451,6 +556,7 @@ function updateLocationMarker(location, lbl) {
       label: lbl,
       icon: locationIcon,
       id: "location",
+      zIndex: 1000000,
     });
     locationMarker = marker;
   }
@@ -458,6 +564,7 @@ function updateLocationMarker(location, lbl) {
 }
 /**
  * Updates the treeContent view distance value, if there is a tree currently selected. 
+ * @author Amrit
  */
 function updateTreeOverlayDistance() {
   if (selectedTreeLocation) {
@@ -466,6 +573,7 @@ function updateTreeOverlayDistance() {
 }
 /**
  * Initializes Google Maps and sets custom Map and StreetView.
+ * @author Amrit
  * @see https://developers.google.com/maps/documentation/ 
  */
 function initMap() {
@@ -500,7 +608,7 @@ function initMap() {
       position: google.maps.ControlPosition.RIGHT_BOTTOM,
     },
     fullscreenControl: false,
-    minZoom: 18,
+    minZoom: 15,
   });
   map.addListener("click", () => {
     if (selectedTreeId) {
@@ -537,6 +645,7 @@ function initMap() {
 }
 /**
  * Creates a button that toggles the location service. 
+ * @author Amrit
  */
 function createToggleLocationBtn() {
   let toggleLocationBtn = document.createElement("button");
@@ -568,6 +677,7 @@ function createToggleLocationBtn() {
 }
 /**
  * Creates a button that centers the map. 
+ * @author Amrit
  */
 function createCenterLocationBtn() {
   let centerLocationBtn = document.createElement("button");
@@ -581,6 +691,7 @@ function createCenterLocationBtn() {
     if (locationInterval == null) {
     } else {
       map.setCenter(currentLocation);
+      map.setZoom(20);
       centerMap();
     }
   });
@@ -588,6 +699,7 @@ function createCenterLocationBtn() {
 }
 /**
  * Creates a button that toggles the type of map. 
+ * @author Amrit
  */
 function createToggleTypeBtn() {
   let toggleTypeBtn = document.createElement("button");
@@ -618,6 +730,7 @@ function createToggleTypeBtn() {
 /**
  * Updates distance between GPS/database pulls. 
  * Pulls data from the markers and puts them into the divs. 
+ * @author Amrit
  */
 function updateDistances() {
   var locationObject;
@@ -639,6 +752,7 @@ function updateDistances() {
 }
 /**
  * Helper function for updateDistances, sorts the final list after getting new distances. 
+ * @author Amrit
  * @see https://stackoverflow.com/questions/13490391/jquery-sort-elements-using-data-id/13490529 
  */
 function sortContent() {
@@ -656,6 +770,7 @@ function sortContent() {
 }
 /**
  * Toggles StreetView for a tree. 
+ * @author Amrit
  */
 function toggleStreetView(entry) {
   if ($("#street-btn").html() == "Map") {
@@ -667,6 +782,7 @@ function toggleStreetView(entry) {
 }
 /**
  * Centers the map with respect to 50% div overlay. 
+ * @author Amrit
  */
 function centerMap() {
   let contentHidden = false;
@@ -688,6 +804,7 @@ function centerMap() {
  * @param {float} longitude 
  * @param {float} latitude 
  * @param {obj} entry 
+ * @author Amrit
  */
 function addTreeMarker(longitude, latitude, entry) {
   var ids = entry.recordid;
@@ -746,9 +863,10 @@ function distance(lat1, lon1, lat2, lon2, unit) {
   }
 }
 /**
- * @see https://developers.google.com/maps/documentation/javascript/examples/marker-remove
+ * Removes the markers from the map, but keeps them in the array. 
+ * @author https://developers.google.com/maps/documentation/javascript/examples/marker-remove
  * @see https://love2dev.com/blog/javascript-remove-from-array/
- * Removes the markers from the map, but keeps them in the array. */
+ */
 function clearMarkers() {
   for (let i = 0; i < markers.length; i++) {
     if (markers[i].get('id') != selectedTreeId) {
@@ -761,6 +879,7 @@ function clearMarkers() {
 /**
  * Toggles location service with boolean. 
  * @param {bool} enabled If location is enabled.
+ * @author Amrit
  */
 function toggleLocation(enabled) {
   if (enabled) {
@@ -782,6 +901,7 @@ function toggleLocation(enabled) {
 }
 /**
  * Clears the location marker and resets lastPull. 
+ * @author Amrit
  */
 function clearLocationMarker() {
   if (locationMarker != null) {
@@ -790,45 +910,28 @@ function clearLocationMarker() {
     lastPullLocation = null;
   }
 }
-
 /**
- * Toggles the details overlay when "details-btn" is clicked.
- * Toggles the activeDetails class on the "#outer-tree-content",
- * "#tree-content", and "#main" divisions in order to allow an increase in size
- * of the #main div for the details tab. Resets to original size when toggled off.
- *
- * The following code used a snippet from stack overflow as a foundation.
- * @author Kami @see https://stackoverflow.com/users/1603275/kami
- * @see https://stackoverflow.com/questions/25409023/how-to-restart-reset-jquery-animation
+ * Updates the details division with wikipedia information when tree overlay is loaded.
+ * @author Steven
  */
- function toggleDetails() {
+ function updateDetails() {
   $("#details").html("");
-  let textForQuery = $("#tree-name").text();
-  textForQuery = (textForQuery.split(' ').slice(0,2).join('_')).toLowerCase();
-  displayWikipediaInformation($("#details"), textForQuery);
-
-  if (($("#main").hasClass("active"))) {
-    $("#details").hide();
-    $("#main").toggleClass("active");
-    $("#tree-content").toggleClass("activeDetails");
-    $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
-
-  } else {
-    $("#details").show();
-    $("#main").toggleClass("active");
-    $("#tree-content").toggleClass("activeDetails");
-    $(".tree-overlay-container, #outer-tree-content").toggleClass("activeDetailsParent");
-  }
-}
-
-function removeDetails() {
-  $("#details").hide();
-  $("#main").removeClass("active");
-  $("#tree-content").removeClass("activeDetails");
-  $(".tree-overlay-container, #outer-tree-content").removeClass("activeDetailsParent");
+  let textForQuery = $("#species-name").text();
+  textForQuery = (textForQuery.split(' ').slice(0, 2).join('_')).toLowerCase();
+  displayWikipediaInformation($("#details"), textForQuery, $("#details-arrow-container"));
 }
 /**
- * Saves history to database (Aidan) 
+ * Scroll listener for Wikipedia scroll; details arrow is visible with scrollTop percentage.
+ * @author Amrit
+ */
+function addMainScrollListener() {
+  $("#main").scroll(function() {
+    $("#details-arrow-container").css("opacity", 100 - $("#main").scrollTop() + "%");
+  });
+}
+/**
+ * Saves history to database.
+ * @author Aidan
  */
 function updateHistory(entry){
   var user = firebase.auth().currentUser;
@@ -848,4 +951,109 @@ function updateHistory(entry){
           });
       });
   }
+}
+/**
+ * Tree name search for treeOverlay.
+ * @author Amrit
+ */
+function treeNameClickSearch() {
+  let type = 'common_name';
+  let query = ($("#tree-name").text());
+  navigateUrl(createUrl(query, type));
+}
+/**
+ * Tree Height click search for treeOverlay.
+ * @author Amrit
+ */
+function treeHeightClickSearch() {
+  let type = 'height_range_id';
+  let query = ($("#tree-card-height").text().substring(0, 1));
+  navigateUrl(createUrl(query, type));
+}
+/**
+ * Date click search for treeOverlay.
+ * @author Amrit
+ */
+function treeDateClickSearch() {
+  if ($("#tree-card-date").text() != "N/A") {
+    let type = 'date_planted';
+    let query = ($("#tree-card-date").text());
+    navigateUrl(createUrl(query, type));
+  }
+}
+/**
+ * Age click search for treeOverlay.
+ * @author Amrit
+ */
+function treeDateAgeClickSearch() {
+  if ($("#tree-card-date").text() != "N/A") {
+    let type = 'date_planted';
+    let query = ($("#tree-card-date").text().substring(0, 7));
+    navigateUrl(createUrl(query, type));
+  }
+}
+/**
+ * Street click search for treeOverlay.
+ * @author Amrit
+ */
+function treeStreetClickSearch() {
+  let type = 'on_street';
+  let query = ($("#body").text());
+  navigateUrl(createUrl(query, type));
+}
+/**
+ * Creates a url to searchMap with params.
+ * @param {string} query 
+ * @param {string} type Type of search (species, etc)
+ * @returns url to searchMap params.
+ * @author Amrit 
+ */
+function createUrl(query, type) {
+  let url = "/searchMap?q=" + query + "&type=" + type; 
+  return url;
+}
+/**
+ * Navigates page to specified url.
+ * @param {string} url
+ * @author Amrit 
+ */
+function navigateUrl(url) {
+  window.location.href = url;
+}
+/**
+ * Copys share link.
+ * @author Amrit
+ */
+function copyShareLink() {
+  let url = createShareLink($('#tree-card-id').data('id'));
+  copyToClipboard(url);
+}
+/**
+ * Opens a FB share link
+ * @auther Amrit
+ */
+ function fbShare() {
+  let url = createShareLink($('#tree-card-id').data('id'));
+  window.open("https://www.facebook.com/sharer/sharer.php?u=" + url + "&src=sdkpreparse");
+}
+/**
+ * Creates share link with tree id.
+ * @param id Tree id.
+ * @returns newUrl URL link.
+ * @author Amrit
+ */
+function createShareLink(id) {
+  let url = window.location.href;
+  let urlBase = url.substring(0, url.lastIndexOf('/') + 1);
+  let newUrl = urlBase + "searchMap?id=" + id; 
+  return newUrl;
+}
+/**
+ * Copys text to clipboard.
+ * TODO SHOW DIALOG!!!!!!!!!
+ * @param {string} text 
+ * @author Amrit
+ */
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text);
 }

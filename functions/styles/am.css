@@ -100,13 +100,14 @@
     display: grid;
     grid-template-columns: 15% 42% 42%;
     grid-template-rows: 100%;
-    margin-bottom: 1%;
+    margin-bottom:1em;
     margin-left: 5%;
     margin-right: 5%;
 }
 
 #results .card.history {
     grid-template-columns: 20% 80%;
+    margin-bottom:1em;
 }
 
 #results .card .tree {
@@ -130,6 +131,33 @@
 }
 
 body {
-    background-image:
-    linear-gradient(217deg, #176314, #78E874 70.71%);
+    background-color: whitesmoke;
+    /* background-image:
+    linear-gradient(217deg, #176314, #78E874 70.71%); */
+}
+
+#title {
+    box-shadow: none;
+    background-color: whitesmoke;
+}
+
+.common-name {
+    font-weight: 900;
+    margin-bottom: 1em;
+}
+
+.street-name {
+    font-weight: lighter;
+    margin-top:1em;
+    color: #8a8a8d
+}
+
+.species-name {
+    font-style: italic;
+    color:#8a8a8d
+}
+
+.message {
+    border-right: 1px solid rgb(236, 236, 236);
+    box-sizing:border-box;
 }
