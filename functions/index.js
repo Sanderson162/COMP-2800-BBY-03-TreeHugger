@@ -175,34 +175,21 @@ app.post('/removeTreeFav', urlencodedParser, (req, res) => {
 
       const docRef = db.collection("Favourite").doc(uid + "_" + recordID);
       const statsRef = db.collection('FavouriteStats').doc(recordID);
-      docRef.get().then(function (doc) {
-        if (doc.exists /*&& firestore.Timestamp.now() - doc.data().timestamp > 2000*/) {
-          const batchFav = db.batch();
-          batchFav.delete(docRef);
-          batchFav.set(statsRef, {
-            favCount: decrement
-          }, {
-            merge: true
+      const batchFav = db.batch();
+      batchFav.delete(docRef, {exists: true});
+      batchFav.set(statsRef, {favCount: decrement}, {merge: true});
+      batchFav.commit()
+        .then(function () { //if successful
+          console.log("fav removed");
+          res.send({
+            status: "success"
           });
-          batchFav.commit()
-            .then(function () { //if successful
-              console.log("fav removed");
-              res.send({
-                status: "success"
-              });
-            }).catch((error) => {
-              console.log(error);
-              res.send({
-                status: "error"
-              });
-            });
-        } else {
-          console.log('No such document!');
+        }).catch((error) => {
+          console.log("fav not removed", error);
           res.send({
             status: "error"
           });
-        }
-      });
+        });
 
       //End idtoken verified
     });
