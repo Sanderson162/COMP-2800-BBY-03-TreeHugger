@@ -54,7 +54,7 @@ app.get("/match", function (req, res) {
   res.render("match.html");
 });
 
-app.get("/history", function (req, res) {
+app.get("/profile", function (req, res) {
   res.render("history.html");
 });
 
@@ -64,10 +64,6 @@ app.get("/home", function (req, res) {
 
 app.get("/aboutUs", function (req, res) {
   res.render("aboutus.html");
-});
-
-app.get("/profile", function (req, res) {
-  res.render("profile.html");
 });
 
 app.post('/profile', urlencodedParser, (req, res) => {

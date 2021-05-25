@@ -2,13 +2,13 @@
 //otherwise it displays the saved tree
 window.addEventListener("DOMContentLoaded",() => {
     firebase.auth().onAuthStateChanged(() => {
-        if (getUrlVars()["p"]=="history"){
-            showHistory();
-        } else {
+        if (getUrlVars()["p"]=="saved"){
             $("#profile").hide();
             $("#profileContainer").hide();
             $("#title").html("Your Trees");
             showComments();
+        } else {
+            showHistory();
         }
 
     });
