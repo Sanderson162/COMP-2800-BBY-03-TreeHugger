@@ -80,11 +80,11 @@ $("#navbarHamProfileButton").on('click', (event) => {
 $(".main-container").on('click', (event) => {
   $("#profileHamburgerMenu").hide();
 });
+// https://stackoverflow.com/questions/714471/how-do-i-hide-an-element-on-a-click-event-anywhere-outside-of-the-element
 $(".login-container").on('click', (event) => {
   if($(event.target).is("#outer-login, #loginContainerPopup *")) return;
   $(".login-container").hide();
-
-
+  $("#profileHamburgerMenu").hide();
 });
 
 
@@ -112,9 +112,10 @@ $(() => {
     $("#loginForm").show();
     $("#signupNavButton").removeClass("selectedNav");
     $("#loginNavButton").addClass("selectedNav");
-	$("#outer-login").css("max-height", "355px");
-	$("#loginMsg").text("");
-	$("#signupMsg").text("");
+    $("#login-header").text("LOGIN");
+    $("#outer-login").css("max-height", "355px");
+    $("#loginMsg").text("");
+    $("#signupMsg").text("");
   });
 
   $("#signupNavButton").on('click', (e) => {
@@ -122,9 +123,10 @@ $(() => {
     $("#signupForm").show();
     $("#loginNavButton").removeClass("selectedNav");
     $("#signupNavButton").addClass("selectedNav");
-	$("#outer-login").css("max-height", "405px");
-	$("#loginMsg").text("");
-	$("#signupMsg").text("");
+    $("#login-header").text("SIGNUP");
+    $("#outer-login").css("max-height", "405px");
+    $("#loginMsg").text("");
+    $("#signupMsg").text("");
   });
 
   $("#closeNavButton").on('click', (e) => {

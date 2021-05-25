@@ -100,7 +100,7 @@
   }
   
   .navButton {
-    background:#ececec;
+    background:rgba(0, 0, 0, 0.1);
     color:black;
     padding: 0.5em;
     border-radius: 2em;
@@ -119,7 +119,7 @@
     
   }
   .selectedNav {
-    background: gray;
+    background: rgba(255, 255, 255, 0.24);
     color:white;
   }
   
@@ -129,15 +129,26 @@
     padding:10px;
     border-radius:4px;
     margin:auto;
-    border-color:gainsboro;
-    border-width:thin;
-    border-style: solid;
-        -webkit-appearance: none !important;
+    border:none;
+    -webkit-appearance: none !important;
     -moz-appearance: none !important;
     appearance: none !important;
     margin-bottom:4px;
+    background-color:rgba(255,255,255,0.25);
+    color:white;
+
   }
   
+  #loginContainerPopup>.loginSignupformContainer>div>input::placeholder {
+    color: darkgray;
+    font-style:italic;
+    font-weight:lighter;
+}
+
+#loginContainerPopup>.loginSignupformContainer>div>input:focus {
+  outline: none;
+  border: 1px solid #007ACC;
+}
   
   #profileHamburgerMenu {
     width: 200px;
@@ -176,7 +187,7 @@
   }
 
   #login-header {
-    color:gray;
+    color:lightgray;
     font-size:110%;
     margin:10px;
     height:20px;
@@ -201,27 +212,29 @@
 
 #outer-login {
     border-radius: 4px;
-    background-color:rgba(83, 83, 83, 0.4);
-    margin: auto;
-    /* margin-top:1em; */
+    background-color:rgba(0, 0, 0, 0.5);
     height: 100%;
-    max-width: 420px;
+    max-width: 325px;
     max-height: 355px;
     overflow-y:hidden;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    margin:auto;
     z-index:1;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    width:100%;
 }
 
 #loginMsg{
-    color:red;
+    color:rgb(255, 177, 177);
     height:100%;
     display:block;
     margin:auto;
 }
 #signupMsg{
-    color:red;
+    color:rgb(255, 177, 177);
     height:100%;
     display:block;
     margin:auto;
@@ -237,7 +250,7 @@
   width: 202px !important;
   font-weight: 600;
   background-color: white;
-  color: gray;
+  color: rgba(255, 255, 255, 0.548);
   border: none !important;
   font-size: 100% !important;
   margin-top:1em !important;
