@@ -22,74 +22,103 @@ function getInfoOnTreeByID(recordID) {
   });
 }
 
-// getWikipediaExtract(genus_name.toLowerCase() + "_" + species_name.toLowerCase())
-// given a genus and species name (the way wikipedia indexes their pages) you can retrieve the extract
-// returns the extract or "record not found" which can be put directly into element with element.text(extract)
-function getWikipediaExtract (genus_species) {
+function getWikipediaExtractNew(genus_species) {
   return new Promise((resolve) => {
-    let extractUrl = "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=" + genus_species + "&exintro=1&explaintext=1&callback=?&redirects=";
+    let extractUrl = "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + genus_species.split('_')[0] + "+" + genus_species.split('_')[1] + "&limit=1&namespace=0&format=json&callback=?";
     $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: extractUrl,
-        success: function(result, status, xhr){
-            console.log("received: ", result);
-            let pageId = Object.keys(result.query.pages)[0];
-            if (pageId != -1) {
-              let extract = JSON.stringify(result.query.pages[pageId].extract);
-              resolve(extract);
-            } else {
-              resolve("");
-            }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log("ERROR:", jqXHR, textStatus, errorThrown);
-            resolve("");
-        }
+      type: "GET",
+      dataType: "json",
+      url: extractUrl,
+      success: function (result, status, xhr) {
+        resolve(result);
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log("ERROR:", jqXHR, textStatus, errorThrown);
+        resolve("");
+      }
     });
   });
 }
 
-function getWikipediaThumbnail (genus_species) {
+// getWikipediaExtract(genus_name.toLowerCase() + "_" + species_name.toLowerCase())
+// given a genus and species name (the way wikipedia indexes their pages) you can retrieve the extract
+// returns the extract or "record not found" which can be put directly into element with element.text(extract)
+function getWikipediaExtract(genus_species) {
+  return new Promise((resolve) => {
+    let extractUrl = "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=" + genus_species + "&exintro=1&explaintext=1&callback=?&redirects=";
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: extractUrl,
+      success: function (result, status, xhr) {
+        let pageId = Object.keys(result.query.pages)[0];
+        if (pageId != -1) {
+          let extract = JSON.stringify(result.query.pages[pageId].extract);
+          resolve(extract);
+        } else {
+          resolve("");
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log("ERROR:", jqXHR, textStatus, errorThrown);
+        resolve("");
+      }
+    });
+  });
+}
+
+function getWikipediaThumbnail(genus_species) {
   return new Promise((resolve) => {
     let thumbnailUrl = "https://en.wikipedia.org/w/api.php?action=query&titles=" + genus_species + "&prop=pageimages&format=json&pithumbsize=400&callback=?&redirects=";
     $.ajax({
       type: "GET",
       dataType: "jsonp",
       url: thumbnailUrl,
-      success: function(result, status, xhr){
-          console.log("received: ", result);
-          let pageIdThumbnail = Object.keys(result.query.pages)[0];
-          if (pageIdThumbnail != -1) {
-            let thumbnail = result.query.pages[pageIdThumbnail].thumbnail;
-            resolve(thumbnail);
-          } else {
-            resolve("");
-          }
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-          console.log("ERROR:", jqXHR, textStatus, errorThrown);
+      success: function (result, status, xhr) {
+        let pageIdThumbnail = Object.keys(result.query.pages)[0];
+        if (pageIdThumbnail != -1) {
+          let thumbnail = result.query.pages[pageIdThumbnail].thumbnail;
+          resolve(thumbnail);
+        } else {
           resolve("");
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log("ERROR:", jqXHR, textStatus, errorThrown);
+        resolve("");
       }
     });
   });
 }
 
-
 /**
  * Displays wikipedia thumbnail retrieved from query in details division.
  * @param {*} result
  */
- async function displayWikipediaInformation(element, genus_species, arrowElement) {
+async function displayWikipediaInformation(element, genus_species, arrowElement) {
+
+  let newExtract = await getWikipediaExtractNew(genus_species);
+  if (newExtract[1][0]) {
+    genus_species = newExtract[1][0];
+    genus_species = genus_species.split(" ").join("_");
+  }
+
   let extract = await getWikipediaExtract(genus_species);
+
+  if (extract == "") {
+    extract = await getWikipediaExtract(genus_species.split('_')[0]);
+    genus_species = genus_species.split('_')[0];
+  }
+
   // replace regex from https://stackoverflow.com/questions/14948223/how-to-convert-n-to-html-line-break/23736554
   // see TheLazyHatGuy -> https://stackoverflow.com/users/11219881/thelazyhatguy
   extract = extract.replace(/\\n|\\r\\n|\\n\\r|\\r/g, '');
   element.text(extract);
+
   if (extract) {
-    let link = "https://en.wikipedia.org/wiki/" + genus_species;
-    element.append('<br><a href="'+ link +'" onclick="event.preventDefault();window.open(\'' + link + '\');"><img style="display:block;margin:auto;padding:1em;width:35px;height:auto;"src="https://upload.wikimedia.org/wikipedia/commons/7/77/Wikipedia_svg_logo.svg"></img></a>');
     let thumbnail = await getWikipediaThumbnail(genus_species);
+    let link = "https://en.wikipedia.org/wiki/" + genus_species;
+    element.append('<br><a href="' + link + '" onclick="event.preventDefault();window.open(\'' + link + '\');"><img style="display:block;margin:auto;padding:1em;width:35px;height:auto;"src="https://upload.wikimedia.org/wikipedia/commons/7/77/Wikipedia_svg_logo.svg"></img></a>');
     element.prepend('<img style="width:100%;max-height:125px;object-fit: cover;"id="thumbnail" src=' + thumbnail.source + ' alt=""><br>');
     isDetails(true, arrowElement);
   } else {
