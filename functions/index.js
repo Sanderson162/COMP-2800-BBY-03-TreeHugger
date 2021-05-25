@@ -209,9 +209,9 @@ app.post("/ajax-add-comment", urlencodedParser, (req, res) => {
         Tree: comment.tree,
         Icon: comment.icon
       }).then((ref) => {
-        res.end(JSON.stringify({
+        res.send({
           status: "success"
-        }));
+        });
       }).catch((error) => {
         res.status(401);
       });
@@ -239,9 +239,9 @@ app.post("/ajax-add-history", urlencodedParser, (req, res) => {
         user: uid,
         tree: comment.tree
       }).then((ref) => {
-        res.end(JSON.stringify({
+        res.send({
           status: "success"
-        }));
+        });
       }).catch((error) => {
         res.status(401);
       });
@@ -383,11 +383,18 @@ app.post('/getFavCountByTree', urlencodedParser, (req, res) => {
   db.collection('FavouriteStats').doc(recordID)
     .get()
     .then(function (doc) {
-      console.log("FavCount: " + doc.data().favCount);
-      res.send({
-        status: "success",
-        count: doc.data().favCount
-      });
+      if (doc.exists) {
+        console.log("FavCount: " + doc.data().favCount);
+        res.send({
+          status: "success",
+          count: doc.data().favCount
+        });
+      } else {
+        res.send({
+          status: "success",
+          count: 0
+        });
+      }
     }).catch(function (error) {
       console.log("Error getting documents: ", error);
       res.send({
@@ -501,9 +508,9 @@ app.post('/update-email', urlencodedParser, (req, res) => {
 });
 
 
-app.listen(PORT, () => {
-    console.log(`Listening on http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Listening on http://localhost:${PORT}`);
+// });
 
 function msg404(res) {
   //res.render('home.html');
