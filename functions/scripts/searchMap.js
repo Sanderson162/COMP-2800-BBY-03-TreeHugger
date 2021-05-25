@@ -575,6 +575,7 @@ function searchZoom() {
       bounds.extend(markers[i].position);
     }
     map.fitBounds(bounds, 0);
+    console.log("centering map from searchZoom");
     centerMap();
   }
 }
@@ -991,6 +992,7 @@ function zoom(entry) {
   if (currentZoom < 15) {
     map.setZoom(15);
   }
+  console.log("centering map from zoom");
   centerMap();
   showTreeOverlay(entry);
   addStreetViewBtnListener(entry);
@@ -1188,6 +1190,7 @@ function hideTreeOverlay() {
   if (currentZoom > 12) {
     map.setZoom(zoomVal);
     if (center) {
+      console.log("centering map from hidetreeoverlay");
       centerMap();
     }
   }
@@ -1351,6 +1354,7 @@ function initMap() {
   };
   panorama.setOptions(panoOptions);
   map.setZoom(11);
+  console.log("centering map from initmap");
   centerMap();
 }
 
@@ -1366,6 +1370,7 @@ function addLocationMarker(location, lbl) {
   $(".content-container").show();
   map.setCenter(location);
   map.setZoom(18);
+  console.log("centering map from addLocationMarker");
   centerMap();
   $("#content-title").text("TREES NEAR DROPPED MARKER");
   const marker = new google.maps.Marker({
