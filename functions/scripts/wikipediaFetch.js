@@ -31,7 +31,7 @@ function getInfoOnTreeByID(recordID) {
  * @param {*} genus_species
  * @returns extract from wikipedia opensearch result
  */
-function getWikipediaExtractNew(genus_species) {
+function getWikipediaArticleName(genus_species) {
   return new Promise((resolve) => {
     let extractUrl = "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + genus_species.split('_')[0] + "+" + genus_species.split('_')[1] + "&limit=1&namespace=0&format=json&callback=?";
     $.ajax({
@@ -106,7 +106,7 @@ function getWikipediaThumbnail(genus_species) {
  */
 async function displayWikipediaInformation(element, genus_species, arrowElement) {
 
-  let newExtract = await getWikipediaExtractNew(genus_species);
+  let newExtract = await getWikipediaArticleName(genus_species);
   if (newExtract[1][0]) {
     genus_species = newExtract[1][0];
     genus_species = genus_species.split(" ").join("_");
