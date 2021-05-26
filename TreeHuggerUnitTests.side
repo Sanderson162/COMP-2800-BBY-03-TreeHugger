@@ -2702,6 +2702,13 @@
       ],
       "value": ""
     }, {
+      "id": "6f12cc7a-9a53-4327-867b-ce8863644e22",
+      "comment": "",
+      "command": "pause",
+      "target": "",
+      "targets": [],
+      "value": "1000"
+    }, {
       "id": "a70a04b9-467f-4597-9c7e-f09a657b55ca",
       "comment": "",
       "command": "click",
@@ -2865,6 +2872,26 @@
         ["xpath=//body/div[4]/div[3]", "xpath:position"]
       ],
       "value": ""
+    }, {
+      "id": "3caeecfb-ce5f-43b9-9433-8d2fd575c27e",
+      "comment": "",
+      "command": "click",
+      "target": "id=title",
+      "targets": [
+        ["id=title", "id"],
+        ["css=#title", "css:finder"],
+        ["xpath=//div[@id='title']", "xpath:attributes"],
+        ["xpath=//div[@id='main']/div[2]", "xpath:idRelative"],
+        ["xpath=//div[3]/div[3]/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0d1056a4-0029-4f81-91a7-4cc07ba673fc",
+      "comment": "",
+      "command": "waitForText",
+      "target": "css=.card:nth-child(1) .common-name",
+      "targets": [],
+      "value": "${x}"
     }, {
       "id": "465cce4c-fd52-479c-8014-70b6b4d24531",
       "comment": "",
@@ -3077,6 +3104,26 @@
         ["xpath=//body/div[4]/div[3]", "xpath:position"]
       ],
       "value": ""
+    }, {
+      "id": "2375823e-19b9-4598-8a8b-06539fd543c9",
+      "comment": "",
+      "command": "click",
+      "target": "id=title",
+      "targets": [
+        ["id=title", "id"],
+        ["css=#title", "css:finder"],
+        ["xpath=//div[@id='title']", "xpath:attributes"],
+        ["xpath=//div[@id='main']/div[2]", "xpath:idRelative"],
+        ["xpath=//div[3]/div[3]/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cf367fda-dcfb-4030-b877-782ebba228b5",
+      "comment": "",
+      "command": "waitForText",
+      "target": "css=.card:nth-child(1) .common-name",
+      "targets": [],
+      "value": "${x}"
     }, {
       "id": "571cea77-1090-475f-a59e-31b023afb06a",
       "comment": "",
