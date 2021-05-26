@@ -86,7 +86,7 @@ function loadEventForm() {
     f.append($("<span id='logo'>🎉</span>"))
     f.append("<br>");
     f.append($("<input id='name' placeholder='Event Name'>"));
-    f.append($("<br><span></span><input type='date' id='date' value='YYYY-MM-DD'>"));
+    f.append($("<br><span></span><input type='date' id='date' value='2021-05-25'>"));
     f.append($("<br><button type='button' id='loadmore'>Search</button>").click(() => {
         submit({
             match: "Found a tree for " + $("#name").val()+":",
