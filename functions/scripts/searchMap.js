@@ -1331,6 +1331,7 @@ function initMap() {
   panorama.addListener("visible_changed", function () {
     if (panorama.getVisible()) {
       $("#street-btn").text("Map");
+      retractContentOverlay($('#main'), $('#details-arrow-container'));
     } else {
       $("#street-btn").text("Street");
     }
