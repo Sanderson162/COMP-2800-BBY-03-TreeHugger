@@ -114,8 +114,20 @@ button {
     font-weight: bold;
 }
 
-.selectedTitle {
-    color: black !important;
+#title_match{
+    text-align: center;
+    font-size: x-large;
+    font-weight: bold;
+}
+
+#title.selectedTitle {
+    background: gray;
+    color:white;
+}
+
+#savedTrees.selectedTitle {
+    background: gray;
+    color:white;
 }
 
 #profile {
@@ -169,9 +181,9 @@ button {
     text-align: right;
 }
 
-#profileContainer p {
-    margin-top: 10%;
-    margin-bottom: 10%;
+#profileContainer > p {
+    margin-top: 20pt;
+    margin-bottom: 20pt;
 }
 
 .card:hover {
@@ -184,7 +196,7 @@ button {
 
 .tag {
     background:#ececec;
-    color:black;
+    color:rgb(175, 175, 175);
     padding: 0.5em;
     border-radius: 2em;
     font-size: 100%;
@@ -192,6 +204,7 @@ button {
     height:20px;
     display:inline-block;
     text-align:center;
+    font-weight:normal;
 }
 
 .tag.selected {
@@ -203,7 +216,7 @@ body {
     background-color: whitesmoke;
 }
 
-#title, #profile, #savedTrees {
+#title, #profile, #savedTrees, #title_match {
     box-shadow: none;
     background-color: transparent;
     cursor: default;
@@ -211,9 +224,16 @@ body {
 }
 
 #title, #savedTrees {
-    text-align: center;
-    cursor: pointer;
-    color: #8a8a8d;
+    background:#ececec;
+    color:rgb(175, 175, 175);
+    padding: 0.5em;
+    border-radius: 2em;
+    font-size: 100%;
+    width:100px !important;
+    height:20px;
+    display:inline-block;
+    text-align:center;
+    font-weight:normal;
 }
 
 #userNameArea, #emailArea, #viewsaved {
