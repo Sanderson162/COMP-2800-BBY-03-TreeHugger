@@ -101,6 +101,8 @@ function submit(type) {
     let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine.date_planted=" + q.toString();
     $.getJSON(query, (data) => {
         console.log(data);
+        removeNoGeom(data.records);
+        console.log(data);
         if (data.records.length > 0) {
             let x = data.records[Math.floor(Math.random() * data.records.length)]
             $("#result").html("")
@@ -163,6 +165,7 @@ async function differentYear(date, type){
     for (year = 1989; year <= 2022; year++){
         let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine.date_planted="
         await $.getJSON(query+year+monthDay, (data) => {
+            removeNoGeom(data.records);
             if (data.records.length > 0){
                 data.records.forEach((entry)=>{
                     x.push(entry)
@@ -188,6 +191,7 @@ async function findClosest(date, type) {
     let x;
     await $.getJSON(query, (data) => {
         console.log(data.records.length);
+        removeNoGeom(data.records);
         if (data.records.length > 0) {
             let x = closestTree(data, month, day);
             $("#result").html("");
@@ -265,4 +269,18 @@ function saveButton(tree, message, emoji) {
 
     });
     return btn;
+}
+
+function removeNoGeom(a) {
+    if (a.length>0){
+        for(i=0;i<a.length;i++){
+            console.log(a);
+            console.log(i);
+            console.log(a[i])
+            if (a[i].fields.geom==undefined){
+                a.splice(i,1);
+                i = i - 1;
+            }
+        }
+    }
 }
