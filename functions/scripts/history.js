@@ -2,20 +2,36 @@
 //otherwise it displays the saved tree
 window.addEventListener("DOMContentLoaded",() => {
     firebase.auth().onAuthStateChanged(() => {
-        if (getUrlVars()["p"]=="saved"){
-            $("#profile").hide();
-            $("#profileContainer").hide();
-            $("#title").html("Your Trees");
-            showComments();
-        } else {
+        // if (getUrlVars()["p"]=="saved"){
+        //     $("#profile").hide();
+        //     $("#profileContainer").hide();
+        //     $("#title").html("Your Trees");
+        //     showComments();
+        // } else {
+        //     showHistory();
+        // }
+        showHistory();
+
+        $("#title").on("click",()=>{
+            $("#title").addClass("selectedTitle");
+            $("#savedTrees").removeClass("selectedTitle");
             showHistory();
-        }
+        });
+        $("#savedTrees").on("click",()=>{
+            $("#savedTrees").addClass("selectedTitle")
+            $("#title").removeClass("selectedTitle");
+            showComments();
+        });
 
     });
 });
 
+
+
+
 //displays user history
 function showHistory() {
+    $("#results").html("");
     var user = firebase.auth().currentUser;
     if (user) {
         firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken) {
@@ -43,6 +59,7 @@ function showHistory() {
 
 //shows the saved trees
 function showComments() {
+    $("#results").html("");
     var user = firebase.auth().currentUser;
     if (user) {
         firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken) {
