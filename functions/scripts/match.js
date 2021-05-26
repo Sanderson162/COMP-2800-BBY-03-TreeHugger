@@ -30,9 +30,9 @@ function loadBirthForm() {
     $("#result").html("");
     let f = $("#form").html("");
     f.append($("<span id='logo'>🎁</span>"))
-    f.append($("<br><input id='name' placeholder='name'>"));
-    f.append("'s birthday ");
-    f.append($("<br><span>on </span><input type='date' id='date'>"));
+    f.append($("<br><input id='name' placeholder='Name'>"));
+    f.append("");
+    f.append($("<br><span></span><input type='date' id='date'>"));
     f.append($("<br><button type='button' id='loadmore'>Search</button>").click(() => {
         submit({
             match: "Found " + $("#name").val() + "'s birth tree"+":",
@@ -50,11 +50,11 @@ function loadAnniversaryForm() {
     $("#result").html("");
     let f = $("#form").html("");
     f.append($("<span id='logo'>💕</span>"))
-    f.append($("<br><input id='name1' placeholder='name'>"));
-    f.append(" and ");
-    f.append($("<input id='name2' placeholder='name'>"));
-    f.append("'s anniversary ");
-    f.append($("<br><span>on </span><input type='date' id='date'>"));
+    f.append($("<br><input id='name1' placeholder='Name'>"));
+    f.append("");
+    f.append($("<input id='name2' placeholder='Partners Name'>"));
+    f.append("");
+    f.append($("<br><span></span><input type='date' id='date'>"));
     f.append($("<br><button type='button' id='loadmore'>Search</button>").click(() => {
         submit({
             match: "Found a tree for " + $("#name1").val() + " and " + $("#name2").val()+":",
@@ -73,8 +73,8 @@ function loadEventForm() {
     let f = $("#form").html("");
     f.append($("<span id='logo'>🎉</span>"))
     f.append("<br>");
-    f.append($("<input id='name' placeholder='name of event'>"));
-    f.append($("<br><span>on </span><input type='date' id='date'>"));
+    f.append($("<input id='name' placeholder='Event Name'>"));
+    f.append($("<br><span></span><input type='date' id='date'>"));
     f.append($("<br><button type='button' id='loadmore'>Search</button>").click(() => {
         submit({
             match: "Found a tree for " + $("#name").val()+":",
@@ -232,13 +232,14 @@ function closestTree(data, month, day) {
 //displays the tree
 function displayTree(entry,message,saveBtn) {
     let elem = $("<div></div>").addClass("card");
-    elem.append(message);
-    elem.append($("<p></p>").html(entry.fields.genus_name + " " + entry.fields.species_name));
-    elem.append($("<p></p>").html(entry.fields.common_name));
-    elem.append($("<p></p>").html(entry.fields.on_street_block + " " + entry.fields.on_street + " " + entry.fields.neighbourhood_name));
-    elem.append($("<p></p>").html("Planted on: " + entry.fields.date_planted));
-    elem.append(viewButton(entry.recordid));
+    elem.append($("<span style='color:darkgray;text-align:left;font-size:80%;'></span>").html(message + "<br><br>"));
+    elem.append($("<p class='common-name' style='text-align:left'></p>").html(entry.fields.common_name +"<br><br>"));
+    elem.append($("<p class='species-name' style='text-align:left'></p>").html(entry.fields.genus_name + " " + entry.fields.species_name +"<br><br>"));
+    elem.append($("<p class='street-name' style='text-align:left'></p>").html(entry.fields.on_street_block + " " + entry.fields.on_street + " " + entry.fields.neighbourhood_name +"<br><br>"));
+    elem.append($("<p  style='text-align:left;color:darkgray;'></p>").html("Planted on " + entry.fields.date_planted));
     elem.append(saveBtn);
+    elem.append(viewButton(entry.recordid));
+
 
     return elem;
 }
@@ -261,7 +262,7 @@ function saveButton(tree, message, emoji) {
         if (user) {
             let elem = $("#save");
             elem.attr("disabled", true);
-            elem.html("saved");
+            elem.html("Saved");
             console.log(tree);
             addComment(tree.recordid, message, emoji);
         } else {

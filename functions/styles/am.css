@@ -37,20 +37,44 @@
 }
 
 #form input{
-    height: 30pt;
-    text-align: center;
-    font-size: larger;
-    max-width: 60%;
+    font-size:18px;
+    width:72.6%;
+    padding:10px;
+    border-radius:4px;
+    margin:auto;
+    border-color:gainsboro;
+    border-width:thin;
+    border-style: solid;
+        -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    margin-top:1em;
 }
 
-#form button{
-    height: 30pt;
-    font-size: larger;
+#form input:focus {
+    outline: none;
+    border: 1px solid #007ACC;
 }
 
-#result button{
-    height: 30pt;
-    font-size: larger;
+#form input::placeholder {
+    color: gainsboro;
+    font-style:italic;
+    font-weight:lighter;
+}
+
+button {
+    background: white;
+    border: none;
+    padding-right: 1em;
+    padding-left: 1em;
+    padding-top: 0.75em;
+    padding-bottom:0.75em;
+    height:50px;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    border-radius:4px;
+    font-weight:bold;
+    margin:1em;
+    font-size:90%;
 }
 
 #form{
@@ -67,10 +91,9 @@
     text-align: center;
 }
 
-#form *{
-    margin-top: 2%;
+#form * {
+    margin-top:1.5em;
 }
-
 #form #logo {
     font-size: 60pt;
 }
@@ -195,4 +218,8 @@ body {
 .message {
     border-right: 1px solid rgb(236, 236, 236);
     box-sizing:border-box;
+}
+
+#date {
+    background-color:white;
 }
