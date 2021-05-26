@@ -1070,7 +1070,7 @@ function resetMarkerColor() {
  * @author Amrit
  */
 function showTreeOverlay(entry) {
-  showContentOverlay($('#outer-tree-content'), $('#hide-content-btn-tree'))
+  showContentOverlay($('#outer-tree-content'), $('#hide-content-btn-tree'), false);
   $(".content-container").hide();
   $(".search-container").hide();
   $(".tree-overlay-container").show();
@@ -1259,11 +1259,14 @@ function hideContentOverlay(element, button) {
  * Show the content overlay
  * @author Amrit
  */
-function showContentOverlay(element, button) {
+function showContentOverlay(element, button, center) {
   let height = window.innerHeight;
   element.css('height', '100%');
   rotateChevron(button, 0);
   map.panBy(0, -height * 0.25);
+  if (center) {
+    map.panBy(0, -height * 0.25);
+  }
 }
 /**
  * Rotates the chevron.
