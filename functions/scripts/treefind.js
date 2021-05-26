@@ -1095,3 +1095,80 @@ function showShareOverlay() {
   $("#like-fb-btn").attr("data-href", url);
   FB.XFBML.parse();
 }
+
+
+
+//toggle view
+/** 
+ * Toggles the content overlay visible or hidden
+ * @author Amrit
+ */
+ function toggleExpandContentOverlay(element, button) {
+  if (element.hasClass('normalMainHeight')) {
+    expandContentOverlay(element, button);
+  } else {
+    retractContentOverlay(element, button);
+  }
+}
+
+/** 
+ * Hides the content overlay
+ * @author Amrit
+ */
+function retractContentOverlay(element, button) {
+  element.addClass('normalMainHeight');
+  rotateChevron(button, 0);
+}
+
+/**
+ * Show the content overlay
+ * @author Amrit
+ */
+function expandContentOverlay(element, button) {
+  element.removeClass('normalMainHeight');
+  rotateChevron(button, -180);
+}
+
+/** 
+ * Toggles the content overlay visible or hidden
+ * @author Amrit
+ */
+function toggleContentOverlay(element, button) {
+  if (element.css('height') == '40px') {
+    showContentOverlay(element, button);
+  } else {
+    hideContentOverlay(element, button);
+  }
+}
+
+/** 
+ * Hides the content overlay
+ * @author Amrit
+ */
+function hideContentOverlay(element, button) {
+  let height = window.innerHeight;
+  element.css('height', '40px');
+  rotateChevron(button, -90);
+  map.panBy(0, height * 0.25);
+}
+
+/**
+ * Show the content overlay
+ * @author Amrit
+ */
+function showContentOverlay(element, button) {
+  let height = window.innerHeight;
+  element.css('height', '100%');
+  rotateChevron(button, 0);
+  map.panBy(0, -height * 0.25);
+}
+
+/**
+ * Rotates the chevron.
+ * @param {int} amount Amount of rotation.
+ * @author Amrit
+ */
+function rotateChevron(chevron, amount) {
+  chevron.css({ transition: "transform 0.3s", transform: "rotate(" + amount + "deg)" });
+  setTimeout(function () { chevron.css({ transition: "none" }) }, 300);
+}

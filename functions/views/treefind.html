@@ -44,7 +44,11 @@
     </div>
     <div class="tree-overlay-container">
         <div id="outer-tree-content">
-            <span id="species-name">PREVIEW</span>
+            <span onclick="toggleContentOverlay($('#outer-tree-content'), $('#hide-content-btn-tree'))" id="species-name"><svg id="hide-content-btn-tree" width="24"
+                height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 9L12 15L18 9" stroke="#808080" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg><span id="tree-content-title"></span></span>
             <div id="tree-content">
                 <div id="main">
                     <h2 id="tree-name" onclick="treeNameClickSearch()"></h2>
@@ -73,13 +77,10 @@
                     <div id="details"></div>
                 </div>
                 <div id="button-container">
-                    <div id="details-arrow-container">
-                        <div id="details-arrow"><svg width="30" height="30" viewBox="0 0 30 30" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M8.75 16.25L15 22.5L21.25 16.25" stroke="#DCDCDC" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M8.75 7.5L15 13.75L21.25 7.5" stroke="#DCDCDC" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" />
+                    <div onclick="toggleExpandContentOverlay($('#main'), $('#details-arrow-container'))" id="details-arrow-container">
+                        <div id="details-arrow"><svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.75 16.25L15 22.5L21.25 16.25" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8.75 7.5L15 13.75L21.25 7.5" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>
                     </div>
