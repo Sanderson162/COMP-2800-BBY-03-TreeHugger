@@ -16,6 +16,7 @@ $(document).ready(() => {
         selectCard("#event");
         loadEventForm()
     });
+    $("#birth").click();
 });
 
 //highlights a selected card, unhighlights the others
