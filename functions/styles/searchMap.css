@@ -596,3 +596,74 @@ input::placeholder {
 .normalMainHeight {
     height: 198px;
 }
+/* social */
+
+#social {
+    top: 10em;
+    left: 50%;
+    margin-left: -135px;
+    text-align: center;
+    z-index: 2;
+    border-radius: 4px;
+    background-color:rgba(255, 255, 255, 0.096);
+    margin: auto;
+    height: 92%;
+    max-width: 475px;
+    max-height:500px;
+    overflow-y:auto;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    pointer-events: all;
+    opacity:98%;
+  }
+
+#social-header {
+    color:rgb(131, 131, 131);
+    font-size:110%;
+    margin:10px;
+    height:20px;
+    display:block;
+}
+  
+#outer-social {
+    border-radius: 4px;
+    background-color:rgba(0, 0, 0, 0.425);
+    height: 100%;
+    max-width: 325px;
+    max-height: 220px;
+    overflow-y:hidden;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    pointer-events: all;
+    z-index:1;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    width:100%;
+}
+
+.social-container { 
+    user-select: none;
+    position: absolute;
+    z-index: 5;
+    left: 0;
+    top: 0px;
+    width:100%;
+    height: 100%;
+    overflow: visible;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.2), rgb(0, 0, 0, 0.35));
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    padding: 1em;
+    box-sizing:border-box;
+    display:none;
+}
+
+#copy-div {
+    padding: 2em;
+}
+
+#copy-btn {
+    font-weight:bold;
+    background-color:rgba(255, 255, 255, 0.11);
+    color:white;
+}

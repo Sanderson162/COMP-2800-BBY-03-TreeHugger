@@ -156,7 +156,7 @@
                             <path d="M8.75 16.25L15 22.5L21.25 16.25" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M8.75 7.5L15 13.75L21.25 7.5" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            </div>
+                        </div>
                     </div>
                     <div id="street-view-container"><button id="street-btn">Street</button></div>
                     <div id="like-button-container"></div>
@@ -176,7 +176,7 @@
                         </button>
                     </div>
                     <div id="share-button-container">
-                        <button onclick="fbShare()" id="share-btn">
+                        <button onclick="showShareOverlay()" id="share-btn">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -193,17 +193,57 @@
             </div>
         </div>
     </div>
+    <div class="social-container">
+        <div id="outer-social">
+            <span id="social-header">SHARE TREE</span>
+            <div id="social">
+                <div id="copy-div">
+                    <button id="copy-btn" onclick="copyShareLink()">Copy to Clipboard</button>
+                </div>
+                <div id="fb-root"></div>
+                <div id="fb-div">
+                    <div id="share-fb-btn" class="fb-share-button"
+                        data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count"
+                        data-size="large"><a target="_blank"
+                            href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse"
+                            class="fb-xfbml-parse-ignore">Share</a></div>
+                    <div id="like-fb-btn" class="fb-like" data-href="https://developers.facebook.com/docs/plugins/"
+                        data-width="" data-layout="button_count" data-action="like" data-size="large"
+                        data-share="false"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="map-container">
         <div id="map">
         </div>
         <div id="pano"></div>
     </div>
-    <!-- <div class="link-container">
-        <p>Link:</p> 
-        <input id="shareLink"></input>
-    </div> -->
     <!-- Your own Firebase API key information -->
     <script src="./firebase_api_Group3.js"> </script>
+
+    <!-- Facebook SDK -->
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '1077892062739516',
+                cookie: true,
+                xfbml: true,
+                version: 'v10.0'
+            });
+
+            FB.AppEvents.logPageView();
+
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
 
     <!-- Common Navbar Script -->
     <script src="./navbar-common.js"></script>

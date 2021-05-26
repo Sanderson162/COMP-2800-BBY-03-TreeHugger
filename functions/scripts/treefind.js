@@ -51,6 +51,7 @@ $(document).ready(function () {
   checkUrlParams(getUrlParams());
   locationInterval = setInterval("getLocation(false)", 3000);
   addMainScrollListener();
+  addHideShareOverlayListener();
 });
 /**
  * Checks URL parameters and executes appropriate action.
@@ -1024,9 +1025,10 @@ function navigateUrl(url) {
  * Copys share link.
  * @author Amrit
  */
-function copyShareLink() {
+ function copyShareLink() {
   let url = createShareLink($('#tree-card-id').data('id'));
   copyToClipboard(url);
+  $("#copy-btn").text("Copied!");
 }
 /**
  * Opens a FB share link
@@ -1056,4 +1058,40 @@ function createShareLink(id) {
  */
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text);
+}
+/**
+ * Adds tap to hide share overlay.
+ * @author Amrit
+ */
+ function addHideShareOverlayListener() {
+  $(".social-container").on('click', (event) => {
+    if($(event.target).is("#outer-social *")) return;
+    hideShareOverlay();
+  });
+}
+/**
+ * Hide share overlay.
+ * @author Amrit
+ */
+function hideShareOverlay() {
+  $("#copy-btn").text("Copy to Clipboard");
+  $(".social-container").hide();
+}
+/**
+ * Shows share overlay.
+ * @author Amrit
+ */
+function showShareOverlay() {
+  $(".social-container").show();
+  let url = createShareLink($('#tree-card-id').data('id'));
+  fbUpdateBtns(url);
+}
+/**
+ * Updates FB share buttons.
+ * @auther Amrit
+ */
+ function fbUpdateBtns(url) {
+  $("#share-fb-btn").attr("data-href", url);
+  $("#like-fb-btn").attr("data-href", url);
+  FB.XFBML.parse();
 }

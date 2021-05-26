@@ -72,53 +72,76 @@
                     <div id="tree-card-id"></div>
                     <div id="details"></div>
                 </div>
-            <div id="button-container">
-                <div id="details-arrow-container">
-                    <div id="details-arrow"><svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8.75 16.25L15 22.5L21.25 16.25" stroke="#DCDCDC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M8.75 7.5L15 13.75L21.25 7.5" stroke="#DCDCDC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                <div id="button-container">
+                    <div id="details-arrow-container">
+                        <div id="details-arrow"><svg width="30" height="30" viewBox="0 0 30 30" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.75 16.25L15 22.5L21.25 16.25" stroke="#DCDCDC" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M8.75 7.5L15 13.75L21.25 7.5" stroke="#DCDCDC" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
                         </div>
-                </div>
-                <div id="street-view-container"><button id="street-btn">Street</button></div>
-                <div id="like-button-container"><button
-                        style='display: flex; flex-direction: row; justify-content: center; align-items: center'><i
-                            class='far fa-heart fa-2x' style='color: gray;'></i><span class='likeCount'
-                            style='margin-left: 10px;'><i class="fas fa-spinner fa-sm fa-pulse"></i></span></button>
-                </div>
-                <div id="other-view-container"> 
-                    <button id="close-btn" onclick="hideTreeOverlay()"><svg width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 14H10V20" stroke="#111111" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <path d="M20 10H14V4" stroke="#111111" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <path d="M14 10L21 3" stroke="#111111" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <path d="M3 21L10 14" stroke="#111111" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
+                    </div>
+                    <div id="street-view-container"><button id="street-btn">Street</button></div>
+                    <div id="like-button-container"><button
+                            style='display: flex; flex-direction: row; justify-content: center; align-items: center'><i
+                                class='far fa-heart fa-2x' style='color: gray;'></i><span class='likeCount'
+                                style='margin-left: 10px;'><i class="fas fa-spinner fa-sm fa-pulse"></i></span></button>
+                    </div>
+                    <div id="other-view-container">
+                        <button id="close-btn" onclick="hideTreeOverlay()"><svg width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 14H10V20" stroke="#111111" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M20 10H14V4" stroke="#111111" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M14 10L21 3" stroke="#111111" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M3 21L10 14" stroke="#111111" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
 
-                    </button>
+                        </button>
+                    </div>
+                    <div id="share-button-container">
+                        <button onclick="showShareOverlay()" id="share-btn">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M4 12V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V12"
+                                    stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M16 6L12 2L8 6" stroke="#111111" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M12 2V15" stroke="#111111" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-                <div id="share-button-container">
-                    <button onclick="fbShare()" id="share-btn">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M4 12V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V12"
-                                stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M16 6L12 2L8 6" stroke="#111111" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <path d="M12 2V15" stroke="#111111" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
             </div>
         </div>
     </div>
+    <div class="social-container">
+        <div id="outer-social">
+            <span id="social-header">SHARE TREE</span>
+            <div id="social">
+                <div id="copy-div">
+                    <button id="copy-btn" onclick="copyShareLink()">Copy to Clipboard</button>
+                </div>
+                <div id="fb-root"></div>
+                <div id="fb-div">
+                    <div id="share-fb-btn" class="fb-share-button"
+                        data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count"
+                        data-size="large"><a target="_blank"
+                            href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse"
+                            class="fb-xfbml-parse-ignore">Share</a></div>
+                    <div id="like-fb-btn" class="fb-like" data-href="https://developers.facebook.com/docs/plugins/"
+                        data-width="" data-layout="button_count" data-action="like" data-size="large"
+                        data-share="false"></div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="map-container">
         <div id="map">
@@ -127,6 +150,29 @@
     </div>
     <!-- Your own Firebase API key information -->
     <script src="./firebase_api_Group3.js"> </script>
+
+    <!-- Facebook SDK -->
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '1077892062739516',
+                cookie: true,
+                xfbml: true,
+                version: 'v10.0'
+            });
+
+            FB.AppEvents.logPageView();
+
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
 
     <!-- Common Navbar Script -->
     <script src="./navbar-common.js"></script>
