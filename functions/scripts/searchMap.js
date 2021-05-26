@@ -1197,7 +1197,6 @@ function hideTreeOverlay() {
     }
   } 
 }
-
 /** 
  * Toggles the content overlay visible or hidden
  * @author Amrit
@@ -1209,7 +1208,6 @@ function hideTreeOverlay() {
     retractContentOverlay(element, button);
   }
 }
-
 /** 
  * Hides the content overlay
  * @author Amrit
@@ -1218,7 +1216,6 @@ function retractContentOverlay(element, button) {
   element.addClass('normalMainHeight');
   rotateChevron(button, 0);
 }
-
 /**
  * Show the content overlay
  * @author Amrit
@@ -1227,7 +1224,6 @@ function expandContentOverlay(element, button) {
   element.removeClass('normalMainHeight');
   rotateChevron(button, -180);
 }
-
 /** 
  * Toggles the content overlay visible or hidden
  * @author Amrit
@@ -1239,7 +1235,6 @@ function toggleContentOverlay(element, button) {
     hideContentOverlay(element, button);
   }
 }
-
 /** 
  * Hides the content overlay
  * @author Amrit
@@ -1250,7 +1245,6 @@ function hideContentOverlay(element, button) {
   rotateChevron(button, -90);
   map.panBy(0, height * 0.25);
 }
-
 /**
  * Show the content overlay
  * @author Amrit
@@ -1261,7 +1255,6 @@ function showContentOverlay(element, button) {
   rotateChevron(button, 0);
   map.panBy(0, -height * 0.25);
 }
-
 /**
  * Rotates the chevron.
  * @param {int} amount Amount of rotation.
@@ -1271,7 +1264,6 @@ function rotateChevron(chevron, amount) {
   chevron.css({ transition: "transform 0.3s", transform: "rotate(" + amount + "deg)" });
   setTimeout(function () { chevron.css({ transition: "none" }) }, 300);
 }
-
 /**
  * Initializes Google Maps and sets custom Map and StreetView.
  * @see https://developers.google.com/maps/documentation/ 
@@ -1359,7 +1351,6 @@ function initMap() {
   console.log("centering map from initmap");
   centerMap();
 }
-
 /**
  * Adds location marker to map.
  * @param {latlng} location Current location.
@@ -1383,7 +1374,6 @@ function addLocationMarker(location, lbl) {
   });
   locationMarker = marker;
 }
-
 /**
  * Creates a button that toggles the type of map for map. 
  * @returns button.
@@ -1415,7 +1405,6 @@ function createToggleTypeBtn() {
   });
   return toggleTypeBtn;
 }
-
 /**
  * Creates undo button for search history for map.
  * @returns button
@@ -1435,7 +1424,6 @@ function createSearchHistoryBtn() {
   });
   return toggleTypeBtn;
 }
-
 /**
  * Creates search toggle button for map.
  * @returns button
@@ -1467,7 +1455,6 @@ function createSearchMapBtn() {
   });
   return toggleTypeBtn;
 }
-
 /**
  * Steps back in search history list and queries the search.
  * @author Amrit
@@ -1498,7 +1485,6 @@ function stepBackSearchHistory() {
     
   }
 }
-
 /**
  * Toggles StreetView for a tree. 
  * @author Amrit
@@ -1511,7 +1497,6 @@ function toggleStreetView(entry) {
     setStreetView(entry);
   }
 }
-
 /**
  * Centers the map with respect to 50% div overlay.
  * @author Amrit 
@@ -1533,7 +1518,6 @@ function centerMapoldTest() {
     map.panBy(0, -height * 0.25);
   }
 }
-
 /**
  * Centers the map with respect to 50% div overlay.
  * @author Amrit 
@@ -1551,7 +1535,6 @@ function centerMapoldTest() {
     map.panBy(0, -height * 0.25);
   }
 }
-
 /**
  * Adds a tree marker to map given a lnglat.
  * @param {float} longitude 
@@ -1591,7 +1574,6 @@ function addTreeMarker(longitude, latitude, entry) {
     }
   });
 }
-
 /**
  * Returns the distance given two lnglat values.
  * @author https://www.geodatasource.com/developers/javascript 
@@ -1616,7 +1598,6 @@ function distance(lat1, lon1, lat2, lon2, unit) {
     return dist;
   }
 }
-
 /**
  * Removes all markers from the map and array.
  * @author https://developers.google.com/maps/documentation/javascript/examples/marker-remove, Amrit
@@ -1629,7 +1610,6 @@ function clearMarkers() {
       i--;
   }
 }
-
 /**
  * Clears the location marker.
  * @author Amrit
@@ -1640,7 +1620,6 @@ function clearLocationMarker() {
     locationMarker = null;
   }
 }
-
 /**
  * Updates the details division with wikipedia information when tree overlay is loaded.
  * @author Steven
@@ -1651,7 +1630,6 @@ function updateDetails() {
   textForQuery = (textForQuery.split(' ').slice(0, 2).join('_')).toLowerCase();
   displayWikipediaInformation($("#details"), textForQuery, $("#details-arrow-container"));
 }
-
 /**
  * Scroll listener for Wikipedia scroll; details arrow is visible with scrollTop percentage.
  * @author Amrit
@@ -1662,7 +1640,6 @@ function addMainScrollListener() {
     $("#details-arrow-container").css("opacity", (1 - scrollPercentage / 2) * 100 + "%");
   });
 }
-
 /**
  * Saves history to database
  * @author Aidan
