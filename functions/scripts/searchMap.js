@@ -156,8 +156,9 @@ async function getRecordAndDisplay(recordID, order, zoomOnTree) {
     updateContent(entry, false);
     if (zoomOnTree) {
       zoom(entry);
+    } else {
+      searchZoom();
     }
-    searchZoom();
   } else {
       showDialogue("treeNotAvailable");
   }
