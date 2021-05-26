@@ -49,9 +49,12 @@ function getWikipediaArticleName(genus_species) {
   });
 }
 
-// getWikipediaExtract(genus_name.toLowerCase() + "_" + species_name.toLowerCase())
-// given a genus and species name (the way wikipedia indexes their pages) you can retrieve the extract
-// returns the extract or "record not found" which can be put directly into element with element.text(extract)
+/**
+ * Returns an extract from a wikipedia page corresponding to a search of the genus and species name.
+ * Can change sentence limit of extract --> adding "&exsentences=value" directly after "&prop=extracts" --> value = 1 - 10
+ * @param {*} genus_species
+ * @returns text extract
+ */
 function getWikipediaExtract(genus_species) {
   return new Promise((resolve) => {
     let extractUrl = "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=" + genus_species + "&exintro=1&explaintext=1&callback=?&redirects=";
@@ -62,6 +65,7 @@ function getWikipediaExtract(genus_species) {
       success: function (result, status, xhr) {
         let pageId = Object.keys(result.query.pages)[0];
         if (pageId != -1) {
+          console.log(result.query.pages[pageId].extract);
           let extract = JSON.stringify(result.query.pages[pageId].extract);
           resolve(extract);
         } else {

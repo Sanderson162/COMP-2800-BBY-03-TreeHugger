@@ -293,6 +293,7 @@ app.post("/ajax-get-history-user", urlencodedParser, (req, res) => {
       db.collection("History")
         .where("user", "==", uid)
         .orderBy("timestamp", "desc")
+        .limit(20)
         .get()
         .then((data) => {
           let response = [];

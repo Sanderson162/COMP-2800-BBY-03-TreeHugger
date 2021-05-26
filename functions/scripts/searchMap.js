@@ -156,8 +156,9 @@ async function getRecordAndDisplay(recordID, order, zoomOnTree) {
     updateContent(entry, false);
     if (zoomOnTree) {
       zoom(entry);
+    } else {
+      searchZoom();
     }
-    searchZoom();
   } else {
       showDialogue("treeNotAvailable");
   }
@@ -331,6 +332,7 @@ function queueSearch(_callback) {
   clearMarkers();
   clearLocationMarker();
   updateSearchHistorySelectedId();
+  selectedTreeId = null;
   search(true, _callback);
 }
 /**
@@ -475,7 +477,7 @@ function search(reset, _callback) {
     if (data.records.length == rows) {
       $("#content").append(loadMoreButton());
     }
-  });
+  }).fail(function() { showDialogue("getJsonError") });
   addSearchHistory(q, searchType);
 }
 /**
@@ -756,6 +758,7 @@ function resetTagSelection() {
  * @author Amrit
  */
 function getContent(_callback) {
+  selectedTreeId = null;
   let url = 'https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&geofilter.distance=' + currentLocation.lat + '%2C' + currentLocation.lng + '%2C1000&rows=' + rows;
   $.getJSON(url, function (data) {
     $("#content").text("");
@@ -768,7 +771,7 @@ function getContent(_callback) {
       _callback();
     }
     isContent();
-  });
+  }).fail(function() { showDialogue("getJsonError") });
   addSearchHistory(currentLocation, "location");
   setUrlParam("q", currentLocation.lat + " " + currentLocation.lng);
   setUrlParam("type", "location");
@@ -852,6 +855,15 @@ function showDialogue(m) {
     post.addClass("dialogue");
     let title = $("<div></div>").addClass("title").text("Tree not found");
     let body = $("<div></div>").addClass("body").text("A tree with this ID does not exist or is missing its location data. ");
+    post.append(title, body);
+    $("#content").append(post);
+  } else if (m == "getJsonError") {
+    $("#content").text("");
+    let post = $("<div></div>").addClass("post");
+    post.addClass("dialogue");
+    post.addClass("error");
+    let title = $("<div></div>").addClass("title").text("Tree Database Error");
+    let body = $("<div></div>").addClass("body").text("Looks like we cannot reach the Tree database. Try again in a few moments.");
     post.append(title, body);
     $("#content").append(post);
   }
@@ -1195,7 +1207,6 @@ function hideTreeOverlay() {
     }
   } 
 }
-
 /** 
  * Toggles the content overlay visible or hidden
  * @author Amrit
@@ -1207,7 +1218,6 @@ function hideTreeOverlay() {
     retractContentOverlay(element, button);
   }
 }
-
 /** 
  * Hides the content overlay
  * @author Amrit
@@ -1216,7 +1226,6 @@ function retractContentOverlay(element, button) {
   element.addClass('normalMainHeight');
   rotateChevron(button, 0);
 }
-
 /**
  * Show the content overlay
  * @author Amrit
@@ -1225,7 +1234,6 @@ function expandContentOverlay(element, button) {
   element.removeClass('normalMainHeight');
   rotateChevron(button, -180);
 }
-
 /** 
  * Toggles the content overlay visible or hidden
  * @author Amrit
@@ -1237,7 +1245,6 @@ function toggleContentOverlay(element, button) {
     hideContentOverlay(element, button);
   }
 }
-
 /** 
  * Hides the content overlay
  * @author Amrit
@@ -1248,7 +1255,6 @@ function hideContentOverlay(element, button) {
   rotateChevron(button, -90);
   map.panBy(0, height * 0.25);
 }
-
 /**
  * Show the content overlay
  * @author Amrit
@@ -1259,7 +1265,6 @@ function showContentOverlay(element, button) {
   rotateChevron(button, 0);
   map.panBy(0, -height * 0.25);
 }
-
 /**
  * Rotates the chevron.
  * @param {int} amount Amount of rotation.
@@ -1269,7 +1274,6 @@ function rotateChevron(chevron, amount) {
   chevron.css({ transition: "transform 0.3s", transform: "rotate(" + amount + "deg)" });
   setTimeout(function () { chevron.css({ transition: "none" }) }, 300);
 }
-
 /**
  * Initializes Google Maps and sets custom Map and StreetView.
  * @see https://developers.google.com/maps/documentation/ 
@@ -1335,6 +1339,7 @@ function initMap() {
   panorama = map.getStreetView();
   panorama.setPosition(currentLocation);
   panorama.addListener("visible_changed", function () {
+    retractContentOverlay($('#main'), $('#details-arrow-container'));
     if (panorama.getVisible()) {
       $("#street-btn").text("Map");
     } else {
@@ -1357,7 +1362,6 @@ function initMap() {
   console.log("centering map from initmap");
   centerMap();
 }
-
 /**
  * Adds location marker to map.
  * @param {latlng} location Current location.
@@ -1381,7 +1385,6 @@ function addLocationMarker(location, lbl) {
   });
   locationMarker = marker;
 }
-
 /**
  * Creates a button that toggles the type of map for map. 
  * @returns button.
@@ -1413,7 +1416,6 @@ function createToggleTypeBtn() {
   });
   return toggleTypeBtn;
 }
-
 /**
  * Creates undo button for search history for map.
  * @returns button
@@ -1433,7 +1435,6 @@ function createSearchHistoryBtn() {
   });
   return toggleTypeBtn;
 }
-
 /**
  * Creates search toggle button for map.
  * @returns button
@@ -1465,7 +1466,6 @@ function createSearchMapBtn() {
   });
   return toggleTypeBtn;
 }
-
 /**
  * Steps back in search history list and queries the search.
  * @author Amrit
@@ -1496,7 +1496,6 @@ function stepBackSearchHistory() {
     
   }
 }
-
 /**
  * Toggles StreetView for a tree. 
  * @author Amrit
@@ -1509,7 +1508,6 @@ function toggleStreetView(entry) {
     setStreetView(entry);
   }
 }
-
 /**
  * Centers the map with respect to 50% div overlay.
  * @author Amrit 
@@ -1531,7 +1529,6 @@ function centerMapoldTest() {
     map.panBy(0, -height * 0.25);
   }
 }
-
 /**
  * Centers the map with respect to 50% div overlay.
  * @author Amrit 
@@ -1549,7 +1546,6 @@ function centerMapoldTest() {
     map.panBy(0, -height * 0.25);
   }
 }
-
 /**
  * Adds a tree marker to map given a lnglat.
  * @param {float} longitude 
@@ -1589,7 +1585,6 @@ function addTreeMarker(longitude, latitude, entry) {
     }
   });
 }
-
 /**
  * Returns the distance given two lnglat values.
  * @author https://www.geodatasource.com/developers/javascript 
@@ -1614,7 +1609,6 @@ function distance(lat1, lon1, lat2, lon2, unit) {
     return dist;
   }
 }
-
 /**
  * Removes all markers from the map and array.
  * @author https://developers.google.com/maps/documentation/javascript/examples/marker-remove, Amrit
@@ -1627,7 +1621,6 @@ function clearMarkers() {
       i--;
   }
 }
-
 /**
  * Clears the location marker.
  * @author Amrit
@@ -1638,7 +1631,6 @@ function clearLocationMarker() {
     locationMarker = null;
   }
 }
-
 /**
  * Updates the details division with wikipedia information when tree overlay is loaded.
  * @author Steven
@@ -1649,7 +1641,6 @@ function updateDetails() {
   textForQuery = (textForQuery.split(' ').slice(0, 2).join('_')).toLowerCase();
   displayWikipediaInformation($("#details"), textForQuery, $("#details-arrow-container"));
 }
-
 /**
  * Scroll listener for Wikipedia scroll; details arrow is visible with scrollTop percentage.
  * @author Amrit
@@ -1660,7 +1651,6 @@ function addMainScrollListener() {
     $("#details-arrow-container").css("opacity", (1 - scrollPercentage / 2) * 100 + "%");
   });
 }
-
 /**
  * Saves history to database
  * @author Aidan

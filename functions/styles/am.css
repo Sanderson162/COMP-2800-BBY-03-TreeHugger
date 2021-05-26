@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 * {
     font-family: 'Roboto', sans-serif;
+    user-select: none;
 }
 .card {
     background: white;
@@ -19,8 +20,10 @@
     margin-right: 2.5%;
     margin-top: 2.5%;
     margin-bottom: 5%;
-    display: grid;
-    grid-template-columns: 33.3% 33.3% 33.3%;
+    display:flex;
+    flex-direction:row;
+    flex-grow: 1;
+    justify-content:space-around;
     height: fit-content;
 }
 #main .card {
@@ -35,20 +38,44 @@
 }
 
 #form input{
-    height: 30pt;
-    text-align: center;
-    font-size: larger;
-    max-width: 60%;
+    font-size:18px;
+    width:72.6%;
+    padding:10px;
+    border-radius:4px;
+    margin:auto;
+    border-color:gainsboro;
+    border-width:thin;
+    border-style: solid;
+        -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    margin-top:1em;
 }
 
-#form button{
-    height: 30pt;
-    font-size: larger;
+#form input:focus {
+    outline: none;
+    border: 1px solid #007ACC;
 }
 
-#result button{
-    height: 30pt;
-    font-size: larger;
+#form input::placeholder {
+    color: gainsboro;
+    font-style:italic;
+    font-weight:lighter;
+}
+
+button {
+    background: white;
+    border: none;
+    padding-right: 1em;
+    padding-left: 1em;
+    padding-top: 0.75em;
+    padding-bottom:0.75em;
+    height:50px;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    border-radius:4px;
+    font-weight:bold;
+    margin:1em;
+    font-size:90%;
 }
 
 #form{
@@ -65,21 +92,35 @@
     text-align: center;
 }
 
-#form *{
-    margin-top: 2%;
+#form * {
+    margin-top:1.5em;
 }
-
 #form #logo {
     font-size: 60pt;
 }
 
-#profile, #title {
+#tabs {
+    padding-top: 10%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+#profile, #title, #savedTrees {
     margin-left: 5%;
     width: 50%;
     margin-top: 1%;
     margin-bottom: 1%;
     font-size: x-large;
     font-weight: bold;
+}
+
+.selectedTitle {
+    color: black !important;
+}
+
+#profile {
+    text-align: center;
+    margin:auto;
 }
 
 #result {
@@ -120,7 +161,7 @@
     margin-right: 5%;
     cursor: default;
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 25% 75%;
     background-color: white;
 }
 
@@ -141,15 +182,38 @@
     background: rgb(236, 236, 236);
 }
 
+.tag {
+    background:#ececec;
+    color:black;
+    padding: 0.5em;
+    border-radius: 2em;
+    font-size: 100%;
+    width:100px;
+    height:20px;
+    display:inline-block;
+    text-align:center;
+}
+
+.tag.selected {
+    background: gray;
+    color:white;
+}
+
 body {
     background-color: whitesmoke;
 }
 
-#title, #profile {
+#title, #profile, #savedTrees {
     box-shadow: none;
-    background-color: whitesmoke;
+    background-color: transparent;
     cursor: default;
     border:none;
+}
+
+#title, #savedTrees {
+    text-align: center;
+    cursor: pointer;
+    color: #8a8a8d;
 }
 
 #userNameArea, #emailArea, #viewsaved {
@@ -176,4 +240,8 @@ body {
 .message {
     border-right: 1px solid rgb(236, 236, 236);
     box-sizing:border-box;
+}
+
+#date {
+    background-color:white;
 }
