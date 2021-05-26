@@ -119,12 +119,12 @@ async function searchWithFavourites() {
 
   // console.log("favlist ", favList)
 
-  if (favList) {
+  if (favList.length != 0) {
     favList.forEach((record, index) => {
       getRecordAndDisplay(record.recordID, index + 1, false);
     });
   } else {
-    showDialogue("noFavouites");
+    showDialogue("noFavourites");
   }
 }
 
