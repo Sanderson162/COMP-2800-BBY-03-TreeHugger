@@ -169,7 +169,7 @@ function displayHistory(comment){
 
 /**
  * Url parsing function.
- * @returns a map
+ * @returns object
  * @author https://html-online.com/articles/get-url-parameters-javascript/
  */ 
 function getUrlVars() {
