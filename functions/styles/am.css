@@ -99,13 +99,28 @@ button {
     font-size: 60pt;
 }
 
-#profile, #title {
+#tabs {
+    padding-top: 10%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+#profile, #title, #savedTrees {
     margin-left: 5%;
     width: 50%;
     margin-top: 1%;
     margin-bottom: 1%;
     font-size: x-large;
     font-weight: bold;
+}
+
+.selectedTitle {
+    color: black !important;
+}
+
+#profile {
+    text-align: center;
+    margin:auto;
 }
 
 #result {
@@ -188,11 +203,17 @@ body {
     background-color: whitesmoke;
 }
 
-#title, #profile {
+#title, #profile, #savedTrees {
     box-shadow: none;
     background-color: transparent;
     cursor: default;
     border:none;
+}
+
+#title, #savedTrees {
+    text-align: center;
+    cursor: pointer;
+    color: #8a8a8d;
 }
 
 #userNameArea, #emailArea, #viewsaved {
