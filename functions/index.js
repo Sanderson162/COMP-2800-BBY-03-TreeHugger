@@ -82,6 +82,9 @@ app.post('/profile', urlencodedParser, (req, res) => {
           name: doc.data().name,
           email: doc.data().email
         });
+      }).catch((error) => {
+        console.log(error);
+        res.status(418).send("Could not get User!");
       });
     }).catch((error) => {
       console.log(error);
@@ -108,7 +111,10 @@ app.post('/ajax-add-user', urlencodedParser, (req, res) => {
         res.send({
           status: "success"
         });
-      })
+      }).catch((error) => {
+        console.log(error);
+        res.status(418).send("Could not get favourites!");
+      });
     }).catch((error) => {
       console.log(error);
       res.status(401).send("UNAUTHORIZED REQUEST!");
@@ -188,6 +194,9 @@ app.post('/removeTreeFav', urlencodedParser, (req, res) => {
         });
 
       //End idtoken verified
+    }).catch((error) => {
+      console.log(error);
+      res.status(401).send("UNAUTHORIZED REQUEST!");
     });
 });
 
@@ -213,7 +222,7 @@ app.post("/ajax-add-comment", urlencodedParser, (req, res) => {
           status: "success"
         });
       }).catch((error) => {
-        res.status(401);
+        res.status(418).send("Could not add comment!");
       });
 
 
@@ -243,7 +252,7 @@ app.post("/ajax-add-history", urlencodedParser, (req, res) => {
           status: "success"
         });
       }).catch((error) => {
-        res.status(401);
+        res.status(418).send("Could not add History!");
       });
 
 
@@ -276,7 +285,11 @@ app.post("/ajax-get-comment-user", urlencodedParser, (req, res) => {
         })
         .catch((error) => {
           console.log(error);
+          res.status(418).send("Could not get Comments!");
         });
+    }).catch((error) => {
+      console.log(error);
+      res.status(401).send("UNAUTHORIZED REQUEST!");
     });
 });
 
@@ -308,10 +321,13 @@ app.post("/ajax-get-history-user", urlencodedParser, (req, res) => {
         })
         .catch((error) => {
           console.log(error);
+          res.status(418).send("Could not get History!");
         });
+    }).catch((error) => {
+      console.log(error);
+      res.status(401).send("UNAUTHORIZED REQUEST!");
     });
 });
-
 
 app.post('/getFavByUser', urlencodedParser, (req, res) => {
   // res.setHeader('Content-Type', 'application/json');
@@ -348,6 +364,9 @@ app.post('/getFavByUser', urlencodedParser, (req, res) => {
         });
 
       //End idtoken verified
+    }).catch((error) => {
+      console.log(error);
+      res.status(401).send("UNAUTHORIZED REQUEST!");
     });
 });
 
@@ -447,6 +466,9 @@ app.post('/getIfUserLiked', urlencodedParser, (req, res) => {
           status: "success",
           liked: doc.exists
         });
+      }).catch((error) => {
+        console.log(error);
+        res.status(418).send("Could not get favourites!");
       });
     }).catch((error) => {
       console.log(error);
@@ -470,7 +492,10 @@ app.post('/update-username', urlencodedParser, (req, res) => {
         res.send({
           status: "success"
         });
-      })
+      }).catch((error) => {
+        console.log(error);
+        res.status(418).send("Could not change username!");
+      });
     }).catch((error) => {
       console.log(error);
       res.status(401).send("UNAUTHORIZED REQUEST!");
@@ -486,22 +511,27 @@ app.post('/update-email', urlencodedParser, (req, res) => {
     .verifyIdToken(idToken)
     .then((decodedToken) => {
       const uid = decodedToken.uid;
-      db.collection("Users").doc(uid).update({
-        email: req.body.email
-      }).then(function () { //if successful
-        console.log("Username updated in database");
-        admin
-          .auth()
-          .updateUser(uid, {
+      admin
+        .auth()
+        .updateUser(uid, {
+          email: req.body.email
+        }).then((userRecord) => {
+          console.log('Successfully updated user', userRecord.toJSON());
+          db.collection("Users").doc(uid).update({
             email: req.body.email
-          })
-          .then((userRecord) => {
-            console.log('Successfully updated user', userRecord.toJSON());
+          }).then(function () { //if successful
+            console.log("Username updated in database");
             res.send({
               status: "success"
             });
+          }).catch((error) => {
+            console.log(error);
+            res.status(418).send("could not update database!");
           });
-      });
+        }).catch((error) => {
+          console.log(error);
+          res.status(418).send("Could not change email!");
+        });
     }).catch((error) => {
       console.log(error);
       res.status(401).send("UNAUTHORIZED REQUEST!");
@@ -515,7 +545,9 @@ app.post('/update-email', urlencodedParser, (req, res) => {
 
 function msg404(res) {
   //res.render('home.html');
-  res.status(404).send("<div style='text-align: center;' ><img src='https://puu.sh/HGpjx/f048c14998.png'><br>404 Page not found <a href='/'>Go home?</a></div>");
+  let cryComfy = "https://puu.sh/HGpjx/f048c14998.png";
+  let peepoJuice = "https://firebasestorage.googleapis.com/v0/b/tree-hugger-c60ff.appspot.com/o/peepoJuice.gif?alt=media&token=38646805-e677-4b4c-87f6-576603afa182";
+  res.status(404).send("<div style='text-align: center;' ><img src='" + peepoJuice + "'><br>404 Page not found <a href='/'>Go home?</a></div>");
 }
 
 app.use((req, res, next) => {
