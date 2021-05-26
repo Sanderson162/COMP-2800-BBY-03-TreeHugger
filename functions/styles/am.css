@@ -161,7 +161,7 @@ button {
     margin-right: 5%;
     cursor: default;
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 25% 75%;
     background-color: white;
 }
 

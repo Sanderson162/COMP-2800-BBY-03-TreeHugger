@@ -1,15 +1,6 @@
-//displays the "history" page when url argument p = history
-//otherwise it displays the saved tree
+//displays history and loads event listeners for toggle buttons
 window.addEventListener("DOMContentLoaded",() => {
     firebase.auth().onAuthStateChanged(() => {
-        // if (getUrlVars()["p"]=="saved"){
-        //     $("#profile").hide();
-        //     $("#profileContainer").hide();
-        //     $("#title").html("Your Trees");
-        //     showComments();
-        // } else {
-        //     showHistory();
-        // }
         showHistory();
 
         $("#title").on("click",()=>{
@@ -25,9 +16,6 @@ window.addEventListener("DOMContentLoaded",() => {
 
     });
 });
-
-
-
 
 //displays user history
 function showHistory() {
