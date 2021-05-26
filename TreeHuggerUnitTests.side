@@ -3506,7 +3506,7 @@
     }]
   }, {
     "id": "8c6c3aeb-8471-45a5-aeb0-66219644364f",
-    "name": "About Us - 1 of 1",
+    "name": "About Us - 1 of 2",
     "commands": [{
       "id": "e1f7e9de-d1b2-4d48-88a1-3012651f0095",
       "comment": "",
@@ -4952,6 +4952,56 @@
         ["xpath=//input[3]", "xpath:position"]
       ],
       "value": ""
+    }]
+  }, {
+    "id": "7cdbbb85-9b77-4f1a-a910-0418af4c4841",
+    "name": "About Us - 2 of 2",
+    "commands": [{
+      "id": "158c27d8-60a7-4e75-86a8-bf7bada5eca0",
+      "comment": "",
+      "command": "open",
+      "target": "https://tree-hugger-c60ff.web.app/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0419f6ce-cd3b-41e8-91fb-210eab56a250",
+      "comment": "",
+      "command": "click",
+      "target": "css=.menu2 b",
+      "targets": [
+        ["css=.menu2 b", "css:finder"],
+        ["xpath=//div[2]/a/div[2]/b", "xpath:position"],
+        ["xpath=//b[contains(.,'About Us')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3729a582-f963-4fee-84aa-1d9c1c17098b",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Github",
+      "targets": [
+        ["linkText=Github", "linkText"],
+        ["css=.contact:nth-child(2) > a:nth-child(3)", "css:finder"],
+        ["xpath=//div[@id='container']/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://github.com/Sanderson162')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,' Github')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e8684af6-82e6-4f37-b765-1c096a5eb1ad",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return window.location.href",
+      "targets": [],
+      "value": "pageurl"
+    }, {
+      "id": "c6d86501-8aa2-41e9-be9c-ad09b440ef9d",
+      "comment": "",
+      "command": "assert",
+      "target": "pageurl",
+      "targets": [],
+      "value": "https://github.com/Sanderson162"
     }]
   }],
   "suites": [{
