@@ -120,8 +120,14 @@ button {
     font-weight: bold;
 }
 
-.selectedTitle {
-    color: black !important;
+#title.selectedTitle {
+    background: gray;
+    color:white;
+}
+
+#savedTrees.selectedTitle {
+    background: gray;
+    color:white;
 }
 
 #profile {
@@ -190,7 +196,7 @@ button {
 
 .tag {
     background:#ececec;
-    color:black;
+    color:rgb(175, 175, 175);
     padding: 0.5em;
     border-radius: 2em;
     font-size: 100%;
@@ -198,6 +204,7 @@ button {
     height:20px;
     display:inline-block;
     text-align:center;
+    font-weight:normal;
 }
 
 .tag.selected {
@@ -217,9 +224,16 @@ body {
 }
 
 #title, #savedTrees {
-    text-align: center;
-    cursor: pointer;
-    color: #8a8a8d;
+    background:#ececec;
+    color:rgb(175, 175, 175);
+    padding: 0.5em;
+    border-radius: 2em;
+    font-size: 100%;
+    width:100px !important;
+    height:20px;
+    display:inline-block;
+    text-align:center;
+    font-weight:normal;
 }
 
 #userNameArea, #emailArea, #viewsaved {

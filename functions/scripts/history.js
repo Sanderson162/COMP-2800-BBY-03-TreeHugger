@@ -1,7 +1,7 @@
 //displays history and loads event listeners for toggle buttons
 window.addEventListener("DOMContentLoaded",() => {
     firebase.auth().onAuthStateChanged(() => {
-        showHistory();
+        showComments();
 
         $("#title").on("click",()=>{
             $("#title").addClass("selectedTitle");
@@ -76,7 +76,7 @@ function showComments() {
 //otherwise displays "no results found"
 function spliceComments(data){
     if (data.length == 0){
-        $("#results").html("<i>No results found</i>");
+        $("#results").html("<i style='display:block;text-align:center;'>No results found</i>");
     } else {
         $("#results").html("");
         data.forEach(element => {
