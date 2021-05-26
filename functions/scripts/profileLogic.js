@@ -86,6 +86,7 @@ function getUserInfo() {
           }
         },
         error: function (jqXHR, textStatus, errorThrown) {
+          $("#emailArea").children().text(user.email);
           console.log("ERROR:", jqXHR, textStatus, errorThrown);
         }
 
