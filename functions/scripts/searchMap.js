@@ -1187,12 +1187,16 @@ function hideTreeOverlay() {
   if (zoomVal != currentZoom) {
     center = true;
   }
+  
   if (currentZoom > 12) {
     map.setZoom(zoomVal);
     if (center) {
       console.log("centering map from hidetreeoverlay");
       centerMap();
     }
+  } else if ($("#outer-content").css('height') == '40px') {
+    console.log("centering map from hidetreeoverlay2");
+    centerMap();
   }
 }
 
@@ -1514,18 +1518,37 @@ function toggleStreetView(entry) {
  * Centers the map with respect to 50% div overlay.
  * @author Amrit 
  */
-function centerMap() {
+function centerMapoldTest() {
   let contentHidden = false;
   let treeHidden = false;
   let height = window.innerHeight;
   if ($("#outer-content").css('height') == '40px') {
     contentHidden = true;
+    console.log("contenthidden")
   }
   if (!selectedTreeId) {
     treeHidden = true;
   }
   if (contentHidden && treeHidden) {
   } else {
+    console.log("pan map from centermap", height);
+    map.panBy(0, -height * 0.25);
+  }
+}
+
+/**
+ * Centers the map with respect to 50% div overlay.
+ * @author Amrit 
+ */
+ function centerMap() {
+  let contentHidden = false;
+  let height = window.innerHeight;
+  if ($("#outer-content").css('height') == '40px') {
+    console.log("contenthidden")
+    contentHidden = true;
+  }
+  if (!selectedTreeId && !contentHidden) {
+    console.log("pan map from centermap", height);
     map.panBy(0, -height * 0.25);
   }
 }
