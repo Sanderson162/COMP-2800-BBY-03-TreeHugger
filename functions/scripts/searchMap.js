@@ -477,7 +477,7 @@ function search(reset, _callback) {
     if (data.records.length == rows) {
       $("#content").append(loadMoreButton());
     }
-  });
+  }).fail(function() { showDialogue("getJsonError") });
   addSearchHistory(q, searchType);
 }
 /**
@@ -770,7 +770,7 @@ function getContent(_callback) {
       _callback();
     }
     isContent();
-  });
+  }).fail(function() { showDialogue("getJsonError") });
   addSearchHistory(currentLocation, "location");
   setUrlParam("q", currentLocation.lat + " " + currentLocation.lng);
   setUrlParam("type", "location");
@@ -854,6 +854,15 @@ function showDialogue(m) {
     post.addClass("dialogue");
     let title = $("<div></div>").addClass("title").text("Tree not found");
     let body = $("<div></div>").addClass("body").text("A tree with this ID does not exist or is missing its location data. ");
+    post.append(title, body);
+    $("#content").append(post);
+  } else if (m == "getJsonError") {
+    $("#content").text("");
+    let post = $("<div></div>").addClass("post");
+    post.addClass("dialogue");
+    post.addClass("error");
+    let title = $("<div></div>").addClass("title").text("Tree Database Error");
+    let body = $("<div></div>").addClass("body").text("Looks like we cannot reach the Tree database. Try again in a few moments.");
     post.append(title, body);
     $("#content").append(post);
   }

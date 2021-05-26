@@ -217,7 +217,7 @@ function getContent(_callback) {
       _callback();
     }
     isContent();
-  });
+  }).fail(function() { showDialogue("getJsonError") });
 }
 /**
  * Checks if content is empty. 
@@ -286,6 +286,15 @@ function showDialogue(m) {
       post.append(title, body);
       $("#content").append(post);
     }
+  } else if (m == "getJsonError") {
+    $("#content").text("");
+    let post = $("<div></div>").addClass("post");
+    post.addClass("dialogue");
+    post.addClass("error");
+    let title = $("<div></div>").addClass("title").text("Tree Database Error");
+    let body = $("<div></div>").addClass("body").text("Looks like we cannot reach the Tree database. Try again in a few moments.");
+    post.append(title, body);
+    $("#content").append(post);
   }
 }
 /**
