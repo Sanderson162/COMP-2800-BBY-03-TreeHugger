@@ -635,6 +635,7 @@ function initMap() {
   panorama = map.getStreetView();
   panorama.setPosition(currentLocation);
   panorama.addListener("visible_changed", function () {
+    retractContentOverlay($('#main'), $('#details-arrow-container'));
     if (panorama.getVisible()) {
       $("#street-btn").text("Map");
     } else {
