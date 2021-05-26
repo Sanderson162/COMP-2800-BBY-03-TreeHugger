@@ -398,6 +398,7 @@ function resetMarkerColor() {
  * @author Amrit
  */
 function showTreeOverlay(entry) {
+  showContentOverlay($('#outer-tree-content'), $('#hide-content-btn-tree'));
   $(".content-container").hide();
   $(".tree-overlay-container").show();
   $("#details-arrow-container").hide();
