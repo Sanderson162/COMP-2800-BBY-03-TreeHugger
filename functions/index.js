@@ -545,7 +545,9 @@ app.post('/update-email', urlencodedParser, (req, res) => {
 
 function msg404(res) {
   //res.render('home.html');
-  res.status(404).send("<div style='text-align: center;' ><img src='https://puu.sh/HGpjx/f048c14998.png'><br>404 Page not found <a href='/'>Go home?</a></div>");
+  let cryComfy = "https://puu.sh/HGpjx/f048c14998.png";
+  let peepoJuice = "https://firebasestorage.googleapis.com/v0/b/tree-hugger-c60ff.appspot.com/o/peepoJuice.gif?alt=media&token=38646805-e677-4b4c-87f6-576603afa182";
+  res.status(404).send("<div style='text-align: center;' ><img src='" + peepoJuice + "'><br>404 Page not found <a href='/'>Go home?</a></div>");
 }
 
 app.use((req, res, next) => {
