@@ -1025,9 +1025,10 @@ function navigateUrl(url) {
  * Copys share link.
  * @author Amrit
  */
-function copyShareLink() {
+ function copyShareLink() {
   let url = createShareLink($('#tree-card-id').data('id'));
   copyToClipboard(url);
+  $("#copy-btn").text("Copied!");
 }
 /**
  * Opens a FB share link
