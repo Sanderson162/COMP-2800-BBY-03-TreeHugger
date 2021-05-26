@@ -398,7 +398,7 @@ function resetMarkerColor() {
  * @author Amrit
  */
 function showTreeOverlay(entry) {
-  showContentOverlay($('#outer-tree-content'), $('#hide-content-btn-tree'));
+  showContentOverlay($('#outer-tree-content'), $('#hide-content-btn-tree'), false);
   $(".content-container").hide();
   $(".tree-overlay-container").show();
   $("#details-arrow-container").hide();
@@ -491,46 +491,7 @@ function hideTreeOverlay() {
   centerMap();
   removeUrlParam("id");
 }
-/**
- * Toggles the content overlay visible or hidden
- * @author Amrit
- */
-function toggleContentOverlay() {
-  if ($("#outer-content").css('height') == '40px') {
-    showContentOverlay();
-  } else {
-    hideContentOverlay();
-  }
-}
-/**
- * Hides the content overlay
- * @author Amrit
- */
-function hideContentOverlay() {
-  let height = window.innerHeight;
-  $("#outer-content").css('height', '40px');
-  rotateChevron(-90);
-  map.panBy(0, height * 0.25);
-}
-/**
- * Shows the content overlay
- * @author Amrit
- */
-function showContentOverlay() {
-  let height = window.innerHeight;
-  $("#outer-content").css('height', '100%');
-  rotateChevron(0);
-  map.panBy(0, -height * 0.25);
-}
-/**
- * Rotates the chevron.
- * @param {int} amount Amount of rotation.
- * @author Amrit
- */
-function rotateChevron(amount) {
-  $("#hide-content-btn").css({ transition: "transform 0.3s", transform: "rotate(" + amount + "deg)" });
-  setTimeout(function () { $("#hide-content-btn").css({ transition: "none" }) }, 300);
-}
+
 /**
  * Shows or hides the center-locate and enable-location buttons.
  * @param {bool} enabled If location is enabled.
@@ -1147,7 +1108,7 @@ function expandContentOverlay(element, button) {
  */
 function toggleContentOverlay(element, button) {
   if (element.css('height') == '40px') {
-    showContentOverlay(element, button);
+    showContentOverlay(element, button, true);
   } else {
     hideContentOverlay(element, button);
   }
@@ -1168,11 +1129,13 @@ function hideContentOverlay(element, button) {
  * Show the content overlay
  * @author Amrit
  */
-function showContentOverlay(element, button) {
+function showContentOverlay(element, button, center) {
   let height = window.innerHeight;
   element.css('height', '100%');
   rotateChevron(button, 0);
-  map.panBy(0, -height * 0.25);
+  if (center) {
+    map.panBy(0, -height * 0.25);
+  }
 }
 
 /**
