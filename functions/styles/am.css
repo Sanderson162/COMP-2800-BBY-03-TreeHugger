@@ -147,7 +147,7 @@ body {
 
 #title, #profile {
     box-shadow: none;
-    background-color: whitesmoke;
+    background-color: transparent;
     cursor: default;
     border:none;
 }
