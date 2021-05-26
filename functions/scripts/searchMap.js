@@ -54,7 +54,7 @@ function checkUrlParams(params) {
     if (params.id) {
       // This call back simulates a mouse click on the selected treeId from the params.
       _callback = function () {selectedTreeId = null;$("#" + params.id).click();};
-    } 
+    }
     if (params.type == "location") {
       var splitLatLng = params.q.split(" ");
       let latlng = new google.maps.LatLng(splitLatLng[0], splitLatLng[1]);
@@ -78,7 +78,7 @@ function checkUrlParams(params) {
   firebase.auth().onAuthStateChanged(function (user) {
     if (user && params.favourites) {
       searchWithFavourites();
-    } 
+    }
   });
 }
 
@@ -142,7 +142,7 @@ async function searchWithLeaderboard() {
       // console.log(record.recordID);
       getRecordAndDisplay(record.recordID, index + 1, false);
     });
-  } 
+  }
 }
 
 async function getRecordAndDisplay(recordID, order, zoomOnTree) {
@@ -179,8 +179,8 @@ function getUrlParams() {
 }
 /**
  * Sets a url parameter.
- * @param {string} key 
- * @param {string} value 
+ * @param {string} key
+ * @param {string} value
  * @author https://stackoverflow.com/questions/10970078/modifying-a-query-string-without-reloading-the-page, Amrit
  */
 function setUrlParam(key, value) {
@@ -193,7 +193,7 @@ function setUrlParam(key, value) {
 }
 /**
  * Removes a url paramater with key.
- * @param {string} key 
+ * @param {string} key
  * @author Amrit, https://stackoverflow.com/questions/10970078/modifying-a-query-string-without-reloading-the-page
  */
 function removeUrlParam(key) {
@@ -396,9 +396,9 @@ function dateSearchBtnClick() {
 }
 /**
  * Returns a y-m-d string for querys.
- * @param {string} y 
- * @param {string} m 
- * @param {string} d 
+ * @param {string} y
+ * @param {string} m
+ * @param {string} d
  * @returns y-m-d string
  * @author Amrit
  */
@@ -415,7 +415,7 @@ function createDateQuery(y, m, d) {
 }
 /**
  * Adds a zero infront of a number.
- * @param {string} num 
+ * @param {string} num
  * @returns number with a zero added.
  * @author Amrit
  */
@@ -536,7 +536,7 @@ function updateSearchMapBtn() {
 }
 /**
  * Checks if the search type is a height range and convers the q to feet.
- * @param {string} q The query. 
+ * @param {string} q The query.
  * @param {string} searchType The type.
  * @returns query multipled by 10 if a height.
  * @author Amrit
@@ -621,7 +621,7 @@ function loadSearchBarOptions(searchType) {
 }
 /**
  * Driver for loading suggestions in to date search bar inputs.
- * @param {*} searchType 
+ * @param {*} searchType
  * @author Amrit
  */
 function loadDateSearchBarOptions(searchType) {
@@ -696,7 +696,7 @@ function loadDateDataList(dataList, query, searchType) {
 }
 /**
  * Returns a number with first zero removed.
- * @param {string} num 
+ * @param {string} num
  * @returns int Number with first zero removed.
  * @author Amrit
  */
@@ -752,7 +752,7 @@ function resetTagSelection() {
   $("#search-tags>div.tag-selected").removeClass("tag-selected");
 }
 /**
- * Gets entries from opendatabase API. 
+ * Gets entries from opendatabase API.
  * @param {obj} _callback Function to be called back after completion (optional).
  * @see https://www.w3schools.com/jquery/ajax_getjson.asp
  * @author Amrit
@@ -779,7 +779,7 @@ function getContent(_callback) {
   removeUrlParam("leaderboard");
 }
 /**
- * Checks if content list view is empty. 
+ * Checks if content list view is empty.
  * @author Amrit
  */
 function isContent(p) {
@@ -792,7 +792,7 @@ function isContent(p) {
   }
 }
 /**
- * Uses the content div to show a dialogue. 
+ * Uses the content div to show a dialogue.
  * @param {string} m Message to show.
  * @author Amrit
  */
@@ -869,7 +869,7 @@ function showDialogue(m) {
   }
 }
 /**
- * Updates and appends content with entry. 
+ * Updates and appends content with entry.
  * @param {obj} entry
  * @author Amrit
  */
@@ -986,7 +986,7 @@ function loadSearchHistoryItem(lastSearch) {
   }
 }
 /**
- * Zooms on entry, shows overlay and updates various variables. 
+ * Zooms on entry, shows overlay and updates various variables.
  * @param {obj} entry
  * @author Amrit
  */
@@ -1013,7 +1013,7 @@ function zoom(entry) {
   addStreetViewBtnListener(entry);
 }
 /**
- * Sets the position and direction of StreetView to face the treeLocation, if it is visible. 
+ * Sets the position and direction of StreetView to face the treeLocation, if it is visible.
  * @param {obj} entry
  * @author Amrit
  * @see https://stackoverflow.com/questions/32064302/google-street-view-js-calculate-heading-to-face-marker
@@ -1056,7 +1056,7 @@ function colorMarker(id) {
   }
 }
 /**
- * Resets all TreeMarker colors to default. 
+ * Resets all TreeMarker colors to default.
  * @author Amrit
  */
 function resetMarkerColor() {
@@ -1065,7 +1065,7 @@ function resetMarkerColor() {
   }
 }
 /**
- * Shows the TreeOverlay. 
+ * Shows the TreeOverlay.
  * @param {obj} entry
  * @author Amrit
  */
@@ -1082,7 +1082,7 @@ function showTreeOverlay(entry) {
   $("#main").scrollTop(0);
 }
 /**
- * Updates the TreeOverlay view with data from entry. 
+ * Updates the TreeOverlay view with data from entry.
  * @param {obj} entry
  * @author Amrit
  */
@@ -1115,7 +1115,7 @@ function updateTreeOverlayContent(entry) {
 }
 /**
  * Gets age of tree.
- * @param {string} dateString 
+ * @param {string} dateString
  * @returns age of tree.
  * @author https://stackoverflow.com/questions/4060004/calculate-age-given-the-birth-date-in-the-format-yyyymmdd, Amrit
  */
@@ -1126,7 +1126,7 @@ function getAgeOfTree(dateString) {
 }
 /**
  * Helper function for getAgeOfTree, converts date string to a date object.
- * @param {string} dateString 
+ * @param {string} dateString
  * @returns date object
  * @author https://stackoverflow.com/questions/10607935/convert-returned-string-yyyymmdd-to-date/10610485, Amrit
  */
@@ -1155,19 +1155,19 @@ function dateStringtoDate(dateString) {
 function createShareLink(id) {
   let url = window.location.href;
   let urlBase = url.substring(0, url.lastIndexOf('/') + 1);
-  let newUrl = urlBase + "searchMap?id=" + id; 
+  let newUrl = urlBase + "searchMap?id=" + id;
   return newUrl;
 }
-/** 
+/**
  * Copys text to clipboard.
- * @param {string} text 
+ * @param {string} text
  * @author Amrit
  */
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text);
 }
 /**
- * Adds a click listener to the StreeView button in TreeOverlay. 
+ * Adds a click listener to the StreeView button in TreeOverlay.
  * @param {obj} entry
  * @author Amrit
  */
@@ -1178,7 +1178,7 @@ function addStreetViewBtnListener(entry) {
   }));
 }
 /**
- * Hides the TreeOverlay and resets variables. 
+ * Hides the TreeOverlay and resets variables.
  * @author Amrit
  */
 function hideTreeOverlay() {
@@ -1195,7 +1195,7 @@ function hideTreeOverlay() {
   if (zoomVal != currentZoom) {
     center = true;
   }
-  
+
   if (currentZoom > 12) {
     map.setZoom(zoomVal);
     if (center) {
@@ -1205,9 +1205,9 @@ function hideTreeOverlay() {
       console.log("centering map from hidetreeoverlay2");
       centerMap();
     }
-  } 
+  }
 }
-/** 
+/**
  * Toggles the content overlay visible or hidden
  * @author Amrit
  */
@@ -1218,7 +1218,7 @@ function hideTreeOverlay() {
     retractContentOverlay(element, button);
   }
 }
-/** 
+/**
  * Hides the content overlay
  * @author Amrit
  */
@@ -1234,7 +1234,7 @@ function expandContentOverlay(element, button) {
   element.removeClass('normalMainHeight');
   rotateChevron(button, -180);
 }
-/** 
+/**
  * Toggles the content overlay visible or hidden
  * @author Amrit
  */
@@ -1245,7 +1245,7 @@ function toggleContentOverlay(element, button) {
     hideContentOverlay(element, button);
   }
 }
-/** 
+/**
  * Hides the content overlay
  * @author Amrit
  */
@@ -1276,7 +1276,7 @@ function rotateChevron(chevron, amount) {
 }
 /**
  * Initializes Google Maps and sets custom Map and StreetView.
- * @see https://developers.google.com/maps/documentation/ 
+ * @see https://developers.google.com/maps/documentation/
  * @author Amrit
  */
 function initMap() {
@@ -1386,7 +1386,7 @@ function addLocationMarker(location, lbl) {
   locationMarker = marker;
 }
 /**
- * Creates a button that toggles the type of map for map. 
+ * Creates a button that toggles the type of map for map.
  * @returns button.
  * @author Amrit
  */
@@ -1493,11 +1493,11 @@ function stepBackSearchHistory() {
       searchHistory.splice(index, 1);
       search(true, function () {selectedTreeId = null;$("#" + selectedTree).click()});
     }
-    
+
   }
 }
 /**
- * Toggles StreetView for a tree. 
+ * Toggles StreetView for a tree.
  * @author Amrit
  */
 function toggleStreetView(entry) {
@@ -1510,7 +1510,7 @@ function toggleStreetView(entry) {
 }
 /**
  * Centers the map with respect to 50% div overlay.
- * @author Amrit 
+ * @author Amrit
  */
 function centerMapoldTest() {
   let contentHidden = false;
@@ -1531,7 +1531,7 @@ function centerMapoldTest() {
 }
 /**
  * Centers the map with respect to 50% div overlay.
- * @author Amrit 
+ * @author Amrit
  */
  function centerMap() {
   let contentHidden = false;
@@ -1548,9 +1548,9 @@ function centerMapoldTest() {
 }
 /**
  * Adds a tree marker to map given a lnglat.
- * @param {float} longitude 
- * @param {float} latitude 
- * @param {obj} entry 
+ * @param {float} longitude
+ * @param {float} latitude
+ * @param {obj} entry
  * @author Amrit
  */
 function addTreeMarker(longitude, latitude, entry) {
@@ -1587,7 +1587,7 @@ function addTreeMarker(longitude, latitude, entry) {
 }
 /**
  * Returns the distance given two lnglat values.
- * @author https://www.geodatasource.com/developers/javascript 
+ * @author https://www.geodatasource.com/developers/javascript
  */
 function distance(lat1, lon1, lat2, lon2, unit) {
   if ((lat1 == lat2) && (lon1 == lon2)) {
