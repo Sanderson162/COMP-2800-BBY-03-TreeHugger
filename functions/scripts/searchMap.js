@@ -758,6 +758,7 @@ function resetTagSelection() {
  * @author Amrit
  */
 function getContent(_callback) {
+  selectedTreeId = null;
   let url = 'https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&geofilter.distance=' + currentLocation.lat + '%2C' + currentLocation.lng + '%2C1000&rows=' + rows;
   $.getJSON(url, function (data) {
     $("#content").text("");
