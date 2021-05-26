@@ -443,6 +443,7 @@ function search(reset, _callback) {
   $("#content-title").text(qString);
   $(".search-container").hide();
   $(".tree-overlay-container").hide();
+  retractContentOverlay($('#main'), $('#details-arrow-container'));
   $(".content-container").show();
   panorama.setVisible(false);
   $("#loadmore").remove();
@@ -977,6 +978,7 @@ function loadSearchHistoryItem(lastSearch) {
  * @author Amrit
  */
 function zoom(entry) {
+  retractContentOverlay($('#main'), $('#details-arrow-container'));
   setUrlParam("id", entry.recordid);
   resetMarkerColor();
   $('#' + entry.recordid).css("background-color", "whitesmoke");
@@ -1177,6 +1179,7 @@ function addStreetViewBtnListener(entry) {
 function hideTreeOverlay() {
   removeUrlParam("id");
   $(".tree-overlay-container").hide();
+  retractContentOverlay($('#main'), $('#details-arrow-container'));
   $(".content-container").show();
   panorama.setVisible(false);
   resetMarkerColor();
@@ -1193,11 +1196,11 @@ function hideTreeOverlay() {
     if (center) {
       console.log("centering map from hidetreeoverlay");
       centerMap();
+    } else if ($("#outer-content").css('height') == '40px') {
+      console.log("centering map from hidetreeoverlay2");
+      centerMap();
     }
-  } else if ($("#outer-content").css('height') == '40px') {
-    console.log("centering map from hidetreeoverlay2");
-    centerMap();
-  }
+  } 
 }
 
 /** 
@@ -1549,6 +1552,7 @@ function centerMapoldTest() {
   }
   if (!selectedTreeId && !contentHidden) {
     console.log("pan map from centermap", height);
+    console.log("remaining height: ", $("#tree-overlay-container").height())
     map.panBy(0, -height * 0.25);
   }
 }

@@ -588,7 +588,7 @@ input::placeholder {
     display: block;
     position:absolute;
     bottom: 82px;
-    right:0.5em;
+    right:0.25em;
     height:30px;
     display:none;
 }
