@@ -331,6 +331,7 @@ function queueSearch(_callback) {
   clearMarkers();
   clearLocationMarker();
   updateSearchHistorySelectedId();
+  selectedTreeId = null;
   search(true, _callback);
 }
 /**
