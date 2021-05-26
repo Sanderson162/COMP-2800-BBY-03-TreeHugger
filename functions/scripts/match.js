@@ -1,4 +1,7 @@
-//Loads the event listeners for the menu buttons. 
+/**
+ * Loads the event listeners for the menu buttons.
+ * @author Aidan 
+ */ 
 $(document).ready(() => {
     $("#form").hide();
     $("#birth").click(() => {
@@ -25,7 +28,10 @@ function selectCard(target) {
     $(target).addClass("selected")
 }
 
-//loads the form for birth tree
+/**
+ * loads the form for birth tree
+ * @author Aidan
+ */
 function loadBirthForm() {
     $("#result").html("");
     let f = $("#form").html("");
@@ -45,7 +51,10 @@ function loadBirthForm() {
     f.append($("<span id='formmsg'>"));
 }
 
-//loads the form for the anniversary tree
+/** 
+ * loads the form for the anniversary tree
+ * @author Aidan
+ */
 function loadAnniversaryForm() {
     $("#result").html("");
     let f = $("#form").html("");
@@ -67,7 +76,10 @@ function loadAnniversaryForm() {
     f.append($("<span id='formmsg'>"));
 }
 
-//loads the form for event tree
+/**
+ * Loads the event form
+ * @author Aidan
+ */
 function loadEventForm() {
     $("#result").html("");
     let f = $("#form").html("");
@@ -87,7 +99,12 @@ function loadEventForm() {
     f.append($("<span id='formmsg'>"));
 }
 
-//click event for form submission
+/**
+ * click event for form submission
+ * @param {Object} type 
+ * @returns null
+ * @author Aidan
+ */
 function submit(type) {
     //form validation
     if (!validForm()){
@@ -116,7 +133,11 @@ function submit(type) {
     });
 }
 
-//performs form validation
+/**
+ * performs form validation to ensure name and date fields are filled in correctly
+ * @returns boolean
+ * @author Aidan
+ */
 function validForm(){
     if ($("#name").length && !($("#name").val())){
         console.log("invalid name")
@@ -158,8 +179,13 @@ async function alternateTree(q, type){
     $("#result").append($("<div class='card'>)").append(type.fail));
 }
 
-//finds a tree between 1989 and 2022 with the same day and month
-//returns the first tree it finds. 
+/**
+ * inds a tree between 1989 and 2022 with the same day and month
+ * @param {String} date 
+ * @param {Object} type 
+ * @returns Obejct the first tree it finds. 
+ * @author Aidan
+ */
 async function differentYear(date, type){
     let monthDay = date.toString().substring(4);
     let x = [];
@@ -183,15 +209,18 @@ async function differentYear(date, type){
     return false;
 }
 
-//finds the trees in the same month
+/**
+ * finds the trees in the same month
+ * @param {String} date 
+ * @param {Object} type 
+ * @returns boolean
+ */
 async function findClosest(date, type) {
     let month = date.toString().substring(0, 7);
     let day = date.toString().substring(8);
     let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine.date_planted=" + month;
-    console.log(query);
     let x;
     await $.getJSON(query, (data) => {
-        console.log(data.records.length);
         removeNoGeom(data.records);
         if (data.records.length > 0) {
             let x = closestTree(data, month, day);
@@ -205,16 +234,21 @@ async function findClosest(date, type) {
     return x;
 }
 
-//given trees in the same month, finds the closest. 
-//if there are multiple closest trees, 
-//returns a random tree among the closest
+
+
+/**
+ * given trees in the same month, finds the closest. 
+ * @param {*} data 
+ * @param {*} month 
+ * @param {*} day 
+ * @returns returns a tree
+ * @author Aidan
+ */
 function closestTree(data, month, day) {
     let d = parseInt(day);
     let x = [];
     for (let i = 1; i <= 31; i++) {
-        console.log("" + (d-i)+(d+i));
         data.records.forEach((entry) => {
-            console.log(entry.fields.date_planted.toString());
             if ((entry.fields.date_planted.toString() == month + "-" + (d - i)) || (entry.fields.date_planted.toString() == month + "-" + (d + i))) {
                 x.push(entry);
             } else if ((entry.fields.date_planted.toString() == month + "-0" + (d - i)) || (entry.fields.date_planted.toString() == month + "-0" + (d + i))) {
@@ -229,7 +263,13 @@ function closestTree(data, month, day) {
     console.log("error");
 }
 
-//displays the tree
+/**
+ * displays the tree
+ * @param {Object} entry 
+ * @param {String} message 
+ * @param {Object} saveBtn 
+ * @returns a dom element
+ */
 function displayTree(entry,message,saveBtn) {
     let elem = $("<div></div>").addClass("card");
     elem.append($("<span style='color:darkgray;text-align:left;font-size:80%;'></span>").html(message + "<br><br>"));
@@ -244,7 +284,12 @@ function displayTree(entry,message,saveBtn) {
     return elem;
 }
 
-//returns a button with a link to the tree
+/**
+ * returns a button with a link to the tree
+ * @param {object} tree 
+ * @returns a dom element
+ * @author Aidan
+ */
 function viewButton(tree){
     let btn = $("<button id='viewbtn'>View</button>");
     btn.click(() =>{
@@ -253,8 +298,14 @@ function viewButton(tree){
     return btn
 }
 
-//returns a save button
-//if the user is not logged in it displays a warning
+/**
+ * Generates the save button
+ * if the user is not logged in it displays a warning
+ * @param {*} tree 
+ * @param {*} message 
+ * @param {*} emoji 
+ * @returns returns a dom element
+ */
 function saveButton(tree, message, emoji) {
     let btn = $("<button id='save'>Save</button>");
     btn.on("click", (elem) => {
@@ -273,6 +324,10 @@ function saveButton(tree, message, emoji) {
     return btn;
 }
 
+/**
+ * In-place removal of objects in the array without geometry data.
+ * @param {Array} a 
+ */
 function removeNoGeom(a) {
     if (a.length>0){
         for(i=0;i<a.length;i++){
