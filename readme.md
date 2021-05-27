@@ -6,8 +6,16 @@ Find your tree, Vancouver!
 * [Technologies](#technologies)
 * [Contents](#content)
 
+
+## Team Members
+* [Stirling Anderson](https://github.com/Sanderson162)
+* [Aidan McReynolds](https://github.com/AidanMcReynolds)
+* [Amrit Manhas](https://github.com/apsm100)
+* [Steven Reid](https://github.com/StevenR88)
+
 ## General Info
 This browser based web application shows you the details of the trees nearest you, in Vancouver; with social features! 
+
 ## Technologies
 Technologies used for this project:
 * HTML
@@ -37,12 +45,6 @@ Technologies used for this project:
 * (optional) Visual Studio Code
 * Selenium extention for unit testing
 
-## Team Members
-* [Stirling Anderson](https://github.com/Sanderson162)
-* [Aidan McReynolds](https://github.com/AidanMcReynolds)
-* [Amrit Manhas](https://github.com/apsm100)
-* [Steven Reid](https://github.com/StevenR88)
-
 ## Content
 Content of the project folder:
 ```
@@ -68,9 +70,11 @@ It has the following subfolders:
 ```
 
 ## Setup Instructions
+Setting up this project will allow you to preview the app locally, all API keys are included in the repository
 1. Clone repository into working directory of your choosing
 2. install node ``` https://nodejs.org/en/download/```
 3. install dependancies in /functions by running ```cd /functions & npm install & cd ..```
 4. install firebase cli using ```npm install -g firebase-tools```
 5. Service account key needed for accesing Authentication and database is included in repository
 6. test app functions by running ```firebase serve```
+
