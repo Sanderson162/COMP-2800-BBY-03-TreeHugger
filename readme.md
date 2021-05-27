@@ -28,7 +28,7 @@ Technologies used for this project:
   * Express
   * ejs
 * Firebase
-  * Firestore
+  * Firebase Firestore
   * Firebase Auth
   * Firebase Hosting
   * Firebase Functions
