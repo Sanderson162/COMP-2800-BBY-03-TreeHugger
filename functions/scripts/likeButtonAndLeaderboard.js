@@ -1,3 +1,5 @@
+'use strict'
+
 async function addLikeButton(parentElement, recordID, liked, count) {
   let heartIcon = "<i class='fas fa-heart fa-lg' style='color: red;'></i>";
   let heartIconEmpty = "<i class='far fa-heart fa-lg' style='color: red;'></i>";

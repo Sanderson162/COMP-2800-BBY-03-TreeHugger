@@ -1,3 +1,5 @@
+'use strict'
+
 /**
  * displays history and loads event listeners for toggle buttons
  * @author Aidan

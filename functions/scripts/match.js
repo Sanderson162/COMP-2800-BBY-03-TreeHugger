@@ -1,3 +1,5 @@
+'use strict'
+
 /**
  * Loads the event listeners for the menu buttons.
  * @author Aidan
