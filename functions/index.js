@@ -80,7 +80,7 @@ app.post('/profile', urlencodedParser, (req, res) => {
     .verifyIdToken(idToken)
     .then((decodedToken) => {
       const uid = decodedToken.uid;
-      db.collection("Users").doc(uid).get().then(function (doc) { //if successful
+      db.collection("Users").doc(uid).get().then(function (doc) {
         res.send({
           status: "success",
           uid: uid,
@@ -134,7 +134,6 @@ app.post('/ajax-add-user', urlencodedParser, (req, res) => {
  * @author Stirling
  */
 app.post('/addTreeFav', urlencodedParser, (req, res) => {
-  // res.setHeader('Content-Type', 'application/json');
   const idToken = req.body.idToken.toString();
   const recordID = req.body.recordID;
   admin
@@ -178,7 +177,6 @@ app.post('/addTreeFav', urlencodedParser, (req, res) => {
  * @author Stirling
  */
 app.post('/removeTreeFav', urlencodedParser, (req, res) => {
-  // res.setHeader('Content-Type', 'application/json');
   const idToken = req.body.idToken.toString();
   const recordID = req.body.recordID;
 
@@ -343,7 +341,6 @@ app.post("/ajax-get-history-user", urlencodedParser, (req, res) => {
  * @author Stirling
  */
 app.post('/getFavByUser', urlencodedParser, (req, res) => {
-  // res.setHeader('Content-Type', 'application/json');
   const idToken = req.body.idToken.toString();
   admin
     .auth()
@@ -374,8 +371,6 @@ app.post('/getFavByUser', urlencodedParser, (req, res) => {
             status: "error"
           });
         });
-
-      //End idtoken verified
     }).catch((error) => {
       res.status(401).send("UNAUTHORIZED REQUEST!");
     });
@@ -387,7 +382,6 @@ app.post('/getFavByUser', urlencodedParser, (req, res) => {
  * @author Stirling
  */
 app.post('/getFavByTree', urlencodedParser, (req, res) => {
-  // res.setHeader('Content-Type', 'application/json');
   const recordID = req.body.recordID;
   db.collection("Favourite")
     .where("recordID", "==", recordID)
@@ -559,13 +553,7 @@ app.post('/update-email', urlencodedParser, (req, res) => {
     });
 });
 
-// only used for node server, not firebase functions
-// app.listen(PORT, () => {
-//     console.log(`Listening on http://localhost:${PORT}`);
-// });
-
 function msg404(res) {
-  //res.render('home.html');
   let cryComfy = "https://puu.sh/HGpjx/f048c14998.png";
   let peepoJuice = "https://firebasestorage.googleapis.com/v0/b/tree-hugger-c60ff.appspot.com/o/peepoJuice.gif?alt=media&token=38646805-e677-4b4c-87f6-576603afa182";
   res.status(404).send("<div style='text-align: center;' ><img src='" + peepoJuice + "'><br>404 Page not found <a href='/'>Go home?</a></div>");
