@@ -8,7 +8,7 @@ Find your tree, Vancouver!
 * [Technologies](#technologies)
 * [Dependencies](#Dependencies)
 * [Contents](#content)
-* [IDE\'s](#IDE's)
+* [IDE](#IDE)
 * [Setup](#Setup-Instructions)
 
 ## Team Members
@@ -48,7 +48,7 @@ Technologies used for this project:
 * firebase-functions v3.14.0
 * firebase-functions-test v0.2.0
 
-## IDE's
+## IDE
 * (optional) Visual Studio Code
 * Selenium extention for unit testing
 
