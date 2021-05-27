@@ -177,16 +177,16 @@ async function alternateTree(q, type) {
 }
 
 /**
- * inds a tree between 1989 and 2022 with the same day and month
+ * Finds a tree between 1989 and 2022 with the same day and month
  * @param {String} date
  * @param {Object} type
- * @returns Obejct the first tree it finds.
+ * @returns Object the first tree it finds.
  * @author Aidan
  */
 async function differentYear(date, type) {
     let monthDay = date.toString().substring(4);
     let x = [];
-    for (year = 1989; year <= 2022; year++) {
+    for (let year = 1989; year <= 2022; year++) {
         let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine.date_planted="
         await $.getJSON(query + year + monthDay, (data) => {
             removeNoGeom(data.records);
@@ -324,7 +324,7 @@ function saveButton(tree, message, emoji) {
  */
 function removeNoGeom(a) {
     if (a.length > 0) {
-        for (i = 0; i < a.length; i++) {
+        for (let i = 0; i < a.length; i++) {
             if (a[i].fields.geom == undefined) {
                 a.splice(i, 1);
                 i = i - 1;
