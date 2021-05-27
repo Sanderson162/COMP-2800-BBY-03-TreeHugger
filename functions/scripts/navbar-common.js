@@ -10,7 +10,7 @@ function addNavbarCommon() {
 	let indexLink = "home";
 	let profileLink = "testingpanel";
 	let searchLink = "searchMap";
-	let treeFindLink = "treefind";
+	let treeFindLink = "locationMap";
   let matchlink = "match"
 
 	if (!directory) {

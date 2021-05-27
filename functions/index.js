@@ -42,8 +42,8 @@ app.get('/timestamp', function (req, res) {
   res.send("Timestamp from the server: " + Date.now());
 });
 
-app.get("/treefind", function (req, res) {
-  res.render("treefind.html");
+app.get("/locationMap", function (req, res) {
+  res.render("locationMap.html");
 });
 
 app.get("/searchMap", function (req, res) {

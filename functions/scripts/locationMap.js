@@ -1119,6 +1119,7 @@ function toggleContentOverlay(element, button) {
 function hideContentOverlay(element, button) {
   let height = window.innerHeight;
   element.css('height', '40px');
+  element.css('overflow', 'hidden');
   rotateChevron(button, -90);
   map.panBy(0, height * 0.25);
 }
@@ -1130,6 +1131,7 @@ function hideContentOverlay(element, button) {
 function showContentOverlay(element, button, center) {
   let height = window.innerHeight;
   element.css('height', '100%');
+  element.css('overflow', 'visible');
   rotateChevron(button, 0);
   if (center) {
     map.panBy(0, -height * 0.25);
