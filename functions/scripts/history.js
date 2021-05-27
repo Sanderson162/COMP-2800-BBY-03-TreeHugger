@@ -38,7 +38,6 @@ function showHistory() {
                     spliceHistory(data);
                 },
                 error: (jqXHR, textStatus, errorThrown) => {
-                    console.log("Error:" + textStatus);
                     return null;
                 }
             });
@@ -46,7 +45,6 @@ function showHistory() {
     } else {
         //user is nott logged in
         // should not be here.
-        console.log("Not signed in");
         $("#results").html("");
     }
 }
@@ -69,15 +67,12 @@ function showComments() {
                     spliceComments(data);
                 },
                 error: (jqXHR, textStatus, errorThrown) => {
-                    console.log("Error:" + textStatus);
                     return null;
                 }
             });
         });
     } else {
         //user should not be here
-        console.log("Not signed in");
-
     }
 }
 
@@ -146,10 +141,8 @@ function spliceHistory(data){
  * @returns a dom element
  */
 function displayHistory(comment){
-    //console.log(comment);
     let elem = $("<div class='card history'>");
     let date = comment.date;
-    console.log(JSON.stringify(date));
     elem.append($("<div class='message'>").html(date));
     elem.click(() =>{
         window.location = "./searchMap?id=" + comment.tree;

@@ -15,13 +15,8 @@ function addComment(treeID,comment,emoji){
                 type: "POST",
                 data: {tree: treeID, text: comment, icon: emoji, idToken: idToken},
                 success: ()=>{},
-                error: (jqXHR,textStatus,errorThrown )=>{
-                    console.log("Error:"+textStatus);
-                }
+                error: (jqXHR,textStatus,errorThrown )=>{}
             });
         });
-    } else {
-        console.log("Not signed in");
-    }
-    
+    }    
 }

@@ -22,7 +22,11 @@ $(document).ready(() => {
     $("#birth").click();
 });
 
-//highlights a selected card, unhighlights the others
+/**
+ * highlights a selected card, unhighlights the others
+ * @param {elem} target 
+ * @author Aidan
+ */
 function selectCard(target) {
     $(".selected").removeClass("selected")
     $(target).addClass("selected")
@@ -115,12 +119,9 @@ function submit(type) {
 
     //query by date (find exact match)
     let q = $("#date").val();
-    console.log(q.toString());
     let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine.date_planted=" + q.toString();
     $.getJSON(query, (data) => {
-        console.log(data);
         removeNoGeom(data.records);
-        console.log(data);
         if (data.records.length > 0) {
             let x = data.records[Math.floor(Math.random() * data.records.length)]
             $("#result").html("")
@@ -140,22 +141,17 @@ function submit(type) {
  */
 function validForm(){
     if ($("#name").length && !($("#name").val())){
-        console.log("invalid name")
         return false;
     }
     if ($("#name1").length && !($("#name1").val())){
-        console.log("invalid name1")
         return false;
     }
     if ($("#name2").length && !($("#name2").val())){
-        console.log("invalid name2")
         return false;
     }
     //checks for ####-##-##
     const regex = /^\d{4}-\d{2}-\d{2}$/;
     if (!($("#date").val().match(regex))){
-        console.log($("#date").val())
-        console.log("invalid date")
         return false;
     }
     return true;
@@ -165,7 +161,6 @@ function validForm(){
 async function alternateTree(q, type){
     //find one in the same month
     let x = await findClosest(q, type);
-    console.log(x);
     if (x) {
         return;
     }
@@ -256,11 +251,9 @@ function closestTree(data, month, day) {
             }
         });
         if (x.length > 0) {
-            console.log(x);
             return x[Math.floor(Math.random() * x.length)];
         }
     }
-    console.log("error");
 }
 
 /**
@@ -314,7 +307,6 @@ function saveButton(tree, message, emoji) {
             let elem = $("#save");
             elem.attr("disabled", true);
             elem.html("Saved");
-            console.log(tree);
             addComment(tree.recordid, message, emoji);
         } else {
             alert("Must be logged in to save")
@@ -331,9 +323,6 @@ function saveButton(tree, message, emoji) {
 function removeNoGeom(a) {
     if (a.length>0){
         for(i=0;i<a.length;i++){
-            console.log(a);
-            console.log(i);
-            console.log(a[i])
             if (a[i].fields.geom==undefined){
                 a.splice(i,1);
                 i = i - 1;
