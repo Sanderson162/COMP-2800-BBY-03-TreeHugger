@@ -1,4 +1,7 @@
-//displays history and loads event listeners for toggle buttons
+/**
+ * displays history and loads event listeners for toggle buttons
+ * @author Aidan
+ */
 window.addEventListener("DOMContentLoaded",() => {
     firebase.auth().onAuthStateChanged(() => {
         showComments();
@@ -17,7 +20,10 @@ window.addEventListener("DOMContentLoaded",() => {
     });
 });
 
-//displays user history
+/**
+ * displays user history
+ * @author Aidan
+ */
 function showHistory() {
     $("#results").html("");
     var user = firebase.auth().currentUser;
@@ -45,7 +51,10 @@ function showHistory() {
     }
 }
 
-//shows the saved trees
+/**
+ * shows the saved trees
+ * @author Aidan
+ */
 function showComments() {
     $("#results").html("");
     var user = firebase.auth().currentUser;
@@ -72,8 +81,12 @@ function showComments() {
     }
 }
 
-//displays all results if there are results
-//otherwise displays "no results found"
+/**
+ * displays all results if there are results
+ * otherwise displays "no results found"
+ * @param {Array} data 
+ * @author Aidan
+ */
 function spliceComments(data){
     if (data.length == 0){
         $("#results").html("<i style='display:block;text-align:center;'>No results found</i>");
@@ -85,7 +98,11 @@ function spliceComments(data){
     }
 }
 
-//displays a comment
+/**
+ * Displays a comment
+ * @param {Object} comment 
+ * @returns a dom element
+ */
 function displayComment(comment){
     let elem = $("<div class='card'>");
     elem.append($("<div class='emoji'>").html(comment.Icon))
@@ -106,8 +123,12 @@ function displayComment(comment){
     return elem;
 }
 
-//displays all results if there are results for history
-//otherwise displays "no results found"
+/**
+ * displays all results if there are results for history
+ * otherwise displays "no results found"
+ * @param {Object} data 
+ * @author Aidan
+ */
 function spliceHistory(data){
     if (data.length == 0){
         $("#results").html("<i>No results found</i>");
@@ -119,7 +140,11 @@ function spliceHistory(data){
     }
 }
 
-//displays one elemement of history
+/**
+ * displays one elemement of history
+ * @param {Object} comment 
+ * @returns a dom element
+ */
 function displayHistory(comment){
     //console.log(comment);
     let elem = $("<div class='card history'>");
@@ -142,7 +167,11 @@ function displayHistory(comment){
     return elem;
 }
 
-// Url parsing function. Source: https://html-online.com/articles/get-url-parameters-javascript/
+/**
+ * Url parsing function.
+ * @returns object
+ * @author https://html-online.com/articles/get-url-parameters-javascript/
+ */ 
 function getUrlVars() {
     var vars = {};
     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {

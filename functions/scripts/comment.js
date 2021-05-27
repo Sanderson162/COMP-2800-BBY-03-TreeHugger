@@ -1,3 +1,10 @@
+/**
+ * Calls the server to add a comment (saved tree)
+ * @param {String} treeID 
+ * @param {String} comment 
+ * @param {String} emoji 
+ * @author Aidan
+ */
 function addComment(treeID,comment,emoji){
     var user = firebase.auth().currentUser;
     if (user) {

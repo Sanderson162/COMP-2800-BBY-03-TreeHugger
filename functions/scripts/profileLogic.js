@@ -1,4 +1,10 @@
+/**
+ * Loads click events for changing username and email when page loads.
+ * @author Stirling 
+ * @author Aidan
+ */
 window.addEventListener("DOMContentLoaded", () => {
+  //username change
   $("#userNameArea").on('click', 'span', function () {
     console.log("clicked on username");
     let td = $(this).parent();
@@ -21,6 +27,7 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+  //email change function
   $("#emailArea").on('click', 'span', function () {
     console.log("clicked on email");
     let td = $(this).parent();
@@ -43,10 +50,6 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
-
-  $("#viewsaved").on("click",()=>{
-    window.location = "./profile?p=saved"
-  })
   
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
@@ -58,8 +61,10 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-
-
+/**
+ * Loads user info into page
+ * @author Stirling
+ */
 function getUserInfo() {
   var user = firebase.auth().currentUser;
   if (user) {
@@ -97,7 +102,11 @@ function getUserInfo() {
   }
 }
 
-
+/**
+ * Helper funtion to change the username
+ * @param {string} newUsername 
+ * @author Stirling
+ */
 function updateUsername(newUsername) {
   var user = firebase.auth().currentUser;
   if (user) {
@@ -128,7 +137,11 @@ function updateUsername(newUsername) {
   }
 }
 
-
+/**
+ * Helper funtion to change email. 
+ * @param {String} newEmail 
+ * @author Aidan
+ */
 function updateEmail(newEmail) {
   var user = firebase.auth().currentUser;
   if (user) {
