@@ -1,15 +1,44 @@
+"use strict";
+/**
+ * Listens if the user login/logout to gray out or fill in the button
+ * @author Stirling
+ */
+$(() => {
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      refreshLikeButtons();
+    } else {
+      refreshLikeButtons();
+    }
+  });
+});
+
+/**
+ * appends a like button to an element, if either count or liked are null, function will lookup
+ * @param {string} parentElement element for heart to be appended to
+ * @param {string} recordID  recordID of the tree
+ * @param {boolean} liked  Whether the user liked the tree
+ * @param {number} count  The type of query (species, etc)
+ * @author Stirling
+ */
 async function addLikeButton(parentElement, recordID, liked, count) {
-  let heartIcon = "<i class='fas fa-heart fa-2x' style='color: red;'></i>";
-  let heartIconEmpty = "<i class='far fa-heart fa-2x' style='color: red;'></i>";
-  let heartIconGray = "<i class='far fa-heart fa-2x' style='color: gray;'></i>";
+  let heartIcon = "<i class='fas fa-heart fa-lg' style='color: red;'></i>";
+  let heartIconEmpty = "<i class='far fa-heart fa-lg' style='color: red;'></i>";
+  let heartIconGray = "<i class='far fa-heart fa-lg' style='color: gray;'></i>";
+  let loadingIcon = "<i class='fas fa-spinner fa-sm fa-pulse'></i>";
 
   let likeButton = $("<button></button>").addClass("likeButton");
   let likeCount = $("<span class='likeCount' style='margin-left: 10px;'></span>");
   let likeButtonID = recordID + "_likeButton";
   likeButton.attr("id", likeButtonID);
 
-  likeButton.css({"display": "flex", "flex-direction": "row", "justify-content": "center", "align-items": "center"});
-  parentElement.html("<button style='display: flex; flex-direction: row; justify-content: center; align-items: center'><i class='far fa-heart fa-2x' style='color: gray;'></i><span class='likeCount' style='margin-left: 10px;'><i class='fas fa-spinner fa-sm fa-pulse'></i></span></button>");
+  likeButton.css({
+    "display": "flex",
+    "flex-direction": "row",
+    "justify-content": "center",
+    "align-items": "center"
+  });
+  parentElement.html("<button style='display: flex; flex-direction: row; justify-content: center; align-items: center'>" + heartIconGray + "<span class='likeCount' style='margin-left: 10px;'>" + loadingIcon + "</span></button>");
 
   if (count == null) {
     count = await getFavCountByTree(recordID);
@@ -36,8 +65,6 @@ async function addLikeButton(parentElement, recordID, liked, count) {
   parentElement.append(likeButton);
 
   likeButton.on('click', function () {
-    let heartIcon = "<i class='fas fa-heart fa-2x' style='color: red;'></i>";
-    let heartIconEmpty = "<i class='far fa-heart fa-2x' style='color: red;'></i>";
     let recordID = $(this).attr('id').split("_")[0];
     var user = firebase.auth().currentUser;
     if (user) {
@@ -56,30 +83,26 @@ async function addLikeButton(parentElement, recordID, liked, count) {
         $(this).attr("data-count", count);
         addFavToTree(recordID);
       }
-    } else {
-      console.log("cant like if youre not signed in");
-    }
+    } else {}
   });
 }
 
-$(() => {
-  firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-      refreshLikeButtons();
-    } else {
-      refreshLikeButtons();
-    }
-  });
-});
-
-
-function refreshLikeButtons(){
-  $('.likeButton').each(function(index, element) {
+/**
+ * Refreshing the like button by removing it and adding it again.
+ * @author Stirling
+ */
+function refreshLikeButtons() {
+  $('.likeButton').each(function (index, element) {
     let recordID = $(this).attr('id').split("_")[0];
     addLikeButton($(this).parent(), recordID, null, null);
   });
 }
 
+/**
+ * Gets if a logged in user liked a tree.
+ * @param {string} recordID  recordID of the tree
+ * @author Amrit
+ */
 function getIfUserLiked(recordID) {
   return new Promise((resolve) => {
     var user = firebase.auth().currentUser;
@@ -112,7 +135,11 @@ function getIfUserLiked(recordID) {
   });
 }
 
-
+/**
+ * add a tree to the users favourites.
+ * @param {string} recordID  recordID of the tree
+ * @author Stirling
+ */
 function addFavToTree(recordID) {
   var user = firebase.auth().currentUser;
   if (user) {
@@ -125,19 +152,20 @@ function addFavToTree(recordID) {
           recordID: recordID,
           idToken: idToken
         },
-        success: function (result, status, xhr) {
-          console.log("recieved: " + status);
-        },
+        success: function (result, status, xhr) {},
         error: function (jqXHR, textStatus, errorThrown) {
           console.log("ERROR:", jqXHR, textStatus, errorThrown);
         }
       });
     });
-  } else {
-    console.log("Not signed in");
-  }
+  } else {}
 }
 
+/**
+ * remove a tree to the users favourites.
+ * @param {string} recordID  recordID of the tree
+ * @author Stirling
+ */
 function removeFavFromTree(recordID) {
   var user = firebase.auth().currentUser;
   if (user) {
@@ -150,20 +178,21 @@ function removeFavFromTree(recordID) {
           recordID: recordID,
           idToken: idToken
         },
-        success: function (result, status, xhr) {
-          console.log("recieved: " + status);
-        },
+        success: function (result, status, xhr) {},
         error: function (jqXHR, textStatus, errorThrown) {
           console.log("ERROR:", jqXHR, textStatus, errorThrown);
         }
       });
     });
-  } else {
-    console.log("Not signed in");
-  }
+  } else {}
 
 }
 
+/**
+ * get fav count by recordID.
+ * @param {string} recordID  recordID of the tree
+ * @author Stirling
+ */
 function getFavCountByTree(recordID) {
   return new Promise((resolve) => {
     $.ajax({
@@ -174,8 +203,6 @@ function getFavCountByTree(recordID) {
         recordID: recordID
       },
       success: function (result, status, xhr) {
-        console.log("recieved: " + status);
-        console.log(result);
         resolve(result.count);
       },
       error: function (jqXHR, textStatus, errorThrown) {
@@ -186,6 +213,10 @@ function getFavCountByTree(recordID) {
   });
 }
 
+/**
+ * get list of records user liked.
+ * @author Stirling
+ */
 function getFavByUser() {
   return new Promise((resolve) => {
     var user = firebase.auth().currentUser;
@@ -199,9 +230,6 @@ function getFavByUser() {
             idToken: idToken
           },
           success: function (result, status, xhr) {
-            console.log("recieved: " + status);
-            console.log(result);
-            console.log(result.data);
             if (status == 'success') {
               resolve(result.data);
             } else {
@@ -215,12 +243,15 @@ function getFavByUser() {
         });
       });
     } else {
-      console.log("Not signed in");
       resolve(null);
     }
   });
 }
 
+/**
+ * get leaderboard of liked records.
+ * @author Stirling
+ */
 function getFavCountLeaderboard() {
   return new Promise((resolve) => {
     $.ajax({
@@ -228,9 +259,6 @@ function getFavCountLeaderboard() {
       dataType: "json",
       type: "POST",
       success: function (result, status, xhr) {
-        console.log("recieved: " + status);
-        console.log(result);
-        console.log(result.data);
         if (status == 'success') {
           resolve(result.data);
         } else {

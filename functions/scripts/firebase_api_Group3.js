@@ -1,3 +1,5 @@
+'use strict'
+
 //---------------------------------------------------------------------
 // Your web app's Firebase configuration;
 // Specifies which firebase project your application is connected with.

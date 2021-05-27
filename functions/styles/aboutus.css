@@ -4,8 +4,6 @@
     font-family: 'Roboto', sans-serif;
 }
 
-
-
 #container {
     background-color: white;
     width: 90%;
@@ -44,7 +42,7 @@ h1 {
 }
 
 #description {
-    width:100%;
+    width: 100%;
     min-height: 100px;
     grid-column: 1 / span 2;
     grid-row: 1 / span 1;

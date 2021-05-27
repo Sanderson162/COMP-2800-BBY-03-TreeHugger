@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 * {
     font-family: 'Roboto', sans-serif;
 }
@@ -9,7 +10,7 @@
 }
 
 body {
-    background-color:#F8F8F8;
+    background-color: #F8F8F8;
 
 }
 
@@ -19,97 +20,90 @@ body {
 
 h1 {
     text-align: center;
-    margin-bottom:1em;
+    margin-bottom: 1em;
 }
 
 .post {
-    background-color:white;
+    background-color: white;
     padding: 1em;
     border-bottom: 1px solid rgb(236, 236, 236);
 }
 
-.post:last-of-type{
-    border:none;
+.post:last-of-type {
+    border: none;
 }
 
 #content {
     border-radius: 4px;
-    background-color:white;
+    background-color: white;
     margin: auto;
     height: 92%;
     max-width: 475px;
-    max-height:500px;
-    overflow-y:auto;
+    max-height: 500px;
+    overflow-y: auto;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
     display: flex;
     flex-direction: column;
 }
 
 #search {
     border-radius: 4px;
-    background-color:white;
+    background-color: white;
     margin: auto;
     height: 92%;
     max-width: 475px;
-    max-height:500px;
-    overflow-y:auto;
+    max-height: 500px;
+    overflow-y: auto;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
 }
 
 #outer-content {
     border-radius: 4px;
-    background-color:rgb(247, 247, 247);
+    background-color: rgb(247, 247, 247);
     margin: auto;
-    /* margin-top:1em; */
     height: 100%;
     max-width: 475px;
-    max-height:500px;
-    overflow-y:hidden;
+    max-height: 500px;
+    overflow-y: visible;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
 }
 
 #outer-search {
     border-radius: 4px;
-    background-color:rgb(247, 247, 247);
+    background-color: rgb(247, 247, 247);
     margin: auto;
-    /* margin-top:1em; */
-    /* height: 100%; */
     max-width: 475px;
-    max-height:500px;
-    overflow-y:hidden;
+    max-height: 500px;
+    overflow-y: hidden;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
-    height:175px;
+    height: 175px;
 }
 
 #outer-tree-content {
     border-radius: 4px;
-    background-color:rgb(247, 247, 247);
+    background-color: rgb(247, 247, 247);
     margin: auto;
-    /* margin-top:1em; */
-    height: 81%;
+    /* height: 81%; */
     max-width: 475px;
-    max-height:320px;
-    min-height:320px;
-    overflow-y:hidden;
+    /*max-height:320px;*/
+    /*min-height:320px;*/
+    overflow-y: hidden;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
 }
 
-#trees-near-header, #trees-content-header, #tree-name {
-    color:gray;
-    font-size:110%;
-    margin:10px;
-    height:20px;
-    display:block;
+#trees-near-header,
+#trees-content-header,
+#tree-name {
+    color: gray;
+    font-size: 110%;
+    padding: 10px;
+    height: 20px;
+    display: block;
 
     white-space: nowrap;
     overflow: hidden;
@@ -118,15 +112,14 @@ h1 {
 
 #tree-content {
     border-radius: 4px;
-    background-color:white;
+    background-color: white;
     margin: auto;
-    height: 100%;
+    /* height: 100%; */
     max-width: 475px;
-    max-height:300px;
-    overflow-y:auto;
+    /* max-height: 60vh; */
+    overflow-y: auto;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     pointer-events: all;
-    opacity:98%;
 }
 
 .title {
@@ -138,16 +131,21 @@ h1 {
     text-align: right;
     font-style: italic;
     font-weight: 100;
-    margin-top:1em;
-    color:lightgray;
+    margin-top: 1em;
+    color: #8a8a8d
 }
 
 .distance {
     font-style: italic;
+    color: #8a8a8d
 }
 
 *::-webkit-scrollbar {
     display: none;
+}
+
+* {
+    scrollbar-width: none;
 }
 
 .map-container {
@@ -161,19 +159,19 @@ h1 {
 }
 
 .content-container {
-    display:none;
+    display: none;
     user-select: none;
     position: absolute;
     z-index: 0;
     left: 0;
     top: 0px;
-    width:100%;
+    width: 100%;
     height: 50%;
     overflow: visible;
     background-image: linear-gradient(to top, rgba(255, 255, 255, 0), rgb(243, 243, 243));
     pointer-events: none;
     padding: 1em;
-    box-sizing:border-box;
+    box-sizing: border-box;
 }
 
 .tree-overlay-container {
@@ -184,12 +182,12 @@ h1 {
     left: 0;
     top: 0px;
     width: 100%;
-    height: 50%;
+    /*height: 50%;*/
     overflow: visible;
     background-image: linear-gradient(to top, rgba(255, 255, 255, 0), rgb(243, 243, 243));
     pointer-events: none;
     padding: 1em;
-    box-sizing:border-box;
+    box-sizing: border-box;
 }
 
 .search-container {
@@ -204,7 +202,7 @@ h1 {
     background-image: linear-gradient(to top, rgba(255, 255, 255, 0), rgb(243, 243, 243));
     pointer-events: none;
     padding: 1em;
-    box-sizing:border-box;
+    box-sizing: border-box;
 }
 
 button {
@@ -213,44 +211,44 @@ button {
     padding-right: 1em;
     padding-left: 1em;
     padding-top: 0.75em;
-    padding-bottom:0.75em;
-    height:50px;
+    padding-bottom: 0.75em;
+    height: 50px;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.1);
-    border-radius:4px;
+    border-radius: 4px;
 }
 
 #main {
     overflow-y: scroll;
-    padding-right:1em;
+    padding-right: 1em;
     padding-left: 1em;
-    max-height:100%;
-    height:198px;
+    max-height: 60vh;
+    /* height:198px; */
 }
 
 button:hover {
-    background:rgb(236, 236, 236);
+    background: rgb(236, 236, 236);
 }
 
 #button-container {
     position: sticky;
-    bottom:0;
-    padding:1em;
-    background-color:rgb(247, 247, 247);
-    display:block;
-    color: rgb(25,25,25);
-    height:50px;
-    box-shadow:         inset 0 8px 6px -6px rgba(0, 0, 0, 0.1);
+    bottom: 0;
+    padding: 1em;
+    background-color: rgb(247, 247, 247);
+    display: block;
+    color: rgb(25, 25, 25);
+    height: 50px;
+    box-shadow: inset 0 8px 6px -6px rgba(0, 0, 0, 0.1);
 }
 
 #search-button-container {
     position: sticky;
-    bottom:0;
-    padding:1em;
-    background-color:rgb(247, 247, 247);
-    display:block;
-    color: rgb(25,25,25);
-    height:50px;
-    box-shadow:         inset 0 8px 6px -6px rgba(0, 0, 0, 0.1);
+    bottom: 0;
+    padding: 1em;
+    background-color: rgb(247, 247, 247);
+    display: block;
+    color: rgb(25, 25, 25);
+    height: 50px;
+    box-shadow: inset 0 8px 6px -6px rgba(0, 0, 0, 0.1);
 }
 
 #distance {
@@ -260,8 +258,8 @@ button:hover {
 #updated {
     font-style: italic;
     font-weight: 100;
-    margin-top:1em;
-    color:lightgray;
+    margin-top: 1em;
+    color: lightgray;
 }
 
 #body {
@@ -270,7 +268,7 @@ button:hover {
 
 .dialogue {
     font-size: 125%;
-    height:85%;
+    height: 85%;
 }
 
 .error {
@@ -283,39 +281,53 @@ button:hover {
     position: absolute;
     left: 0;
     right: 1px;
-    top:3px;
-    bottom:0px;
+    top: 3px;
+    bottom: 0px;
     margin: auto
 }
 
 #hide-content-btn {
-    height:17px;
-    position:relative;
-    top:2px;
-    right:2px;
+    height: 17px;
+    position: relative;
+    top: 2px;
+    right: 2px;
+}
+
+#hide-content-btn-tree {
+    height: 17px;
+    position: relative;
+    top: 2px;
+    right: 2px;
 }
 
 #hide-search-btn {
-    height:17px;
-    position:relative;
-    top:2px;
-    right:2px;
+    height: 17px;
+    position: relative;
+    top: 2px;
+    right: 2px;
+}
+
+#hide-content-btn-tree {
+    height: 17px;
+    position: relative;
+    top: 2px;
+    right: 2px;
 }
 
 
 #species-name {
     background: white;
-    margin-bottom:0.5em;
-    position:sticky;
-    top:0px;
+    margin-bottom: 0.5em;
+    position: sticky;
+    top: 0px;
 }
 
 #other-view-container {
-    float:right;
+    float: right;
 }
 
 #street-view-container {
-    float:left;
+    float: left;
 }
 
 #street-view-container>button {
@@ -323,7 +335,7 @@ button:hover {
 }
 
 #street-btn {
-    width:75px;
+    width: 75px;
 }
 
 #like-button-container {
@@ -353,13 +365,13 @@ button:hover {
     z-index: 4;
     left: 0;
     top: 100px;
-    width:100%;
+    width: 100%;
     height: 100%;
     overflow: visible;
     background-image: linear-gradient(to top, rgba(0, 0, 0, 0.2), rgb(0, 0, 0, 0.35));
     pointer-events: none;
     padding: 1em;
-    box-sizing:border-box;
+    box-sizing: border-box;
 }
 
 .likeButton {
@@ -373,84 +385,44 @@ button:hover {
     margin-left: 10px;
 }
 
-/* #content>.post:nth-child(2) {
-    background-color: rgb(253, 253, 253);
-}
-
-#content>.post:nth-child(3) {
-    background-color: rgb(251, 251, 251);
-}
-
-#content>.post:nth-child(4) {
-    background-color: rgb(249, 249, 249);
-}
-
-#content>.post:nth-child(5) {
-    background-color: rgb(247, 247, 247);
-}
-
-#content>.post:nth-child(6) {
-    background-color: rgb(245, 245, 245);
-}
-
-#content>.post:nth-child(7) {
-    background-color: rgb(243, 243, 243);
-    border-bottom-color: rgb(234, 234, 234);
-}
-
-#content>.post:nth-child(8) {
-    background-color: rgb(241, 241, 241);
-    border-bottom-color: rgb(232, 232, 232);
-}
-
-#content>.post:nth-child(9) {
-    background-color: rgb(239, 239, 239);
-    border-bottom-color: rgb(230, 230, 230);
-}
-
-#content>.post:nth-child(n+10) {
-    background-color: rgb(237, 237, 237);
-    border-bottom-color: rgb(228, 228, 228);
-} */
-
 .tag {
-    background:#ececec;
-    color:black;
+    background: #ececec;
+    color: black;
     padding: 0.5em;
     border-radius: 2em;
     font-size: 100%;
-    width:80px;
-    height:20px;
-    display:inline-block;
-    text-align:center;
+    width: 80px;
+    height: 20px;
+    display: inline-block;
+    text-align: center;
 }
 
 #search-tags {
-    width:100%;
-    overflow-x:scroll;
-    height:50px;
+    width: 100%;
+    overflow-x: scroll;
+    height: 50px;
     white-space: nowrap;
 }
 
 .tag-selected {
     background: gray;
-    color:white;
+    color: white;
 }
 
 #species-search {
-    display:none;
+    display: none;
 }
 
 input {
-    font-size:18px;
-    width:72.6%;
-    padding:10px;
-    border-radius:4px;
-    margin:auto;
-    border-color:gainsboro;
-    border-width:thin;
+    font-size: 18px;
+    width: 72.6%;
+    padding: 10px;
+    border-radius: 4px;
+    margin: auto;
+    border-color: gainsboro;
+    border-width: thin;
     border-style: solid;
-        -webkit-appearance: none !important;
+    -webkit-appearance: none !important;
     -moz-appearance: none !important;
     appearance: none !important;
 }
@@ -461,119 +433,116 @@ input:focus {
 }
 
 #search-bar {
-    width:100%;
-    box-sizing:border-box;
-    padding:10px;
-    display:flex;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    display: flex;
 }
 
 #date-search-bar {
-    width:100%;
-    box-sizing:border-box;
-    padding:10px;
-    display:flex;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    display: flex;
 }
 
-#loadmore{
-    width:100%;
-    color:lightgray;
-    border:none;
-    padding-top:2px;
+#loadmore {
+    width: 100%;
+    color: lightgray;
+    border: none;
+    padding-top: 2px;
     border-radius: 0px;
-    font-weight:lighter;
-    box-shadow:         inset 0 8px 6px -6px rgba(0, 0, 0, 0.1);
-    background-color:rgb(247, 247, 247);
+    font-weight: lighter;
+    box-shadow: inset 0 8px 6px -6px rgba(0, 0, 0, 0.1);
+    background-color: rgb(247, 247, 247);
 }
 
 #search-history {
-    display:block;
-    max-height:55%;
-    height:55%;
-    overflow-y:scroll;
-    float:left;
-    width:100%;
-    margin-top:14px;
-    box-shadow:         inset 0 8px 6px -6px rgba(0, 0, 0, 0.1);
-    background-color:rgb(247, 247, 247);
+    display: block;
+    max-height: 55%;
+    height: 55%;
+    overflow-y: scroll;
+    float: left;
+    width: 100%;
+    margin-top: 14px;
+    box-shadow: inset 0 8px 6px -6px rgba(0, 0, 0, 0.1);
+    background-color: rgb(247, 247, 247);
 }
+
 .search-history-item {
     width: 80%;
     border-bottom: 1px solid rgb(236, 236, 236);
     padding: 2em;
-    padding-top:1em;
+    padding-top: 1em;
 }
 
 .search-query {
     float: left;
-    width:150px;
+    width: 150px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color:gray;
+    color: gray;
 }
+
 .search-type {
-    float:left;
-    color:gainsboro;
+    float: left;
+    color: gainsboro;
     font-style: italic;
-    margin-left:2em;
-    font-weight:lighter;
+    margin-left: 2em;
+    font-weight: lighter;
 }
+
 .arrow-icon {
-    float:right;
+    float: right;
 }
+
 input::placeholder {
     color: gainsboro;
-    font-style:italic;
-    font-weight:lighter;
+    font-style: italic;
+    font-weight: lighter;
 }
 
 #query {
-    float:left;
-    /* border-right:none; */
+    float: left;
     border-top-right-radius: 0;
-    border-bottom-right-radius:0;
+    border-bottom-right-radius: 0;
 }
 
 #query-year {
-    float:left;
-    /* border-right:none; */
+    float: left;
     border-top-right-radius: 0;
-    border-bottom-right-radius:0;
-    /* width:70px; */
+    border-bottom-right-radius: 0;
 }
 
 #query-month {
-    float:left;
-    /* border-right:none; */
+    float: left;
     border-radius: 0;
-    /* width:60px; */
 }
 
 #query-day {
-    float:left;
-    /* border-right:none; */
+    float: left;
     border-radius: 0;
-    /* width:60px; */
 }
+
 #search-btn {
-    float:left;
-    box-shadow:none;
-    border-color:gainsboro;
-    border-width:thin;
+    float: left;
+    box-shadow: none;
+    border-color: gainsboro;
+    border-width: thin;
     border-style: solid;
-    border-left:none;
-    height:43.5px;
-    /* margin-left:-2px; */
+    border-left: none;
+    height: 43.5px;
     border-top-left-radius: 0;
-    border-bottom-left-radius:0;
-    background:whitesmoke;
-    width:22%;
-    flex-grow:1;
+    border-bottom-left-radius: 0;
+    background: whitesmoke;
+    width: 22%;
+    flex-grow: 1;
 }
 
 .light {
-    color:lightgrey;
-    font-weight:lighter;
+    color: lightgrey;
+    font-weight: lighter;
 }
 
 #tree-card-box {
@@ -582,28 +551,28 @@ input::placeholder {
 }
 
 .tree-card {
-    padding-right:1em;
-    padding-top:1em;
-    padding-bottom:1em;
+    padding-right: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
     flex-grow: 1;
 }
 
 .tree-card-label {
-    color:lightgray;
-    font-size:80%;
+    color: #8a8a8d;
+    font-size: 80%;
     flex-grow: 1;
 }
 
 .tree-card-data {
-    font-size:110%;
+    font-size: 110%;
     flex-grow: 1;
 }
 
 #tree-card-id {
-    color:rgb(235, 235, 235);
-    font-size:80%;
-    display:block;
-    margin-bottom:3em;
+    color: rgb(235, 235, 235);
+    font-size: 80%;
+    display: block;
+    margin-bottom: 3em;
 }
 
 #details {
@@ -611,6 +580,7 @@ input::placeholder {
     margin: auto;
     padding-right: 1em;
     padding-left: 1em;
+    line-height: 1.6;
 }
 
 #thumbnail {
@@ -619,4 +589,89 @@ input::placeholder {
     margin-right: auto;
     display: block;
     border-radius: 4px;
+}
+
+#details-arrow-container {
+    display: block;
+    position: absolute;
+    bottom: 82px;
+    right: 0.25em;
+    height: 30px;
+    display: none;
+}
+
+.normalMainHeight {
+    height: 198px;
+}
+
+/* social */
+
+#social {
+    top: 10em;
+    left: 50%;
+    margin-left: -135px;
+    text-align: center;
+    z-index: 2;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.096);
+    margin: auto;
+    height: 92%;
+    max-width: 475px;
+    max-height: 500px;
+    overflow-y: auto;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    pointer-events: all;
+    opacity: 98%;
+}
+
+#social-header {
+    color: rgb(131, 131, 131);
+    font-size: 110%;
+    margin: 10px;
+    height: 20px;
+    display: block;
+}
+
+#outer-social {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.425);
+    height: 100%;
+    max-width: 325px;
+    max-height: 220px;
+    overflow-y: hidden;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    pointer-events: all;
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+}
+
+.social-container {
+    user-select: none;
+    position: absolute;
+    z-index: 5;
+    left: 0;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.2), rgb(0, 0, 0, 0.35));
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    padding: 1em;
+    box-sizing: border-box;
+    display: none;
+}
+
+#copy-div {
+    padding: 2em;
+}
+
+#copy-btn {
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.11);
+    color: white;
 }

@@ -1,13 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 * {
     font-family: 'Roboto', sans-serif;
+    user-select: none;
 }
+
 .card {
-    /* border: darkgreen solid 1pt;
-    color: darkgreen;
-    cursor: pointer;
-    margin: 5%;
-    border-radius: 5px; */
     background: white;
     border: none;
     padding-right: 1em;
@@ -24,39 +22,65 @@
     margin-right: 2.5%;
     margin-top: 2.5%;
     margin-bottom: 5%;
-    display: grid;
-    grid-template-columns: 33.3% 33.3% 33.3%;
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    justify-content: space-around;
     height: fit-content;
 }
+
 #main .card {
     margin: auto;
     height: 80%;
     width: 60%;
-    
 }
 
-#formmsg{
-    color:red;
+#formmsg {
+    color: red;
 }
 
-#form input{
-    height: 30pt;
-    text-align: center;
-    font-size: larger;
-    max-width: 60%;
+#form input {
+    font-size: 18px;
+    width: 72.6%;
+    padding: 10px;
+    border-radius: 4px;
+    margin: auto;
+    border-color: gainsboro;
+    border-width: thin;
+    border-style: solid;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    margin-top: 1em;
 }
 
-#form button{
-    height: 30pt;
-    font-size: larger;
+#form input:focus {
+    outline: none;
+    border: 1px solid #007ACC;
 }
 
-#result button{
-    height: 30pt;
-    font-size: larger;
+#form input::placeholder {
+    color: gainsboro;
+    font-style: italic;
+    font-weight: lighter;
 }
 
-#form{
+button {
+    background: white;
+    border: none;
+    padding-right: 1em;
+    padding-left: 1em;
+    padding-top: 0.75em;
+    padding-bottom: 0.75em;
+    height: 50px;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    font-weight: bold;
+    margin: 1em;
+    font-size: 90%;
+}
+
+#form {
     font-size: larger;
     margin: 2.5%;
     background: white;
@@ -70,15 +94,23 @@
     text-align: center;
 }
 
-#form *{
-    margin-top: 2%;
+#form * {
+    margin-top: 1.5em;
 }
 
 #form #logo {
     font-size: 60pt;
 }
 
-#menu .card {
+#tabs {
+    padding-top: 10%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+#profile,
+#title,
+#savedTrees {
     margin-left: 5%;
     width: 50%;
     margin-top: 1%;
@@ -87,12 +119,33 @@
     font-weight: bold;
 }
 
+#title_match {
+    text-align: center;
+    font-size: x-large;
+    font-weight: bold;
+}
+
+#title.selectedTitle {
+    background: gray;
+    color: white;
+}
+
+#savedTrees.selectedTitle {
+    background: gray;
+    color: white;
+}
+
+#profile {
+    text-align: center;
+    margin: auto;
+}
+
 #result {
     margin: 2.5%;
     text-align: center;
 }
 
-#result p{
+#result p {
     margin: 2px
 }
 
@@ -100,13 +153,14 @@
     display: grid;
     grid-template-columns: 15% 42% 42%;
     grid-template-rows: 100%;
-    margin-bottom: 1%;
+    margin-bottom: 1em;
     margin-left: 5%;
     margin-right: 5%;
 }
 
 #results .card.history {
     grid-template-columns: 20% 80%;
+    margin-bottom: 1em;
 }
 
 #results .card .tree {
@@ -119,9 +173,25 @@
     margin-left: 0%;
 }
 
+#profileContainer {
+    margin-left: 5%;
+    margin-right: 5%;
+    cursor: default;
+    display: grid;
+    grid-template-columns: 25% 75%;
+    background-color: white;
+}
+
+.right {
+    text-align: right;
+}
+
+#profileContainer>p {
+    margin-top: 20pt;
+    margin-bottom: 20pt;
+}
+
 .card:hover {
-    /* background-color: darkgreen;
-    color: white; */
     background: rgb(236, 236, 236);
 }
 
@@ -129,7 +199,80 @@
     background: rgb(236, 236, 236);
 }
 
+.tag {
+    background: #ececec;
+    color: rgb(175, 175, 175);
+    padding: 0.5em;
+    border-radius: 2em;
+    font-size: 100%;
+    width: 100px;
+    height: 20px;
+    display: inline-block;
+    text-align: center;
+    font-weight: normal;
+}
+
+.tag.selected {
+    background: gray;
+    color: white;
+}
+
 body {
-    background-image:
-    linear-gradient(217deg, #176314, #78E874 70.71%);
+    background-color: whitesmoke;
+}
+
+#title,
+#profile,
+#savedTrees,
+#title_match {
+    box-shadow: none;
+    background-color: transparent;
+    cursor: default;
+    border: none;
+}
+
+#title,
+#savedTrees {
+    background: #ececec;
+    color: rgb(175, 175, 175);
+    padding: 0.5em;
+    border-radius: 2em;
+    font-size: 100%;
+    width: 100px !important;
+    height: 20px;
+    display: inline-block;
+    text-align: center;
+    font-weight: normal;
+}
+
+#userNameArea,
+#emailArea,
+#viewsaved {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.common-name {
+    font-weight: 900;
+    margin-bottom: 1em;
+}
+
+.street-name {
+    font-weight: lighter;
+    margin-top: 1em;
+    color: #8a8a8d
+}
+
+.species-name {
+    font-style: italic;
+    color: #8a8a8d
+}
+
+.message {
+    border-right: 1px solid rgb(236, 236, 236);
+    box-sizing: border-box;
+}
+
+#date {
+    background-color: white;
 }
