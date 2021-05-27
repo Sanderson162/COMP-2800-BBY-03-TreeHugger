@@ -55,7 +55,7 @@ app.get("/match", function (req, res) {
 });
 
 app.get("/profile", function (req, res) {
-  res.render("history.html");
+  res.render("profile.html");
 });
 
 app.get("/home", function (req, res) {
