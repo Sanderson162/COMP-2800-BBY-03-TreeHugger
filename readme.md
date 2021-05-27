@@ -8,10 +8,12 @@ Find your tree, Vancouver!
 
 
 ## Team Members
-* [Stirling Anderson](https://github.com/Sanderson162)
-* [Aidan McReynolds](https://github.com/AidanMcReynolds)
-* [Amrit Manhas](https://github.com/apsm100)
-* [Steven Reid](https://github.com/StevenR88)
+First Name | Last Name | Student # | Github
+--- | --- | --- | ---
+Stirling | Anderson | A01022394 | [Link](https://github.com/Sanderson162)
+Aidan | McReynolds | A01255622 | [Link](https://github.com/AidanMcReynolds)
+Amrit | Manhas | A01247201 | [Link](https://github.com/apsm100)
+Steven | Reid | A00929669 | [Link](https://github.com/StevenR88)
 
 ## General Info
 This browser based web application shows you the details of the trees nearest you, in Vancouver; with social features! 
@@ -26,7 +28,7 @@ Technologies used for this project:
   * Express
   * ejs
 * Firebase
-  * Firestore
+  * Firebase Firestore
   * Firebase Auth
   * Firebase Hosting
   * Firebase Functions
@@ -40,6 +42,7 @@ Technologies used for this project:
 * ejs v3.1.6
 * firebase-admin v9.7.0
 * firebase-functions v3.14.0
+* firebase-functions-test v0.2.0
 
 ## IDE's
 * (optional) Visual Studio Code

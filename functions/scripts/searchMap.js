@@ -1270,7 +1270,6 @@ function hideContentOverlay(element, button) {
   element.css('overflow', 'hidden');
   rotateChevron(button, -90);
   map.panBy(0, height * 0.25);
-  element.css('overflow', 'hidden');
 }
 /**
  * Show the content overlay

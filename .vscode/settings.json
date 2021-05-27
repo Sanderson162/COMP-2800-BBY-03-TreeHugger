@@ -17,6 +17,8 @@
         "gamez",
         "get",
         "highlighted",
+        "latlng",
+        "lnglat",
         "minmax",
         "name",
         "neighbourhood",
@@ -29,6 +31,7 @@
         "spaceghost",
         "stylesheet",
         "treehuggerlogo",
+        "unhighlights",
         "video"
     ]
 }

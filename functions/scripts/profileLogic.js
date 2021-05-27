@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Loads click events for changing username and email when page loads.
  * @author Stirling 

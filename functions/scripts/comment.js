@@ -1,8 +1,8 @@
 /**
  * Calls the server to add a comment (saved tree)
- * @param {String} treeID 
- * @param {String} comment 
- * @param {String} emoji 
+ * @param {String} treeID
+ * @param {String} comment
+ * @param {String} emoji
  * @author Aidan
  */
 function addComment(treeID,comment,emoji){
@@ -18,5 +18,5 @@ function addComment(treeID,comment,emoji){
                 error: (jqXHR,textStatus,errorThrown )=>{}
             });
         });
-    }    
+    }
 }
