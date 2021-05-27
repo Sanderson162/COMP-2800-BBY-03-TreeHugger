@@ -74,8 +74,6 @@ app.post('/profile', urlencodedParser, (req, res) => {
     .then((decodedToken) => {
       const uid = decodedToken.uid;
       db.collection("Users").doc(uid).get().then(function (doc) { //if successful
-        console.log("accessing user: " + doc.data().name);
-        console.log("UID accessing profile: " + uid);
         res.send({
           status: "success",
           uid: uid,
@@ -101,13 +99,11 @@ app.post('/ajax-add-user', urlencodedParser, (req, res) => {
     .verifyIdToken(idToken)
     .then((decodedToken) => {
       const uid = decodedToken.uid;
-      console.log("User: " + uid + " is a new user")
       db.collection("Users").doc(uid).set({
         name: user.name,
         email: user.email,
         created: Date.now(),
       }).then(function () { //if successful
-        console.log("New user added to firestore");
         res.send({
           status: "success"
         });
@@ -147,19 +143,16 @@ app.post('/addTreeFav', urlencodedParser, (req, res) => {
       });
       batchFav.commit()
         .then(function () { //if successful
-          console.log("new favourite added");
           res.send({
             status: "success"
           });
         }).catch((error) => {
-          console.log(error);
           res.send({
             status: "error"
           });
         });
 
     }).catch((error) => {
-      console.log(error);
       res.status(401).send("UNAUTHORIZED REQUEST!");
     });
 });
@@ -182,12 +175,10 @@ app.post('/removeTreeFav', urlencodedParser, (req, res) => {
       batchFav.set(statsRef, {favCount: decrement}, {merge: true});
       batchFav.commit()
         .then(function () { //if successful
-          console.log("fav removed");
           res.send({
             status: "success"
           });
         }).catch((error) => {
-          console.log("fav not removed", error);
           res.send({
             status: "error"
           });
@@ -195,7 +186,6 @@ app.post('/removeTreeFav', urlencodedParser, (req, res) => {
 
       //End idtoken verified
     }).catch((error) => {
-      console.log(error);
       res.status(401).send("UNAUTHORIZED REQUEST!");
     });
 });
@@ -227,7 +217,6 @@ app.post("/ajax-add-comment", urlencodedParser, (req, res) => {
 
 
     }).catch((error) => {
-      console.log(error);
       res.status(401).send("UNAUTHORIZED REQUEST!");
     });
 });
@@ -257,7 +246,6 @@ app.post("/ajax-add-history", urlencodedParser, (req, res) => {
 
 
     }).catch((error) => {
-      console.log(error);
       res.status(401).send("UNAUTHORIZED REQUEST!");
     });
 });
@@ -284,11 +272,9 @@ app.post("/ajax-get-comment-user", urlencodedParser, (req, res) => {
           res.send(JSON.stringify(response));
         })
         .catch((error) => {
-          console.log(error);
           res.status(418).send("Could not get Comments!");
         });
     }).catch((error) => {
-      console.log(error);
       res.status(401).send("UNAUTHORIZED REQUEST!");
     });
 });
@@ -320,11 +306,9 @@ app.post("/ajax-get-history-user", urlencodedParser, (req, res) => {
           res.send(JSON.stringify(response));
         })
         .catch((error) => {
-          console.log(error);
           res.status(418).send("Could not get History!");
         });
     }).catch((error) => {
-      console.log(error);
       res.status(401).send("UNAUTHORIZED REQUEST!");
     });
 });
@@ -357,7 +341,6 @@ app.post('/getFavByUser', urlencodedParser, (req, res) => {
           });
         })
         .catch(function (error) {
-          console.log("Error getting documents: ", error);
           res.send({
             status: "error"
           });
@@ -365,7 +348,6 @@ app.post('/getFavByUser', urlencodedParser, (req, res) => {
 
       //End idtoken verified
     }).catch((error) => {
-      console.log(error);
       res.status(401).send("UNAUTHORIZED REQUEST!");
     });
 });
@@ -390,7 +372,6 @@ app.post('/getFavByTree', urlencodedParser, (req, res) => {
       });
     })
     .catch(function (error) {
-      console.log("Error getting documents: ", error);
       res.send({
         status: "error"
       });
@@ -404,7 +385,6 @@ app.post('/getFavCountByTree', urlencodedParser, (req, res) => {
     .get()
     .then(function (doc) {
       if (doc.exists) {
-        console.log("FavCount: " + doc.data().favCount);
         res.send({
           status: "success",
           count: doc.data().favCount
@@ -416,7 +396,6 @@ app.post('/getFavCountByTree', urlencodedParser, (req, res) => {
         });
       }
     }).catch(function (error) {
-      console.log("Error getting documents: ", error);
       res.send({
         status: "error",
         count: 0
@@ -443,7 +422,6 @@ app.post('/getFavCountLeaderboard', urlencodedParser, (req, res) => {
         data: resultArray
       });
     }).catch(function (error) {
-      console.log("Error getting documents: ", error);
       res.send({
         status: "error"
       });
@@ -467,11 +445,9 @@ app.post('/getIfUserLiked', urlencodedParser, (req, res) => {
           liked: doc.exists
         });
       }).catch((error) => {
-        console.log(error);
         res.status(418).send("Could not get favourites!");
       });
     }).catch((error) => {
-      console.log(error);
       res.status(401).send("UNAUTHORIZED REQUEST!");
     });
 });
@@ -488,16 +464,13 @@ app.post('/update-username', urlencodedParser, (req, res) => {
       db.collection("Users").doc(uid).update({
         name: req.body.name
       }).then(function () { //if successful
-        console.log("Username updated");
         res.send({
           status: "success"
         });
       }).catch((error) => {
-        console.log(error);
         res.status(418).send("Could not change username!");
       });
     }).catch((error) => {
-      console.log(error);
       res.status(401).send("UNAUTHORIZED REQUEST!");
     });
 });
@@ -516,24 +489,19 @@ app.post('/update-email', urlencodedParser, (req, res) => {
         .updateUser(uid, {
           email: req.body.email
         }).then((userRecord) => {
-          console.log('Successfully updated user', userRecord.toJSON());
           db.collection("Users").doc(uid).update({
             email: req.body.email
           }).then(function () { //if successful
-            console.log("Username updated in database");
             res.send({
               status: "success"
             });
           }).catch((error) => {
-            console.log(error);
             res.status(418).send("could not update database!");
           });
         }).catch((error) => {
-          console.log(error);
           res.status(418).send("Could not change email!");
         });
     }).catch((error) => {
-      console.log(error);
       res.status(401).send("UNAUTHORIZED REQUEST!");
     });
 });
