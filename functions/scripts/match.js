@@ -38,7 +38,7 @@ function loadBirthForm() {
     f.append($("<span id='logo'>🎁</span>"))
     f.append($("<br><input id='name' placeholder='Name'>"));
     f.append("");
-    f.append($("<br><span></span><input type='date' id='date'>"));
+    f.append($("<br><span></span><input type='date' id='date' value='2021-05-28'>"));
     f.append($("<br><button type='button' id='loadmore'>Search</button>").click(() => {
         submit({
             match: "Found " + $("#name").val() + "'s birth tree"+":",
@@ -63,7 +63,7 @@ function loadAnniversaryForm() {
     f.append("");
     f.append($("<input id='name2' placeholder='Partners Name'>"));
     f.append("");
-    f.append($("<br><span></span><input type='date' id='date'>"));
+    f.append($("<br><span></span><input type='date' id='date' value='2021-05-28'>"));
     f.append($("<br><button type='button' id='loadmore'>Search</button>").click(() => {
         submit({
             match: "Found a tree for " + $("#name1").val() + " and " + $("#name2").val()+":",
@@ -86,7 +86,7 @@ function loadEventForm() {
     f.append($("<span id='logo'>🎉</span>"))
     f.append("<br>");
     f.append($("<input id='name' placeholder='Event Name'>"));
-    f.append($("<br><span></span><input type='date' id='date' value='2021-05-25'>"));
+    f.append($("<br><span></span><input type='date' id='date' value='2021-05-28'>"));
     f.append($("<br><button type='button' id='loadmore'>Search</button>").click(() => {
         submit({
             match: "Found a tree for " + $("#name").val()+":",
