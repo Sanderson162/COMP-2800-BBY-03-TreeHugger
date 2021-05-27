@@ -2,9 +2,13 @@
 
 Find your tree, Vancouver!
 
+* [Team Members](#Team-Members)
 * [General info](#general-info)
 * [Technologies](#technologies)
+* [Dependencies](#Dependencies)
 * [Contents](#content)
+* [IDE's](#IDE's)
+* [Setup](#Setup Instructions)
 
 
 ## Team Members
