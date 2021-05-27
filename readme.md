@@ -34,8 +34,8 @@ Technologies used for this project:
 * firebase-functions v3.14.0
 
 ## IDE's
-(optional) Visual Studio Code
-Selenium extention for unit testing
+* (optional) Visual Studio Code
+* Selenium extention for unit testing
 
 ## Setup Instructions
 1. Clone repository into working directory of your choosing
