@@ -68,6 +68,11 @@ app.get("/aboutUs", function (req, res) {
   res.render("aboutus.html");
 });
 
+
+/**
+ * get the users profile information
+ * @author Stirling
+ */
 app.post('/profile', urlencodedParser, (req, res) => {
   const idToken = req.body.idToken.toString();
   admin
@@ -92,6 +97,11 @@ app.post('/profile', urlencodedParser, (req, res) => {
     });
 });
 
+
+/**
+ * add a new user to the database
+ * @author Stirling
+ */
 app.post('/ajax-add-user', urlencodedParser, (req, res) => {
   // res.setHeader('Content-Type', 'application/json');
   let user = req.body;
@@ -119,6 +129,10 @@ app.post('/ajax-add-user', urlencodedParser, (req, res) => {
     });
 });
 
+/**
+ * adds a tree to user favourites
+ * @author Stirling
+ */
 app.post('/addTreeFav', urlencodedParser, (req, res) => {
   // res.setHeader('Content-Type', 'application/json');
   const idToken = req.body.idToken.toString();
@@ -159,6 +173,10 @@ app.post('/addTreeFav', urlencodedParser, (req, res) => {
     });
 });
 
+/**
+ * removes a tree from user favourites
+ * @author Stirling
+ */
 app.post('/removeTreeFav', urlencodedParser, (req, res) => {
   // res.setHeader('Content-Type', 'application/json');
   const idToken = req.body.idToken.toString();
@@ -319,6 +337,11 @@ app.post("/ajax-get-history-user", urlencodedParser, (req, res) => {
     });
 });
 
+
+/**
+ * get list of favourites given a certain user
+ * @author Stirling
+ */
 app.post('/getFavByUser', urlencodedParser, (req, res) => {
   // res.setHeader('Content-Type', 'application/json');
   const idToken = req.body.idToken.toString();
@@ -358,6 +381,11 @@ app.post('/getFavByUser', urlencodedParser, (req, res) => {
     });
 });
 
+
+/**
+ * get list of favourites on a certain tree
+ * @author Stirling
+ */
 app.post('/getFavByTree', urlencodedParser, (req, res) => {
   // res.setHeader('Content-Type', 'application/json');
   const recordID = req.body.recordID;
@@ -384,6 +412,11 @@ app.post('/getFavByTree', urlencodedParser, (req, res) => {
     });
 });
 
+
+/**
+ * get fav count by tree
+ * @author Stirling
+ */
 app.post('/getFavCountByTree', urlencodedParser, (req, res) => {
   const recordID = req.body.recordID;
   db.collection('FavouriteStats').doc(recordID)
@@ -408,6 +441,10 @@ app.post('/getFavCountByTree', urlencodedParser, (req, res) => {
     });
 });
 
+/**
+ * get fav count leaderboard
+ * @author Stirling
+ */
 app.post('/getFavCountLeaderboard', urlencodedParser, (req, res) => {
   db.collection("FavouriteStats")
   .orderBy("favCount", "desc")
@@ -432,6 +469,10 @@ app.post('/getFavCountLeaderboard', urlencodedParser, (req, res) => {
     });
 });
 
+/**
+ * get if a user liked a tree
+ * @author Stirling
+ */
 app.post('/getIfUserLiked', urlencodedParser, (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   const idToken = req.body.idToken.toString();
@@ -456,6 +497,10 @@ app.post('/getIfUserLiked', urlencodedParser, (req, res) => {
     });
 });
 
+/**
+ * update the users username
+ * @author Stirling
+ */
 app.post('/update-username', urlencodedParser, (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   const idToken = req.body.idToken.toString();
@@ -479,6 +524,10 @@ app.post('/update-username', urlencodedParser, (req, res) => {
     });
 });
 
+/**
+ * Changes the users email.
+ * @author Aidan
+ */
 app.post('/update-email', urlencodedParser, (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   const idToken = req.body.idToken.toString();
@@ -510,7 +559,7 @@ app.post('/update-email', urlencodedParser, (req, res) => {
     });
 });
 
-
+// only used for node server, not firebase functions
 // app.listen(PORT, () => {
 //     console.log(`Listening on http://localhost:${PORT}`);
 // });
