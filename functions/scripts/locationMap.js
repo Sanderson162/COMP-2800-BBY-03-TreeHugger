@@ -1,8 +1,8 @@
 /**
- * TreeFind
+ * locationMap
  * Uses the opendata 'Street Trees' database and Google Maps API to find trees near a users location in Vancouver.
  * @author Amrit Manhas apsm100
- * @see Stirling, Steven, stackoverflow
+ * @see Stirling, Steven, Aidan, stackoverflow
  */
 "use strict";
 let currentLocation;
@@ -511,7 +511,6 @@ function hideTreeOverlay() {
   centerMap();
   removeUrlParam("id");
 }
-
 /**
  * Shows or hides the center-locate and enable-location buttons.
  * @param {bool} enabled If location is enabled.
@@ -1093,7 +1092,6 @@ function fbUpdateBtns(url) {
   $("#like-fb-btn").attr("data-href", url);
   FB.XFBML.parse();
 }
-
 /**
  * Toggles the content overlay visible or hidden
  * @author Amrit
@@ -1105,7 +1103,6 @@ function toggleExpandContentOverlay(element, button) {
     retractContentOverlay(element, button);
   }
 }
-
 /**
  * Hides the content overlay
  * @author Amrit
@@ -1114,7 +1111,6 @@ function retractContentOverlay(element, button) {
   element.addClass('normalMainHeight');
   rotateChevron(button, 0);
 }
-
 /**
  * Show the content overlay
  * @author Amrit
@@ -1123,7 +1119,6 @@ function expandContentOverlay(element, button) {
   element.removeClass('normalMainHeight');
   rotateChevron(button, -180);
 }
-
 /**
  * Toggles the content overlay visible or hidden
  * @author Amrit
@@ -1135,7 +1130,6 @@ function toggleContentOverlay(element, button) {
     hideContentOverlay(element, button);
   }
 }
-
 /**
  * Hides the content overlay
  * @author Amrit
@@ -1147,7 +1141,6 @@ function hideContentOverlay(element, button) {
   rotateChevron(button, -90);
   map.panBy(0, height * 0.25);
 }
-
 /**
  * Show the content overlay
  * @author Amrit
@@ -1161,7 +1154,6 @@ function showContentOverlay(element, button, center) {
     map.panBy(0, -height * 0.25);
   }
 }
-
 /**
  * Rotates the chevron.
  * @param {int} amount Amount of rotation.
