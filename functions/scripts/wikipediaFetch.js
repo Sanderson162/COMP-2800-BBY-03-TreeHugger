@@ -65,7 +65,6 @@ function getWikipediaExtract(genus_species) {
       success: function (result, status, xhr) {
         let pageId = Object.keys(result.query.pages)[0];
         if (pageId != -1) {
-          console.log(result.query.pages[pageId].extract);
           let extract = JSON.stringify(result.query.pages[pageId].extract);
           resolve(extract);
         } else {
