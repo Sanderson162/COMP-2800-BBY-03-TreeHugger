@@ -84,6 +84,7 @@ Setting up this project will allow you to preview the app locally, all API keys 
 4. Install firebase cli using ```npm install -g firebase-tools```
 5. Service account key needed for accesing Authentication and database is included in repository
 6. Test app functions by running ```firebase emulators:start```
-7. View current testing progress at [here](https://docs.google.com/spreadsheets/d/1dd15Ohg59e2YYt_uV0LmraUiUDuTnIvSvjWpqlFbFU4/edit#gid=394496370)
-8. For deploying to production enviroment please contact either Stirling, Amrit, Steven, Aidan
+7. Connect to ```http://localhost:5000/``` to view emulated app
+8. View current testing progress at [here](https://docs.google.com/spreadsheets/d/1dd15Ohg59e2YYt_uV0LmraUiUDuTnIvSvjWpqlFbFU4/edit#gid=394496370)
+9. For deploying to production enviroment please contact either Stirling, Amrit, Steven, Aidan
 
