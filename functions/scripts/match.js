@@ -47,8 +47,8 @@ function loadBirthForm() {
     f.append($("<br><span></span><input type='date' id='date' value='2021-05-28'>"));
     f.append($("<br><button type='button' id='loadmore'>Search</button>").click(() => {
         submit({
-            match: "Found " + $("#name").val() + "'s birth tree"+":",
-            close: "Here's the closest match for " + $("#name").val() + "'s birth tree"+":",
+            match: "Found " + $("#name").val() + "'s birth tree" + ":",
+            close: "Here's the closest match for " + $("#name").val() + "'s birth tree" + ":",
             fail: "Sorry, we couldn't find a tree for " + $("#name").val() + "😥",
             emoji: "🎁",
             message: $("#name").val() + "'s birth tree"
@@ -72,8 +72,8 @@ function loadAnniversaryForm() {
     f.append($("<br><span></span><input type='date' id='date' value='2021-05-28'>"));
     f.append($("<br><button type='button' id='loadmore'>Search</button>").click(() => {
         submit({
-            match: "Found a tree for " + $("#name1").val() + " and " + $("#name2").val()+":",
-            close: "Here's the closest match for " + $("#name1").val() + " and " + $("#name2").val()+":",
+            match: "Found a tree for " + $("#name1").val() + " and " + $("#name2").val() + ":",
+            close: "Here's the closest match for " + $("#name1").val() + " and " + $("#name2").val() + ":",
             fail: "Sorry, we couldn't find a tree for " + $("#name1").val() + " and " + $("#name2").val(),
             emoji: "💕",
             message: $("#name1").val() + " and " + $("#name2").val() + "'s anniversary tree"
@@ -95,8 +95,8 @@ function loadEventForm() {
     f.append($("<br><span></span><input type='date' id='date' value='2021-05-28'>"));
     f.append($("<br><button type='button' id='loadmore'>Search</button>").click(() => {
         submit({
-            match: "Found a tree for " + $("#name").val()+":",
-            close: "Here's the closest match for " + $("#name").val()+":",
+            match: "Found a tree for " + $("#name").val() + ":",
+            close: "Here's the closest match for " + $("#name").val() + ":",
             fail: "Sorry, we couldn't find a tree for " + $("#name").val(),
             emoji: "🎉",
             message: $("#name").val()
@@ -113,7 +113,7 @@ function loadEventForm() {
  */
 function submit(type) {
     //form validation
-    if (!validForm()){
+    if (!validForm()) {
         $("#formmsg").html("Invalid input, try again");
         return;
     }
@@ -127,7 +127,7 @@ function submit(type) {
         if (data.records.length > 0) {
             let x = data.records[Math.floor(Math.random() * data.records.length)]
             $("#result").html("")
-            $("#result").append(displayTree(x,type.match,saveButton(x, type.message, type.emoji)));
+            $("#result").append(displayTree(x, type.match, saveButton(x, type.message, type.emoji)));
         } else {
             // no exact match
             alternateTree(q, type);
@@ -141,26 +141,26 @@ function submit(type) {
  * @returns boolean
  * @author Aidan
  */
-function validForm(){
-    if ($("#name").length && !($("#name").val())){
+function validForm() {
+    if ($("#name").length && !($("#name").val())) {
         return false;
     }
-    if ($("#name1").length && !($("#name1").val())){
+    if ($("#name1").length && !($("#name1").val())) {
         return false;
     }
-    if ($("#name2").length && !($("#name2").val())){
+    if ($("#name2").length && !($("#name2").val())) {
         return false;
     }
     //checks for ####-##-##
     const regex = /^\d{4}-\d{2}-\d{2}$/;
-    if (!($("#date").val().match(regex))){
+    if (!($("#date").val().match(regex))) {
         return false;
     }
     return true;
 }
 
 //looks for an alternate tree if there is no exact match
-async function alternateTree(q, type){
+async function alternateTree(q, type) {
     //find one in the same month
     let x = await findClosest(q, type);
     if (x) {
@@ -168,7 +168,7 @@ async function alternateTree(q, type){
     }
     //find with a different year but the same day and month
     x = await differentYear(q, type)
-    if (x){
+    if (x) {
         return;
     }
     //no result found
@@ -178,28 +178,28 @@ async function alternateTree(q, type){
 
 /**
  * inds a tree between 1989 and 2022 with the same day and month
- * @param {String} date 
- * @param {Object} type 
- * @returns Obejct the first tree it finds. 
+ * @param {String} date
+ * @param {Object} type
+ * @returns Obejct the first tree it finds.
  * @author Aidan
  */
-async function differentYear(date, type){
+async function differentYear(date, type) {
     let monthDay = date.toString().substring(4);
     let x = [];
-    for (year = 1989; year <= 2022; year++){
+    for (year = 1989; year <= 2022; year++) {
         let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine.date_planted="
-        await $.getJSON(query+year+monthDay, (data) => {
+        await $.getJSON(query + year + monthDay, (data) => {
             removeNoGeom(data.records);
-            if (data.records.length > 0){
-                data.records.forEach((entry)=>{
+            if (data.records.length > 0) {
+                data.records.forEach((entry) => {
                     x.push(entry)
                 });
             }
         })
-        if (x.length>0){
+        if (x.length > 0) {
             let tree = x[Math.floor(Math.random() * x.length)]
             $("#result").html("");
-            $("#result").append(displayTree(tree,type.close,saveButton(tree, type.message, type.emoji)));
+            $("#result").append(displayTree(tree, type.close, saveButton(tree, type.message, type.emoji)));
             return true;
         }
     }
@@ -222,7 +222,7 @@ async function findClosest(date, type) {
         if (data.records.length > 0) {
             let x = closestTree(data, month, day);
             $("#result").html("");
-            $("#result").append(displayTree(x, type.close,saveButton(x, type.message, type.emoji)));
+            $("#result").append(displayTree(x, type.close, saveButton(x, type.message, type.emoji)));
             x = true;
             return;
         }
@@ -265,12 +265,12 @@ function closestTree(data, month, day) {
  * @param {Object} saveBtn
  * @returns a dom element
  */
-function displayTree(entry,message,saveBtn) {
+function displayTree(entry, message, saveBtn) {
     let elem = $("<div></div>").addClass("card");
     elem.append($("<span style='color:darkgray;text-align:left;font-size:80%;'></span>").html(message + "<br><br>"));
-    elem.append($("<p class='common-name' style='text-align:left'></p>").html(entry.fields.common_name +"<br><br>"));
-    elem.append($("<p class='species-name' style='text-align:left'></p>").html(entry.fields.genus_name + " " + entry.fields.species_name +"<br><br>"));
-    elem.append($("<p class='street-name' style='text-align:left'></p>").html(entry.fields.on_street_block + " " + entry.fields.on_street + " " + entry.fields.neighbourhood_name +"<br><br>"));
+    elem.append($("<p class='common-name' style='text-align:left'></p>").html(entry.fields.common_name + "<br><br>"));
+    elem.append($("<p class='species-name' style='text-align:left'></p>").html(entry.fields.genus_name + " " + entry.fields.species_name + "<br><br>"));
+    elem.append($("<p class='street-name' style='text-align:left'></p>").html(entry.fields.on_street_block + " " + entry.fields.on_street + " " + entry.fields.neighbourhood_name + "<br><br>"));
     elem.append($("<p  style='text-align:left;color:darkgray;'></p>").html("Planted on " + entry.fields.date_planted));
     elem.append(saveBtn);
     elem.append(viewButton(entry.recordid));
@@ -285,9 +285,9 @@ function displayTree(entry,message,saveBtn) {
  * @returns a dom element
  * @author Aidan
  */
-function viewButton(tree){
+function viewButton(tree) {
     let btn = $("<button id='viewbtn'>View</button>");
-    btn.click(() =>{
+    btn.click(() => {
         window.open("./searchMap?id=" + tree);
     })
     return btn
@@ -323,10 +323,10 @@ function saveButton(tree, message, emoji) {
  * @param {Array} a
  */
 function removeNoGeom(a) {
-    if (a.length>0){
-        for(i=0;i<a.length;i++){
-            if (a[i].fields.geom==undefined){
-                a.splice(i,1);
+    if (a.length > 0) {
+        for (i = 0; i < a.length; i++) {
+            if (a[i].fields.geom == undefined) {
+                a.splice(i, 1);
                 i = i - 1;
             }
         }

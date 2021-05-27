@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 * {
     font-family: 'Roboto', sans-serif;
     user-select: none;
 }
+
 .card {
     background: white;
     border: none;
@@ -20,36 +22,36 @@
     margin-right: 2.5%;
     margin-top: 2.5%;
     margin-bottom: 5%;
-    display:flex;
-    flex-direction:row;
+    display: flex;
+    flex-direction: row;
     flex-grow: 1;
-    justify-content:space-around;
+    justify-content: space-around;
     height: fit-content;
 }
+
 #main .card {
     margin: auto;
     height: 80%;
     width: 60%;
-    
 }
 
-#formmsg{
-    color:red;
+#formmsg {
+    color: red;
 }
 
-#form input{
-    font-size:18px;
-    width:72.6%;
-    padding:10px;
-    border-radius:4px;
-    margin:auto;
-    border-color:gainsboro;
-    border-width:thin;
+#form input {
+    font-size: 18px;
+    width: 72.6%;
+    padding: 10px;
+    border-radius: 4px;
+    margin: auto;
+    border-color: gainsboro;
+    border-width: thin;
     border-style: solid;
-        -webkit-appearance: none !important;
+    -webkit-appearance: none !important;
     -moz-appearance: none !important;
     appearance: none !important;
-    margin-top:1em;
+    margin-top: 1em;
 }
 
 #form input:focus {
@@ -59,8 +61,8 @@
 
 #form input::placeholder {
     color: gainsboro;
-    font-style:italic;
-    font-weight:lighter;
+    font-style: italic;
+    font-weight: lighter;
 }
 
 button {
@@ -69,16 +71,16 @@ button {
     padding-right: 1em;
     padding-left: 1em;
     padding-top: 0.75em;
-    padding-bottom:0.75em;
-    height:50px;
+    padding-bottom: 0.75em;
+    height: 50px;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.1);
-    border-radius:4px;
-    font-weight:bold;
-    margin:1em;
-    font-size:90%;
+    border-radius: 4px;
+    font-weight: bold;
+    margin: 1em;
+    font-size: 90%;
 }
 
-#form{
+#form {
     font-size: larger;
     margin: 2.5%;
     background: white;
@@ -93,8 +95,9 @@ button {
 }
 
 #form * {
-    margin-top:1.5em;
+    margin-top: 1.5em;
 }
+
 #form #logo {
     font-size: 60pt;
 }
@@ -105,7 +108,9 @@ button {
     grid-template-columns: 1fr 1fr;
 }
 
-#profile, #title, #savedTrees {
+#profile,
+#title,
+#savedTrees {
     margin-left: 5%;
     width: 50%;
     margin-top: 1%;
@@ -114,7 +119,7 @@ button {
     font-weight: bold;
 }
 
-#title_match{
+#title_match {
     text-align: center;
     font-size: x-large;
     font-weight: bold;
@@ -122,17 +127,17 @@ button {
 
 #title.selectedTitle {
     background: gray;
-    color:white;
+    color: white;
 }
 
 #savedTrees.selectedTitle {
     background: gray;
-    color:white;
+    color: white;
 }
 
 #profile {
     text-align: center;
-    margin:auto;
+    margin: auto;
 }
 
 #result {
@@ -140,7 +145,7 @@ button {
     text-align: center;
 }
 
-#result p{
+#result p {
     margin: 2px
 }
 
@@ -148,14 +153,14 @@ button {
     display: grid;
     grid-template-columns: 15% 42% 42%;
     grid-template-rows: 100%;
-    margin-bottom:1em;
+    margin-bottom: 1em;
     margin-left: 5%;
     margin-right: 5%;
 }
 
 #results .card.history {
     grid-template-columns: 20% 80%;
-    margin-bottom:1em;
+    margin-bottom: 1em;
 }
 
 #results .card .tree {
@@ -177,11 +182,11 @@ button {
     background-color: white;
 }
 
-.right{
+.right {
     text-align: right;
 }
 
-#profileContainer > p {
+#profileContainer>p {
     margin-top: 20pt;
     margin-bottom: 20pt;
 }
@@ -195,51 +200,57 @@ button {
 }
 
 .tag {
-    background:#ececec;
-    color:rgb(175, 175, 175);
+    background: #ececec;
+    color: rgb(175, 175, 175);
     padding: 0.5em;
     border-radius: 2em;
     font-size: 100%;
-    width:100px;
-    height:20px;
-    display:inline-block;
-    text-align:center;
-    font-weight:normal;
+    width: 100px;
+    height: 20px;
+    display: inline-block;
+    text-align: center;
+    font-weight: normal;
 }
 
 .tag.selected {
     background: gray;
-    color:white;
+    color: white;
 }
 
 body {
     background-color: whitesmoke;
 }
 
-#title, #profile, #savedTrees, #title_match {
+#title,
+#profile,
+#savedTrees,
+#title_match {
     box-shadow: none;
     background-color: transparent;
     cursor: default;
-    border:none;
+    border: none;
 }
 
-#title, #savedTrees {
-    background:#ececec;
-    color:rgb(175, 175, 175);
+#title,
+#savedTrees {
+    background: #ececec;
+    color: rgb(175, 175, 175);
     padding: 0.5em;
     border-radius: 2em;
     font-size: 100%;
-    width:100px !important;
-    height:20px;
-    display:inline-block;
-    text-align:center;
-    font-weight:normal;
+    width: 100px !important;
+    height: 20px;
+    display: inline-block;
+    text-align: center;
+    font-weight: normal;
 }
 
-#userNameArea, #emailArea, #viewsaved {
-    text-decoration: underline;     
+#userNameArea,
+#emailArea,
+#viewsaved {
+    text-decoration: underline;
     cursor: pointer;
-} 
+}
 
 .common-name {
     font-weight: 900;
@@ -248,20 +259,20 @@ body {
 
 .street-name {
     font-weight: lighter;
-    margin-top:1em;
+    margin-top: 1em;
     color: #8a8a8d
 }
 
 .species-name {
     font-style: italic;
-    color:#8a8a8d
+    color: #8a8a8d
 }
 
 .message {
     border-right: 1px solid rgb(236, 236, 236);
-    box-sizing:border-box;
+    box-sizing: border-box;
 }
 
 #date {
-    background-color:white;
+    background-color: white;
 }

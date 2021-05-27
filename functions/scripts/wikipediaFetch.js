@@ -32,6 +32,7 @@ function getInfoOnTreeByID(recordID) {
  * Searching wikipedia articles and picking first result. Idea came from stack overflow.
  * @see https://stackoverflow.com/questions/27457977/searching-wikipedia-using-api
  * @author octosquidopus https://stackoverflow.com/users/908703/octosquidopus
+ * @author altered by Steven
  * @see https://www.mediawiki.org/wiki/API:Opensearch
  * @param {*} genus_species
  * @returns extract from wikipedia opensearch result
@@ -151,6 +152,13 @@ async function displayWikipediaInformation(element, genus_species, arrowElement)
     isDetails(false, arrowElement);
   }
 }
+
+/**
+ * Fades in or fades out an arrow icon depending on whether there are wikipedia details to show below the main card.
+ * @param {*} detailExists
+ * @param {*} arrowElement
+ * @author Amrit
+ */
 
 function isDetails(detailExists, arrowElement) {
   if (detailExists) {

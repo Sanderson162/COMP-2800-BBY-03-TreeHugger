@@ -32,7 +32,12 @@ async function addLikeButton(parentElement, recordID, liked, count) {
   let likeButtonID = recordID + "_likeButton";
   likeButton.attr("id", likeButtonID);
 
-  likeButton.css({"display": "flex", "flex-direction": "row", "justify-content": "center", "align-items": "center"});
+  likeButton.css({
+    "display": "flex",
+    "flex-direction": "row",
+    "justify-content": "center",
+    "align-items": "center"
+  });
   parentElement.html("<button style='display: flex; flex-direction: row; justify-content: center; align-items: center'>" + heartIconGray + "<span class='likeCount' style='margin-left: 10px;'>" + loadingIcon + "</span></button>");
 
   if (count == null) {
@@ -78,8 +83,7 @@ async function addLikeButton(parentElement, recordID, liked, count) {
         $(this).attr("data-count", count);
         addFavToTree(recordID);
       }
-    } else {
-    }
+    } else {}
   });
 }
 
@@ -87,8 +91,8 @@ async function addLikeButton(parentElement, recordID, liked, count) {
  * Refreshing the like button by removing it and adding it again.
  * @author Stirling
  */
-function refreshLikeButtons(){
-  $('.likeButton').each(function(index, element) {
+function refreshLikeButtons() {
+  $('.likeButton').each(function (index, element) {
     let recordID = $(this).attr('id').split("_")[0];
     addLikeButton($(this).parent(), recordID, null, null);
   });
@@ -148,15 +152,13 @@ function addFavToTree(recordID) {
           recordID: recordID,
           idToken: idToken
         },
-        success: function (result, status, xhr) {
-        },
+        success: function (result, status, xhr) {},
         error: function (jqXHR, textStatus, errorThrown) {
           console.log("ERROR:", jqXHR, textStatus, errorThrown);
         }
       });
     });
-  } else {
-  }
+  } else {}
 }
 
 /**
@@ -176,15 +178,13 @@ function removeFavFromTree(recordID) {
           recordID: recordID,
           idToken: idToken
         },
-        success: function (result, status, xhr) {
-        },
+        success: function (result, status, xhr) {},
         error: function (jqXHR, textStatus, errorThrown) {
           console.log("ERROR:", jqXHR, textStatus, errorThrown);
         }
       });
     });
-  } else {
-  }
+  } else {}
 
 }
 
