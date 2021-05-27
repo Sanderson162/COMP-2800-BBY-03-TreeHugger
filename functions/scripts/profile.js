@@ -4,16 +4,16 @@
  * displays history and loads event listeners for toggle buttons
  * @author Aidan
  */
-window.addEventListener("DOMContentLoaded",() => {
+window.addEventListener("DOMContentLoaded", () => {
     firebase.auth().onAuthStateChanged(() => {
         showComments();
 
-        $("#title").on("click",()=>{
+        $("#title").on("click", () => {
             $("#title").addClass("selectedTitle");
             $("#savedTrees").removeClass("selectedTitle");
             showHistory();
         });
-        $("#savedTrees").on("click",()=>{
+        $("#savedTrees").on("click", () => {
             $("#savedTrees").addClass("selectedTitle")
             $("#title").removeClass("selectedTitle");
             showComments();
@@ -30,12 +30,14 @@ function showHistory() {
     $("#results").html("");
     var user = firebase.auth().currentUser;
     if (user) {
-        firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken) {
+        firebase.auth().currentUser.getIdToken( /* forceRefresh */ true).then(function (idToken) {
             $.ajax({
                 url: "/ajax-get-history-user",
                 dataType: "json",
                 type: "POST",
-                data: {idToken: idToken},
+                data: {
+                    idToken: idToken
+                },
                 success: (data) => {
                     spliceHistory(data);
                 },
@@ -59,12 +61,14 @@ function showComments() {
     $("#results").html("");
     var user = firebase.auth().currentUser;
     if (user) {
-        firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken) {
+        firebase.auth().currentUser.getIdToken( /* forceRefresh */ true).then(function (idToken) {
             $.ajax({
                 url: "/ajax-get-comment-user",
                 dataType: "json",
                 type: "POST",
-                data: {idToken: idToken},
+                data: {
+                    idToken: idToken
+                },
                 success: (data) => {
                     spliceComments(data);
                 },
@@ -84,8 +88,8 @@ function showComments() {
  * @param {Array} data
  * @author Aidan
  */
-function spliceComments(data){
-    if (data.length == 0){
+function spliceComments(data) {
+    if (data.length == 0) {
         $("#results").html("<i style='display:block;text-align:center;'>No results found</i>");
     } else {
         $("#results").html("");
@@ -100,11 +104,11 @@ function spliceComments(data){
  * @param {Object} comment
  * @returns a dom element
  */
-function displayComment(comment){
+function displayComment(comment) {
     let elem = $("<div class='card'>");
     elem.append($("<div class='emoji'>").html(comment.Icon))
     elem.append($("<div class='message'>").html(comment.Comment))
-    elem.click(() =>{
+    elem.click(() => {
         window.location = "./searchMap?id=" + comment.Tree;
     })
 
@@ -112,8 +116,8 @@ function displayComment(comment){
     $.getJSON(query, (tree) => {
         let t = $("<div class='tree'>");
         t.append($("<p class='common-name'></p>").html(tree.records[0].fields.common_name));
-        t.append($("<p class='species-name'></p>").html(tree.records[0].fields.genus_name+" "+tree.records[0].fields.species_name));
-        t.append($("<p class='street-name'></p>").html(tree.records[0].fields.on_street_block+" "+tree.records[0].fields.on_street+" "+tree.records[0].fields.neighbourhood_name));
+        t.append($("<p class='species-name'></p>").html(tree.records[0].fields.genus_name + " " + tree.records[0].fields.species_name));
+        t.append($("<p class='street-name'></p>").html(tree.records[0].fields.on_street_block + " " + tree.records[0].fields.on_street + " " + tree.records[0].fields.neighbourhood_name));
 
         elem.append(t);
     })
@@ -126,8 +130,8 @@ function displayComment(comment){
  * @param {Object} data
  * @author Aidan
  */
-function spliceHistory(data){
-    if (data.length == 0){
+function spliceHistory(data) {
+    if (data.length == 0) {
         $("#results").html("<i>No results found</i>");
     } else {
         $("#results").html("");
@@ -142,11 +146,11 @@ function spliceHistory(data){
  * @param {Object} comment
  * @returns a dom element
  */
-function displayHistory(comment){
+function displayHistory(comment) {
     let elem = $("<div class='card history'>");
     let date = comment.date;
     elem.append($("<div class='message'>").html(date));
-    elem.click(() =>{
+    elem.click(() => {
         window.location = "./searchMap?id=" + comment.tree;
     })
 
@@ -154,8 +158,8 @@ function displayHistory(comment){
     $.getJSON(query, (tree) => {
         let t = $("<div class='tree'>");
         t.append($("<p class='common-name'></p>").html(tree.records[0].fields.common_name));
-        t.append($("<p class='species-name'></p>").html(tree.records[0].fields.genus_name+" "+tree.records[0].fields.species_name));
-        t.append($("<p class='street-name'></p>").html(tree.records[0].fields.on_street_block+" "+tree.records[0].fields.on_street+" "+tree.records[0].fields.neighbourhood_name));
+        t.append($("<p class='species-name'></p>").html(tree.records[0].fields.genus_name + " " + tree.records[0].fields.species_name));
+        t.append($("<p class='street-name'></p>").html(tree.records[0].fields.on_street_block + " " + tree.records[0].fields.on_street + " " + tree.records[0].fields.neighbourhood_name));
 
         elem.append(t);
     })
@@ -169,7 +173,7 @@ function displayHistory(comment){
  */
 function getUrlVars() {
     var vars = {};
-    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
         vars[key] = value;
     });
     return vars;

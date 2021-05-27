@@ -19,7 +19,7 @@
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
-        </script>
+    </script>
 </head>
 
 <body>
@@ -56,16 +56,15 @@
                 </div>
                 <div id="date-search-bar">
                     <!-- https://stackoverflow.com/questions/18510845/maxlength-ignored-for-input-type-number-in-chrome -->
-                    <input maxlength="4" autocomplete="off" onkeypress="if(this.value.length==this.maxLength) return false;" type="number"
+                    <input maxlength="4" autocomplete="off"
+                        onkeypress="if(this.value.length==this.maxLength) return false;" type="number"
                         inputmode="numeric" pattern="[0-9]" placeholder="YYYY" oninput="loadDateSearchBarOptions('ys')"
                         list="year" id="query-year" />
-                    <input maxlength="2"
-                        autocomplete="off"
+                    <input maxlength="2" autocomplete="off"
                         onkeypress="if(this.value.length==this.maxLength || this.value > 1) return false;" type="number"
                         inputmode="numeric" pattern="[0-9]" placeholder="MM" oninput="loadDateSearchBarOptions('ms')"
                         list="month" id="query-month" />
-                    <input maxlength="2"
-                        autocomplete="off"
+                    <input maxlength="2" autocomplete="off"
                         onkeypress="if(this.value.length==this.maxLength || this.value > 3) return false;" type="number"
                         inputmode="numeric" pattern="[0-9]" placeholder="DD" oninput="loadDateSearchBarOptions('d')"
                         list="day" id="query-day" />
@@ -100,8 +99,9 @@
     </div>
     <div class="content-container">
         <div id="outer-content">
-            <span onclick="toggleContentOverlay($('#outer-content'), $('#hide-content-btn'))" id="trees-near-header"><svg id="hide-content-btn" width="24"
-                    height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <span onclick="toggleContentOverlay($('#outer-content'), $('#hide-content-btn'))"
+                id="trees-near-header"><svg id="hide-content-btn" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
                     <path d="M6 9L12 15L18 9" stroke="#808080" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
                 </svg><span id="content-title"></span></span>
@@ -118,11 +118,12 @@
     </div>
     <div class="tree-overlay-container">
         <div id="outer-tree-content">
-            <span onclick="toggleContentOverlay($('#outer-tree-content'), $('#hide-content-btn-tree'))" id="tree-name"><svg id="hide-content-btn-tree" width="24"
-                height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 9L12 15L18 9" stroke="#808080" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-            </svg><span id="tree-content-title"></span></span>
+            <span onclick="toggleContentOverlay($('#outer-tree-content'), $('#hide-content-btn-tree'))"
+                id="tree-name"><svg id="hide-content-btn-tree" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 9L12 15L18 9" stroke="#808080" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg><span id="tree-content-title"></span></span>
             <div id="tree-content">
                 <div id="main" class="normalMainHeight">
                     <h2 id="species-name" onclick="treeNameClickSearch()"></h2>
@@ -151,10 +152,14 @@
                     <div id="details"></div>
                 </div>
                 <div id="button-container">
-                    <div onclick="toggleExpandContentOverlay($('#main'), $('#details-arrow-container'))" id="details-arrow-container">
-                        <div id="details-arrow"><svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.75 16.25L15 22.5L21.25 16.25" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M8.75 7.5L15 13.75L21.25 7.5" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <div onclick="toggleExpandContentOverlay($('#main'), $('#details-arrow-container'))"
+                        id="details-arrow-container">
+                        <div id="details-arrow"><svg width="30" height="30" viewBox="0 0 30 30" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.75 16.25L15 22.5L21.25 16.25" stroke="#808080" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M8.75 7.5L15 13.75L21.25 7.5" stroke="#808080" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </div>
                     </div>
@@ -238,8 +243,11 @@
 
         (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) { return; }
-            js = d.createElement(s); js.id = id;
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
             js.src = "https://connect.facebook.net/en_US/sdk.js";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
@@ -251,7 +259,8 @@
     <!-- Additional Script -->
     <script src="/searchMap.js"></script>
     <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIu6Paiio4Zq0ySb6-LuMJOpFSt25RPz0&map_ids=b3163309c37356ea&callback=initMap"> </script>
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIu6Paiio4Zq0ySb6-LuMJOpFSt25RPz0&map_ids=b3163309c37356ea&callback=initMap">
+    </script>
     <script src="./wikipediaFetch.js"></script>
     <script src="./likeButtonAndLeaderboard.js"></script>
 </body>

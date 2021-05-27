@@ -1,7 +1,7 @@
 "use strict";
 /**
  * Loads click events for changing username and email when page loads.
- * @author Stirling 
+ * @author Stirling
  * @author Aidan
  */
 window.addEventListener("DOMContentLoaded", () => {
@@ -49,7 +49,7 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
-  
+
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
       getUserInfo();
@@ -116,7 +116,7 @@ function updateUsername(newUsername) {
         error: function (jqXHR, textStatus, errorThrown) {}
       });
     });
-  } 
+  }
 }
 
 /**

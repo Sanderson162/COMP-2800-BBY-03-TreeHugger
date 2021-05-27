@@ -25,7 +25,10 @@ let locationInterval;
 let rows = 20;
 /* Meters, how far the user travels before a refresh. */
 let distanceRefresh = 50;
-currentLocation = { lat: 49.239593, lng: -123.024645 };
+currentLocation = {
+  lat: 49.239593,
+  lng: -123.024645
+};
 /**
  * TESTING SETTINGS
  */
@@ -37,7 +40,10 @@ let testLocationInterval;
  * Moves the location point to the west for testing purposes.
  */
 function testGPS() {
-  currentLocation = { lat: 49.239593, lng: currentLocation.lng - (pace / 10000000) };
+  currentLocation = {
+    lat: 49.239593,
+    lng: currentLocation.lng - (pace / 10000000)
+  };
   updateLocationMarker(currentLocation);
 }
 /**
@@ -81,10 +87,10 @@ function checkUrlParams(params) {
  * @returns params
  * @author https://stackoverflow.com/questions/7722683/how-to-get-all-query-string-values-using-javascript, Amrit
  */
- function getUrlParams() {
+function getUrlParams() {
   let urlParams = (new URL(document.location)).searchParams;
   let params = {};
-  for(let param of urlParams.keys()) {
+  for (let param of urlParams.keys()) {
     params[param] = urlParams.get(param);
   }
   return params;
@@ -100,7 +106,9 @@ function setUrlParam(key, value) {
     let searchParams = new URLSearchParams(window.location.search);
     searchParams.set(key, value);
     let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
-    window.history.replaceState({path: newurl}, '', newurl);
+    window.history.replaceState({
+      path: newurl
+    }, '', newurl);
   }
 }
 /**
@@ -113,7 +121,9 @@ function removeUrlParam(key) {
     let searchParams = new URLSearchParams(window.location.search);
     searchParams.delete(key);
     let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
-    window.history.replaceState({path: newurl}, '', newurl);
+    window.history.replaceState({
+      path: newurl
+    }, '', newurl);
   }
 }
 /**
@@ -218,7 +228,9 @@ function getContent(_callback) {
       _callback();
     }
     isContent();
-  }).fail(function() { showDialogue("getJsonError") });
+  }).fail(function () {
+    showDialogue("getJsonError")
+  });
 }
 /**
  * Checks if content is empty.
@@ -330,8 +342,13 @@ function updateContent(entry) {
 function zoom(entry) {
   selectedTreeId = entry.recordid;
   colorMarker(entry.recordid);
-  map.setOptions({ gestureHandling: "none" });
-  var treeLocation = { lat: entry.fields.geom.coordinates[1], lng: entry.fields.geom.coordinates[0] }
+  map.setOptions({
+    gestureHandling: "none"
+  });
+  var treeLocation = {
+    lat: entry.fields.geom.coordinates[1],
+    lng: entry.fields.geom.coordinates[0]
+  }
   selectedTreeLocation = treeLocation;
   map.setCenter(
     treeLocation
@@ -352,7 +369,10 @@ function setStreetView(entry) {
   /* Preload the StreetView unless it is not initialized */
   if (panorama.getPosition()) {
     var treeLocationLatLng = new google.maps.LatLng(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0]);
-    var treeLocation = { lat: entry.fields.geom.coordinates[1], lng: entry.fields.geom.coordinates[0] }
+    var treeLocation = {
+      lat: entry.fields.geom.coordinates[1],
+      lng: entry.fields.geom.coordinates[0]
+    }
     panorama.setPosition(treeLocation);
     /* Setting StreetView position animates, so timeout until the animation to completes. */
     setTimeout(function () {
@@ -360,9 +380,7 @@ function setStreetView(entry) {
       /* Supresses an error on fresh launch. */
       try {
         heading = google.maps.geometry.spherical.computeHeading(panorama.getLocation().latLng, treeLocationLatLng);
-      }
-      catch (err) {
-      }
+      } catch (err) {}
       panorama.setPov({
         heading: heading,
         pitch: 10,
@@ -418,7 +436,7 @@ function updateTreeOverlayContent(entry) {
   $("#tree-content-title").text(entry.fields.genus_name + " " + entry.fields.species_name);
   if (locationMarker != null) {
     $("#distance").text(Math.round(distance(entry.fields.geom.coordinates[1], entry.fields.geom.coordinates[0], currentLocation.lat, currentLocation.lng, "M")) + " meters away");
-  }else {
+  } else {
     $("#distance").text("");
   }
   $("#body").text(entry.fields.on_street);
@@ -457,10 +475,10 @@ function getAgeOfTree(dateString) {
  * @author https://stackoverflow.com/questions/10607935/convert-returned-string-yyyymmdd-to-date/10610485, Amrit
  */
 function dateStringtoDate(dateString) {
-  let year = dateString.substring(0,4);
-  let month = dateString.substring(5,7);
-  let day = dateString.substring(7,9);
-  let date = new Date(year, month-1, day);
+  let year = dateString.substring(0, 4);
+  let month = dateString.substring(5, 7);
+  let day = dateString.substring(7, 9);
+  let date = new Date(year, month - 1, day);
   return date;
 }
 /**
@@ -482,7 +500,9 @@ function hideTreeOverlay() {
   $(".tree-overlay-container").hide();
   $(".content-container").show();
   map.setZoom(20);
-  map.setOptions({ gestureHandling: "auto" });
+  map.setOptions({
+    gestureHandling: "auto"
+  });
   panorama.setVisible(false);
   resetMarkerColor();
   selectedTreeLocation = null;
@@ -662,8 +682,7 @@ function createCenterLocationBtn() {
   centerLocationBtn.style.margin = "10px";
   centerLocationBtn.innerHTML = '<svg class="svg-btn" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 30C27.3137 30 30 27.3137 30 24C30 20.6863 27.3137 18 24 18C20.6863 18 18 20.6863 18 24C18 27.3137 20.6863 30 24 30Z" stroke="#007ACC" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   centerLocationBtn.addEventListener("click", function () {
-    if (locationInterval == null) {
-    } else {
+    if (locationInterval == null) {} else {
       map.setCenter(currentLocation);
       map.setZoom(20);
       centerMap();
@@ -712,7 +731,9 @@ function updateDistances() {
   var dis;
   for (let i = 0; i < markers.length; i++) {
     locationObject = {
-      "id": markers[i].get('id'), "lat": markers[i].getPosition().lat(), "lng": markers[i].getPosition().lng(),
+      "id": markers[i].get('id'),
+      "lat": markers[i].getPosition().lat(),
+      "lng": markers[i].getPosition().lng(),
     }
     locationObjects.push(locationObject);
   }
@@ -768,8 +789,7 @@ function centerMap() {
   if (!selectedTreeId) {
     treeHidden = true;
   }
-  if (contentHidden && treeHidden) {
-  } else {
+  if (contentHidden && treeHidden) {} else {
     map.panBy(0, -height * 0.25);
   }
 }
@@ -789,7 +809,10 @@ function addTreeMarker(longitude, latitude, entry) {
       return;
     }
   }
-  var treeLocation = { lat: latitude, lng: longitude }
+  var treeLocation = {
+    lat: latitude,
+    lng: longitude
+  }
   const marker = new google.maps.Marker({
     position: treeLocation,
     map: map,
@@ -802,25 +825,26 @@ function addTreeMarker(longitude, latitude, entry) {
       setStreetView(entry);
       toggleStreetView(entry);
     } else {
-    resetMarkerColor();
-    // $('#' + ids).get(0).scrollIntoView();
-    marker.setIcon(selectedTreeIcon);
-    marker.metadata = { id: ids };
-    zoom(entry);
-    /* Preload StreetView */
-    setStreetView(entry);
+      resetMarkerColor();
+      // $('#' + ids).get(0).scrollIntoView();
+      marker.setIcon(selectedTreeIcon);
+      marker.metadata = {
+        id: ids
+      };
+      zoom(entry);
+      /* Preload StreetView */
+      setStreetView(entry);
     }
   });
 }
 /**
  * Returns the distance given two lnglat values.
  * @author https://www.geodatasource.com/developers/javascript
-*/
+ */
 function distance(lat1, lon1, lat2, lon2, unit) {
   if ((lat1 == lat2) && (lon1 == lon2)) {
     return 0;
-  }
-  else {
+  } else {
     var radlat1 = Math.PI * lat1 / 180;
     var radlat2 = Math.PI * lat2 / 180;
     var theta = lon1 - lon2;
@@ -832,7 +856,9 @@ function distance(lat1, lon1, lat2, lon2, unit) {
     dist = Math.acos(dist);
     dist = dist * 180 / Math.PI;
     dist = dist * 60 * 1.1515;
-    if (unit == "M") { dist = dist * 1.61 * 1000 }
+    if (unit == "M") {
+      dist = dist * 1.61 * 1000
+    }
     return dist;
   }
 }
@@ -888,7 +914,7 @@ function clearLocationMarker() {
  * Updates the details division with wikipedia information when tree overlay is loaded.
  * @author Steven
  */
- function updateDetails() {
+function updateDetails() {
   $("#details").html("");
   let textForQuery = $("#tree-content-title").text();
   textForQuery = (textForQuery.split(' ').slice(0, 2).join('_')).toLowerCase();
@@ -899,7 +925,7 @@ function clearLocationMarker() {
  * @author Amrit
  */
 function addMainScrollListener() {
-  $("#main").scroll(function() {
+  $("#main").scroll(function () {
     $("#details-arrow-container").css("opacity", 100 - $("#main").scrollTop() + "%");
   });
 }
@@ -907,21 +933,23 @@ function addMainScrollListener() {
  * Saves history to database.
  * @author Aidan
  */
-function updateHistory(entry){
+function updateHistory(entry) {
   var user = firebase.auth().currentUser;
   var treeID = entry.recordid;
   if (user) {
-      user.getIdToken(/* forceRefresh */ true).then(function(idToken) {
-          $.ajax({
-              url: "/ajax-add-history",
-              dataType: "json",
-              type: "POST",
-              data: {tree: treeID, idToken: idToken},
-              success: ()=>{},
-              error: (jqXHR,textStatus,errorThrown )=>{
-              }
-          });
+    user.getIdToken( /* forceRefresh */ true).then(function (idToken) {
+      $.ajax({
+        url: "/ajax-add-history",
+        dataType: "json",
+        type: "POST",
+        data: {
+          tree: treeID,
+          idToken: idToken
+        },
+        success: () => {},
+        error: (jqXHR, textStatus, errorThrown) => {}
       });
+    });
   }
 }
 /**
@@ -996,7 +1024,7 @@ function navigateUrl(url) {
  * Copies share link.
  * @author Amrit
  */
- function copyShareLink() {
+function copyShareLink() {
   let url = createShareLink($('#tree-card-id').data('id'));
   copyToClipboard(url);
   $("#copy-btn").text("Copied!");
@@ -1005,7 +1033,7 @@ function navigateUrl(url) {
  * Opens a FB share link
  * @author Amrit
  */
- function fbShare() {
+function fbShare() {
   let url = createShareLink($('#tree-card-id').data('id'));
   window.open("https://www.facebook.com/sharer/sharer.php?u=" + url + "&src=sdkpreparse");
 }
@@ -1033,9 +1061,9 @@ function copyToClipboard(text) {
  * Adds tap to hide share overlay.
  * @author Amrit
  */
- function addHideShareOverlayListener() {
+function addHideShareOverlayListener() {
   $(".social-container").on('click', (event) => {
-    if($(event.target).is("#outer-social *")) return;
+    if ($(event.target).is("#outer-social *")) return;
     hideShareOverlay();
   });
 }
@@ -1060,7 +1088,7 @@ function showShareOverlay() {
  * Updates FB share buttons.
  * @author Amrit
  */
- function fbUpdateBtns(url) {
+function fbUpdateBtns(url) {
   $("#share-fb-btn").attr("data-href", url);
   $("#like-fb-btn").attr("data-href", url);
   FB.XFBML.parse();
@@ -1070,7 +1098,7 @@ function showShareOverlay() {
  * Toggles the content overlay visible or hidden
  * @author Amrit
  */
- function toggleExpandContentOverlay(element, button) {
+function toggleExpandContentOverlay(element, button) {
   if (element.hasClass('normalMainHeight')) {
     expandContentOverlay(element, button);
   } else {
@@ -1140,6 +1168,13 @@ function showContentOverlay(element, button, center) {
  * @author Amrit
  */
 function rotateChevron(chevron, amount) {
-  chevron.css({ transition: "transform 0.3s", transform: "rotate(" + amount + "deg)" });
-  setTimeout(function () { chevron.css({ transition: "none" }) }, 300);
+  chevron.css({
+    transition: "transform 0.3s",
+    transform: "rotate(" + amount + "deg)"
+  });
+  setTimeout(function () {
+    chevron.css({
+      transition: "none"
+    })
+  }, 300);
 }
