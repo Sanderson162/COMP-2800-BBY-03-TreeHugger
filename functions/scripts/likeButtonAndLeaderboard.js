@@ -56,7 +56,6 @@ async function addLikeButton(parentElement, recordID, liked, count) {
         addFavToTree(recordID);
       }
     } else {
-      console.log("cant like if youre not signed in");
     }
   });
 }
@@ -125,7 +124,6 @@ function addFavToTree(recordID) {
           idToken: idToken
         },
         success: function (result, status, xhr) {
-          console.log("recieved: " + status);
         },
         error: function (jqXHR, textStatus, errorThrown) {
           console.log("ERROR:", jqXHR, textStatus, errorThrown);
@@ -133,7 +131,6 @@ function addFavToTree(recordID) {
       });
     });
   } else {
-    console.log("Not signed in");
   }
 }
 
@@ -150,7 +147,6 @@ function removeFavFromTree(recordID) {
           idToken: idToken
         },
         success: function (result, status, xhr) {
-          console.log("recieved: " + status);
         },
         error: function (jqXHR, textStatus, errorThrown) {
           console.log("ERROR:", jqXHR, textStatus, errorThrown);
@@ -158,7 +154,6 @@ function removeFavFromTree(recordID) {
       });
     });
   } else {
-    console.log("Not signed in");
   }
 
 }
@@ -173,8 +168,6 @@ function getFavCountByTree(recordID) {
         recordID: recordID
       },
       success: function (result, status, xhr) {
-        console.log("recieved: " + status);
-        console.log(result);
         resolve(result.count);
       },
       error: function (jqXHR, textStatus, errorThrown) {
@@ -198,9 +191,6 @@ function getFavByUser() {
             idToken: idToken
           },
           success: function (result, status, xhr) {
-            console.log("recieved: " + status);
-            console.log(result);
-            console.log(result.data);
             if (status == 'success') {
               resolve(result.data);
             } else {
@@ -214,7 +204,6 @@ function getFavByUser() {
         });
       });
     } else {
-      console.log("Not signed in");
       resolve(null);
     }
   });
@@ -227,9 +216,6 @@ function getFavCountLeaderboard() {
       dataType: "json",
       type: "POST",
       success: function (result, status, xhr) {
-        console.log("recieved: " + status);
-        console.log(result);
-        console.log(result.data);
         if (status == 'success') {
           resolve(result.data);
         } else {
