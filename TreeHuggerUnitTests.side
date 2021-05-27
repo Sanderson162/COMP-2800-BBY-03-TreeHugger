@@ -2788,7 +2788,7 @@
       ],
       "value": "30000"
     }, {
-      "id": "770601d7-10a7-4f25-85c8-5ff61aee4c9c",
+      "id": "9696fc07-7526-4db4-96e7-d079d39e94d7",
       "comment": "",
       "command": "click",
       "target": "css=.mb3 svg",
@@ -2797,68 +2797,55 @@
       ],
       "value": ""
     }, {
-      "id": "4c53bffb-bf77-4977-b151-5e06653aad84",
+      "id": "a94b5ac8-31fa-4423-a727-7e56174f218c",
       "comment": "",
       "command": "click",
-      "target": "css=.mb3 svg",
+      "target": "id=date_planted-tag",
       "targets": [
-        ["css=.mb3 svg", "css:finder"]
+        ["id=date_planted-tag", "id"],
+        ["css=#date_planted-tag", "css:finder"],
+        ["xpath=//div[@id='date_planted-tag']", "xpath:attributes"],
+        ["xpath=//div[@id='search-tags']/div[3]", "xpath:idRelative"],
+        ["xpath=//div[3]", "xpath:position"]
       ],
       "value": ""
     }, {
-      "id": "d03595d3-4993-4402-930b-e8f60c2086d4",
-      "comment": "",
-      "command": "click",
-      "target": "id=query",
-      "targets": [
-        ["id=query", "id"],
-        ["css=#query", "css:finder"],
-        ["xpath=//input[@id='query']", "xpath:attributes"],
-        ["xpath=//div[@id='search-bar']/input", "xpath:idRelative"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "bff54619-f472-41f6-9446-18b82aae43e6",
+      "id": "19cde04f-3a57-49c2-9793-8059df9d20de",
       "comment": "",
       "command": "type",
-      "target": "id=query",
+      "target": "id=query-year",
       "targets": [
-        ["id=query", "id"],
-        ["css=#query", "css:finder"],
-        ["xpath=//input[@id='query']", "xpath:attributes"],
-        ["xpath=//div[@id='search-bar']/input", "xpath:idRelative"],
-        ["xpath=//input", "xpath:position"]
+        ["id=query-year", "id"],
+        ["css=#query-year", "css:finder"],
+        ["xpath=//input[@id='query-year']", "xpath:attributes"],
+        ["xpath=//div[@id='date-search-bar']/input", "xpath:idRelative"],
+        ["xpath=//div[3]/input", "xpath:position"]
       ],
-      "value": "RUBY RED HORSECHESTNUT"
+      "value": "2019"
     }, {
-      "id": "7063ce0e-2830-4f9b-a9c6-936ed777c1ed",
+      "id": "bf4400dd-bc77-4c47-bba8-b2e7bd310be2",
       "comment": "",
       "command": "click",
-      "target": "id=search-btn",
+      "target": "css=#date-search-bar > #search-btn path:nth-child(1)",
       "targets": [
-        ["id=search-btn", "id"],
-        ["css=#search-bar > #search-btn", "css:finder"],
-        ["xpath=//button[@id='search-btn']", "xpath:attributes"],
-        ["xpath=//div[@id='search-bar']/button", "xpath:idRelative"],
-        ["xpath=//button", "xpath:position"]
+        ["css=#date-search-bar > #search-btn path:nth-child(1)", "css:finder"]
       ],
       "value": ""
     }, {
-      "id": "511672c7-85fb-48e3-b952-734d100d4480",
+      "id": "15530e34-a0c6-4ce6-a433-d5ee24a00b5f",
       "comment": "",
       "command": "click",
-      "target": "id=33570de287aca6b4a59e23ec1be18e8d626668df",
+      "target": "id=8fadc12f3d9b881bffc4976e6bf26d3d71ebe05b",
       "targets": [
-        ["id=33570de287aca6b4a59e23ec1be18e8d626668df", "id"],
-        ["css=#\\33 3570de287aca6b4a59e23ec1be18e8d626668df", "css:finder"],
-        ["xpath=//div[@id='33570de287aca6b4a59e23ec1be18e8d626668df']", "xpath:attributes"],
+        ["id=8fadc12f3d9b881bffc4976e6bf26d3d71ebe05b", "id"],
+        ["css=#\\38 fadc12f3d9b881bffc4976e6bf26d3d71ebe05b", "css:finder"],
+        ["xpath=//div[@id='8fadc12f3d9b881bffc4976e6bf26d3d71ebe05b']", "xpath:attributes"],
         ["xpath=//div[@id='content']/div", "xpath:idRelative"],
         ["xpath=//div[2]/div/div/div", "xpath:position"]
       ],
       "value": ""
     }, {
-      "id": "f4b6b102-0c1b-46e8-93e1-437dc9975b7d",
+      "id": "539520d0-5688-4dff-af30-f79e39a7b9b6",
       "comment": "",
       "command": "mouseOver",
       "target": "id=species-name",
@@ -2868,11 +2855,11 @@
         ["xpath=//h2[@id='species-name']", "xpath:attributes"],
         ["xpath=//div[@id='main']/h2", "xpath:idRelative"],
         ["xpath=//h2", "xpath:position"],
-        ["xpath=//h2[contains(.,'RUBY RED HORSECHESTNUT')]", "xpath:innerText"]
+        ["xpath=//h2[contains(.,'THORNLESS HONEYLOCUST')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
-      "id": "bbcf6570-87f6-493f-8ef0-b6527647ef48",
+      "id": "0bc12cdd-1f36-4343-9d5e-16ec944288c2",
       "comment": "",
       "command": "mouseOut",
       "target": "id=species-name",
@@ -2882,11 +2869,11 @@
         ["xpath=//h2[@id='species-name']", "xpath:attributes"],
         ["xpath=//div[@id='main']/h2", "xpath:idRelative"],
         ["xpath=//h2", "xpath:position"],
-        ["xpath=//h2[contains(.,'RUBY RED HORSECHESTNUT')]", "xpath:innerText"]
+        ["xpath=//h2[contains(.,'THORNLESS HONEYLOCUST')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
-      "id": "0835d06d-b352-439a-a090-20924c90f286",
+      "id": "e221e4f7-45bb-48b8-a6c3-6f41e1ca3688",
       "comment": "",
       "command": "storeText",
       "target": "id=species-name",
@@ -2896,11 +2883,11 @@
         ["xpath=//h2[@id='species-name']", "xpath:attributes"],
         ["xpath=//div[@id='main']/h2", "xpath:idRelative"],
         ["xpath=//h2", "xpath:position"],
-        ["xpath=//h2[contains(.,'RUBY RED HORSECHESTNUT')]", "xpath:innerText"]
+        ["xpath=//h2[contains(.,'SYCAMORE MAPLE')]", "xpath:innerText"]
       ],
       "value": "x"
     }, {
-      "id": "501fa772-1169-4dc7-a89a-8256f955f3e0",
+      "id": "4f4bd478-1f3b-427d-b4b8-91df47ba4b46",
       "comment": "",
       "command": "click",
       "target": "css=#profileHamburgerMenuButton > svg",
@@ -2909,7 +2896,7 @@
       ],
       "value": ""
     }, {
-      "id": "08b5a964-bd93-4cdc-9ead-60a6e821894b",
+      "id": "e2e5cb96-31cb-4a02-9476-8d81fc87a89c",
       "comment": "",
       "command": "click",
       "target": "id=navbarHamProfileButton",
@@ -2922,19 +2909,32 @@
       ],
       "value": ""
     }, {
-      "id": "465cce4c-fd52-479c-8014-70b6b4d24531",
+      "id": "2ae87d71-92f8-4b61-813e-124ee5aa3291",
+      "comment": "",
+      "command": "click",
+      "target": "id=title",
+      "targets": [
+        ["id=title", "id"],
+        ["css=#title", "css:finder"],
+        ["xpath=//div[@id='title']", "xpath:attributes"],
+        ["xpath=//div[@id='main']/div[2]", "xpath:idRelative"],
+        ["xpath=//div[3]/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "549796ab-2430-4434-92c3-317a37a64583",
       "comment": "",
       "command": "assertText",
-      "target": "css=.card:nth-child(4) .common-name",
+      "target": "css=.card:nth-child(1) .common-name",
       "targets": [
-        ["css=.card:nth-child(4) .common-name", "css:finder"],
-        ["xpath=//div[@id='results']/div[4]/div[3]/p", "xpath:idRelative"],
-        ["xpath=//div[4]/div[3]/p", "xpath:position"],
-        ["xpath=//p[contains(.,'RUBY RED HORSECHESTNUT')]", "xpath:innerText"]
+        ["css=.card:nth-child(1) .common-name", "css:finder"],
+        ["xpath=//div[@id='results']/div/div[2]/p", "xpath:idRelative"],
+        ["xpath=//div[4]/div/div[2]/p", "xpath:position"],
+        ["xpath=//p[contains(.,'LAVALLEI HYBRID HAWTHORN')]", "xpath:innerText"]
       ],
       "value": "${x}"
     }, {
-      "id": "7755957f-603c-4286-afdc-14c9b6741831",
+      "id": "33ec8540-1553-4537-97a5-8a3ec54844cd",
       "comment": "",
       "command": "click",
       "target": "css=#profileHamburgerMenuButton > svg",
@@ -2943,7 +2943,7 @@
       ],
       "value": ""
     }, {
-      "id": "76b84031-ca4c-4e73-ba4e-78aad4e24106",
+      "id": "23ee3819-cf2b-49df-8b53-e3b19fdd93c0",
       "comment": "",
       "command": "click",
       "target": "id=loginLogoutButton",
@@ -2960,28 +2960,21 @@
     "id": "5e35a07a-6105-425b-956b-44a44c257740",
     "name": "history 2",
     "commands": [{
-      "id": "fc75abb9-e1b7-4280-be59-024b37ecae49",
-      "comment": "",
-      "command": "",
-      "target": "",
-      "targets": [],
-      "value": ""
-    }, {
-      "id": "3acca989-e072-490a-901d-5e8123e32054",
+      "id": "6a6abe4c-2e07-475b-a9ce-79e5d30c0cbd",
       "comment": "",
       "command": "open",
       "target": "/",
       "targets": [],
       "value": ""
     }, {
-      "id": "78d1b2a8-f84b-4458-a612-942172852a91",
+      "id": "7b00a39b-a0a8-478c-9d06-8bb2358b8dd0",
       "comment": "",
       "command": "setWindowSize",
       "target": "816x680",
       "targets": [],
       "value": ""
     }, {
-      "id": "e50e62ff-e9c4-4ec3-bc97-2cdd39d77429",
+      "id": "eb6c4ff3-8dc3-4025-8b7a-97c2acb7599e",
       "comment": "",
       "command": "click",
       "target": "css=#profileHamburgerMenuButton > svg",
@@ -2990,7 +2983,7 @@
       ],
       "value": ""
     }, {
-      "id": "051bba1f-95ba-485c-a490-3b4dbea9647d",
+      "id": "a603a18d-1929-4466-a5d2-455bda082ff1",
       "comment": "",
       "command": "click",
       "target": "id=loginLogoutButton",
@@ -3003,7 +2996,7 @@
       ],
       "value": ""
     }, {
-      "id": "5d3a60a9-befe-4fea-bc30-89c0951138b1",
+      "id": "ce0e5ba0-d4cc-45ab-b5ae-644541846903",
       "comment": "",
       "command": "click",
       "target": "id=login_email",
@@ -3016,7 +3009,7 @@
       ],
       "value": ""
     }, {
-      "id": "b6b7f357-1d60-459d-95d4-a007f7f7bf0b",
+      "id": "dad2cef3-5ddf-4fe7-b0d6-aa3e5d1fec16",
       "comment": "",
       "command": "type",
       "target": "id=login_email",
@@ -3029,7 +3022,7 @@
       ],
       "value": "aaa@aaa.ca"
     }, {
-      "id": "c09c1043-6fb2-401b-94ff-c26f57ac5905",
+      "id": "2705234b-a715-4fb7-9431-63506b0f339a",
       "comment": "",
       "command": "click",
       "target": "id=login_password",
@@ -3042,7 +3035,7 @@
       ],
       "value": ""
     }, {
-      "id": "d37cba5b-eac9-4b19-8bad-0890aae00759",
+      "id": "acb67a0c-219a-47c0-af59-8d7b90c45706",
       "comment": "",
       "command": "type",
       "target": "id=login_password",
@@ -3055,7 +3048,7 @@
       ],
       "value": "666666"
     }, {
-      "id": "29883337-77da-4087-b7be-6b2e9d8a21b8",
+      "id": "9481848f-6cb0-449d-b42c-880758efa6d4",
       "comment": "",
       "command": "click",
       "target": "id=loginSubmit",
@@ -3068,88 +3061,39 @@
       ],
       "value": ""
     }, {
-      "id": "edda98ae-a99d-4b80-beb4-480c265711c1",
+      "id": "0c709912-33ce-4457-b4f8-8b99d0cd6a7e",
       "comment": "",
-      "command": "pause",
-      "target": "",
-      "targets": [],
-      "value": "3000"
+      "command": "waitForElementVisible",
+      "target": "id=profileHamburgerMenu",
+      "targets": [
+        ["id=profileHamburgerMenu", "id"],
+        ["css=#profileHamburgerMenu", "css:finder"],
+        ["xpath=//div[@id='profileHamburgerMenu']", "xpath:attributes"],
+        ["xpath=//div[6]", "xpath:position"]
+      ],
+      "value": "30000"
     }, {
-      "id": "ad684626-36de-4913-8b30-a53dff5b04a0",
+      "id": "a12ab9e1-e3e3-49b7-9cfb-dc9455c4f8c3",
       "comment": "",
       "command": "click",
-      "target": "css=.mb3 svg",
+      "target": "css=.mb2 path:nth-child(2)",
       "targets": [
-        ["css=.mb3 svg", "css:finder"]
+        ["css=.mb2 path:nth-child(2)", "css:finder"]
       ],
       "value": ""
     }, {
-      "id": "c03c4a65-a725-4c95-bafb-f2d5eb55ff52",
-      "comment": "",
-      "command": "mouseOver",
-      "target": "id=species_name-tag",
-      "targets": [
-        ["id=species_name-tag", "id"],
-        ["css=#species_name-tag", "css:finder"],
-        ["xpath=//div[@id='species_name-tag']", "xpath:attributes"],
-        ["xpath=//div[@id='search-tags']/div[4]", "xpath:idRelative"],
-        ["xpath=//div[4]", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "75162a09-2533-4aa1-8863-ea708f3a63f4",
-      "comment": "",
-      "command": "mouseOut",
-      "target": "id=species_name-tag",
-      "targets": [
-        ["id=species_name-tag", "id"],
-        ["css=#species_name-tag", "css:finder"],
-        ["xpath=//div[@id='species_name-tag']", "xpath:attributes"],
-        ["xpath=//div[@id='search-tags']/div[4]", "xpath:idRelative"],
-        ["xpath=//div[4]", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "93136f45-4f7a-4cd7-ba9f-fba0e9f0e505",
+      "id": "ce26f5a6-2733-40fd-9c33-f93c6489a587",
       "comment": "",
       "command": "click",
-      "target": "id=tree_id-tag",
+      "target": "css=#b07ad088183e93cce152203fbf2b5f1f222108e6 > .title",
       "targets": [
-        ["id=tree_id-tag", "id"],
-        ["css=#tree_id-tag", "css:finder"],
-        ["xpath=//div[@id='tree_id-tag']", "xpath:attributes"],
-        ["xpath=//div[@id='search-tags']/div[8]", "xpath:idRelative"],
-        ["xpath=//div[8]", "xpath:position"]
+        ["css=#b07ad088183e93cce152203fbf2b5f1f222108e6 > .title", "css:finder"],
+        ["xpath=//div[@id='b07ad088183e93cce152203fbf2b5f1f222108e6']/div", "xpath:idRelative"],
+        ["xpath=//div/div/div/div/div/div", "xpath:position"]
       ],
       "value": ""
     }, {
-      "id": "f426150d-377f-4bef-b494-1fd19c237749",
-      "comment": "",
-      "command": "type",
-      "target": "id=query",
-      "targets": [
-        ["id=query", "id"],
-        ["css=#query", "css:finder"],
-        ["xpath=//input[@id='query']", "xpath:attributes"],
-        ["xpath=//div[@id='search-bar']/input", "xpath:idRelative"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": "167500"
-    }, {
-      "id": "88b9220e-0d64-412d-b456-d00752ecd997",
-      "comment": "",
-      "command": "click",
-      "target": "id=search-btn",
-      "targets": [
-        ["id=search-btn", "id"],
-        ["css=#search-bar > #search-btn", "css:finder"],
-        ["xpath=//button[@id='search-btn']", "xpath:attributes"],
-        ["xpath=//div[@id='search-bar']/button", "xpath:idRelative"],
-        ["xpath=//button", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "754092ce-3680-4540-96f1-67fe14959803",
+      "id": "213ed230-01bf-427c-81a4-2f5b0739dd9d",
       "comment": "",
       "command": "storeText",
       "target": "id=species-name",
@@ -3159,11 +3103,11 @@
         ["xpath=//h2[@id='species-name']", "xpath:attributes"],
         ["xpath=//div[@id='main']/h2", "xpath:idRelative"],
         ["xpath=//h2", "xpath:position"],
-        ["xpath=//h2[contains(.,'SYCAMORE MAPLE')]", "xpath:innerText"]
+        ["xpath=//h2[contains(.,'PISSARD PLUM')]", "xpath:innerText"]
       ],
       "value": "x"
     }, {
-      "id": "3092e8dc-98ae-41dc-9df1-8546e19f5968",
+      "id": "9489295d-e04b-4c2f-9a1d-caa59218b197",
       "comment": "",
       "command": "click",
       "target": "css=#profileHamburgerMenuButton > svg",
@@ -3172,7 +3116,7 @@
       ],
       "value": ""
     }, {
-      "id": "48f0e715-1985-4564-b571-6279abca9ceb",
+      "id": "cdd03b2c-c529-4e85-9864-8f0953950f48",
       "comment": "",
       "command": "click",
       "target": "id=navbarHamProfileButton",
@@ -3185,15 +3129,28 @@
       ],
       "value": ""
     }, {
-      "id": "8d4db6b1-1634-493d-8495-9889e7a28302",
+      "id": "d65c2bf4-a95a-4f81-a7a5-7cd54dac61ed",
+      "comment": "",
+      "command": "click",
+      "target": "id=title",
+      "targets": [
+        ["id=title", "id"],
+        ["css=#title", "css:finder"],
+        ["xpath=//div[@id='title']", "xpath:attributes"],
+        ["xpath=//div[@id='main']/div[2]", "xpath:idRelative"],
+        ["xpath=//div[3]/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "736c6ebd-29ce-42ea-9dab-0b20b068d607",
       "comment": "",
       "command": "assertText",
-      "target": "css=.card:nth-child(5) .common-name",
+      "target": "css=.card:nth-child(1) .common-name",
       "targets": [
-        ["css=.card:nth-child(4) .common-name", "css:finder"],
-        ["xpath=//div[@id='results']/div[4]/div[3]/p", "xpath:idRelative"],
-        ["xpath=//div[4]/div[3]/p", "xpath:position"],
-        ["xpath=//p[contains(.,'RUBY RED HORSECHESTNUT')]", "xpath:innerText"]
+        ["css=.card:nth-child(1) .common-name", "css:finder"],
+        ["xpath=//div[@id='results']/div/div[2]/p", "xpath:idRelative"],
+        ["xpath=//div[4]/div/div[2]/p", "xpath:position"],
+        ["xpath=//p[contains(.,'LAVALLEI HYBRID HAWTHORN')]", "xpath:innerText"]
       ],
       "value": "${x}"
     }, {
