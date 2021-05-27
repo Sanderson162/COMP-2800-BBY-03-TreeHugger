@@ -7,7 +7,7 @@ Find your tree, Vancouver!
 * [Technologies](#technologies)
 * [Dependencies](#Dependencies)
 * [Contents](#content)
-* [IDE's](#IDE's)
+* [IDE's](#IDE\'s)
 * [Setup](#Setup Instructions)
 
 
