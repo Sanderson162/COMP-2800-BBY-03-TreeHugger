@@ -2,6 +2,7 @@
 addNavbarCommon();
 /**
  * Displays the nav bar with the correct selected menu item highlighted. 
+ * uses minified HTML that can be found un-minified in /templates
  * @see Stirling Anderson
  */
 function addNavbarCommon() {
@@ -106,7 +107,10 @@ function wrapBody() {
 	document.body.appendChild(mainContainer);
 }
 
-//Login functionality needs to be on every page
+/**
+ * Listeners for the login buttons on every page
+ * @author Stirling
+ */
 $(() => {
   $(".login-container").hide();
   $("#signupForm").hide();
@@ -178,20 +182,7 @@ $(() => {
         /** @type {firebase.auth.OAuthCredential} */
         var credential = result.credential;
 
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        var token = credential.accessToken;
-        // The signed-in user info.
-        var user = result.user;
-        // ...
       }).catch((error) => {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-        // ...
       });
   });
 
@@ -233,7 +224,11 @@ $(() => {
 
 });
 
-
+/**
+ * signs a user up.
+ * @param {object} formdata user email, username and password.
+ * @author Stirling
+ */
 function signup(formData) {
   firebase.auth().createUserWithEmailAndPassword(formData.email, formData.password)
     .then((userCredential) => {
@@ -256,6 +251,11 @@ function signup(formData) {
     });
 }
 
+/**
+ * logs a user in
+ * @param {object} formdata user email and password.
+ * @author Stirling
+ */
 function login(formData) {
   firebase.auth().signInWithEmailAndPassword(formData.email, formData.password)
     .then((userCredential) => {
@@ -272,8 +272,12 @@ function login(formData) {
     });
 }
 
+/**
+ * creates a new record in the database for a new user
+ * @param {object} user user object.
+ * @author Stirling
+ */
 function createNewAccount(user) {
-  //confirm("Creating new user DEBUG");
   firebase.auth().currentUser.getIdToken( /* forceRefresh */ true).then(function (idToken) {
     $.ajax({
       url: "/ajax-add-user",

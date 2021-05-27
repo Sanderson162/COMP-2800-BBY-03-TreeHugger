@@ -1,5 +1,9 @@
-// gets all the info regarding a particular tree using the recordID from opendata
-// returns null if tree not able to be retrieved
+/**
+ * gets all the info regarding a particular tree using the recordID from opendata
+ * returns null if tree not able to be retrieved
+ * @param {string} recordID tree recordID.
+ * @author Stirling
+ */
 function getInfoOnTreeByID(recordID) {
   return new Promise((resolve) => {
     let url = "https://opendata.vancouver.ca/api/v2/catalog/datasets/street-trees/records/" + recordID + "?select=*&pretty=false&timezone=UTC"
@@ -53,6 +57,7 @@ function getWikipediaArticleName(genus_species) {
  * Returns an extract from a wikipedia page corresponding to a search of the genus and species name.
  * Can change sentence limit of extract --> adding "&exsentences=value" directly after "&prop=extracts" --> value = 1 - 10
  * @param {*} genus_species
+ * @author Stirling, Steven
  * @returns text extract
  */
 function getWikipediaExtract(genus_species) {
@@ -79,6 +84,12 @@ function getWikipediaExtract(genus_species) {
   });
 }
 
+/**
+ * gets the thumbnail from wikipedia
+ * returns null if tree not able to be retrieved
+ * @param {*} genus_species genus_species name
+ * @author Stirling, Steven
+ */
 function getWikipediaThumbnail(genus_species) {
   return new Promise((resolve) => {
     let thumbnailUrl = "https://en.wikipedia.org/w/api.php?action=query&titles=" + genus_species + "&prop=pageimages&format=json&pithumbsize=400&callback=?&redirects=";
@@ -105,7 +116,8 @@ function getWikipediaThumbnail(genus_species) {
 
 /**
  * Displays wikipedia thumbnail retrieved from query in details division.
- * @param {*} result
+ * @param {*} genus_species
+ * @author Stirling, Steven
  */
 async function displayWikipediaInformation(element, genus_species, arrowElement) {
 

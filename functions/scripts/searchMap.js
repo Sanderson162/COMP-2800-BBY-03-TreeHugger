@@ -89,6 +89,10 @@ function searchWithID(id) {
   queueSearch();
 }
 
+/**
+ * clears the search panel for new info
+ * @author Stirling
+ */
 function clearSearch() {
   removeUrlParam("id");
   removeUrlParam("type");
@@ -106,12 +110,21 @@ function clearSearch() {
   $(".content-container").show();
 }
 
-function searchWithRecordID(id) {
+/**
+ * searches record using recordID
+ * @param {string} recordID tree record id.
+ * @author Stirling
+ */
+function searchWithRecordID(recordID) {
   clearSearch();
   $("#content-title").text("TREE");
-  getRecordAndDisplay(id, null, true);
+  getRecordAndDisplay(recordID, null, true);
 }
 
+/**
+ * gets an array of user favourites
+ * @author Stirling
+ */
 async function searchWithFavourites() {
   clearSearch();
   $("#content-title").text("FAVOURITE TREES");
@@ -126,6 +139,10 @@ async function searchWithFavourites() {
   }
 }
 
+/**
+ * gets the leaderboard array and order
+ * @author Stirling
+ */
 async function searchWithLeaderboard() {
   clearSearch();
 
@@ -140,6 +157,13 @@ async function searchWithLeaderboard() {
   }
 }
 
+/**
+ * gets a record from leaderboard array and order
+ * @param {string} recordID tree record id.
+ * @param {number} order order for element to be displayed.
+ * @param {boolean} zoomOnTree to zoom or not after element added.
+ * @author Stirling
+ */
 async function getRecordAndDisplay(recordID, order, zoomOnTree) {
   let entry = await getInfoOnTreeByID(recordID);
   if (entry.fields.geom) {
@@ -1503,25 +1527,7 @@ function toggleStreetView(entry) {
     setStreetView(entry);
   }
 }
-/**
- * Centers the map with respect to 50% div overlay.
- * @author Amrit
- */
-function centerMapoldTest() {
-  let contentHidden = false;
-  let treeHidden = false;
-  let height = window.innerHeight;
-  if ($("#outer-content").css('height') == '40px') {
-    contentHidden = true;
-  }
-  if (!selectedTreeId) {
-    treeHidden = true;
-  }
-  if (contentHidden && treeHidden) {
-  } else {
-    map.panBy(0, -height * 0.25);
-  }
-}
+
 /**
  * Centers the map with respect to 50% div overlay.
  * @author Amrit

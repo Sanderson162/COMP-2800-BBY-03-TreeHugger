@@ -1,3 +1,25 @@
+/**
+ * Listens if the user login/logout to gray out or fill in the button
+ * @author Stirling
+ */
+$(() => {
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      refreshLikeButtons();
+    } else {
+      refreshLikeButtons();
+    }
+  });
+});
+
+/**
+ * appends a like button to an element, if either count or liked are null, function will lookup
+ * @param {string} parentElement element for heart to be appended to
+ * @param {string} recordID  recordID of the tree
+ * @param {boolean} liked  Whether the user liked the tree
+ * @param {number} count  The type of query (species, etc)
+ * @author Stirling
+ */
 async function addLikeButton(parentElement, recordID, liked, count) {
   let heartIcon = "<i class='fas fa-heart fa-lg' style='color: red;'></i>";
   let heartIconEmpty = "<i class='far fa-heart fa-lg' style='color: red;'></i>";
@@ -60,17 +82,10 @@ async function addLikeButton(parentElement, recordID, liked, count) {
   });
 }
 
-$(() => {
-  firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-      refreshLikeButtons();
-    } else {
-      refreshLikeButtons();
-    }
-  });
-});
-
-
+/**
+ * Refreshing the like button by removing it and adding it again.
+ * @author Stirling
+ */
 function refreshLikeButtons(){
   $('.likeButton').each(function(index, element) {
     let recordID = $(this).attr('id').split("_")[0];
@@ -78,6 +93,11 @@ function refreshLikeButtons(){
   });
 }
 
+/**
+ * Gets if a logged in user liked a tree.
+ * @param {string} recordID  recordID of the tree
+ * @author Amrit
+ */
 function getIfUserLiked(recordID) {
   return new Promise((resolve) => {
     var user = firebase.auth().currentUser;
@@ -110,7 +130,11 @@ function getIfUserLiked(recordID) {
   });
 }
 
-
+/**
+ * add a tree to the users favourites.
+ * @param {string} recordID  recordID of the tree
+ * @author Stirling
+ */
 function addFavToTree(recordID) {
   var user = firebase.auth().currentUser;
   if (user) {
@@ -134,6 +158,11 @@ function addFavToTree(recordID) {
   }
 }
 
+/**
+ * remove a tree to the users favourites.
+ * @param {string} recordID  recordID of the tree
+ * @author Stirling
+ */
 function removeFavFromTree(recordID) {
   var user = firebase.auth().currentUser;
   if (user) {
@@ -158,6 +187,11 @@ function removeFavFromTree(recordID) {
 
 }
 
+/**
+ * get fav count by recordID.
+ * @param {string} recordID  recordID of the tree
+ * @author Stirling
+ */
 function getFavCountByTree(recordID) {
   return new Promise((resolve) => {
     $.ajax({
@@ -178,6 +212,10 @@ function getFavCountByTree(recordID) {
   });
 }
 
+/**
+ * get list of records user liked.
+ * @author Stirling
+ */
 function getFavByUser() {
   return new Promise((resolve) => {
     var user = firebase.auth().currentUser;
@@ -209,6 +247,10 @@ function getFavByUser() {
   });
 }
 
+/**
+ * get leaderboard of liked records.
+ * @author Stirling
+ */
 function getFavCountLeaderboard() {
   return new Promise((resolve) => {
     $.ajax({
