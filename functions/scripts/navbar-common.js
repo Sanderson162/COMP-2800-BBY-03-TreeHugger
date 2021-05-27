@@ -78,8 +78,6 @@ $("#navbarHamProfileButton").on('click', (event) => {
 	var user = firebase.auth().currentUser;
   if (user) {
     window.location.href = "/profile";
-  } else {
-    console.log("Not signed in");
   }
 });
 
@@ -143,13 +141,8 @@ $(() => {
   $('#loginLogoutButton').click(function (e) {
     var user = firebase.auth().currentUser;
     if (user) {
-      firebase.auth().signOut().then(() => {
-        console.log("Signed out");
-      }).catch((error) => {
-        console.log("error signing out: " + error);
-      });
+      firebase.auth().signOut()
     } else {
-      console.log("Nobody is signed in");
       $(".login-container").show();
 	  $("#profileHamburgerMenu").hide();
     }
@@ -258,7 +251,6 @@ function signup(formData) {
     .catch((error) => {
       var errorCode = error.code;
       var errorMessage = error.message;
-      console.log(errorMessage);
       $("#signupMsg").text(errorMessage);
 	  $("#outer-login").css("max-height", "+=30px");
     });
@@ -275,15 +267,12 @@ function login(formData) {
     .catch((error) => {
       var errorCode = error.code;
       var errorMessage = error.message;
-      console.log(errorMessage);
       $("#loginMsg").text(errorMessage);
 	  $("#outer-login").css("max-height", "+=30px");
     });
 }
 
 function createNewAccount(user) {
-  console.log(JSON.stringify(user));
-  console.log("requesting server makes database slot for user " + user.uid);
   //confirm("Creating new user DEBUG");
   firebase.auth().currentUser.getIdToken( /* forceRefresh */ true).then(function (idToken) {
     $.ajax({
@@ -296,12 +285,8 @@ function createNewAccount(user) {
         uid: user.uid,
         idToken: idToken
       },
-      success: (status) => {
-        console.log("New user created")
-      },
-      error: () => {
-        console.log("ERROR FAILED TO CONNECT")
-      }
+      success: (status) => {},
+      error: () => {}
     });
   })
 }

@@ -6,7 +6,6 @@
 window.addEventListener("DOMContentLoaded", () => {
   //username change
   $("#userNameArea").on('click', 'span', function () {
-    console.log("clicked on username");
     let td = $(this).parent();
     let spanText = td.children().text();
     let input = $("<input type='text' value='" + spanText + "'>");
@@ -29,7 +28,6 @@ window.addEventListener("DOMContentLoaded", () => {
   });
   //email change function
   $("#emailArea").on('click', 'span', function () {
-    console.log("clicked on email");
     let td = $(this).parent();
     let spanText = td.children().text();
     let input = $("<input type='text' value='" + spanText + "'>");
@@ -78,7 +76,6 @@ function getUserInfo() {
         },
         success: function (result, status, xhr) {
           if (status == 'success') {
-            console.log("Profile retrieved");
             if (!result.name) {
               $("#userNameArea").children().text("Set username here");
             } else {
@@ -86,19 +83,14 @@ function getUserInfo() {
             }
 
             $("#emailArea").children().text(result.email);
-          } else {
-            console.log("unable to retrieve");
           }
         },
         error: function (jqXHR, textStatus, errorThrown) {
           $("#emailArea").children().text(user.email);
-          console.log("ERROR:", jqXHR, textStatus, errorThrown);
         }
 
       });
     });
-  } else {
-    console.log("Not signed in");
   }
 }
 
@@ -119,22 +111,11 @@ function updateUsername(newUsername) {
           name: newUsername,
           idToken: idToken
         },
-        success: function (result, status, xhr) {
-          if (status == 'success') {
-            console.log("Username updated");
-          } else {
-            console.log("Username couldnt be updated");
-          }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-          console.log("ERROR:", jqXHR, textStatus, errorThrown);
-        }
-
+        success: function (result, status, xhr) {},
+        error: function (jqXHR, textStatus, errorThrown) {}
       });
     });
-  } else {
-    console.log("Not signed in");
-  }
+  } 
 }
 
 /**
@@ -159,19 +140,10 @@ function updateEmail(newEmail) {
             $(".login-container").show();
             $("#login_email").val(newEmail);
           })
-          if (status == 'success') {
-            console.log("Email updated");
-          } else {
-            console.log("Email couldnt be updated");
-          }
         },
-        error: function (jqXHR, textStatus, errorThrown) {
-          console.log("ERROR:", jqXHR, textStatus, errorThrown);
-        }
+        error: function (jqXHR, textStatus, errorThrown) {}
 
       });
     });
-  } else {
-    console.log("Not signed in");
   }
 }
