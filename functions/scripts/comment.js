@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 "use strict";
+=======
+'use strict'
+
+>>>>>>> 7a5b4bae169c54be762a0a8b0f3baf6a231526c4
 /**
  * Calls the server to add a comment (saved tree)
  * @param {String} treeID
