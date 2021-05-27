@@ -1,7 +1,7 @@
 "use strict";
 addNavbarCommon();
 /**
- * Displays the nav bar with the correct selected menu item highlighted. 
+ * Displays the nav bar with the correct selected menu item highlighted.
  * @see Stirling Anderson
  */
 function addNavbarCommon() {
@@ -92,8 +92,8 @@ $(".login-container").on('click', (event) => {
 });
 
 
-/** 
- * Wraps the body in a main-container div. 
+/**
+ * Wraps the body in a main-container div.
  * @see https://stackoverflow.com/questions/1577814/wrapping-a-div-around-the-document-body-contents
  */
 function wrapBody() {
@@ -147,8 +147,6 @@ $(() => {
 	  $("#profileHamburgerMenu").hide();
     }
   });
-
-  
 
   $('#loginSubmit').on("click", function (e) {
     e.preventDefault();

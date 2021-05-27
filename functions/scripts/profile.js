@@ -79,7 +79,7 @@ function showComments() {
 /**
  * displays all results if there are results
  * otherwise displays "no results found"
- * @param {Array} data 
+ * @param {Array} data
  * @author Aidan
  */
 function spliceComments(data){
@@ -95,7 +95,7 @@ function spliceComments(data){
 
 /**
  * Displays a comment
- * @param {Object} comment 
+ * @param {Object} comment
  * @returns a dom element
  */
 function displayComment(comment){
@@ -105,14 +105,14 @@ function displayComment(comment){
     elem.click(() =>{
         window.location = "./searchMap?id=" + comment.Tree;
     })
-    
+
     let query = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=street-trees&q=&facet=genus_name&facet=species_name&facet=common_name&facet=assigned&facet=root_barrier&facet=plant_area&facet=on_street&facet=neighbourhood_name&facet=street_side_name&facet=height_range_id&facet=curb&facet=date_planted&refine.recordid=" + comment.Tree;
     $.getJSON(query, (tree) => {
         let t = $("<div class='tree'>");
         t.append($("<p class='common-name'></p>").html(tree.records[0].fields.common_name));
         t.append($("<p class='species-name'></p>").html(tree.records[0].fields.genus_name+" "+tree.records[0].fields.species_name));
         t.append($("<p class='street-name'></p>").html(tree.records[0].fields.on_street_block+" "+tree.records[0].fields.on_street+" "+tree.records[0].fields.neighbourhood_name));
-    
+
         elem.append(t);
     })
     return elem;
@@ -121,7 +121,7 @@ function displayComment(comment){
 /**
  * displays all results if there are results for history
  * otherwise displays "no results found"
- * @param {Object} data 
+ * @param {Object} data
  * @author Aidan
  */
 function spliceHistory(data){
@@ -137,7 +137,7 @@ function spliceHistory(data){
 
 /**
  * displays one elemement of history
- * @param {Object} comment 
+ * @param {Object} comment
  * @returns a dom element
  */
 function displayHistory(comment){
@@ -154,7 +154,7 @@ function displayHistory(comment){
         t.append($("<p class='common-name'></p>").html(tree.records[0].fields.common_name));
         t.append($("<p class='species-name'></p>").html(tree.records[0].fields.genus_name+" "+tree.records[0].fields.species_name));
         t.append($("<p class='street-name'></p>").html(tree.records[0].fields.on_street_block+" "+tree.records[0].fields.on_street+" "+tree.records[0].fields.neighbourhood_name));
-    
+
         elem.append(t);
     })
     return elem;
@@ -164,7 +164,7 @@ function displayHistory(comment){
  * Url parsing function.
  * @returns object
  * @author https://html-online.com/articles/get-url-parameters-javascript/
- */ 
+ */
 function getUrlVars() {
     var vars = {};
     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {

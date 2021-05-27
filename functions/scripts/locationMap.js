@@ -993,7 +993,7 @@ function navigateUrl(url) {
   window.location.href = url;
 }
 /**
- * Copys share link.
+ * Copies share link.
  * @author Amrit
  */
  function copyShareLink() {
@@ -1003,7 +1003,7 @@ function navigateUrl(url) {
 }
 /**
  * Opens a FB share link
- * @auther Amrit
+ * @author Amrit
  */
  function fbShare() {
   let url = createShareLink($('#tree-card-id').data('id'));
@@ -1022,8 +1022,7 @@ function createShareLink(id) {
   return newUrl;
 }
 /**
- * Copys text to clipboard.
- * TODO SHOW DIALOG!!!!!!!!!
+ * Copies text to clipboard.
  * @param {string} text
  * @author Amrit
  */
@@ -1059,7 +1058,7 @@ function showShareOverlay() {
 }
 /**
  * Updates FB share buttons.
- * @auther Amrit
+ * @author Amrit
  */
  function fbUpdateBtns(url) {
   $("#share-fb-btn").attr("data-href", url);
@@ -1067,9 +1066,6 @@ function showShareOverlay() {
   FB.XFBML.parse();
 }
 
-
-
-//toggle view
 /**
  * Toggles the content overlay visible or hidden
  * @author Amrit

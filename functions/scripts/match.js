@@ -1,7 +1,7 @@
 /**
  * Loads the event listeners for the menu buttons.
- * @author Aidan 
- */ 
+ * @author Aidan
+ */
 $(document).ready(() => {
     $("#form").hide();
     $("#birth").click(() => {
@@ -24,7 +24,7 @@ $(document).ready(() => {
 
 /**
  * highlights a selected card, unhighlights the others
- * @param {elem} target 
+ * @param {elem} target
  * @author Aidan
  */
 function selectCard(target) {
@@ -55,7 +55,7 @@ function loadBirthForm() {
     f.append($("<span id='formmsg'>"));
 }
 
-/** 
+/**
  * loads the form for the anniversary tree
  * @author Aidan
  */
@@ -105,7 +105,7 @@ function loadEventForm() {
 
 /**
  * click event for form submission
- * @param {Object} type 
+ * @param {Object} type
  * @returns null
  * @author Aidan
  */
@@ -199,15 +199,15 @@ async function differentYear(date, type){
             $("#result").html("");
             $("#result").append(displayTree(tree,type.close,saveButton(tree, type.message, type.emoji)));
             return true;
-        } 
+        }
     }
     return false;
 }
 
 /**
  * finds the trees in the same month
- * @param {String} date 
- * @param {Object} type 
+ * @param {String} date
+ * @param {Object} type
  * @returns boolean
  */
 async function findClosest(date, type) {
@@ -232,10 +232,10 @@ async function findClosest(date, type) {
 
 
 /**
- * given trees in the same month, finds the closest. 
- * @param {*} data 
- * @param {*} month 
- * @param {*} day 
+ * given trees in the same month, finds the closest.
+ * @param {*} data
+ * @param {*} month
+ * @param {*} day
  * @returns returns a tree
  * @author Aidan
  */
@@ -258,9 +258,9 @@ function closestTree(data, month, day) {
 
 /**
  * displays the tree
- * @param {Object} entry 
- * @param {String} message 
- * @param {Object} saveBtn 
+ * @param {Object} entry
+ * @param {String} message
+ * @param {Object} saveBtn
  * @returns a dom element
  */
 function displayTree(entry,message,saveBtn) {
@@ -279,7 +279,7 @@ function displayTree(entry,message,saveBtn) {
 
 /**
  * returns a button with a link to the tree
- * @param {object} tree 
+ * @param {object} tree
  * @returns a dom element
  * @author Aidan
  */
@@ -294,9 +294,9 @@ function viewButton(tree){
 /**
  * Generates the save button
  * if the user is not logged in it displays a warning
- * @param {*} tree 
- * @param {*} message 
- * @param {*} emoji 
+ * @param {*} tree
+ * @param {*} message
+ * @param {*} emoji
  * @returns returns a dom element
  */
 function saveButton(tree, message, emoji) {
@@ -318,7 +318,7 @@ function saveButton(tree, message, emoji) {
 
 /**
  * In-place removal of objects in the array without geometry data.
- * @param {Array} a 
+ * @param {Array} a
  */
 function removeNoGeom(a) {
     if (a.length>0){
