@@ -85,5 +85,5 @@ Setting up this project will allow you to preview the app locally, all API keys 
 5. Service account key needed for accesing Authentication and database is included in repository
 6. Test app functions by running ```firebase emulators:start```
 7. View current testing progress at [here](https://docs.google.com/spreadsheets/d/1dd15Ohg59e2YYt_uV0LmraUiUDuTnIvSvjWpqlFbFU4/edit#gid=394496370)
-8. For deploying please contact either Stirling, Amrit, Steven, Aidan
+8. For deploying to production enviroment please contact either Stirling, Amrit, Steven, Aidan
 
