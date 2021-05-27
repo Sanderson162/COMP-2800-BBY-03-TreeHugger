@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Calls the server to add a comment (saved tree)
  * @param {String} treeID

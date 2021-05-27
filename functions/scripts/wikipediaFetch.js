@@ -1,3 +1,4 @@
+"use strict";
 /**
  * gets all the info regarding a particular tree using the recordID from opendata
  * returns null if tree not able to be retrieved

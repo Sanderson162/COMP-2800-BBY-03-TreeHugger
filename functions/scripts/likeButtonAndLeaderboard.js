@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Listens if the user login/logout to gray out or fill in the button
  * @author Stirling
