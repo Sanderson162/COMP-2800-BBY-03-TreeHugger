@@ -190,6 +190,7 @@ app.post('/removeTreeFav', urlencodedParser, (req, res) => {
     });
 });
 
+//adds a saved tree to the database for user making request.
 app.post("/ajax-add-comment", urlencodedParser, (req, res) => {
   const idToken = req.body.idToken.toString();
   let comment = req.body;
@@ -221,6 +222,7 @@ app.post("/ajax-add-comment", urlencodedParser, (req, res) => {
     });
 });
 
+//adds history to the database for user making request
 app.post("/ajax-add-history", urlencodedParser, (req, res) => {
   const idToken = req.body.idToken.toString();
   let comment = req.body;
@@ -250,6 +252,7 @@ app.post("/ajax-add-history", urlencodedParser, (req, res) => {
     });
 });
 
+//responds to the ajax request for all saved trees for user making request.
 app.post("/ajax-get-comment-user", urlencodedParser, (req, res) => {
   const idToken = req.body.idToken.toString();
 
@@ -279,6 +282,7 @@ app.post("/ajax-get-comment-user", urlencodedParser, (req, res) => {
     });
 });
 
+//responds to ajax request for user history. 
 app.post("/ajax-get-history-user", urlencodedParser, (req, res) => {
   const idToken = req.body.idToken.toString();
 
@@ -379,7 +383,6 @@ app.post('/getFavByTree', urlencodedParser, (req, res) => {
 });
 
 app.post('/getFavCountByTree', urlencodedParser, (req, res) => {
-  // res.setHeader('Content-Type', 'application/json');
   const recordID = req.body.recordID;
   db.collection('FavouriteStats').doc(recordID)
     .get()
@@ -404,7 +407,6 @@ app.post('/getFavCountByTree', urlencodedParser, (req, res) => {
 });
 
 app.post('/getFavCountLeaderboard', urlencodedParser, (req, res) => {
-  // res.setHeader('Content-Type', 'application/json');
   db.collection("FavouriteStats")
   .orderBy("favCount", "desc")
   .limit(15)
