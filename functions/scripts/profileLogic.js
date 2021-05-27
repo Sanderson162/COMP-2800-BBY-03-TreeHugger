@@ -97,7 +97,7 @@ function getUserInfo() {
 
 /**
  * Helper funtion to change the username
- * @param {string} newUsername 
+ * @param {string} newUsername
  * @author Stirling
  */
 function updateUsername(newUsername) {
@@ -120,8 +120,8 @@ function updateUsername(newUsername) {
 }
 
 /**
- * Helper funtion to change email. 
- * @param {String} newEmail 
+ * Helper funtion to change email.
+ * @param {String} newEmail
  * @author Aidan
  */
 function updateEmail(newEmail) {

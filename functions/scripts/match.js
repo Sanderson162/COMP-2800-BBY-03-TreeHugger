@@ -178,9 +178,9 @@ async function alternateTree(q, type) {
 
 /**
  * inds a tree between 1989 and 2022 with the same day and month
- * @param {String} date 
- * @param {Object} type 
- * @returns Obejct the first tree it finds. 
+ * @param {String} date
+ * @param {Object} type
+ * @returns Obejct the first tree it finds.
  * @author Aidan
  */
 async function differentYear(date, type) {
