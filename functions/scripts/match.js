@@ -22,7 +22,11 @@ $(document).ready(() => {
     $("#birth").click();
 });
 
-//highlights a selected card, unhighlights the others
+/**
+ * highlights a selected card, unhighlights the others
+ * @param {elem} target 
+ * @author Aidan
+ */
 function selectCard(target) {
     $(".selected").removeClass("selected")
     $(target).addClass("selected")
