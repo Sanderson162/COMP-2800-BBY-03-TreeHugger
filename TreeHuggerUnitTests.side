@@ -2776,6 +2776,18 @@
       ],
       "value": ""
     }, {
+      "id": "8ce69d2d-c77d-4c9c-85d8-480ad4a7c123",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=profileHamburgerMenu",
+      "targets": [
+        ["id=profileHamburgerMenu", "id"],
+        ["css=#profileHamburgerMenu", "css:finder"],
+        ["xpath=//div[@id='profileHamburgerMenu']", "xpath:attributes"],
+        ["xpath=//div[6]", "xpath:position"]
+      ],
+      "value": "30000"
+    }, {
       "id": "770601d7-10a7-4f25-85c8-5ff61aee4c9c",
       "comment": "",
       "command": "click",
@@ -2785,50 +2797,92 @@
       ],
       "value": ""
     }, {
-      "id": "f02acae1-c8fd-4dd3-af6c-a6e8a266ad19",
+      "id": "4c53bffb-bf77-4977-b151-5e06653aad84",
       "comment": "",
       "command": "click",
-      "target": "id=date_planted-tag",
+      "target": "css=.mb3 svg",
       "targets": [
-        ["id=date_planted-tag", "id"],
-        ["css=#date_planted-tag", "css:finder"],
-        ["xpath=//div[@id='date_planted-tag']", "xpath:attributes"],
-        ["xpath=//div[@id='search-tags']/div[3]", "xpath:idRelative"],
-        ["xpath=//div[3]", "xpath:position"]
+        ["css=.mb3 svg", "css:finder"]
       ],
       "value": ""
     }, {
-      "id": "ef4c1ee9-9f58-495f-8c29-c7e976f36e35",
+      "id": "d03595d3-4993-4402-930b-e8f60c2086d4",
+      "comment": "",
+      "command": "click",
+      "target": "id=query",
+      "targets": [
+        ["id=query", "id"],
+        ["css=#query", "css:finder"],
+        ["xpath=//input[@id='query']", "xpath:attributes"],
+        ["xpath=//div[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bff54619-f472-41f6-9446-18b82aae43e6",
       "comment": "",
       "command": "type",
-      "target": "id=query-year",
+      "target": "id=query",
       "targets": [
-        ["id=query-year", "id"],
-        ["css=#query-year", "css:finder"],
-        ["xpath=//input[@id='query-year']", "xpath:attributes"],
-        ["xpath=//div[@id='date-search-bar']/input", "xpath:idRelative"],
-        ["xpath=//div[3]/input", "xpath:position"]
+        ["id=query", "id"],
+        ["css=#query", "css:finder"],
+        ["xpath=//input[@id='query']", "xpath:attributes"],
+        ["xpath=//div[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
       ],
-      "value": "1995"
+      "value": "RUBY RED HORSECHESTNUT"
     }, {
-      "id": "248d756c-9e8c-41b4-b0aa-a3a4c13a1326",
+      "id": "7063ce0e-2830-4f9b-a9c6-936ed777c1ed",
       "comment": "",
       "command": "click",
-      "target": "css=#date-search-bar svg",
+      "target": "id=search-btn",
       "targets": [
-        ["css=#date-search-bar svg", "css:finder"]
+        ["id=search-btn", "id"],
+        ["css=#search-bar > #search-btn", "css:finder"],
+        ["xpath=//button[@id='search-btn']", "xpath:attributes"],
+        ["xpath=//div[@id='search-bar']/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"]
       ],
       "value": ""
     }, {
-      "id": "4742cba8-4dd4-41f9-9184-4cbf78d84022",
+      "id": "511672c7-85fb-48e3-b952-734d100d4480",
       "comment": "",
       "command": "click",
-      "target": "css=div:nth-child(3) > div:nth-child(31) > img",
+      "target": "id=33570de287aca6b4a59e23ec1be18e8d626668df",
       "targets": [
-        ["css=div:nth-child(3) > div:nth-child(31) > img", "css:finder"],
-        ["xpath=(//img[contains(@src,'https://maps.gstatic.com/mapfiles/transparent.png')])[31]", "xpath:img"],
-        ["xpath=//div[@id='map']/div/div/div/div[3]/div/div[3]/div[31]/img", "xpath:idRelative"],
-        ["xpath=//div[3]/div[31]/img", "xpath:position"]
+        ["id=33570de287aca6b4a59e23ec1be18e8d626668df", "id"],
+        ["css=#\\33 3570de287aca6b4a59e23ec1be18e8d626668df", "css:finder"],
+        ["xpath=//div[@id='33570de287aca6b4a59e23ec1be18e8d626668df']", "xpath:attributes"],
+        ["xpath=//div[@id='content']/div", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f4b6b102-0c1b-46e8-93e1-437dc9975b7d",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "id=species-name",
+      "targets": [
+        ["id=species-name", "id"],
+        ["css=#species-name", "css:finder"],
+        ["xpath=//h2[@id='species-name']", "xpath:attributes"],
+        ["xpath=//div[@id='main']/h2", "xpath:idRelative"],
+        ["xpath=//h2", "xpath:position"],
+        ["xpath=//h2[contains(.,'RUBY RED HORSECHESTNUT')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "bbcf6570-87f6-493f-8ef0-b6527647ef48",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "id=species-name",
+      "targets": [
+        ["id=species-name", "id"],
+        ["css=#species-name", "css:finder"],
+        ["xpath=//h2[@id='species-name']", "xpath:attributes"],
+        ["xpath=//div[@id='main']/h2", "xpath:idRelative"],
+        ["xpath=//h2", "xpath:position"],
+        ["xpath=//h2[contains(.,'RUBY RED HORSECHESTNUT')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -2842,7 +2896,7 @@
         ["xpath=//h2[@id='species-name']", "xpath:attributes"],
         ["xpath=//div[@id='main']/h2", "xpath:idRelative"],
         ["xpath=//h2", "xpath:position"],
-        ["xpath=//h2[contains(.,'LAVALLEI HYBRID HAWTHORN')]", "xpath:innerText"]
+        ["xpath=//h2[contains(.,'RUBY RED HORSECHESTNUT')]", "xpath:innerText"]
       ],
       "value": "x"
     }, {
@@ -2871,8 +2925,13 @@
       "id": "465cce4c-fd52-479c-8014-70b6b4d24531",
       "comment": "",
       "command": "assertText",
-      "target": "css=.card:nth-child(1) .common-name",
-      "targets": [],
+      "target": "css=.card:nth-child(4) .common-name",
+      "targets": [
+        ["css=.card:nth-child(4) .common-name", "css:finder"],
+        ["xpath=//div[@id='results']/div[4]/div[3]/p", "xpath:idRelative"],
+        ["xpath=//div[4]/div[3]/p", "xpath:position"],
+        ["xpath=//p[contains(.,'RUBY RED HORSECHESTNUT')]", "xpath:innerText"]
+      ],
       "value": "${x}"
     }, {
       "id": "7755957f-603c-4286-afdc-14c9b6741831",
@@ -3009,15 +3068,6 @@
       ],
       "value": ""
     }, {
-      "id": "2fcea92f-1e90-4520-8a8f-d15cec17228e",
-      "comment": "",
-      "command": "click",
-      "target": "css=.mb2 path:nth-child(2)",
-      "targets": [
-        ["css=.mb2 path:nth-child(2)", "css:finder"]
-      ],
-      "value": ""
-    }, {
       "id": "edda98ae-a99d-4b80-beb4-480c265711c1",
       "comment": "",
       "command": "pause",
@@ -3025,19 +3075,81 @@
       "targets": [],
       "value": "3000"
     }, {
-      "id": "61e74a3c-7031-478e-9d46-16a812fe497b",
+      "id": "ad684626-36de-4913-8b30-a53dff5b04a0",
       "comment": "",
       "command": "click",
-      "target": "css=div:nth-child(3) > div:nth-child(2) > img",
+      "target": "css=.mb3 svg",
       "targets": [
-        ["css=div:nth-child(3) > div:nth-child(2) > img", "css:finder"],
-        ["xpath=(//img[contains(@src,'https://maps.gstatic.com/mapfiles/transparent.png')])[2]", "xpath:img"],
-        ["xpath=//div[@id='map']/div/div/div/div[3]/div/div[3]/div[2]/img", "xpath:idRelative"],
-        ["xpath=//div[3]/div[2]/img", "xpath:position"]
+        ["css=.mb3 svg", "css:finder"]
       ],
       "value": ""
     }, {
-      "id": "1921c6f6-e96b-4801-83d4-e46aa60d04a4",
+      "id": "c03c4a65-a725-4c95-bafb-f2d5eb55ff52",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "id=species_name-tag",
+      "targets": [
+        ["id=species_name-tag", "id"],
+        ["css=#species_name-tag", "css:finder"],
+        ["xpath=//div[@id='species_name-tag']", "xpath:attributes"],
+        ["xpath=//div[@id='search-tags']/div[4]", "xpath:idRelative"],
+        ["xpath=//div[4]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "75162a09-2533-4aa1-8863-ea708f3a63f4",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "id=species_name-tag",
+      "targets": [
+        ["id=species_name-tag", "id"],
+        ["css=#species_name-tag", "css:finder"],
+        ["xpath=//div[@id='species_name-tag']", "xpath:attributes"],
+        ["xpath=//div[@id='search-tags']/div[4]", "xpath:idRelative"],
+        ["xpath=//div[4]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "93136f45-4f7a-4cd7-ba9f-fba0e9f0e505",
+      "comment": "",
+      "command": "click",
+      "target": "id=tree_id-tag",
+      "targets": [
+        ["id=tree_id-tag", "id"],
+        ["css=#tree_id-tag", "css:finder"],
+        ["xpath=//div[@id='tree_id-tag']", "xpath:attributes"],
+        ["xpath=//div[@id='search-tags']/div[8]", "xpath:idRelative"],
+        ["xpath=//div[8]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f426150d-377f-4bef-b494-1fd19c237749",
+      "comment": "",
+      "command": "type",
+      "target": "id=query",
+      "targets": [
+        ["id=query", "id"],
+        ["css=#query", "css:finder"],
+        ["xpath=//input[@id='query']", "xpath:attributes"],
+        ["xpath=//div[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "167500"
+    }, {
+      "id": "88b9220e-0d64-412d-b456-d00752ecd997",
+      "comment": "",
+      "command": "click",
+      "target": "id=search-btn",
+      "targets": [
+        ["id=search-btn", "id"],
+        ["css=#search-bar > #search-btn", "css:finder"],
+        ["xpath=//button[@id='search-btn']", "xpath:attributes"],
+        ["xpath=//div[@id='search-bar']/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "754092ce-3680-4540-96f1-67fe14959803",
       "comment": "",
       "command": "storeText",
       "target": "id=species-name",
@@ -3047,11 +3159,11 @@
         ["xpath=//h2[@id='species-name']", "xpath:attributes"],
         ["xpath=//div[@id='main']/h2", "xpath:idRelative"],
         ["xpath=//h2", "xpath:position"],
-        ["xpath=//h2[contains(.,'LAVALLEI HYBRID HAWTHORN')]", "xpath:innerText"]
+        ["xpath=//h2[contains(.,'SYCAMORE MAPLE')]", "xpath:innerText"]
       ],
       "value": "x"
     }, {
-      "id": "31a3e5d9-5e86-40d1-90f2-626107ab026d",
+      "id": "3092e8dc-98ae-41dc-9df1-8546e19f5968",
       "comment": "",
       "command": "click",
       "target": "css=#profileHamburgerMenuButton > svg",
@@ -3060,7 +3172,7 @@
       ],
       "value": ""
     }, {
-      "id": "0b1e6c6d-f625-484c-9d56-070868b5c4a8",
+      "id": "48f0e715-1985-4564-b571-6279abca9ceb",
       "comment": "",
       "command": "click",
       "target": "id=navbarHamProfileButton",
@@ -3073,14 +3185,19 @@
       ],
       "value": ""
     }, {
-      "id": "571cea77-1090-475f-a59e-31b023afb06a",
+      "id": "8d4db6b1-1634-493d-8495-9889e7a28302",
       "comment": "",
       "command": "assertText",
-      "target": "css=.card:nth-child(1) .common-name",
-      "targets": [],
+      "target": "css=.card:nth-child(5) .common-name",
+      "targets": [
+        ["css=.card:nth-child(4) .common-name", "css:finder"],
+        ["xpath=//div[@id='results']/div[4]/div[3]/p", "xpath:idRelative"],
+        ["xpath=//div[4]/div[3]/p", "xpath:position"],
+        ["xpath=//p[contains(.,'RUBY RED HORSECHESTNUT')]", "xpath:innerText"]
+      ],
       "value": "${x}"
     }, {
-      "id": "0b8c9ea9-6e3e-4fc0-a4cd-7801f8c11b7e",
+      "id": "d4b5d6dd-a2de-4510-b00b-b161b0cac5ec",
       "comment": "",
       "command": "click",
       "target": "css=#profileHamburgerMenuButton > svg",
@@ -3089,7 +3206,7 @@
       ],
       "value": ""
     }, {
-      "id": "b0ef4cee-c162-4c4e-aab9-29e922a75009",
+      "id": "3f1bd3eb-15c6-4d57-8f2b-649c48ece7f9",
       "comment": "",
       "command": "click",
       "target": "id=loginLogoutButton",
@@ -3831,13 +3948,6 @@
         ["xpath=//h2[contains(.,'WESTERN RED CEDAR')]", "xpath:innerText"]
       ],
       "value": "WESTERN RED CEDAR"
-    }, {
-      "id": "fb808404-b5ec-4315-8544-09a516c21240",
-      "comment": "",
-      "command": "assert",
-      "target": "",
-      "targets": [],
-      "value": ""
     }]
   }, {
     "id": "6f92ea18-257b-4992-807e-f858976a0450",
@@ -3978,6 +4088,28 @@
         ["xpath=//div[2]/div[3]/p", "xpath:position"]
       ],
       "value": "MAGNOLIA 'GALAXY'"
+    }, {
+      "id": "94cfba9a-e7e1-4aaf-93d5-a064455f995c",
+      "comment": "",
+      "command": "click",
+      "target": "css=#profileHamburgerMenuButton > svg",
+      "targets": [
+        ["css=#profileHamburgerMenuButton > svg", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "1b3db63c-7870-49d4-a981-df6ba8de97fe",
+      "comment": "",
+      "command": "click",
+      "target": "id=loginLogoutButton",
+      "targets": [
+        ["id=loginLogoutButton", "id"],
+        ["css=#loginLogoutButton", "css:finder"],
+        ["xpath=//div[@id='loginLogoutButton']", "xpath:attributes"],
+        ["xpath=//div[@id='profileHamburgerMenu']/div[4]", "xpath:idRelative"],
+        ["xpath=//body/div[4]/div[4]", "xpath:position"]
+      ],
+      "value": ""
     }]
   }, {
     "id": "a5221702-6ff1-4873-9f8e-5ea8926d02f9",
@@ -4119,6 +4251,28 @@
         ["xpath=//p[contains(.,'EUROPEAN BEECH')]", "xpath:innerText"]
       ],
       "value": "EUROPEAN BEECH"
+    }, {
+      "id": "d2d2340d-6fca-43d9-9205-bd08782ae30b",
+      "comment": "",
+      "command": "click",
+      "target": "css=#profileHamburgerMenuButton > svg",
+      "targets": [
+        ["css=#profileHamburgerMenuButton > svg", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "d2b0743c-2a67-4049-95f8-4d5998eb2395",
+      "comment": "",
+      "command": "click",
+      "target": "id=loginLogoutButton",
+      "targets": [
+        ["id=loginLogoutButton", "id"],
+        ["css=#loginLogoutButton", "css:finder"],
+        ["xpath=//div[@id='loginLogoutButton']", "xpath:attributes"],
+        ["xpath=//div[@id='profileHamburgerMenu']/div[4]", "xpath:idRelative"],
+        ["xpath=//body/div[4]/div[4]", "xpath:position"]
+      ],
+      "value": ""
     }]
   }, {
     "id": "a3c9eb9c-398c-41e8-a058-fe1a705d55c1",
@@ -4235,6 +4389,28 @@
         ["xpath=//div[@id='content']", "xpath:attributes"],
         ["xpath=//div[@id='outer-content']/div", "xpath:idRelative"],
         ["xpath=//div[2]/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "52f09584-f0df-47a9-89d8-20a588199033",
+      "comment": "",
+      "command": "click",
+      "target": "css=#profileHamburgerMenuButton > svg",
+      "targets": [
+        ["css=#profileHamburgerMenuButton > svg", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "38752a50-a12a-49f0-b118-2178da0a7af5",
+      "comment": "",
+      "command": "click",
+      "target": "id=loginLogoutButton",
+      "targets": [
+        ["id=loginLogoutButton", "id"],
+        ["css=#loginLogoutButton", "css:finder"],
+        ["xpath=//div[@id='loginLogoutButton']", "xpath:attributes"],
+        ["xpath=//div[@id='profileHamburgerMenu']/div[4]", "xpath:idRelative"],
+        ["xpath=//body/div[4]/div[4]", "xpath:position"]
       ],
       "value": ""
     }]
