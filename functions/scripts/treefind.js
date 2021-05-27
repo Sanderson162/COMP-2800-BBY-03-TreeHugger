@@ -910,7 +910,6 @@ function addMainScrollListener() {
 function updateHistory(entry){
   var user = firebase.auth().currentUser;
   var treeID = entry.recordid;
-  console.log(entry);
   if (user) {
       user.getIdToken(/* forceRefresh */ true).then(function(idToken) {
           $.ajax({
@@ -918,9 +917,8 @@ function updateHistory(entry){
               dataType: "json",
               type: "POST",
               data: {tree: treeID, idToken: idToken},
-              success: ()=>{console.log("Successfully added to history")},
+              success: ()=>{},
               error: (jqXHR,textStatus,errorThrown )=>{
-                  console.log("Error:"+textStatus);
               }
           });
       });

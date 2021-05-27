@@ -117,8 +117,6 @@ async function searchWithFavourites() {
   $("#content-title").text("FAVOURITE TREES");
   let favList = await getFavByUser();
 
-  // console.log("favlist ", favList)
-
   if (favList.length != 0) {
     favList.forEach((record, index) => {
       getRecordAndDisplay(record.recordID, index + 1, false);
@@ -134,12 +132,9 @@ async function searchWithLeaderboard() {
   $("#content-title").text("LEADERBOARD");
   let favList = await getFavCountLeaderboard();
 
-  // console.log("favlist ", favList)
 
   if (favList) {
     favList.forEach((record, index) => {
-      // console.log(record);
-      // console.log(record.recordID);
       getRecordAndDisplay(record.recordID, index + 1, false);
     });
   }
@@ -579,7 +574,6 @@ function searchZoom() {
       bounds.extend(markers[i].position);
     }
     map.fitBounds(bounds, 0);
-    console.log("centering map from searchZoom");
     centerMap();
   }
 }
@@ -1007,7 +1001,6 @@ function zoom(entry) {
   if (currentZoom < 15) {
     map.setZoom(15);
   }
-  console.log("centering map from zoom");
   centerMap();
   showTreeOverlay(entry);
   addStreetViewBtnListener(entry);
@@ -1199,10 +1192,8 @@ function hideTreeOverlay() {
   if (currentZoom > 12) {
     map.setZoom(zoomVal);
     if (center) {
-      console.log("centering map from hidetreeoverlay");
       centerMap();
     } else if ($("#outer-content").css('height') == '40px') {
-      console.log("centering map from hidetreeoverlay2");
       centerMap();
     }
   }
@@ -1362,7 +1353,6 @@ function initMap() {
   };
   panorama.setOptions(panoOptions);
   map.setZoom(11);
-  console.log("centering map from initmap");
   centerMap();
 }
 /**
@@ -1377,7 +1367,6 @@ function addLocationMarker(location, lbl) {
   $(".content-container").show();
   map.setCenter(location);
   map.setZoom(18);
-  console.log("centering map from addLocationMarker");
   centerMap();
   $("#content-title").text("TREES NEAR DROPPED MARKER");
   const marker = new google.maps.Marker({
@@ -1521,14 +1510,12 @@ function centerMapoldTest() {
   let height = window.innerHeight;
   if ($("#outer-content").css('height') == '40px') {
     contentHidden = true;
-    console.log("contenthidden")
   }
   if (!selectedTreeId) {
     treeHidden = true;
   }
   if (contentHidden && treeHidden) {
   } else {
-    console.log("pan map from centermap", height);
     map.panBy(0, -height * 0.25);
   }
 }
@@ -1540,12 +1527,9 @@ function centerMapoldTest() {
   let contentHidden = false;
   let height = window.innerHeight;
   if ($("#outer-content").css('height') == '40px') {
-    console.log("contenthidden")
     contentHidden = true;
   }
   if (!selectedTreeId && !contentHidden) {
-    console.log("pan map from centermap", height);
-    console.log("remaining height: ", $("#tree-overlay-container").height())
     map.panBy(0, -height * 0.25);
   }
 }
@@ -1661,7 +1645,6 @@ function addMainScrollListener() {
  function updateHistory(entry){
   var user = firebase.auth().currentUser;
   var treeID = entry.recordid;
-  // console.log(entry);
   if (user) {
       user.getIdToken(/* forceRefresh */ true).then(function(idToken) {
           $.ajax({
@@ -1669,9 +1652,8 @@ function addMainScrollListener() {
               dataType: "json",
               type: "POST",
               data: {tree: treeID, idToken: idToken},
-              success: ()=>{console.log("Successfully added to history")},
+              success: ()=>{},
               error: (jqXHR,textStatus,errorThrown )=>{
-                  console.log("Error:"+textStatus);
               }
           });
       });
