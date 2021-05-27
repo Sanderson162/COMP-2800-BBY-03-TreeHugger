@@ -1,5 +1,5 @@
 /**
- * SearchMap
+ * searchMap
  * Uses the opendata 'Street Trees' database and Google Maps API to find trees via various queries in Vancouver.
  * Built from treefind.js
  * @author Amrit Manhas apsm100
@@ -81,14 +81,17 @@ function checkUrlParams(params) {
     }
   });
 }
-
+/**
+ * Searches for tree with tree id.
+ * @param {string} id 
+ * @author Amrit
+ */
 function searchWithID(id) {
   showSearchType('tree_id-tag');
   $("#query").val(id);
   $("#content").text("");
   queueSearch();
 }
-
 /**
  * clears the search panel for new info
  * @author Stirling
@@ -109,7 +112,6 @@ function clearSearch() {
   $(".tree-overlay-container").hide();
   $(".content-container").show();
 }
-
 /**
  * searches record using recordID
  * @param {string} recordID tree record id.
@@ -120,7 +122,6 @@ function searchWithRecordID(recordID) {
   $("#content-title").text("TREE");
   getRecordAndDisplay(recordID, null, true);
 }
-
 /**
  * gets an array of user favourites
  * @author Stirling
@@ -138,7 +139,6 @@ async function searchWithFavourites() {
     showDialogue("noFavourites");
   }
 }
-
 /**
  * gets the leaderboard array and order
  * @author Stirling
@@ -149,14 +149,12 @@ async function searchWithLeaderboard() {
   $("#content-title").text("LEADERBOARD");
   let favList = await getFavCountLeaderboard();
 
-
   if (favList) {
     favList.forEach((record, index) => {
       getRecordAndDisplay(record.recordID, index + 1, false);
     });
   }
 }
-
 /**
  * gets a record from leaderboard array and order
  * @param {string} recordID tree record id.
@@ -182,7 +180,6 @@ async function getRecordAndDisplay(recordID, order, zoomOnTree) {
       showDialogue("treeNotAvailable");
   }
 }
-
 /**
  * Uses URL to get URL parameters.
  * @returns params

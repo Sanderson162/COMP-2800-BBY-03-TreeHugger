@@ -2,9 +2,13 @@
 
 Find your tree, Vancouver!
 
+* [Team Members](#Team-Members)
 * [General info](#general-info)
 * [Technologies](#technologies)
+* [Dependencies](#Dependencies)
 * [Contents](#content)
+* [IDE\'s](#IDE\'s)
+* [Setup](#Setup-Instructions)
 
 
 ## Team Members
@@ -76,7 +80,7 @@ It has the following subfolders:
 Setting up this project will allow you to preview the app locally, all API keys are included in the repository
 1. Clone repository into working directory of your choosing
 2. Install node ``` https://nodejs.org/en/download/```
-3. Install dependancies in /functions by running ```cd /functions & npm install & cd ..```
+3. Install dependancies in /functions by running ```cd /functions && npm install && cd ..```
 4. Install firebase cli using ```npm install -g firebase-tools```
 5. Service account key needed for accesing Authentication and database is included in repository
 6. Test app functions by running ```firebase serve```
