@@ -8,7 +8,7 @@ Find your tree, Vancouver!
 * [Dependencies](#Dependencies)
 * [Contents](#content)
 * [IDE\'s](#IDE\'s)
-* [Setup](#Setup Instructions)
+* [Setup](#Setup-Instructions)
 
 
 ## Team Members
