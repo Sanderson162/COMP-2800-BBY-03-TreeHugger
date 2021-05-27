@@ -37,17 +37,14 @@ Technologies used for this project:
 * (optional) Visual Studio Code
 * Selenium extention for unit testing
 
-## Setup Instructions
-1. Clone repository into working directory of your choosing
-2. install node ``` https://nodejs.org/en/download/```
-3. install dependancies in /functions by running ```cd /functions & npm install & cd ..```
-4. install firebase cli using ```npm install -g firebase-tools```
-5. Service account key needed for accesing Authentication and database is included in repository
-6. test app functions by running ```firebase serve```
+## Team Members
+* [Stirling Anderson](https://github.com/Sanderson162)
+* [Aidan McReynolds](https://github.com/AidanMcReynolds)
+* [Amrit Manhas](https://github.com/apsm100)
+* [Steven Reid](https://github.com/StevenR88)
 
 ## Content
 Content of the project folder:
-
 ```
  Top level of project folder:
 ├── README.md                  # Read Me
@@ -68,3 +65,12 @@ It has the following subfolders:
     ├── /templates             # Html templates for minified html in navbar-common.js
 ├── /public                    # Folder for firebase Hosting static files
     favicon.ico                # Favicon for all pages
+```
+
+## Setup Instructions
+1. Clone repository into working directory of your choosing
+2. install node ``` https://nodejs.org/en/download/```
+3. install dependancies in /functions by running ```cd /functions & npm install & cd ..```
+4. install firebase cli using ```npm install -g firebase-tools```
+5. Service account key needed for accesing Authentication and database is included in repository
+6. test app functions by running ```firebase serve```
