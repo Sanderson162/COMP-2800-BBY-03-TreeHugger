@@ -2,6 +2,7 @@
 
 Find your tree, Vancouver!
 
+
 * [Team Members](#Team-Members)
 * [General info](#general-info)
 * [Technologies](#technologies)
@@ -9,7 +10,6 @@ Find your tree, Vancouver!
 * [Contents](#content)
 * [IDE\'s](#IDE\'s)
 * [Setup](#Setup-Instructions)
-
 
 ## Team Members
 First Name | Last Name | Student # | Github
