@@ -208,7 +208,7 @@ function setUrlParam(key, value) {
     searchParams.set(key, value);
     let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
     window.history.replaceState({path: newurl}, '', newurl);
-}
+  }
 }
 /**
  * Removes a url paramater with key.
