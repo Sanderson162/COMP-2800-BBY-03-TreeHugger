@@ -9,7 +9,7 @@ Find your tree, Vancouver!
 
 ## Team Members
 First Name | Last Name | Student # | Github
-*** | *** | ***
+--- | --- | ---
 Stirling | Anderson | A01022394 | [Link](https://github.com/Sanderson162)
 Aidan | McReynolds | A01255622 | [Link](https://github.com/AidanMcReynolds)
 Amrit | Manhas | A01247201 | [Link](https://github.com/apsm100)
