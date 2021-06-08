@@ -88,3 +88,5 @@ Setting up this project will allow you to preview the app locally, all API keys 
 8. View current testing progress at [here](https://docs.google.com/spreadsheets/d/1dd15Ohg59e2YYt_uV0LmraUiUDuTnIvSvjWpqlFbFU4/edit#gid=394496370)
 9. For deploying to production enviroment please contact either Stirling, Amrit, Steven, Aidan
 
+## Note regarding public Github
+As of this commit the private key has been removed, the old private key has been left as an example however it will need to be updated manually each deploy
