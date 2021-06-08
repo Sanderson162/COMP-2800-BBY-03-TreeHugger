@@ -8,7 +8,7 @@ Find your tree, Vancouver!
 * [Technologies](#technologies)
 * [Dependencies](#Dependencies)
 * [Contents](#content)
-* [IDE\'s](#IDE\'s)
+* [IDE](#IDE)
 * [Setup](#Setup-Instructions)
 
 ## Team Members
@@ -48,7 +48,7 @@ Technologies used for this project:
 * firebase-functions v3.14.0
 * firebase-functions-test v0.2.0
 
-## IDE's
+## IDE
 * (optional) Visual Studio Code
 * Selenium extention for unit testing
 
@@ -87,6 +87,3 @@ Setting up this project will allow you to preview the app locally, all API keys 
 7. Connect to ```http://localhost:5000/``` to view emulated app
 8. View current testing progress at [here](https://docs.google.com/spreadsheets/d/1dd15Ohg59e2YYt_uV0LmraUiUDuTnIvSvjWpqlFbFU4/edit#gid=394496370)
 9. For deploying to production enviroment please contact either Stirling, Amrit, Steven, Aidan
-
-## Note regarding public Github
-As of this commit the private key has been removed, the old private key has been left as an example however it will need to be updated manually each deploy
